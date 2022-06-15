@@ -1,0 +1,64 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
+
+import 'package:flutter/material.dart';
+import 'package:posq/appsmobile.dart';
+import 'package:posq/mainapps.dart';
+import 'package:posq/model.dart';
+import 'package:posq/retailmodul/clasretailmainmobile.dart';
+
+Future<void> main() async {
+  runApp(MyApp(
+    onGenerateRoute: RouteGenerator.generateRoute,
+  ));
+}
+
+class MyApp extends StatelessWidget {
+  // final bool newinstall;
+  MyApp({
+    Key? key,
+    required Route Function(RouteSettings settings) onGenerateRoute,
+    /*required this.newinstall*/
+  }) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'POS Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const Mainapps(
+        title: 'POS DEMO', /*newinstall:newinstall*/
+      ),
+    );
+  }
+}
+
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    // jika ingin mengirim argument
+    // final args = settings.arguments;
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (_) => const AppsMobile());
+      case '/RetailMain':
+        return MaterialPageRoute(
+            builder: (_) => ClassRetailMainMobile(
+                  outletinfo: Outlet(outletcd: ''),
+                  pscd: '',
+                  qty: 0,
+                ));
+      // return MaterialPageRoute(builder: (_) => AboutPage(args));
+      default:
+        return _errorRoute();
+    }
+  }
+
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(builder: (_) {
+      return AppsMobile();
+    });
+  }
+}
