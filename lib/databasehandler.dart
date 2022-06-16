@@ -109,7 +109,7 @@ class DatabaseHandler {
     return result;
   }
 
-    Future<int> insertPromo(List<Promo> items) async {
+  Future<int> insertPromo(List<Promo> items) async {
     int result = 0;
     final Database db = await initializeDB();
     for (var item in items) {
@@ -164,9 +164,10 @@ class DatabaseHandler {
     return queryResult.map((e) => Outlet.fromMap(e)).toList();
   }
 
-    Future<List<Promo>> retrievePromo() async {
+  Future<List<Promo>> retrievePromo(String query) async {
     final Database db = await initializeDB();
-    final List<Map<String, Object?>> queryResult = await db.query('promo');
+    final List<Map<String, Object?>> queryResult = await db
+        .rawQuery('select * from promo where promodesc like "%$query%"');
     return queryResult.map((e) => Promo.fromMap(e)).toList();
   }
 
@@ -180,16 +181,22 @@ class DatabaseHandler {
 
   Future<List<IafjrndtClass>> summarybill(String trno) async {
     final Database db = await initializeDB();
-    final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        'select sum(rvnamt) as rvnamt , sum(taxamt) as taxamt,sum(serviceamt) as serviceamt,sum(nettamt) as nettamt from iafjrndt where trno="$trno"');
+    final List<Map<String, Object?>> queryResult = await db.rawQuery('''
+select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as taxamt ,sum(x.serviceamt) as serviceamt ,sum(x.nettamt) as nettamt from
+(select trno,sum(rvnamt) as rvnamt ,"0" as  discamt, sum(taxamt) as taxamt,sum(serviceamt) as serviceamt,sum(nettamt) as nettamt from iafjrndt where trno="$trno"
+        union 
+         select trno, "0" as rvnamt ,ifnull(sum(ftotamt),0) as discamt,"0" as taxamt,"0" as serviceamt ,ifnull(sum(ftotamt),0) as nettamt from iafjrnhd where trno="$trno" and pymtmthd='Discount') X
 
+         
+        ''');
+    print(queryResult);
     return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
   }
 
   Future<List<IafjrnhdClass>> summaryPayment(String trno) async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        'select sum(totalamt) as totalamt from iafjrnhd where trno="$trno"');
+        'select sum(totalamt) as totalamt from iafjrnhd where trno="$trno" and pymtmthd<>"Discount"');
     if (queryResult.first.isEmpty) {
       print('harusnya');
     }
@@ -258,8 +265,14 @@ class DatabaseHandler {
 
   Future<List<IafjrndtClass>> checktotalAmountNett(String trno) async {
     final Database db = await initializeDB();
-    final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        "select sum(nettamt) as nettamt,trdesc from iafjrndt where trno ='$trno' and active='1'");
+    final List<Map<String, Object?>> queryResult = await db.rawQuery('''
+select sum(x.nettamt) as nettamt from
+(select trno,sum(rvnamt) as rvnamt ,"0" as  discamt, sum(taxamt) as taxamt,sum(serviceamt) as serviceamt,sum(nettamt) as nettamt from iafjrndt where trno="$trno"
+        union 
+         select trno, "0" as rvnamt ,ifnull(sum(ftotamt),0) as discamt,"0" as taxamt,"0" as serviceamt ,ifnull(sum(ftotamt),0) as nettamt from iafjrnhd where trno="$trno" and pymtmthd='Discount') X
+
+         
+        ''');
 
     return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
   }
@@ -302,7 +315,7 @@ class DatabaseHandler {
   Future<List<IafjrnhdClass>> retriveListDetailPayment(String trno) async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db
-        .rawQuery("select * from iafjrnhd where trno='${trno}' and active='1'");
+        .rawQuery("select * from iafjrnhd where trno='${trno}' and active='1' and pymtmthd<>'Discount'");
     print(queryResult);
 
     return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
@@ -377,6 +390,18 @@ class DatabaseHandler {
     ]);
   }
 
+  
+  Future<void> activeZeroiafjrnhdtrno(IafjrnhdClass iafjrnhd) async {
+    final db = await initializeDB();
+    await db.rawUpdate('''
+    UPDATE iafjrnhd 
+    SET active=? WHERE trno = ?
+    ''', [
+      iafjrnhd.active,
+      iafjrnhd.trno,
+    ]);
+  }
+
   Future<void> updateTrnoNext(Outlet iafjrndt) async {
     final db = await initializeDB();
     await db.rawUpdate('''
@@ -401,6 +426,23 @@ class DatabaseHandler {
       pelanggan.pic,
       pelanggan.active,
       pelanggan.compcd,
+    ]);
+  }
+
+  Future<void> updatePromo(Promo promo) async {
+    final db = await initializeDB();
+    await db.rawUpdate('''
+    UPDATE promo 
+    SET promocd=?,promodesc=?,amount=?,pct=?,type=?,maxdisc=?,mindisc=? WHERE id =?
+    ''', [
+      promo.promocd,
+      promo.promodesc,
+      promo.amount,
+      promo.pct,
+      promo.type,
+      promo.maxdisc,
+      promo.mindisc,
+      promo.id,
     ]);
   }
 
@@ -463,14 +505,19 @@ class DatabaseHandler {
     );
   }
 
-
-    Future<void> deletePromo(int id) async {
+  Future<void> deletePromo(int id) async {
     final db = await initializeDB();
     await db.delete(
       'promo',
       where: "id = ?",
       whereArgs: [id],
     );
+  }
+
+  Future<void> deletePromoActive(String trno) async {
+    final db = await initializeDB();
+    print(trno);
+    await db.rawDelete('delete from iafjrnhd where trno="$trno"');
   }
 
   Future queryCheckOutlet() async {

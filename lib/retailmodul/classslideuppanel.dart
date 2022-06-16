@@ -24,6 +24,8 @@ class SlideUpPanel extends StatefulWidget {
   final VoidCallback? refreshdata;
   final String trno;
   final bool animated;
+  final num? sum;
+  
 
   const SlideUpPanel(
       {Key? key,
@@ -37,7 +39,7 @@ class SlideUpPanel extends StatefulWidget {
       this.refreshdata,
       required this.trno,
       required this.outletinfo,
-      required this.animated})
+      required this.animated,required this.sum})
       : super(key: key);
 
   @override
@@ -332,10 +334,16 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                     }
                     return Container();
                   })),
+               
+                  
           widget.qty != 0
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
+                    refreshdata: widget.refreshdata,
+                    updatedata: widget.updatedata,
+                    sum:widget.sum,
+                    pscd:widget.outletinfo.outletcd,
                     trno: widget.trno,
                   ),
                 )
@@ -391,6 +399,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
           //     ],
           //   ),
           // ),
+        
         ],
       ),
     );

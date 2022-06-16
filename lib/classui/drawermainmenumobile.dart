@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:posq/classui/classpromomobile.dart';
+import 'package:posq/setting/classpromomobile.dart';
 
 class DrawerWidgetMain extends StatelessWidget {
   @override

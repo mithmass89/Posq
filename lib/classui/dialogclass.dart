@@ -859,6 +859,73 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
   }
 }
 
+
+class DialogClassCancelorder extends StatefulWidget {
+  final String trno;
+  const DialogClassCancelorder({
+    Key? key,
+    required this.trno,
+  }) : super(key: key);
+
+  @override
+  State<DialogClassCancelorder> createState() => _DialogClassCancelorderState();
+}
+
+class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
+  late DatabaseHandler handler;
+
+  @override
+  void initState() {
+    super.initState();
+    handler = DatabaseHandler();
+    handler.initializeDB();
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                  width: MediaQuery.of(context).size.width * 0.02,
+                ),
+                Row(
+                  children: [],
+                )
+              ],
+            )),
+        title: Text('Anda akan membatalkan transaksi?'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () async {
+                await handler.activeZeroiafjrndttrno(
+                    IafjrndtClass(active: '0', trno: widget.trno));
+                          await handler.activeZeroiafjrnhdtrno(
+                    IafjrnhdClass(active: '0', trno: widget.trno));
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //     '/', (Route<dynamic> route) => false);
+                Navigator.of(context).pop();
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
+
+
+
 class DialogClassReopen extends StatefulWidget {
   final String trno;
   final Outlet outletinfo;

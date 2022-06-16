@@ -593,6 +593,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                     ),
                     panelBuilder: (_pc) {
                       return SlideUpPanel(
+                        sum: sum,
                         animated: _scrollisanimated,
                         outletinfo: Outlet(
                           alamat: widget.outletinfo.alamat,
