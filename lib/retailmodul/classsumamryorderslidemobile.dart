@@ -65,14 +65,28 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                   ListTile(
                       onTap: x.first.discamt == 0
                           ? () async {
-                              result = await Navigator.push(
+                              var hasil = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SelectPromoMobile(
+                                            refreshdata: widget.refreshdata,
+                                            updatedata: widget.updatedata,
                                             databill: x.first,
                                             pscd: widget.pscd,
                                             trno: widget.trno,
-                                          )));
+                                          ))).then((_) async {
+                                await handler
+                                    .checktotalAmountNett(widget.trno)
+                                    .then((hasil) {
+                                  ClassRetailMainMobile.of(context)!.string =
+                                      hasil.first;
+                                });
+                                await widget.refreshdata;
+                                await widget.updatedata;
+                              });
+                              setState(() {
+                                widget.sum = hasil;
+                              });
                             }
                           : null,
                       visualDensity: VisualDensity(vertical: -4), // to compact
@@ -83,29 +97,29 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                               width: MediaQuery.of(context).size.width * 0.05,
                               child: TextButton(
                                   onPressed: () async {
-                                    result = await Navigator.push(
+                                    var hasil = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 SelectPromoMobile(
+                                                  refreshdata:
+                                                      widget.refreshdata,
+                                                  updatedata: widget.updatedata,
                                                   databill: x.first,
                                                   pscd: widget.pscd,
                                                   trno: widget.trno,
                                                 ))).then((_) async {
-                                      setState(() {});
+                                      await widget.refreshdata;
                                       await widget.updatedata;
-                                      await widget.refreshdata!;
                                       await handler
-                                          .checktotalAmountNett(
-                                              widget.trno.toString())
-                                          .then((value) async {
-                                        setState(() {
-                                          widget.sum = value.first.nettamt!;
-                                        });
-                                        await widget.refreshdata!;
+                                          .checktotalAmountNett(widget.trno)
+                                          .then((hasil) {
                                         ClassRetailMainMobile.of(context)!
-                                            .string = value.first;
+                                            .string = hasil.first;
                                       });
+                                    });
+                                    setState(() {
+                                      widget.sum = hasil;
                                     });
                                   },
                                   child: Text('>')))
@@ -137,6 +151,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                                 widget.sum =
                                                     value.first.nettamt!;
                                               });
+                                              await widget.updatedata;
                                               await widget.refreshdata!;
                                               ClassRetailMainMobile.of(context)!
                                                   .string = value.first;
@@ -167,15 +182,14 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                         Text(CurrencyFormat.convertToIdr(x.first.nettamt, 0)),
                   ),
                   TextButton(
-                      onPressed: ()async {
-                       await showDialog(
+                      onPressed: () async {
+                        await showDialog(
                             context: context,
-                            builder: (_) =>
-                                DialogClassCancelorder(trno: x.first.trno!)).then((_){
-setState(() {
-  
-});
-                                });
+                            builder: (_) => DialogClassCancelorder(
+                                outletcd: widget.pscd!,
+                                trno: x.first.trno!)).then((_) {
+                          setState(() {});
+                        });
                       },
                       child: Text('Batalkan transaksi'))
                 ],

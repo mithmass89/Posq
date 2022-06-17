@@ -53,10 +53,13 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   bool zerobill = false;
+  List<IafjrndtClass> listdata = [];
 
   @override
   void initState() {
     super.initState();
+    handler = DatabaseHandler();
+    getDataTransaksi();
     result = widget.balance;
     _controller = TabController(length: 2, vsync: this);
     // result = widget.balance - num.parse(amountcash.text);
@@ -68,6 +71,21 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
     });
     handler = DatabaseHandler();
     checkbalance();
+  }
+
+  getDataTransaksi() {
+    handler.retrieveDetailIafjrndt2(widget.trno.toString()).then((isi) {
+      if (isi.isNotEmpty) {
+        setState(() {
+          listdata = isi;
+        });
+      } else {
+        setState(() {
+          listdata = [];
+        });
+      }
+    });
+    print(listdata);
   }
 
   checkbalance() async {
@@ -233,7 +251,8 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           amountcash: amountcash,
                         ),
                         NonTunaiMobile(
-                          datatrans: widget.datatrans,
+                          // datatrans: widget.datatrans,
+                          datatrans:listdata,
                           callback: checkbalance,
                           zerobill: zerobill,
                           result: result!,
@@ -243,7 +262,6 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           balance: widget.balance,
                           amountcash: amountcash,
                         ),
-                    
                       ],
                     ),
                   ),

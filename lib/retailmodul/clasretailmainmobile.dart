@@ -66,7 +66,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   late DatabaseHandler handler;
   int? item = 0;
   num? summaryamount = 0;
-  num sum = 0;
+  late num sum = 0;
   String? query = '';
   String? trno = '';
   bool _scrollisanimated = false;
@@ -149,6 +149,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           taxpct: value.taxpct,
           servicepct: value.servicepct);
     });
+    print('tersampaikan');
   }
 
 //terakir sampai sini / pengen refresh
@@ -173,15 +174,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       if (isi.isNotEmpty) {
         setState(() {
           item = isi.length;
-          print('total barang retailmain $item');
         });
       } else {
         setState(() {
           item = 0;
         });
       }
-
-      print('terpanggil');
     });
 
     await handler.checktotalAmountNett(widget.trno.toString()).then((value) {
@@ -262,7 +260,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       setState(() {
         trno = '${widget.pscd}${value.first.trnonext}';
       });
-      print('ini trno dari mainretail ${widget.pscd}${value.first.trnonext}');
     });
   }
 
@@ -276,7 +273,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       setState(() {
         trnolanjut = value.first.trnonext;
       });
-      print('ini trno $trno');
     });
     await updateTrnonext();
   }
@@ -308,7 +304,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           await handler.getItemFromBarcode(value).then((value) async {
             Toast.show("Produk Terdaftar ${value.first.itemdesc}",
                 duration: Toast.lengthLong, gravity: Toast.center);
-            print(value);
+
             await insertIafjrndt(value.first);
             await getDetailData();
             await getDataSlide();
@@ -414,14 +410,14 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                     onPanelSlide: (value) {
                       print(value);
 
-                      if (value > 0.5) {
-                        setState(() {
-                          _scrollisanimated = true;
-                        });
-                        print(_scrollisanimated);
-                      } else {
+                      if (value == 0.0) {
                         setState(() {
                           _scrollisanimated = false;
+                        });
+                        // print(_scrollisanimated);
+                      } else if(value>0.5) {
+                        setState(() {
+                          _scrollisanimated = true;
                         });
                       }
                     },
@@ -592,32 +588,35 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       ],
                     ),
                     panelBuilder: (_pc) {
-                      return SlideUpPanel(
-                        sum: sum,
-                        animated: _scrollisanimated,
-                        outletinfo: Outlet(
-                          alamat: widget.outletinfo.alamat,
-                          kodepos: widget.outletinfo.kodepos,
-                          outletcd: widget.outletinfo.outletcd,
-                          outletname: widget.outletinfo.outletname,
-                          telp: widget.outletinfo.telp,
-                          trnonext: widget.outletinfo.trnonext,
-                          trnopynext: widget.outletinfo.trnopynext,
-                        ),
-                        updatedata: getDataSlide,
-                        listdata: listdata!,
-                        qty: item,
-                        amount: sum,
-                        trno: widget.trno.toString(),
-                        trnoinfo: iafjrndt,
-                        controllers: _pc,
-                        callback: (IafjrndtClass val) {
-                          getDataSlide();
-                        },
-                        refreshdata: () {
-                          getDataSlide();
-                        },
-                      );
+                      if (_scrollisanimated = true) {
+                        return SlideUpPanel(
+                          sum: sum,
+                          animated: _scrollisanimated,
+                          outletinfo: Outlet(
+                            alamat: widget.outletinfo.alamat,
+                            kodepos: widget.outletinfo.kodepos,
+                            outletcd: widget.outletinfo.outletcd,
+                            outletname: widget.outletinfo.outletname,
+                            telp: widget.outletinfo.telp,
+                            trnonext: widget.outletinfo.trnonext,
+                            trnopynext: widget.outletinfo.trnopynext,
+                          ),
+                          updatedata: getDataSlide,
+                          listdata: listdata!,
+                          qty: item,
+                          amount: sum,
+                          trno: widget.trno.toString(),
+                          trnoinfo: iafjrndt,
+                          controllers: _pc,
+                          callback: (IafjrndtClass val) {
+                            getDataSlide();
+                          },
+                          refreshdata: () {
+                            getDataSlide();
+                          },
+                        );
+                      }
+                      return Container();
                     }),
                 Positioned(
                   bottom: MediaQuery.of(context).size.height * 0.02,

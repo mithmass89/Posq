@@ -24,10 +24,9 @@ class SlideUpPanel extends StatefulWidget {
   final VoidCallback? refreshdata;
   final String trno;
   final bool animated;
-  final num? sum;
-  
+  late num? sum;
 
-  const SlideUpPanel(
+  SlideUpPanel(
       {Key? key,
       required this.controllers,
       required this.trnoinfo,
@@ -39,7 +38,8 @@ class SlideUpPanel extends StatefulWidget {
       this.refreshdata,
       required this.trno,
       required this.outletinfo,
-      required this.animated,required this.sum})
+      required this.animated,
+      required this.sum})
       : super(key: key);
 
   @override
@@ -157,10 +157,10 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ],
             ),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
-          Divider(),
+          // SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.05,
+          // ),
+          // Divider(),
           Container(
               height: widget.qty! <= 4
                   ? MediaQuery.of(context).size.height *
@@ -194,6 +194,25 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                   }).then((value) {
                                     getDataSlide();
                                   });
+                                  print(
+                                      'ini lenght : ${snapshot.data!.length}');
+                                  if (snapshot.data!.length == 0) {
+                                    await handler
+                                        .deletePromoActive(widget.trno)
+                                        .then((_) async {
+                                      setState(() {});
+
+                                      await widget.refreshdata;
+                                      await handler
+                                          .checktotalAmountNett(
+                                              widget.trno.toString())
+                                          .then((value) async {
+                                        setState(() {
+                                          widget.sum = value.first.nettamt!;
+                                        });
+                                      });
+                                    });
+                                  }
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -334,16 +353,17 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                     }
                     return Container();
                   })),
-               
-                  
+
           widget.qty != 0
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
                     refreshdata: widget.refreshdata,
-                    updatedata: widget.updatedata,
-                    sum:widget.sum,
-                    pscd:widget.outletinfo.outletcd,
+                    updatedata:(){
+                      widget.refreshdata;
+                    },
+                    sum: widget.sum,
+                    pscd: widget.outletinfo.outletcd,
                     trno: widget.trno,
                   ),
                 )
@@ -399,7 +419,6 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
           //     ],
           //   ),
           // ),
-        
         ],
       ),
     );

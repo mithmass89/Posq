@@ -859,12 +859,13 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
   }
 }
 
-
 class DialogClassCancelorder extends StatefulWidget {
   final String trno;
+  final String outletcd;
   const DialogClassCancelorder({
     Key? key,
     required this.trno,
+    required this.outletcd,
   }) : super(key: key);
 
   @override
@@ -873,12 +874,28 @@ class DialogClassCancelorder extends StatefulWidget {
 
 class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
   late DatabaseHandler handler;
+  int? trno;
 
   @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
     handler.initializeDB();
+  }
+
+  checkTrno() async {
+    await handler.getTrno(widget.outletcd.toString()).then((value) {
+      setState(() {
+        trno = value.first.trnonext;
+      });
+      print('ini trno $trno');
+    });
+    await updateTrnonext();
+  }
+
+  updateTrnonext() async {
+    await handler.updateTrnoNext(
+        Outlet(outletcd: widget.outletcd.toString(), trnonext: trno! + 1));
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -893,7 +910,7 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
-                  children: [],
+                  children: [Text('Batalkan transaksi?')],
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
@@ -904,17 +921,24 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
                 )
               ],
             )),
-        title: Text('Anda akan membatalkan transaksi?'),
+        title: Text('Cancel Transaksi'),
         actions: <Widget>[
+          TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+              child: Text('Batal')),
           TextButton(
               onPressed: () async {
                 await handler.activeZeroiafjrndttrno(
                     IafjrndtClass(active: '0', trno: widget.trno));
-                          await handler.activeZeroiafjrnhdtrno(
+                await handler.activeZeroiafjrnhdtrno(
                     IafjrnhdClass(active: '0', trno: widget.trno));
+                await checkTrno();
                 // Navigator.of(context).pushNamedAndRemoveUntil(
                 //     '/', (Route<dynamic> route) => false);
-                Navigator.of(context).pop();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
               },
               child: Text('OK!'))
         ],
@@ -922,9 +946,6 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
     });
   }
 }
-
-
-
 
 class DialogClassReopen extends StatefulWidget {
   final String trno;

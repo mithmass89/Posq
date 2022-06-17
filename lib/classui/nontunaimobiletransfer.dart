@@ -67,16 +67,17 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
     handler.initializeDB();
     formattedDate = formatter.format(now);
     paymentapi = PaymentGate();
-    print(widget.result);
-    List.generate(
-        widget.datatrans.length,
-        (index) => listitem.add(Midtransitem(
-            id: '${widget.datatrans[index].itemcd}'.replaceAll(' ', ''),
-            price: num.parse(
-                '${widget.datatrans[index].nettamt! / widget.datatrans[index].qty!}'),
-            quantity: int.parse('${widget.datatrans[index].qty}'),
-            name: '${widget.datatrans[index].trdesc}')));
-    print(listitem);
+
+    List.generate(widget.datatrans.length, (index) {
+      print('ini nett ${widget.datatrans[index].nettamt!}');
+      listitem.add(Midtransitem(
+          id: '${widget.datatrans[index].itemcd}'.replaceAll(' ', ''),
+          price: widget.datatrans[index].nettamt! /
+              widget.datatrans[index].qty!,
+          quantity: int.parse('${widget.datatrans[index].qty}'),
+          name: '${widget.datatrans[index].trdesc}'));
+    });
+    // print(listitem);
     checkSF();
   }
 
@@ -403,7 +404,6 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                 ),
                 ButtonClassPayment2(
                   name: 'Lainnya',
-                
                   height: MediaQuery.of(context).size.height * 0.1,
                   width: MediaQuery.of(context).size.width * 0.1,
                   onpressed: () async {

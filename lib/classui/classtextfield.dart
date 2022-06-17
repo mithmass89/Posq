@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, sized_box_for_whitespace, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, sized_box_for_whitespace, prefer_typing_uninitialized_variables, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';

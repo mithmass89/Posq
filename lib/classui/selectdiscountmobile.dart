@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/classcreatepromomobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
@@ -10,11 +11,16 @@ class SelectPromoMobile extends StatefulWidget {
   final String? trno;
   final String? pscd;
   final IafjrndtClass? databill;
+  final Function? updatedata;
+  final VoidCallback? refreshdata;
+
   const SelectPromoMobile(
       {Key? key,
       required this.trno,
       required this.pscd,
-      required this.databill})
+      required this.databill,
+      required this.updatedata,
+      required this.refreshdata})
       : super(key: key);
 
   @override
@@ -48,16 +54,16 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
         pymtmthd: 'Discount',
         ftotamt: data.amount != 0
             ? 0 - data.amount!
-            : 0 - widget.databill!.rvnamt! * data.pct! / 100,
+            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
         totalamt: data.amount != 0
             ? 0 - data.amount!
-            : 0 - widget.databill!.rvnamt! * data.pct! / 100,
+            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
         framtrmn: data.amount != 0
             ? 0 - data.amount!
-            : 0 - widget.databill!.rvnamt! * data.pct! / 100,
+            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
         amtrmn: data.amount != 0
             ? 0 - data.amount!
-            : 0 - widget.databill!.rvnamt! * data.pct! / 100,
+            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
         trdesc: 'Discount ${widget.trno}',
         trdesc2: 'Discount ${data.promodesc}',
         compcd: 'Discount',
@@ -66,8 +72,9 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');
+
     List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
-    print(iafjrnhd);
+
     return await handler.insertIafjrnhd(listiafjrnhd);
   }
 
@@ -122,9 +129,36 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                           child: GestureDetector(
                             onTap: () async {
                               await insertIafjrnhdPromo(snapshot.data![index])
-                                  .whenComplete(() {
-                                Navigator.of(context)
-                                    .pop(snapshot.data![index]);
+                                  .then((_) async {
+                                await handler
+                                    .checktotalAmountNett(
+                                        widget.trno.toString())
+                                    .then((value) async {
+                                  setState(() {
+                                    // widget.sum = value.first.nettamt!;
+                                  });
+                                  Navigator.of(context)
+                                      .pop(snapshot.data![index]);
+                                  print('ini ${value}');
+                                });
+
+                                // await widget.refreshdata;
+                                // await widget.updatedata;
+                                // ClassRetailMainMobile.of(context)!.string =
+                                //     value.first;
+                
+                              });
+                              await handler
+                                  .checktotalAmountNett(widget.trno.toString())
+                                  .then((value) async {
+                                setState(() {
+                                  // widget.sum = value.first.nettamt!;
+                                });
+                                print('ini ${value}');
+                                await widget.refreshdata;
+                                await widget.updatedata;
+                                ClassRetailMainMobile.of(context)!.string =
+                                    value.first;
                               });
                             },
                             child: Card(
