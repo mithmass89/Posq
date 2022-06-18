@@ -58,7 +58,6 @@ class _ClassproductmobileState extends State<Classproductmobile> {
           var x = snapshot.data ?? [];
           if (x.isNotEmpty) {
             return Column(
-              
               children: [
                 TextFieldMobile(
                   hint: 'Example Menu Description',
@@ -69,7 +68,8 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                       query = value;
                       print(value);
                     });
-                  }, typekeyboard: TextInputType.text,
+                  },
+                  typekeyboard: TextInputType.text,
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.75,
@@ -112,11 +112,16 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                 });
                               },
                               leading: Container(
-                                color: Colors.blue,
-                                height: 200,
-                                width: 80,
+                                height: MediaQuery.of(context).size.height*0.1,
+                                width:  MediaQuery.of(context).size.width*0.2,
                                 child: Image.file(
                                   _image,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                    return Center(
+                                        child: const Text('No Image'));
+                                  },
                                   fit: BoxFit.cover,
                                 ),
                               ),

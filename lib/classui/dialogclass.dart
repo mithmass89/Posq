@@ -825,6 +825,9 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
+            shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         content: Form(
             key: _formKey,
             child: Column(
@@ -843,8 +846,16 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
                 )
               ],
             )),
-        title: Text('Anda akan kembali ke modul utama?'),
+        title: Text('kembali ke modul utama?'),
         actions: <Widget>[
+               TextButton(
+              onPressed: () async {
+                await handler.activeZeroiafjrndttrno(
+                    IafjrndtClass(active: '1', trno: widget.trno));
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
+              },
+              child: Text('Batal')),
           TextButton(
               onPressed: () async {
                 await handler.activeZeroiafjrndttrno(
@@ -997,7 +1008,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         content: Container(
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.65,
           width: MediaQuery.of(context).size.width * 0.7,
           child: FutureBuilder(
               future: handler.retrieveDetailIafjrndt(widget.trno),
@@ -1040,7 +1051,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                             }),
                       ),
                       Container(
-                          height: MediaQuery.of(context).size.height * 0.18,
+                          height: MediaQuery.of(context).size.height * 0.25,
                           child: FutureBuilder(
                               future: handler.summarybill(widget.trno),
                               builder: (context,
@@ -1065,6 +1076,14 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                                           title: Text('Total'),
                                           trailing:
                                               Text(x.first.rvnamt.toString()),
+                                        ),
+                                           ListTile(
+                                          visualDensity: VisualDensity(
+                                              vertical: -4), // to compact
+                                          dense: true,
+                                          title: Text('Discount'),
+                                          trailing:
+                                              Text(x.first.discamt.toString()),
                                         ),
                                         ListTile(
                                           visualDensity: VisualDensity(

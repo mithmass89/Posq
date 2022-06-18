@@ -9,6 +9,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/image.dart';
 import 'package:posq/model.dart';
+import 'package:posq/setting/classtabcreateproductmobile.dart';
 
 enum ImageSourceType { gallery, camera }
 
@@ -26,15 +27,17 @@ class Createproduct extends StatefulWidget {
       context.findAncestorStateOfType<_CreateproductState>();
 }
 
-class _CreateproductState extends State<Createproduct> {
+class _CreateproductState extends State<Createproduct>
+    with SingleTickerProviderStateMixin {
+  TabController? controller;
   final productcd = TextEditingController();
   final productname = TextEditingController();
   final amountcost = TextEditingController();
   final amountsales = TextEditingController();
   final kategory = TextEditingController(text: 'Pilih Kategori');
   final stock = TextEditingController();
-  final pcttax = TextEditingController(text: '0');
-  final pctservice = TextEditingController(text: '0');
+  final pcttax = TextEditingController();
+  final pctservice = TextEditingController();
   final description = TextEditingController();
   bool forresto = false;
   bool forretail = false;
@@ -53,15 +56,18 @@ class _CreateproductState extends State<Createproduct> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
+    controller = TabController(vsync: this, length: 2);
   }
 
-
-
   Future<int> addItem() async {
-        setState(() {
-      pctnett =
-          (double.parse(pcttax.text) + double.parse(pctservice.text)) / 100;
+    setState(() {
+      pctnett = pcttax == '' || pctservice == ''
+          ? (double.parse(pcttax == '' ? '0.0' : pcttax.text) +
+                  double.parse(pctservice == '' ? '0.0' : pctservice.text)) /
+              100
+          : 0;
     });
+    print(pcttax.text);
     Item ctg = Item(
       outletcd: widget.pscd.toString(),
       itemcd: productcd.text,
@@ -70,18 +76,18 @@ class _CreateproductState extends State<Createproduct> {
       revenuecoa: 'REVENUE',
       taxcoa: 'TAX',
       svchgcoa: 'SERVICE',
-      taxpct: num.parse(pcttax.text),
-      svchgpct: num.parse(pctservice.text),
-      costamt: num.parse(amountcost.text),
-      slsamt: num.parse(amountsales.text),
+      taxpct: pcttax.text.isEmpty ? 0 : num.parse(pcttax.text),
+      svchgpct: pctservice.text.isEmpty  ? 0 : num.parse(pctservice.text),
+      costamt: amountcost.text.isEmpty  ? 0 : num.parse(amountcost.text),
+      slsamt: amountsales.text.isEmpty  ? 0 : num.parse(amountsales.text),
       slsnett: pctnett != 0
-          ? num.parse(amountsales.text) * pctnett!+ num.parse(amountsales.text)
-          : num.parse(amountsales.text),
-      ctg: selectedctg,
-      slsfl: salesflag!,
-      stock: num.parse(stock.text),
-      pathimage: pathimage,
-      description: description.text,
+          ? num.parse(amountsales.text) * pctnett! + num.parse(amountsales.text)
+          :amountsales.text.isEmpty  ? 0 :  num.parse(amountsales.text),
+      ctg: selectedctg ?? '',
+      slsfl: 1,
+      stock: num.parse(stock.text.isEmpty  ? '0' : stock.text),
+      pathimage: pathimage ?? 'Empty',
+      description: description.text.isEmpty  ? 'Empty' : description.text,
     );
     List<Item> listctg = [ctg];
     return await handler.insertItem(listctg);
@@ -90,201 +96,85 @@ class _CreateproductState extends State<Createproduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //  resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Create Product',
+        title: const Text('Buat Produk baru',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
+      body: Stack(
+        children: [
+          Column(
             children: [
-              SizedBox(
-                height: 20,
-              ),
-              // Text(pathimage == null ? 'Upload Image' : pathimage.toString()),
-              SizedBox(
-                height: 20,
+              Container(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.height * 0.06,
+                child: TabBar(
+                    unselectedLabelColor: Colors.black,
+                    labelColor: Colors.black,
+                    controller: controller,
+                    tabs: [
+                      Text('Informasi produk'),
+                      Text('Kelola Stock'),
+                    ]),
               ),
               Container(
-                  height: 200,
-                  width: 200,
-                  child: ImageFromGalleryEx(ImageSourceType.gallery)),
-              SizedBox(
-                height: 20,
-              ),
-              Divider(
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
-              ),
-              Text('Kategori'),
-              TextFieldMobileButton(
-                  hint: 'Pilih Kategori',
-                  controller: kategory,
-                  typekeyboard: TextInputType.text,
-                  onChanged: (value) {},
-                  ontap: () async {
-                    Ctg result = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DialogTabClass();
-                        });
-                    setState(() {
-                      selectedctg = result.ctgcd;
-                      kategory.text = result.ctgdesc;
-                    });
-                  }),
-              // TextFieldMobile(
-              //   enable: false,
-              //   label: 'Product Code',
-              //   controller: productcd,
-              //   typekeyboard: TextInputType.text,
-              //   onChanged: (value) {},
-              // ),
-              TextFieldMobile2(
-                label: 'Product Name',
-                controller: productname,
-                typekeyboard: TextInputType.text,
-                onChanged: (value) {
-                  // print(value);
-                  itemdesc = value;
-                  setState(() {
-                    handler.queryCheckItem().then((value) {
-                      maxid = value.toString();
-                      productcd.text =
-                          '$selectedctg${itemdesc!.substring(0, 2)}$maxid';
-                    });
-                  });
-                },
-              ),
-              TextFieldMobile2(
-                maxline: 3,
-                hint:
-                    'Masakan Jawa Dengan Bumbu Rempah yg sangat kuat yg di sukai emak emak',
-                label: 'Description',
-                controller: description,
-                typekeyboard: TextInputType.text,
-                onChanged: (value) {
-                  // print(value);
-                  // itemdesc = value;
-                },
-              ),
-              TextFieldMobile2(
-                label: 'Harga Pokok',
-                controller: amountcost,
-                typekeyboard: TextInputType.number,
-                onChanged: (value) {},
-              ),
-              TextFieldMobile2(
-                label: 'Harga Jual',
-                controller: amountsales,
-                typekeyboard: TextInputType.number,
-                onChanged: (value) {},
-              ),
-              Divider(
-                indent: 20,
-                endIndent: 20,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.07,
-                  ),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: Text('Sales Flag')),
-                  Checkbox(
-                      value: forresto,
-                      onChanged: (values) {
-                        setState(() {
-                          forresto = values!;
-                          if (values == true) {
-                            salesflag = 1;
-                          }
-                        });
-                      }),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.04,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    child: TextFieldMobile2(
-                        maxline: 1,
-                        label: 'Tax',
-                        controller: pcttax,
-                        onChanged: (value) {},
-                        typekeyboard: TextInputType.number),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: TextFieldMobile2(
-                        maxline: 1,
-                        label: 'Stock',
-                        controller: stock,
-                        onChanged: (value) {},
-                        typekeyboard: TextInputType.number),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: TextFieldMobile2(
-                        maxline: 1,
-                        label: 'Service',
-                        controller: pctservice,
-                        onChanged: (value) {},
-                        typekeyboard: TextInputType.number),
-                  ),
-                ],
-              ),
-              Divider(
-                indent: 20,
-                endIndent: 20,
-              ),
-              ButtonNoIcon(
-                  name: 'Save',
-                  color: Colors.blue,
-                  textcolor: Colors.white,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  width: MediaQuery.of(context).size.width * 0.95,
-                  onpressed: () async {
-                  
-                    setState(() {
-                      pctnett = (double.parse(pcttax.text) +
-                              double.parse(pctservice.text)) /
-                          100;
-                    });
-                    print(pctnett);
-                    handler = DatabaseHandler();
-                    handler.initializeDB().whenComplete(() async {
-                      await addItem().whenComplete(() async {
-                        print(handler.retrieveItems(query!).then((value) {
-                          print('${value.map((e) => e.itemdesc)}');
-                        }));
-                      });
-                      setState(() {});
-                    }).then((_) {
-                      Navigator.of(context).pop(context);
-                    });
-                  }),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.95,
+                height: MediaQuery.of(context).size.height * 0.70,
+                child: TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: controller,
+                  children: [
+                    ClassTabCreateProducr(
+                      productcd: productcd,
+                      productname: productname,
+                      amountcost: amountcost,
+                      amountsales: amountsales,
+                      kategory: kategory,
+                      stock: stock,
+                      pcttax: pcttax,
+                      pctservice: pctservice,
+                      description: description,
+                    ),
+                    Container()
+                  ],
+                ),
               ),
             ],
           ),
-        ),
+          Positioned(
+            left: MediaQuery.of(context).size.width * 0.03,
+            top: MediaQuery.of(context).size.height * 0.80,
+            child: ButtonNoIcon(
+                name: 'Save',
+                color: Colors.blue,
+                textcolor: Colors.white,
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.94,
+                onpressed: () async {
+                  setState(() {
+                    pctnett = pcttax == '' || pctservice == ''
+                        ? (double.parse(pcttax == '' ? '0.0' : pcttax.text) +
+                                double.parse(pctservice == ''
+                                    ? '0.0'
+                                    : pctservice.text)) /
+                            100
+                        : 0;
+                  });
+                  print(pctnett);
+                  handler = DatabaseHandler();
+                  handler.initializeDB().whenComplete(() async {
+                    await addItem().whenComplete(() async {
+                      print(handler.retrieveItems(query!).then((value) {
+                        print('${value.map((e) => e.itemdesc)}');
+                      }));
+                    });
+                    setState(() {});
+                  }).then((_) {
+                    Navigator.of(context).pop(context);
+                  });
+                }),
+          ),
+        ],
       ),
     );
   }

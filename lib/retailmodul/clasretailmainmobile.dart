@@ -203,6 +203,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     controller = TabController(vsync: this, length: 2);
     //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
+    _scrollisanimated = false;
+    print(_scrollisanimated);
     ToastContext().init(context);
     handler = DatabaseHandler();
     handler.initializeDB();
@@ -409,13 +411,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                 SlidingUpPanel(
                     onPanelSlide: (value) {
                       print(value);
-
                       if (value == 0.0) {
                         setState(() {
                           _scrollisanimated = false;
                         });
                         // print(_scrollisanimated);
-                      } else if(value>0.5) {
+                      } else if (value < 0.5) {
                         setState(() {
                           _scrollisanimated = true;
                         });
@@ -588,33 +589,97 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       ],
                     ),
                     panelBuilder: (_pc) {
-                      if (_scrollisanimated = true) {
-                        return SlideUpPanel(
-                          sum: sum,
-                          animated: _scrollisanimated,
-                          outletinfo: Outlet(
-                            alamat: widget.outletinfo.alamat,
-                            kodepos: widget.outletinfo.kodepos,
-                            outletcd: widget.outletinfo.outletcd,
-                            outletname: widget.outletinfo.outletname,
-                            telp: widget.outletinfo.telp,
-                            trnonext: widget.outletinfo.trnonext,
-                            trnopynext: widget.outletinfo.trnopynext,
-                          ),
-                          updatedata: getDataSlide,
-                          listdata: listdata!,
-                          qty: item,
-                          amount: sum,
-                          trno: widget.trno.toString(),
-                          trnoinfo: iafjrndt,
-                          controllers: _pc,
-                          callback: (IafjrndtClass val) {
-                            getDataSlide();
-                          },
-                          refreshdata: () {
-                            getDataSlide();
-                          },
-                        );
+                      switch (_scrollisanimated) {
+                        case true:
+                          return SlideUpPanel(
+                            sum: sum,
+                            animated: _scrollisanimated,
+                            outletinfo: Outlet(
+                              alamat: widget.outletinfo.alamat,
+                              kodepos: widget.outletinfo.kodepos,
+                              outletcd: widget.outletinfo.outletcd,
+                              outletname: widget.outletinfo.outletname,
+                              telp: widget.outletinfo.telp,
+                              trnonext: widget.outletinfo.trnonext,
+                              trnopynext: widget.outletinfo.trnopynext,
+                            ),
+                            updatedata: getDataSlide,
+                            listdata: listdata!,
+                            qty: item,
+                            amount: sum,
+                            trno: widget.trno.toString(),
+                            trnoinfo: iafjrndt,
+                            controllers: _pc,
+                            callback: (IafjrndtClass val) {
+                              getDataSlide();
+                            },
+                            refreshdata: () {
+                              getDataSlide();
+                            },
+                          );
+                        case false:
+                          return Container(
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                    onTap: () {},
+                                    child: Icon(
+                                      Icons.menu_sharp,
+                                      size: 25,
+                                    )),
+                                // Row(
+                                //   children: [
+                                //     Expanded(
+                                //       child: Divider(),
+                                //     ),
+                                //   ],
+                                // ),
+
+                                Container(
+                                  decoration: BoxDecoration(
+                                      // color: Colors.blue,
+                                      ),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.04,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Expanded(
+                                          flex: 4,
+                                          child: Text(
+                                            'BARANG : ${item} ',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17),
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.people_alt,
+                                            ),
+                                            iconSize: 25,
+                                            color: Colors.black,
+                                            splashColor: Colors.purple,
+                                            onPressed: () async {
+                                              await showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return DialogCustomerList();
+                                                  });
+                                            },
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
                       }
                       return Container();
                     }),

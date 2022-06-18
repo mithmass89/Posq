@@ -8,8 +8,10 @@ import 'package:posq/menu.dart';
 class ImageFromGalleryEx extends StatefulWidget {
   final type;
   final savingimage;
+  final double? height;
+  final double? width;
   const ImageFromGalleryEx(this.type,
-      {Key? key, this.callback, this.savingimage})
+      {Key? key, this.callback, this.savingimage, this.height, this.width})
       : super(key: key);
   final StringCallback? callback;
   @override
@@ -44,42 +46,48 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          GestureDetector(
-            onTap: () async {
-              var source = type == ImageSourceType.camera
-                  ? ImageSource.camera
-                  : ImageSource.gallery;
-              XFile image = await imagePicker.pickImage(
-                  source: source,
-                  imageQuality: 50,
-                  preferredCameraDevice: CameraDevice.front);
-              setState(() {
-                _image = File(image.path);
-
-                Createproduct.of(context)!.string = image.path.toString();
-              });
-            },
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(color: Colors.red[200]),
-              child: _image != null
-                  ? Image.file(
-                      _image,
-                      width: 200.0,
-                      height: 200.0,
-                      fit: BoxFit.fill,
-                    )
-                  : Container(
-                      decoration: BoxDecoration(color: Colors.grey[200]),
-                      width: 200,
-                      height: 200,
-                      child: Icon(
-                        Icons.camera_alt,
-                        color: Colors.grey[800],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                width: widget.width,
+                height: widget.height,
+                // decoration: BoxDecoration(color: Colors.red[200]),
+                child: _image != null
+                    ? Image.file(
+                        _image,
+                        width: widget.width,
+                        height: widget.height,
+                        fit: BoxFit.fill,
+                      )
+                    : Container(
+                        // decoration: BoxDecoration(color: Colors.grey[200]),
+                        width: widget.width,
+                        height: widget.height,
+                        child: Icon(
+                          Icons.picture_in_picture,
+                          // color: Colors.grey[800],
+                        ),
                       ),
-                    ),
-            ),
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    var source = type == ImageSourceType.camera
+                        ? ImageSource.camera
+                        : ImageSource.gallery;
+                    XFile image = await imagePicker.pickImage(
+                        source: source,
+                        imageQuality: 50,
+                        preferredCameraDevice: CameraDevice.front);
+                    setState(() {
+                      _image = File(image.path);
+
+                      Createproduct.of(context)!.string =
+                          image.path.toString();
+                    });
+                  },
+                  child: Text('Pilih Foto'))
+            ],
           )
         ],
       ),

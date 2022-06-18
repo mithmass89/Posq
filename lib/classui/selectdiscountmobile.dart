@@ -87,15 +87,22 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
       ),
       body: Column(
         children: [
-          TextFieldMobile2(
-              label: 'Search',
-              controller: search,
-              onChanged: (value) {
-                setState(() {
-                  query = value;
-                });
-              },
-              typekeyboard: TextInputType.text),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+              width: MediaQuery.of(context).size.width * 1,
+              child: TextFieldMobile2(
+                  label: 'Search',
+                  controller: search,
+                  onChanged: (value) {
+                    setState(() {
+                      query = value;
+                    });
+                  },
+                  typekeyboard: TextInputType.text),
+            ),
+          ),
           FutureBuilder(
               future: handler.retrievePromo(query),
               builder:
@@ -105,70 +112,49 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                   return Container(
                     // color: Colors.grey[200],
                     height: MediaQuery.of(context).size.height * 0.70,
-                    width: MediaQuery.of(context).size.width * 1,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     child: ListView.builder(
+                      shrinkWrap: true,
                       itemCount: x.length,
                       itemBuilder: (context, index) {
-                        return Dismissible(
-                          direction: DismissDirection.endToStart,
-                          background: Container(
-                            color: Colors.red,
-                            alignment: Alignment.centerRight,
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Icon(Icons.delete_forever),
-                          ),
-                          key: ValueKey<int>(snapshot.data![index].id!),
-                          onDismissed: (DismissDirection direction) async {
-                            await this
-                                .handler
-                                .deletePromo(snapshot.data![index].id!);
-                            setState(() {
-                              snapshot.data!.remove(snapshot.data![index]);
-                            });
-                          },
-                          child: GestureDetector(
-                            onTap: () async {
-                              await insertIafjrnhdPromo(snapshot.data![index])
-                                  .then((_) async {
+                        return Column(
+                          children: [
+                            ListTile(
+                              dense: true,
+                              onTap: () async {
+                                await insertIafjrnhdPromo(snapshot.data![index])
+                                    .then((_) async {
+                                  await handler
+                                      .checktotalAmountNett(widget.trno.toString())
+                                      .then((value) async {
+                                    setState(() {
+                                      // widget.sum = value.first.nettamt!;
+                                    });
+                                    Navigator.of(context)
+                                        .pop(snapshot.data![index]);
+                                    print('ini ${value}');
+                                  });
+                                });
                                 await handler
-                                    .checktotalAmountNett(
-                                        widget.trno.toString())
+                                    .checktotalAmountNett(widget.trno.toString())
                                     .then((value) async {
                                   setState(() {
                                     // widget.sum = value.first.nettamt!;
                                   });
-                                  Navigator.of(context)
-                                      .pop(snapshot.data![index]);
                                   print('ini ${value}');
+                                  await widget.refreshdata;
+                                  await widget.updatedata;
+                                  ClassRetailMainMobile.of(context)!.string =
+                                      value.first;
                                 });
-
-                                // await widget.refreshdata;
-                                // await widget.updatedata;
-                                // ClassRetailMainMobile.of(context)!.string =
-                                //     value.first;
-                
-                              });
-                              await handler
-                                  .checktotalAmountNett(widget.trno.toString())
-                                  .then((value) async {
-                                setState(() {
-                                  // widget.sum = value.first.nettamt!;
-                                });
-                                print('ini ${value}');
-                                await widget.refreshdata;
-                                await widget.updatedata;
-                                ClassRetailMainMobile.of(context)!.string =
-                                    value.first;
-                              });
-                            },
-                            child: Card(
-                                child: ListTile(
-                              contentPadding: EdgeInsets.all(8.0),
+                              },
+                              // contentPadding: EdgeInsets.all(8.0),
                               title: Text(snapshot.data![index].promodesc!),
-                              subtitle:
-                                  Text(snapshot.data![index].amount.toString()),
-                            )),
-                          ),
+                              // subtitle:
+                              //     Text(snapshot.data![index].amount.toString()),
+                            ),
+                            Divider()
+                          ],
                         );
                       },
                     ),
@@ -184,7 +170,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
             color: Colors.blue,
             height: MediaQuery.of(context).size.height * 0.06,
             width: MediaQuery.of(context).size.width * 0.90,
-            name: 'Tambah Diskon',
+            name: 'Tambah Promo',
             onpressed: () {
               Navigator.push(
                       context,
