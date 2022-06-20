@@ -227,6 +227,7 @@ class IafjrndtClass {
   final String? trdesc;
   final num? taxpct;
   final num? servicepct;
+  final String? statustrans;
   // final String? guestname;
   // final String? email;
   // final String? phone;
@@ -273,6 +274,7 @@ class IafjrndtClass {
     this.trdesc,
     this.taxpct,
     this.servicepct,
+    this.statustrans,
     // this.guestname,
     // this.email,
     // this.phone,
@@ -320,7 +322,8 @@ class IafjrndtClass {
         confirmed = res["confirmed"],
         trdesc = res["trdesc"],
         taxpct = res["taxpct"],
-        servicepct = res["servicepct"]
+        servicepct = res["servicepct"],
+        statustrans = res["statustrans"]
   // guestname = res['guestname'],
   // email = res['email'],
   // phone = res['phone']
@@ -369,7 +372,8 @@ class IafjrndtClass {
       'confirmed': confirmed,
       'trdesc': trdesc,
       'taxpct': taxpct,
-      'servicepct': servicepct
+      'servicepct': servicepct,
+      'statustrans': statustrans,
       // 'guestname': guestname,
       // 'email': email,
       // 'phone': phone,
@@ -413,6 +417,7 @@ class IafjrnhdClass {
   final String? billerkey;
   final String? billercode;
   final String? qrcode;
+  final String? statustrans;
 
   IafjrnhdClass({
     this.id,
@@ -450,6 +455,7 @@ class IafjrnhdClass {
     this.billerkey,
     this.billercode,
     this.qrcode,
+    this.statustrans,
   });
 
   IafjrnhdClass.fromMap(
@@ -488,7 +494,8 @@ class IafjrnhdClass {
         virtualaccount = res['virtualaccount'],
         billerkey = res['billerkey'],
         billercode = res['billercode'],
-        qrcode = res['qrcode'];
+        qrcode = res['qrcode'],
+        statustrans = res['statustrans'];
 
   Map<String, Object?> toMap() {
     return {
@@ -671,6 +678,47 @@ class Costumers {
       'pic': pic,
       'email': email,
       'active': active
+    };
+  }
+}
+
+class CostumersSavedManual {
+  final int? id;
+  final String outletcd;
+  final String? trno;
+  final String? nama;
+  final String? telp;
+  final String? email;
+  final String? alamat;
+
+  CostumersSavedManual({
+    this.id,
+    required this.outletcd,
+    this.trno,
+    this.nama,
+    this.telp,
+    this.email,
+    this.alamat,
+  });
+
+  CostumersSavedManual.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        outletcd = res["outletcd"],
+        trno = res["trno"],
+        nama = res["nama"],
+        telp = res["telp"],
+        email = res["email"],
+        alamat = res["alamat"];
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'outletcd': outletcd,
+      'trno': trno,
+      'nama': nama,
+      'telp': telp,
+      'email': email,
+      'alamat': alamat,
     };
   }
 }

@@ -31,10 +31,10 @@ class DatabaseHandler {
         );
 
         await database.execute(
-          "CREATE TABLE iafjrndt(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL,pscd varchar(100) NOT NULL, trno varchar(100) NOT NULL,split varchar(100) NOT NULL,trnobill varchar(100) NOT NULL,itemcd varchar(100) NOT NULL,trno1 varchar(100) NOT NULL,itemseq INTEGER NOT NULL,cono varchar(100) NOT NULL,waitercd varchar(100) NOT NULL,discpct decimal NOT NULL,discamt decimal NOT NULL,qty INT NOT NULL,ratecurcd varchar(100) NOT NULL,ratebs1 decimal NOT NULL,ratebs2 decimal NOT NULL,rateamtcost decimal NOT NULL,rateamt decimal NOT NULL,rateamtservice decimal NOT NULL,rateamttax decimal NOT NULL,rateamttotal decimal NOT NULL,rvnamt decimal NOT NULL,taxamt decimal NOT NULL,serviceamt decimal NOT NULL,nettamt decimal NOT NULL,rebateamt decimal NOT NULL,rvncoa varchar(100) NOT NULL,taxcoa varchar(100) NOT NULL,servicecoa varchar(100) NOT NULL,costcoa varchar(100) NOT NULL,active varchar(100) NOT NULL,usercrt varchar(100) NOT NULL,userupd varchar(100) NOT NULL,userdel varchar(100) NOT NULL,prnkitchen varchar(100) NOT NULL,prnkitchentm varchar(100) NOT NULL,confirmed varchar(100) NOT NULL,trdesc varchar(100) NOT NULL,taxpct decimal NOT NULL,servicepct decimal NOT NULL)",
+          "CREATE TABLE iafjrndt(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL,pscd varchar(100) NOT NULL, trno varchar(100) NOT NULL,split varchar(100) NOT NULL,trnobill varchar(100) NOT NULL,itemcd varchar(100) NOT NULL,trno1 varchar(100) NOT NULL,itemseq INTEGER NOT NULL,cono varchar(100) NOT NULL,waitercd varchar(100) NOT NULL,discpct decimal NOT NULL,discamt decimal NOT NULL,qty INT NOT NULL,ratecurcd varchar(100) NOT NULL,ratebs1 decimal NOT NULL,ratebs2 decimal NOT NULL,rateamtcost decimal NOT NULL,rateamt decimal NOT NULL,rateamtservice decimal NOT NULL,rateamttax decimal NOT NULL,rateamttotal decimal NOT NULL,rvnamt decimal NOT NULL,taxamt decimal NOT NULL,serviceamt decimal NOT NULL,nettamt decimal NOT NULL,rebateamt decimal NOT NULL,rvncoa varchar(100) NOT NULL,taxcoa varchar(100) NOT NULL,servicecoa varchar(100) NOT NULL,costcoa varchar(100) NOT NULL,active varchar(100) NOT NULL,usercrt varchar(100) NOT NULL,userupd varchar(100) NOT NULL,userdel varchar(100) NOT NULL,prnkitchen varchar(100) NOT NULL,prnkitchentm varchar(100) NOT NULL,confirmed varchar(100) NOT NULL,trdesc varchar(100) NOT NULL,taxpct decimal NOT NULL,servicepct decimal NOT NULL,statustrans varchar(100))",
         );
         await database.execute(
-          "CREATE TABLE iafjrnhd(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL, trno varchar(100) NOT NULL, split varchar(100) NOT NULL, pscd varchar(100) NOT NULL, docno varchar(100), trtm varchar(100) NOT NULL, disccd varchar(100), pax varchar(100) NOT NULL, trdesc varchar(100), trdesc2 varchar(100), pymtmthd varchar(100) NOT NULL, currcd varchar(100) NOT NULL, currbs1 varchar(100), currbs2 varchar(100),ftotamt decimal NOT NULL,totalamt decimal NOT NULL,framtrmn decimal NOT NULL,amtrmn decimal NOT NULL,cardcd varchar(100),cardno varchar(100),cardnm varchar(100),cardexp varchar(100),dpno varchar(100),compcd varchar(100) NOT NULL,compdesc varchar(100),active varchar(100) NOT NULL,usercrt varchar(100) NOT NULL,slstp varchar(100) NOT NULL,guestname varchar(100),guestphone varchar(100),virtualaccount varchar(100),billerkey varchar(100),billercode varchar(100),qrcode varchar(200))",
+          "CREATE TABLE iafjrnhd(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL, trno varchar(100) NOT NULL, split varchar(100) NOT NULL, pscd varchar(100) NOT NULL, docno varchar(100), trtm varchar(100) NOT NULL, disccd varchar(100), pax varchar(100) NOT NULL, trdesc varchar(100), trdesc2 varchar(100), pymtmthd varchar(100) NOT NULL, currcd varchar(100) NOT NULL, currbs1 varchar(100), currbs2 varchar(100),ftotamt decimal NOT NULL,totalamt decimal NOT NULL,framtrmn decimal NOT NULL,amtrmn decimal NOT NULL,cardcd varchar(100),cardno varchar(100),cardnm varchar(100),cardexp varchar(100),dpno varchar(100),compcd varchar(100) NOT NULL,compdesc varchar(100),active varchar(100) NOT NULL,usercrt varchar(100) NOT NULL,slstp varchar(100) NOT NULL,guestname varchar(100),guestphone varchar(100),virtualaccount varchar(100),billerkey varchar(100),billercode varchar(100),qrcode varchar(200),statustrans varchar(200))",
         );
         await database.execute(
           "CREATE TABLE arscomp(id INTEGER PRIMARY KEY AUTOINCREMENT,compcd varchar(100) NOT NULL, compdesc varchar(100) NOT NULL, category varchar(100) NOT NULL, coaar varchar(100) NOT NULL, coapayment varchar(100), address varchar(100),telp varchar(100),pic varchar(100),email varchar(100), active INTEGER NOT NULL)",
@@ -44,6 +44,9 @@ class DatabaseHandler {
         );
         await database.execute(
           "CREATE TABLE promo(id INTEGER PRIMARY KEY AUTOINCREMENT,promocd varchar(100) NOT NULL, promodesc varchar(100) NOT NULL,type varchar(100) NOT NULL,pct decimal NOT NULL,amount decimal NOT NULL,mindisc decimal NOT NULL,maxdisc  decimal NOT NULL )",
+        );
+        await database.execute(
+          "CREATE TABLE customertemp(id INTEGER PRIMARY KEY AUTOINCREMENT,outletcd varchar(100) NOT NULL,trno varchar(100) NOT NULL,nama varchar(200),telp varchar(200),email varchar(200),alamat varchar(200))",
         );
       },
       version: 1,
@@ -85,6 +88,15 @@ class DatabaseHandler {
     for (var user in users) {
       result = await db.insert('arscomp', user.toMap());
       print(user.compdesc);
+    }
+    return result;
+  }
+
+  Future<int> insertCustomersTrno(List<CostumersSavedManual> users) async {
+    int result = 0;
+    final Database db = await initializeDB();
+    for (var user in users) {
+      result = await db.insert('customertemp', user.toMap());
     }
     return result;
   }
@@ -162,6 +174,13 @@ class DatabaseHandler {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('Outlet');
     return queryResult.map((e) => Outlet.fromMap(e)).toList();
+  }
+
+  Future<List<CostumersSavedManual>> retrieveGuestinfo(String trno) async {
+    final Database db = await initializeDB();
+    final List<Map<String, Object?>> queryResult =
+        await db.rawQuery("select * from customertemp where trno='${trno}' ");
+    return queryResult.map((e) => CostumersSavedManual.fromMap(e)).toList();
   }
 
   Future<List<Promo>> retrievePromo(String query) async {
@@ -303,7 +322,7 @@ select sum(x.nettamt) as nettamt from
         ''');
     // print(queryResult);
 
-     return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
   }
 
   Future<List<RegisterItem>> retrieveRegisterItem(String itemcd) async {
@@ -318,10 +337,22 @@ select sum(x.nettamt) as nettamt from
   Future<List<IafjrnhdClass>> retriveListHeader(String trdt) async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        "select iafjrndt.trno as trno,iafjrnhd.pymtmthd as pymtmthd,iafjrnhd.ftotamt as ftotamt from iafjrndt left join iafjrnhd on iafjrnhd.trno=iafjrndt.trno  where iafjrndt.trdt='$trdt' and iafjrndt.active='1'  group by iafjrndt.trno order by pymtmthd,iafjrnhd.trno ");
+        '''select iafjrndt.trno as trno,iafjrnhd.pymtmthd as pymtmthd,iafjrnhd.ftotamt as ftotamt from iafjrndt 
+        left join iafjrnhd on iafjrnhd.trno=iafjrndt.trno  where iafjrndt.trdt='$trdt' and iafjrndt.active='1'  and pymtmthd<>'Discount'
+        group by iafjrndt.trno order by pymtmthd,iafjrnhd.trno ''');
     print(queryResult);
 
     return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+  }
+
+  Future<List<IafjrndtClass>> retriveSavedTransaction() async {
+    final Database db = await initializeDB();
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        ''' select x.trdt,x.trno,z.trno as trno1,sum(x.nettamt) as nettamt from iafjrndt x 
+        left join iafjrnhd z on x.trno=z.trno where x.active='1' and (z.trno is null  or pymtmthd='Discount')  group by x.trno''');
+    print(queryResult);
+
+    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
   }
 
   Future<List<IafjrnhdClass>> retriveListDetailPayment(String trno) async {

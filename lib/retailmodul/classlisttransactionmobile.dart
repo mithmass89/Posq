@@ -8,9 +8,13 @@ import 'package:posq/retailmodul/classdetailtrnomobile.dart';
 
 class Listtransaction extends StatefulWidget {
   final String? pscd;
-    final Outlet outletinfo;
+  final Outlet outletinfo;
 
-  const Listtransaction({Key? key, this.pscd, required this.outletinfo}) : super(key: key);
+  const Listtransaction({
+    Key? key,
+    this.pscd,
+    required this.outletinfo,
+  }) : super(key: key);
 
   @override
   State<Listtransaction> createState() => _ListtransactionState();
@@ -44,9 +48,7 @@ class _ListtransactionState extends State<Listtransaction> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transaksi hari ini'),
-        actions: [
-        
-        ],
+        actions: [],
       ),
       body: FutureBuilder(
           future: this.handler.retriveListHeader(formattedDate),
@@ -69,7 +71,9 @@ class _ListtransactionState extends State<Listtransaction> {
                                 totalamt: x[index].ftotamt,
                                 trdt: x[index].trdt,
                               ),
-                              trno: x[index].trno, outletinfo: widget.outletinfo, pscd: widget.pscd.toString(),
+                              trno: x[index].trno,
+                              outletinfo: widget.outletinfo,
+                              pscd: widget.pscd.toString(),
                             ),
                           );
                         }),

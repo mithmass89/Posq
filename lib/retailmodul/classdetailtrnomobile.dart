@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/midtrans.dart';
 import 'package:posq/model.dart';
+import 'package:posq/retailmodul/classdetailtransactionmobile.dart';
 
 PaymentGate? paymentapi;
 
@@ -12,13 +13,14 @@ class DetailTrno extends StatefulWidget {
   final String pscd;
   final String? trno;
   final IafjrnhdClass? datatransaksi;
-  const DetailTrno(
-      {Key? key,
-      this.trno,
-      this.datatransaksi,
-      required this.outletinfo,
-      required this.pscd})
-      : super(key: key);
+
+  const DetailTrno({
+    Key? key,
+    this.trno,
+    this.datatransaksi,
+    required this.outletinfo,
+    required this.pscd,
+  }) : super(key: key);
 
   @override
   State<DetailTrno> createState() => _DetailTrnoState();
@@ -37,21 +39,20 @@ class _DetailTrnoState extends State<DetailTrno> {
   Stream<String> _statustransaksi() async* {
     if (widget.datatransaksi!.pymtmthd != 'CASH') {
       PaymentGate.getStatusTransaction(widget.trno.toString()).then((value) {
-        print(value);
         setState(() {
           statustransaction = value;
         });
       });
     } else {
       setState(() {
-        statustransaction = 'settlement';
+        statustransaction = 'Lunas';
       });
     }
     // This loop will run forever because _running is always true
   }
 
   Color _getColorByEventtext(String event) {
-    if (statustransaction == "settlement") return Colors.green;
+    if (statustransaction == "Lunas") return Colors.green;
     if (statustransaction == "pending") return Colors.red;
 
     return Colors.black;
@@ -83,16 +84,20 @@ class _DetailTrnoState extends State<DetailTrno> {
                       color:
                           _getColorByEventtext(statustransaction.toString())),
                 ),
-                onTap: () async {
-                  await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DialogClassReopen(
-                          trno: widget.trno.toString(),
-                          outletinfo: widget.outletinfo,
-                          pscd: widget.pscd,
-                        );
-                      });
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassDetailTransMobile(
+                              status: statustransaction == null
+                                  ? 'Belum Lunas'
+                                  : statustransaction!,
+                              datatransaksi: widget.datatransaksi,
+                              trno: widget.trno.toString(),
+                              outletinfo: widget.outletinfo,
+                              pscd: widget.pscd,
+                            )),
+                  );
                 },
               ),
               const Divider(

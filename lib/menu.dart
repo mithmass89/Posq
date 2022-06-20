@@ -82,14 +82,7 @@ class _MenuMainState extends State<MenuMain> {
                           trno: trno,
                           qty: 0,
                           pscd: widget.pscd.toString(),
-                          outletinfo: Outlet(
-                              outletcd: widget.outletinfo!.outletcd,
-                              outletname: widget.outletinfo!.outletname,
-                              telp: widget.outletinfo!.telp,
-                              alamat: widget.outletinfo!.alamat,
-                              kodepos: widget.outletinfo!.kodepos,
-                              trnonext: widget.outletinfo!.trnonext,
-                              trnopynext: widget.outletinfo!.trnopynext),
+                          outletinfo:widget.outletinfo!,
                         )),
               );
             },

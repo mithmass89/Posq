@@ -90,13 +90,12 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                         setState(() {
                           namaoutlet = value;
                           var rng = Random();
-                          // for (var i = 0; i < 10; i++) {
-                          //   print(rng.nextInt(100));
-                          // }
+                          for (var i = 0; i < 10; i++) {
+                            print(rng.nextInt(100));
+                          }
                           setState(() {
-                            outletcd.text = '${namaoutlet!.substring(0, 3)}'
-                                    '${namaoutlet!.substring(5, 8)}'
-                                    '${namaoutlet!.substring(9, 12)}${rng.nextInt(100)}-'
+                            outletcd.text = '${namaoutlet!.substring(0, 5)}'
+                                 '${rng.nextInt(100)}-'
                                 .replaceAll(' ', '');
                           });
                           print(outletcd.text);

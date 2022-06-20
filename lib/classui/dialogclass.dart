@@ -78,8 +78,12 @@ class _DialogClass1State extends State<DialogClass1> {
 }
 
 class DialogCustomerManual extends StatefulWidget {
-  const DialogCustomerManual({
+  final String trno;
+  final String pscd;
+  DialogCustomerManual({
     Key? key,
+    required this.trno,
+    required this.pscd,
   }) : super(key: key);
 
   @override
@@ -90,32 +94,50 @@ class _DialogCustomerManualState extends State<DialogCustomerManual> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController controllername = TextEditingController();
   final TextEditingController controlleremail = TextEditingController();
+  final TextEditingController controllerphone = TextEditingController();
+  late DatabaseHandler handler;
 
   @override
   void initState() {
     super.initState();
+    handler = DatabaseHandler();
     checkSF();
   }
 
   checkSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String guestPref = prefs.getString('savecostmrs') ?? "";
-
-    Map<String, dynamic> userMap =
-        jsonDecode(guestPref) as Map<String, dynamic>;
-    setState(() {
-      controllername.text = userMap['guestname'];
-      controlleremail.text = userMap['email'];
-    });
+    if (guestPref.isNotEmpty) {
+      Map<String, dynamic> userMap =
+          jsonDecode(guestPref) as Map<String, dynamic>;
+      setState(() {
+        controllername.text = userMap['guestname'];
+        controlleremail.text = userMap['email'];
+      });
+    }
   }
 
   getSf() async {
     Map<String, dynamic> user = {
       'guestname': controllername.text,
-      'email': controlleremail.text
+      'email': controlleremail.text,
+      'telp': controllerphone.text,
     };
     final savecostmrs = await SharedPreferences.getInstance();
+    await addCustomersTemp();
     await savecostmrs.setString('savecostmrs', jsonEncode(user));
+  }
+
+  Future<int> addCustomersTemp() async {
+    CostumersSavedManual costumes = CostumersSavedManual(
+        trno: widget.trno,
+        outletcd: widget.pscd,
+        alamat: '',
+        nama: controllername.text,
+        email: controlleremail.text,
+        telp: controllerphone.text);
+    List<CostumersSavedManual> listcustomers = [costumes];
+    return await handler.insertCustomersTrno(listcustomers);
   }
 
   @override
@@ -144,6 +166,12 @@ class _DialogCustomerManualState extends State<DialogCustomerManual> {
                     TextFieldMobile2(
                       label: 'Email',
                       controller: controlleremail,
+                      onChanged: (String value) {},
+                      typekeyboard: TextInputType.text,
+                    ),
+                    TextFieldMobile2(
+                      label: 'Telp',
+                      controller: controllerphone,
                       onChanged: (String value) {},
                       typekeyboard: TextInputType.text,
                     ),
@@ -531,6 +559,7 @@ class DialogClassRetailDesc extends StatefulWidget {
   final VoidCallback cleartext;
   final int? itemlenght;
   final String? trno;
+
   const DialogClassRetailDesc(
       {Key? key,
       required this.controller,
@@ -564,6 +593,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
   @override
   void initState() {
     super.initState();
+    print('outlet ${widget.outletinfo.outletcd}');
     formattedDate = formatter.format(now);
     handler = DatabaseHandler();
     handler.initializeDB();
@@ -825,9 +855,9 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
-            shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         content: Form(
             key: _formKey,
             child: Column(
@@ -848,7 +878,7 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
             )),
         title: Text('kembali ke modul utama?'),
         actions: <Widget>[
-               TextButton(
+          TextButton(
               onPressed: () async {
                 await handler.activeZeroiafjrndttrno(
                     IafjrndtClass(active: '1', trno: widget.trno));
@@ -1077,7 +1107,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                                           trailing:
                                               Text(x.first.rvnamt.toString()),
                                         ),
-                                           ListTile(
+                                        ListTile(
                                           visualDensity: VisualDensity(
                                               vertical: -4), // to compact
                                           dense: true,

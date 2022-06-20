@@ -13667,9 +13667,9 @@ androidx.customview.widget.ExploreByTouchHelper:
     public static final int HOST_ID
     private static final java.lang.String DEFAULT_CLASS_NAME
 com.google.android.material.datepicker.CompositeDateValidator
-io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
-    private static final java.lang.String TAG
 io.flutter.embedding.engine.systemchannels.PlatformChannel:
+    private static final java.lang.String TAG
+io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
     private static final java.lang.String TAG
 com.google.common.collect.Multisets$FilteredMultiset$1
 com.google.android.gms.common.server.response.zam

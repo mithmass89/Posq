@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, unused_import, avoid_print, unused_field, must_be_immutable
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +14,7 @@ import 'package:posq/classui/paymentmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/retailmodul/classlisttransactionmobile.dart';
 import 'package:posq/retailmodul/classretailproductmobile.dart';
+import 'package:posq/retailmodul/classsavedtransactionmobile.dart';
 import 'package:posq/retailmodul/classslideuppanel.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/collapsepanel.dart';
@@ -24,16 +27,16 @@ import 'package:collection/collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-Future<void> main() async {
-  runApp(ClassRetailMainMobile(
-    outletinfo: Outlet(
-      outletcd: 'Mitrt1',
-      outletname: 'Mitro tech',
-    ),
-    pscd: 'Mitrt1',
-    qty: 0,
-  ));
-}
+// Future<void> main() async {
+//   runApp(ClassRetailMainMobile(
+//     outletinfo: Outlet(
+//       outletcd: 'Mitrt1',
+//       outletname: 'Mitro tech',
+//     ),
+//     pscd: 'Mitrt1',
+//     qty: 0,
+//   ));
+// }
 
 class ClassRetailMainMobile extends StatefulWidget {
   final String pscd;
@@ -77,6 +80,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   int? trnolanjut;
   int? pending;
   String _scanBarcode = 'Unknown';
+  String? guestname = '';
+  String? email = '';
+  String? telp = '';
 
   set string(IafjrndtClass value) {
     setState(() {
@@ -190,6 +196,20 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     });
   }
 
+  checkSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String guestPref = prefs.getString('savecostmrs') ?? "";
+    if (guestPref.isNotEmpty) {
+      Map<String, dynamic> userMap =
+          jsonDecode(guestPref) as Map<String, dynamic>;
+      setState(() {
+        guestname = userMap['guestname'];
+        email = userMap['email'];
+        telp = userMap['telp'];
+      });
+    }
+  }
+
   checkPending() {
     handler.checkPendingTransaction().then((value) {
       setState(() {
@@ -203,6 +223,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     controller = TabController(vsync: this, length: 2);
     //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
+    print('ini outletcd ${widget.outletinfo.outletcd}');
     _scrollisanimated = false;
     print(_scrollisanimated);
     ToastContext().init(context);
@@ -410,7 +431,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
               children: [
                 SlidingUpPanel(
                     onPanelSlide: (value) {
-                      print(value);
                       if (value == 0.0) {
                         setState(() {
                           _scrollisanimated = false;
@@ -482,11 +502,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     color: Colors.white,
                                     splashColor: Colors.transparent,
                                     onPressed: () async {
+                                      await checkSF();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  Listtransaction(
+                                                  ClassSavedTransactionMobile(
+                                               
                                                     pscd: widget
                                                         .outletinfo.alamat,
                                                     outletinfo:
@@ -564,19 +586,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                             controller: controller,
                             children: [
                               ClassRetailManualMobile(
-                                refreshdata: getDataSlide,
-                                trno: widget.trno,
-                                itemlenght: item,
-                                outletinfo: Outlet(
-                                  alamat: widget.outletinfo.alamat,
-                                  kodepos: widget.outletinfo.kodepos,
-                                  outletcd: widget.outletinfo.outletcd,
-                                  outletname: widget.outletinfo.outletname,
-                                  telp: widget.outletinfo.telp,
-                                  trnonext: widget.outletinfo.trnonext,
-                                  trnopynext: widget.outletinfo.trnopynext,
-                                ),
-                              ),
+                                  refreshdata: getDataSlide,
+                                  trno:
+                                      widget.trno == null ? trno : widget.trno,
+                                  itemlenght: item,
+                                  outletinfo: widget.outletinfo),
                               ClassRetailProductMobile(
                                 controller: search,
                                 trno: widget.trno.toString(),
@@ -702,9 +716,16 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       onpressed: () async {
                         _pc.open();
                         if (_scrollisanimated == true) {
-                          await checkTrno().whenComplete(() {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/', (Route<dynamic> route) => false);
+                          await checkTrno().whenComplete(() async {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => ClassRetailMainMobile(
+                                          pscd: widget.outletinfo.outletcd,
+                                          trno: trno,
+                                          outletinfo: widget.outletinfo,
+                                          qty: 0,
+                                        )),
+                                (Route<dynamic> route) => false);
                           });
                         }
                       },

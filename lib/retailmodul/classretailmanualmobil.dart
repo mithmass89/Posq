@@ -48,6 +48,7 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
   @override
   void initState() {
     super.initState();
+    print('ini outletinfo${widget.outletinfo.outletcd}');
   }
 
   @override
@@ -151,21 +152,7 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
                                                 cleartext: () {
                                                   resetTextEditing();
                                                 },
-                                                outletinfo: Outlet(
-                                                  outletcd: widget
-                                                      .outletinfo.outletcd,
-                                                  outletname: widget
-                                                      .outletinfo.outletname,
-                                                  telp: widget.outletinfo.telp,
-                                                  alamat:
-                                                      widget.outletinfo.alamat,
-                                                  kodepos:
-                                                      widget.outletinfo.kodepos,
-                                                  trnonext: widget
-                                                      .outletinfo.trnonext,
-                                                  trnopynext: widget
-                                                      .outletinfo.trnopynext,
-                                                ),
+                                                outletinfo: widget.outletinfo,
                                                 result: double.parse(
                                                     _myController.text == ''
                                                         ? '0'
@@ -178,7 +165,7 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
                                     ClassRetailMainMobile.of(context)!.string =
                                         results;
                                   } else {
-                                    Toast.show("Please input Amount first",
+                                    Toast.show("Masukan Harga dulu",
                                         duration: Toast.lengthLong,
                                         gravity: Toast.center);
                                   }
@@ -210,7 +197,10 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
                                   await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return DialogCustomerManual();
+                                        return DialogCustomerManual(
+                                          pscd: widget.outletinfo.outletcd,
+                                          trno: widget.trno!,
+                                        );
                                       });
                                 },
                               )),

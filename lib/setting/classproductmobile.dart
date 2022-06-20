@@ -112,8 +112,15 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                 });
                               },
                               leading: Container(
-                                height: MediaQuery.of(context).size.height*0.1,
-                                width:  MediaQuery.of(context).size.width*0.2,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.2,
                                 child: Image.file(
                                   _image,
                                   errorBuilder: (BuildContext context,

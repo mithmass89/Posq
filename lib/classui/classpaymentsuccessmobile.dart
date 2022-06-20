@@ -45,6 +45,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
 class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   late DatabaseHandler handler;
   int? trno;
+  String? nexttrno;
   String? statustransaction = '';
   final bool pending = true;
   @override
@@ -100,6 +101,16 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     if (statustransaction == "pending") return Colors.red;
 
     return Colors.black;
+  }
+
+  getTrno() async {
+    handler = DatabaseHandler();
+    await handler.initializeDB();
+    await handler.getTrno(widget.outletcd!).then((value) {
+      setState(() {
+        nexttrno = '${widget.outletcd}${value.first.trnonext}';
+      });
+    });
   }
 
   @override
@@ -319,7 +330,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                   )),
                             ],
                           ),
-                          widget.cash == false 
+                          widget.cash == false
                               ? Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -385,9 +396,20 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                     MediaQuery.of(context).size.height * 0.05,
                                 width:
                                     MediaQuery.of(context).size.height * 0.18,
-                                onpressed: () {
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      '/', (Route<dynamic> route) => false);
+                                onpressed: () async {
+                                  await getTrno();
+                                  print(widget.outletcd);
+                                  print(nexttrno);
+                                  print(widget.outletinfo);
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => ClassRetailMainMobile(
+                                            pscd: widget.outletcd!,
+                                            trno: nexttrno,
+                                            outletinfo: widget.outletinfo!,
+                                            qty: 0,
+                                          )),
+                                      (Route<dynamic> route) => false);
                                 },
                                 name: 'TRANSAKSI BARU',
                               ),

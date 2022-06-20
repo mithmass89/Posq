@@ -144,14 +144,7 @@ class _AppsMobileState extends State<AppsMobile> {
                     callback: (val) => setState(() {
                       pscd = val.outletcd;
                     }),
-                    outletinfo: Outlet(
-                        outletcd: widget.profileusaha!.outletcd,
-                        outletname: widget.profileusaha!.outletname,
-                        telp: widget.profileusaha!.telp,
-                        alamat: widget.profileusaha!.alamat,
-                        kodepos: widget.profileusaha!.kodepos,
-                        trnonext: widget.profileusaha!.trnonext,
-                        trnopynext: widget.profileusaha!.trnopynext),
+                    outletinfo:widget.profileusaha
                   )),
               Container(
                   color: Colors.transparent,

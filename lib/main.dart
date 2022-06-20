@@ -24,15 +24,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'POS Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Mainapps(
-        title: 'POS DEMO', /*newinstall:newinstall*/
-      ),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: <String, WidgetBuilder>{
+        '/': (context) => Mainapps(),
+        '/RetailMain': (context) => ClassRetailMainMobile(
+              outletinfo: Outlet(outletcd: ''),
+              pscd: '',
+              qty: 0,
+            )
+      },
     );
+
+    //   home: const Mainapps(
+    //     title: 'POS DEMO', /*newinstall:newinstall*/
+    //   ),
+    // );
   }
 }
 
@@ -42,7 +53,12 @@ class RouteGenerator {
     // final args = settings.arguments;
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const AppsMobile());
+        return MaterialPageRoute(
+            builder: (_) => ClassRetailMainMobile(
+                  outletinfo: Outlet(outletcd: ''),
+                  pscd: '',
+                  qty: 0,
+                ));
       case '/RetailMain':
         return MaterialPageRoute(
             builder: (_) => ClassRetailMainMobile(

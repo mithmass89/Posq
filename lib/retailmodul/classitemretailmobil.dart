@@ -101,19 +101,31 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
               ClassRetailMainMobile.of(context)!.string = result!;
             },
             leading: Container(
-              color: Colors.blue,
-              height: 200,
-              width: 80,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 0.5,
+                ),
+              ),
+              // color: Colors.blue,
+              height: MediaQuery.of(context).size.height * 0.13,
+              width: MediaQuery.of(context).size.width * 0.19,
               child: Image.file(
                 widget.image,
                 fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return Center(child: const Text('No Image'));
+                },
               ),
             ),
             // contentPadding: EdgeInsets.all(8.0),
             title: Text(widget.item.itemdesc),
-            subtitle: Text(widget.item.description.toString()),
+            subtitle: Text(widget.item.description == 'Empty'
+                ? ''
+                : widget.item.description.toString()),
             trailing: Text(
-             '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
+              '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
             )),
         Divider(
           thickness: 1,
