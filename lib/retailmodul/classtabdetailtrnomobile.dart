@@ -8,11 +8,12 @@ class TabDetailTrno extends StatefulWidget {
   final String trno;
   final Outlet outletinfo;
   final String pscd;
+  final String status;
   const TabDetailTrno({
     Key? key,
     required this.trno,
     required this.outletinfo,
-    required this.pscd,
+    required this.pscd,required this.status,
   }) : super(key: key);
 
   @override
@@ -182,7 +183,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                           height: MediaQuery.of(context).size.height * 0.03,
                           width: MediaQuery.of(context).size.width * 0.25,
                           child: Text(
-                            'Belum Lunas',
+                            widget.status,
                             style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
                           )),
                     ],

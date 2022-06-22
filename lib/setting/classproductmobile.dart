@@ -10,6 +10,7 @@ import 'package:posq/setting/classcreateproduct.dart';
 import 'package:posq/setting/classeditproductmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/classui/searchwidget.dart';
+import 'package:posq/setting/classeditproductv2mob.dart';
 
 class Classproductmobile extends StatefulWidget {
   const Classproductmobile({Key? key}) : super(key: key);
@@ -104,7 +105,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ClassEditProductMobile(
+                                          Editproduct(
                                             productcode: snapshot.data![index],
                                           )),
                                 ).then((_) {

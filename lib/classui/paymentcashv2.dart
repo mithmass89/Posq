@@ -232,15 +232,36 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 textcolor: Colors.white,
                 name: 'Terima',
                 color: Colors.blue,
+                //// checking balance //////
                 onpressed: widget.result <= 0 || widget.result == 0
                     ? () async {
-                        await insertIafjrnhd().whenComplete(() {
-                          setState(() {});
-                        });
+                        if ( widget.result == 0)
+                          await insertIafjrnhd().whenComplete(() {
+                            setState(() {});
+                          });
                         pesanPaymentTersimpan();
+                        if (widget.result == 0) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClassPaymetSucsessMobile(
+                                      frombanktransfer: false,
+                                      cash: true,
+                                      outletinfo: widget.outletinfo,
+                                      outletname: widget.outletinfo.outletname,
+                                      outletcd: widget.pscd,
+                                      amount:
+                                          double.parse(widget.amountcash.text),
+                                      paymenttype: 'Cash',
+                                      trno: widget.trno.toString(),
+                                      trdt: formattedDate,
+                                    )),
+                          );
+                        }
 
                         await widget.callback();
                         if (widget.result < 0) {
+                          //// jika amount lebih kecil dari amount akan otomatsi refund
                           await insertIafjrnhd().whenComplete(() async {
                             await insertIafjrnhdRefund().then((_) {}).then((_) {
                               handler

@@ -358,6 +358,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
+                    outletinfo: widget.outletinfo,
                     refreshdata: widget.refreshdata,
                     updatedata:(){
                       widget.refreshdata;

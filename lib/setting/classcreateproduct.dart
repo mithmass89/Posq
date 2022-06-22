@@ -9,6 +9,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/image.dart';
 import 'package:posq/model.dart';
+import 'package:posq/setting/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
 
 enum ImageSourceType { gallery, camera }
@@ -39,6 +40,10 @@ class _CreateproductState extends State<Createproduct>
   final pcttax = TextEditingController();
   final pctservice = TextEditingController();
   final description = TextEditingController();
+    final minproduct = TextEditingController();
+  final adjusmentmin = TextEditingController();
+  final adjusmentplus = TextEditingController();
+   final catatan = TextEditingController();
   bool forresto = false;
   bool forretail = false;
   String? selectedctg = 'Pilih Kategori';
@@ -49,6 +54,7 @@ class _CreateproductState extends State<Createproduct>
   double? pctnett;
   String? pathimage;
   String? query = '';
+  num? qty = 0;
 
   set string(String value) => setState(() => pathimage = value);
 
@@ -77,17 +83,19 @@ class _CreateproductState extends State<Createproduct>
       taxcoa: 'TAX',
       svchgcoa: 'SERVICE',
       taxpct: pcttax.text.isEmpty ? 0 : num.parse(pcttax.text),
-      svchgpct: pctservice.text.isEmpty  ? 0 : num.parse(pctservice.text),
-      costamt: amountcost.text.isEmpty  ? 0 : num.parse(amountcost.text),
-      slsamt: amountsales.text.isEmpty  ? 0 : num.parse(amountsales.text),
+      svchgpct: pctservice.text.isEmpty ? 0 : num.parse(pctservice.text),
+      costamt: amountcost.text.isEmpty ? 0 : num.parse(amountcost.text),
+      slsamt: amountsales.text.isEmpty ? 0 : num.parse(amountsales.text),
       slsnett: pctnett != 0
           ? num.parse(amountsales.text) * pctnett! + num.parse(amountsales.text)
-          :amountsales.text.isEmpty  ? 0 :  num.parse(amountsales.text),
+          : amountsales.text.isEmpty
+              ? 0
+              : num.parse(amountsales.text),
       ctg: selectedctg ?? '',
       slsfl: 1,
-      stock: num.parse(stock.text.isEmpty  ? '0' : stock.text),
+      stock: num.parse(stock.text.isEmpty ? '0' : stock.text),
       pathimage: pathimage ?? 'Empty',
-      description: description.text.isEmpty  ? 'Empty' : description.text,
+      description: description.text.isEmpty ? 'Empty' : description.text,
     );
     List<Item> listctg = [ctg];
     return await handler.insertItem(listctg);
@@ -135,7 +143,14 @@ class _CreateproductState extends State<Createproduct>
                       pctservice: pctservice,
                       description: description,
                     ),
-                    Container()
+                    ClassKelolaStockMobile(
+                      catatan: catatan,
+                      minproduct: minproduct,
+                      adjusmentmin: adjusmentmin,
+                      adjusmentplus: adjusmentplus,
+                      stock: stock,
+                      qty: qty!,
+                    )
                   ],
                 ),
               ),

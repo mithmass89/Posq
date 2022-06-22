@@ -163,6 +163,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.70,
                   width: MediaQuery.of(context).size.width * 1,
+                  child: Center(child: Text('Belum Ada Promo')),
                 );
               }),
           ButtonNoIcon(

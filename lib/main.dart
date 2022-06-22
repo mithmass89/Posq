@@ -5,6 +5,7 @@ import 'package:posq/appsmobile.dart';
 import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   runApp(MyApp(
@@ -21,11 +22,14 @@ class MyApp extends StatelessWidget {
   }) : super(key: key);
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       title: 'POS Demo',
       theme: ThemeData(
+        textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(),
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,

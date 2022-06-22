@@ -61,7 +61,7 @@ class ClassRetailMainMobile extends StatefulWidget {
 class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     with SingleTickerProviderStateMixin {
   final PanelController _pc = PanelController();
-
+   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final search = TextEditingController();
   TabController? controller;
   IafjrndtClass? iafjrndt;
@@ -189,10 +189,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     });
 
     await handler.checktotalAmountNett(widget.trno.toString()).then((value) {
-      setState(() {
-        sum = value.first.nettamt!;
-      });
-      ClassRetailMainMobile.of(context)!.string = value.first;
+      if (value.length != 0) {
+        setState(() {
+          sum = value.first.nettamt!;
+        });
+        ClassRetailMainMobile.of(context)!.string = value.first;
+      }
     });
   }
 
@@ -211,7 +213,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   }
 
   checkPending() {
-    handler.checkPendingTransaction().then((value) {
+    handler.checkPendingTransaction('').then((value) {
       setState(() {
         pending = value;
       });
@@ -223,14 +225,16 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     controller = TabController(vsync: this, length: 2);
     //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
+    _scaffoldKey = GlobalKey<ScaffoldState>();
     print('ini outletcd ${widget.outletinfo.outletcd}');
     _scrollisanimated = false;
     print(_scrollisanimated);
     ToastContext().init(context);
     handler = DatabaseHandler();
     handler.initializeDB();
-    checkPending();
+
     formattedDate = formatter.format(now);
+    checkPending();
     _pc.isAttached;
     getTrno();
     iafjrndt = IafjrndtClass(
@@ -411,8 +415,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+             key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
-        drawer: DrawerRetailMain(),
+        drawer: DrawerRetailMain(
+          outletinfo: widget.outletinfo,
+          outletname: widget.outletinfo.outletname,
+        ),
         body: Container(
           height: MediaQuery.of(context).size.height * 1,
           color: Colors.white,
@@ -466,7 +474,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 iconSize: 30,
                                 color: Colors.white,
                                 splashColor: Colors.transparent,
-                                onPressed: () {},
+                                onPressed: () {
+                                        _scaffoldKey.currentState!.openDrawer();
+                                },
                               ),
                               Container(
                                   height:
@@ -482,9 +492,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     typekeyboard: TextInputType.number,
                                   )),
                               IconButton(
-                                icon: Icon(
-                                  Icons.qr_code,
-                                ),
+                                icon: Icon(Icons.qr_code_scanner_outlined),
                                 iconSize: 30,
                                 color: Colors.white,
                                 splashColor: Colors.transparent,
@@ -508,7 +516,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ClassSavedTransactionMobile(
-                                               
                                                     pscd: widget
                                                         .outletinfo.alamat,
                                                     outletinfo:
@@ -717,6 +724,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                         _pc.open();
                         if (_scrollisanimated == true) {
                           await checkTrno().whenComplete(() async {
+                            await getTrno();
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.remove('savecostmrs');
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => ClassRetailMainMobile(

@@ -15,13 +15,14 @@ class SummaryOrderSlidemobile extends StatefulWidget {
   late num? sum;
   final Function? updatedata;
   final VoidCallback? refreshdata;
+   final  Outlet outletinfo;
   SummaryOrderSlidemobile(
       {Key? key,
       required this.trno,
       required this.pscd,
       required this.sum,
       required this.updatedata,
-      required this.refreshdata})
+      required this.refreshdata,required this.outletinfo})
       : super(key: key);
 
   @override
@@ -186,6 +187,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                         await showDialog(
                             context: context,
                             builder: (_) => DialogClassCancelorder(
+                              outletinfo: widget.outletinfo,
                                 outletcd: widget.pscd!,
                                 trno: x.first.trno!)).then((_) {
                           setState(() {});

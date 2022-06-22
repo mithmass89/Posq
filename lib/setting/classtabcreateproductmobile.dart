@@ -17,19 +17,23 @@ class ClassTabCreateProducr extends StatefulWidget {
   late TextEditingController pcttax;
   late TextEditingController pctservice;
   late TextEditingController description;
+  late String? selectedctg;
+  final Function? callbackctg;
 
-  ClassTabCreateProducr(
-      {Key? key,
-      required this.productcd,
-      required this.productname,
-      required this.amountcost,
-      required this.amountsales,
-      required this.kategory,
-      required this.stock,
-      required this.pcttax,
-      required this.pctservice,
-      required this.description})
-      : super(key: key);
+  ClassTabCreateProducr({
+    Key? key,
+    required this.productcd,
+    required this.productname,
+    required this.amountcost,
+    required this.amountsales,
+    required this.kategory,
+    required this.stock,
+    required this.pcttax,
+    required this.pctservice,
+    required this.description,
+    this.selectedctg,
+    this.callbackctg,
+  }) : super(key: key);
 
   @override
   State<ClassTabCreateProducr> createState() => _ClassTabCreateProducrState();
@@ -42,7 +46,6 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
   double? pctnett;
   String? pathimage;
   String? query = '';
-  String? selectedctg = 'Pilih Kategori';
   late DatabaseHandler handler;
   bool detailon = false;
 
@@ -120,7 +123,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                   handler.queryCheckItem().then((value) {
                     maxid = value.toString();
                     widget.productcd.text =
-                        '$selectedctg${itemdesc!.substring(0, 2)}$maxid';
+                        '${widget.selectedctg}${itemdesc!.substring(0, 2)}$maxid';
                   });
                 });
               },
@@ -212,14 +215,18 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                                   return DialogTabClass();
                                 });
                             setState(() {
-                              selectedctg = result.ctgcd;
+                              widget.selectedctg = result.ctgcd;
                               widget.kategory.text = result.ctgdesc;
                             });
+                            widget.callbackctg!(result.ctgcd);
+                            print(widget.selectedctg);
                           }),
                       Container(
                         child: TextFieldMobile2(
-                          // height: MediaQuery.of(context).size.height * 0.25,
-                          maxline: 3,
+                  
+                          minLines: null,
+                          maxline: null,
+                          expands: true,
                           hint:
                               'Masakan Jawa Dengan Bumbu Rempah yg sangat kuat yg di sukai emak emak',
                           label: 'Description',

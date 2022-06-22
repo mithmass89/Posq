@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:posq/model.dart';
+import 'package:posq/retailmodul/classlisttransactionmobile.dart';
 
 class DrawerRetailMain extends StatefulWidget {
-  const DrawerRetailMain({Key? key}) : super(key: key);
+  final String? outletname;
+  final Outlet outletinfo;
+  const DrawerRetailMain(
+      {Key? key, required this.outletname, required this.outletinfo})
+      : super(key: key);
 
   @override
   State<DrawerRetailMain> createState() => _DrawerRetailMainState();
@@ -15,30 +21,143 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
-            child: Text('Drawer Header'),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.outletname.toString(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Icon(
+                            Icons.arrow_right_outlined,
+                            color: Colors.white,
+                            size: 25.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                ),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.transparent,
+                      child: const Text('Profile'),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
           ListTile(
             leading: Icon(
-              Icons.home,
+              Icons.shop_outlined,
             ),
-            title: const Text('Page 1'),
+            title: Text('Kasir'),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
             leading: Icon(
-              Icons.train,
+              Icons.history_outlined,
             ),
-            title: const Text('Page 2'),
+            title: const Text('Riwayat Transaksi'),
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return Listtransaction(
+                  pscd: widget.outletinfo.outletcd,
+                  outletinfo: widget.outletinfo,
+                );
+              }));
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.add_chart_outlined,
+            ),
+            title: const Text('Laporan'),
             onTap: () {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+            leading: Icon(
+              Icons.add_box_outlined,
+            ),
+            title: const Text('Kelola Produk'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.people_outline_outlined,
+            ),
+            title: const Text('Pelanggan'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.shop_two_outlined,
+            ),
+            title: const Text('Toko Online'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.help_center,
+            ),
+            title: const Text('Bantuan'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          Container(
+              child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Column(
+                    children: <Widget>[
+                      Divider(),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                      ),
+                      ListTile(
+                          leading: Icon(Icons.settings),
+                          title: Text('Facebook')),
+                      ListTile(
+                          leading: Icon(Icons.help), title: Text('Instagram'))
+                    ],
+                  ))),
         ],
       ),
     );

@@ -1,4 +1,0 @@
-#Mon Jun 20 07:48:56 ICT 2022
-base.0=E\:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex

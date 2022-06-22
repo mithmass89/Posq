@@ -94,6 +94,7 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
             height: MediaQuery.of(context).size.height * 0.70,
             child: TabBarView(controller: _controller, children: [
               TabDetailTrno(
+                status: 'Lunas',
                 trno: widget.trno,
                 outletinfo: widget.outletinfo,
                 pscd: widget.pscd,

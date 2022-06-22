@@ -677,6 +677,8 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
       trdesc: widget.controller.text,
       taxpct: 0,
       servicepct: 0,
+      statustrans: 'prosess',
+      time :now.hour.toString() + ":" + now.minute.toString() + ":" + now.second.toString(),
     );
     List<IafjrndtClass> listiafjrndt = [iafjrndt];
     return await handler.insertIafjrndt(listiafjrndt);
@@ -903,10 +905,11 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
 class DialogClassCancelorder extends StatefulWidget {
   final String trno;
   final String outletcd;
+ final  Outlet outletinfo;
   const DialogClassCancelorder({
     Key? key,
     required this.trno,
-    required this.outletcd,
+    required this.outletcd,required this.outletinfo,
   }) : super(key: key);
 
   @override
@@ -916,6 +919,8 @@ class DialogClassCancelorder extends StatefulWidget {
 class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
   late DatabaseHandler handler;
   int? trno;
+  String? trnolanjut;
+ 
 
   @override
   void initState() {
@@ -924,12 +929,13 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
     handler.initializeDB();
   }
 
-  checkTrno() async {
+
+
+    Future<dynamic> checkTrno() async {
     await handler.getTrno(widget.outletcd.toString()).then((value) {
       setState(() {
         trno = value.first.trnonext;
       });
-      print('ini trno $trno');
     });
     await updateTrnonext();
   }
@@ -938,6 +944,17 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
     await handler.updateTrnoNext(
         Outlet(outletcd: widget.outletcd.toString(), trnonext: trno! + 1));
   }
+
+    getTrno() async {
+    handler = DatabaseHandler();
+    await handler.initializeDB();
+    await handler.getTrno(widget.outletcd).then((value) {
+      setState(() {
+        trnolanjut = '${widget.outletcd}${value.first.trnonext}';
+      });
+    });
+  }
+
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -975,11 +992,22 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
                     IafjrndtClass(active: '0', trno: widget.trno));
                 await handler.activeZeroiafjrnhdtrno(
                     IafjrnhdClass(active: '0', trno: widget.trno));
-                await checkTrno();
+               
                 // Navigator.of(context).pushNamedAndRemoveUntil(
                 //     '/', (Route<dynamic> route) => false);
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false);
+                 await checkTrno().whenComplete(() async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.remove('savecostmrs');
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => ClassRetailMainMobile(
+                                          pscd: widget.outletcd,
+                                          trno:trnolanjut,
+                                          outletinfo: widget.outletinfo,
+                                          qty: 0,
+                                        )),
+                                (Route<dynamic> route) => false);
+                          });
               },
               child: Text('OK!'))
         ],

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classdetailtrnomobile.dart';
-import 'package:posq/retailmodul/classdetailtrnosavedmob.dart';
+import 'package:posq/retailmodul/classlisttrnosavedmob.dart';
 
 class ClassSavedTransactionMobile extends StatefulWidget {
   final String? pscd;
@@ -27,6 +28,8 @@ class _ClassSavedTransactionMobileState
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   int? pending;
+  TextEditingController search = TextEditingController();
+  String query = '';
 
   @override
   void initState() {
@@ -38,50 +41,84 @@ class _ClassSavedTransactionMobileState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Transaksi Tersimpan'),
         actions: [],
       ),
-      body: FutureBuilder(
-          future: this.handler.retriveSavedTransaction(),
-          builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
-            var x = snapshot.data ?? [];
-            if (x.isNotEmpty) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    width: MediaQuery.of(context).size.width * 1,
-                    child: ListView.builder(
-                        itemCount: x.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Column(
-                              children: [
-                                ClassDetailSavedMobile(
-                        
-                                  datatransaksi: snapshot.data![index],
-                                  trno: x[index].trno,
-                                  outletinfo: widget.outletinfo,
-                                  pscd: widget.pscd.toString(),
+      body: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.95,
+            height: MediaQuery.of(context).size.height * 0.08,
+            child: TextFieldMobile2(
+                suffixIcon: search.text.length != 0
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.close_outlined,
+                        ),
+                        iconSize: 20,
+                        color: Colors.blue,
+                        splashColor: Colors.purple,
+                        onPressed: () {
+                          setState(() {
+                            search.clear();
+                          });
+                        },
+                      )
+                    : Icon(
+                        Icons.search_outlined,
+                        color: Colors.blue,
+                        size: 20.0,
+                      ),
+                controller: search,
+                onChanged: (value) {
+                  setState(() {
+                    query = value;
+                  });
+                },
+                typekeyboard: TextInputType.text),
+          ),
+          FutureBuilder(
+              future: this.handler.retriveSavedTransaction(query),
+              builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
+                var x = snapshot.data ?? [];
+                if (x.isNotEmpty) {
+                  print(x);
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        width: MediaQuery.of(context).size.width * 1,
+                        child: ListView.builder(
+                            itemCount: x.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {},
+                                child: Column(
+                                  children: [
+                                    ClassListSavedMobile(
+                                      datatransaksi: snapshot.data![index],
+                                      trno: x[index].trno,
+                                      outletinfo: widget.outletinfo,
+                                      pscd: widget.pscd.toString(),
+                                    ),
+                                    Divider()
+                                  ],
                                 ),
-                                Divider()
-                              ],
-                            ),
-                          );
-                        }),
-                  )
-                ],
-              );
-            }
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Tidak ada transaksi tersimpan')],
-              ),
-            );
-          }),
+                              );
+                            }),
+                      )
+                    ],
+                  );
+                }
+                return Container(
+                     height: MediaQuery.of(context).size.height * 0.8,
+                      width: MediaQuery.of(context).size.width * 1,
+                  child: Center(child: Text('Tidak ada transaksi tersimpan')));
+              }),
+        ],
+      ),
     );
   }
 }

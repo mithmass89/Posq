@@ -30,6 +30,8 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
   late DatabaseHandler handler;
   int counter = 0;
   IafjrndtClass? result;
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
@@ -40,48 +42,55 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
 
   Future<int> insertIafjrndt() async {
     IafjrndtClass iafjrndt = IafjrndtClass(
-        trdt: widget.trdt,
-        pscd: widget.item.outletcd,
-        trno: widget.trno,
-        split: 'A',
-        trnobill: 'trnobill',
-        itemcd: widget.item.itemcd,
-        trno1: widget.trno,
-        itemseq: counter,
-        cono: 'cono',
-        waitercd: 'waitercd',
-        discpct: 0,
-        discamt: 0,
-        qty: 1,
-        ratecurcd: 'Rupiah',
-        ratebs1: 1,
-        ratebs2: 1,
-        rateamtcost: widget.item.costamt,
-        rateamt: widget.item.slsamt,
-        rateamtservice: widget.item.slsamt! * widget.item.svchgpct / 100,
-        rateamttax: widget.item.slsamt! * widget.item.taxpct / 100,
-        rateamttotal: widget.item.slsnett,
-        rvnamt: 1 * widget.item.slsamt!.toDouble(),
-        taxamt: widget.item.slsamt! * widget.item.taxpct / 100,
-        serviceamt: widget.item.slsamt! * widget.item.svchgpct / 100,
-        nettamt: 1 * widget.item.slsamt! +
-            widget.item.slsamt! * widget.item.taxpct / 100 +
-            widget.item.slsamt! * widget.item.svchgpct / 100,
-        rebateamt: 0,
-        rvncoa: 'REVENUE',
-        taxcoa: 'TAX',
-        servicecoa: 'SERVICE',
-        costcoa: 'COST',
-        active: '1',
-        usercrt: 'Admin',
-        userupd: 'Admin',
-        userdel: 'Admin',
-        prnkitchen: '1',
-        prnkitchentm: '10:10',
-        confirmed: '1',
-        trdesc: widget.item.itemdesc,
-        taxpct: widget.item.taxpct,
-        servicepct: widget.item.svchgpct);
+      trdt: widget.trdt,
+      pscd: widget.item.outletcd,
+      trno: widget.trno,
+      split: 'A',
+      trnobill: 'trnobill',
+      itemcd: widget.item.itemcd,
+      trno1: widget.trno,
+      itemseq: counter,
+      cono: 'cono',
+      waitercd: 'waitercd',
+      discpct: 0,
+      discamt: 0,
+      qty: 1,
+      ratecurcd: 'Rupiah',
+      ratebs1: 1,
+      ratebs2: 1,
+      rateamtcost: widget.item.costamt,
+      rateamt: widget.item.slsamt,
+      rateamtservice: widget.item.slsamt! * widget.item.svchgpct / 100,
+      rateamttax: widget.item.slsamt! * widget.item.taxpct / 100,
+      rateamttotal: widget.item.slsnett,
+      rvnamt: 1 * widget.item.slsamt!.toDouble(),
+      taxamt: widget.item.slsamt! * widget.item.taxpct / 100,
+      serviceamt: widget.item.slsamt! * widget.item.svchgpct / 100,
+      nettamt: 1 * widget.item.slsamt! +
+          widget.item.slsamt! * widget.item.taxpct / 100 +
+          widget.item.slsamt! * widget.item.svchgpct / 100,
+      rebateamt: 0,
+      rvncoa: 'REVENUE',
+      taxcoa: 'TAX',
+      servicecoa: 'SERVICE',
+      costcoa: 'COST',
+      active: '1',
+      usercrt: 'Admin',
+      userupd: 'Admin',
+      userdel: 'Admin',
+      prnkitchen: '1',
+      prnkitchentm: '10:10',
+      confirmed: '1',
+      trdesc: widget.item.itemdesc,
+      taxpct: widget.item.taxpct,
+      servicepct: widget.item.svchgpct,
+      statustrans: 'prosess',
+      time: now.hour.toString() +
+          ":" +
+          now.minute.toString() +
+          ":" +
+          now.second.toString(),
+    );
     List<IafjrndtClass> listiafjrndt = [iafjrndt];
     setState(() {
       result = iafjrndt;

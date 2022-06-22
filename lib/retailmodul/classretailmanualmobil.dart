@@ -141,7 +141,8 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
                                 color: Colors.black,
                                 splashColor: Colors.purple,
                                 onPressed: () async {
-                                  if (_myController.text != '' ||_myController.text =='0' ) {
+                                  if (_myController.text != '' ||
+                                      _myController.text == '0') {
                                     final IafjrndtClass results =
                                         await showDialog(
                                             context: context,

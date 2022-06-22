@@ -195,6 +195,8 @@ class TextFieldMobile2 extends StatefulWidget {
   final suffixIcon;
   late bool? readonly;
   late FocusNode? focus;
+  var expands;
+  var minLines;
 
   TextFieldMobile2({
     Key? key,
@@ -210,6 +212,7 @@ class TextFieldMobile2 extends StatefulWidget {
     this.suffixIcon,
     this.readonly,
     this.focus,
+    this.expands,this.minLines
   }) : super(key: key);
 
   @override
@@ -222,6 +225,9 @@ class _TextFieldMobile2State extends State<TextFieldMobile2> {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: TextFormField(
+        // expands: widget.expands,
+        // minLines: widget.minLines,
+        // maxLines: widget.maxline,
         focusNode: widget.focus,
         readOnly: widget.readonly ?? false,
         keyboardType: widget.typekeyboard,

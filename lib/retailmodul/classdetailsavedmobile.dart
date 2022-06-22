@@ -79,6 +79,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
             height: MediaQuery.of(context).size.height * 0.70,
             child: TabBarView(controller: _controller, children: [
               TabDetailTrno(
+                status: 'Belum Lunas',
                 trno: widget.trno,
                 outletinfo: widget.outletinfo,
                 pscd: widget.pscd,

@@ -228,6 +228,7 @@ class IafjrndtClass {
   final num? taxpct;
   final num? servicepct;
   final String? statustrans;
+  final String? time;
   // final String? guestname;
   // final String? email;
   // final String? phone;
@@ -275,6 +276,7 @@ class IafjrndtClass {
     this.taxpct,
     this.servicepct,
     this.statustrans,
+    this.time,
     // this.guestname,
     // this.email,
     // this.phone,
@@ -323,7 +325,8 @@ class IafjrndtClass {
         trdesc = res["trdesc"],
         taxpct = res["taxpct"],
         servicepct = res["servicepct"],
-        statustrans = res["statustrans"]
+        statustrans = res["statustrans"],
+        time = res["time"]
   // guestname = res['guestname'],
   // email = res['email'],
   // phone = res['phone']
@@ -374,6 +377,7 @@ class IafjrndtClass {
       'taxpct': taxpct,
       'servicepct': servicepct,
       'statustrans': statustrans,
+      'time': time,
       // 'guestname': guestname,
       // 'email': email,
       // 'phone': phone,

@@ -32,16 +32,16 @@ class _ListtransactionState extends State<Listtransaction> {
     super.initState();
     this.handler = DatabaseHandler();
     formattedDate = formatter.format(now);
-    checkPending();
+    // checkPending();
   }
 
-  checkPending() {
-    handler.checkPendingTransaction().then((value) {
-      setState(() {
-        pending = value;
-      });
-    });
-  }
+  // checkPending() {
+  //   handler.checkPendingTransaction().then((value) {
+  //     setState(() {
+  //       pending = value;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

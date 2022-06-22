@@ -141,7 +141,7 @@
     },
     {
       "name": "google_fonts",
-      "rootUri": "file:///C:/flutter_windows_3.0.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-2.3.0",
+      "rootUri": "file:///C:/flutter_windows_3.0.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-2.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -476,7 +476,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-06-05T01:26:37.641580Z",
+  "generated": "2022-06-21T13:40:24.821742Z",
   "generator": "pub",
   "generatorVersion": "2.14.2"
 }
