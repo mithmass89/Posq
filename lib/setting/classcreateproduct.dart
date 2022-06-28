@@ -177,7 +177,7 @@ class _CreateproductState extends State<Createproduct>
                   });
                   print(pctnett);
                   handler = DatabaseHandler();
-                  handler.initializeDB().whenComplete(() async {
+                  handler.initializeDB(databasename).whenComplete(() async {
                     await addItem().whenComplete(() async {
                       print(handler.retrieveItems(query!).then((value) {
                         print('${value.map((e) => e.itemdesc)}');

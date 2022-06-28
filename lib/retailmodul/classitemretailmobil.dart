@@ -37,7 +37,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   Future<int> insertIafjrndt() async {

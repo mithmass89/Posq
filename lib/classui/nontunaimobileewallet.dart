@@ -56,7 +56,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
     super.initState();
     handler = DatabaseHandler();
 
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     paymentapi = PaymentGate();
     formattedDate = formatter.format(now);
     List.generate(

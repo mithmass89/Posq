@@ -79,6 +79,8 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
       if (isi.isNotEmpty) {
         setState(() {
           listdata = isi;
+
+          print(listdata.first.trdesc);
         });
       } else {
         setState(() {
@@ -252,7 +254,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           amountcash: amountcash,
                         ),
                         NonTunaiMobile(
-                          // datatrans: widget.datatrans,
+                     
                           datatrans: listdata,
                           callback: checkbalance,
                           zerobill: zerobill,

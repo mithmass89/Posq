@@ -60,7 +60,7 @@ class _PaymentCashMobileState extends State<PaymentCashMobile> {
     widget.discpct.addListener(() {});
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
   }
 

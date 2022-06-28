@@ -53,7 +53,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     checkTrno();
     if (widget.cash == false) {
       PaymentGate.getStatusTransaction(widget.trno).then((value) {
@@ -106,7 +106,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
 
   getTrno() async {
     handler = DatabaseHandler();
-    await handler.initializeDB();
+    await handler.initializeDB(databasename);
     await handler.getTrno(widget.outletcd!).then((value) {
       setState(() {
         nexttrno = '${widget.outletcd}${value.first.trnonext}';

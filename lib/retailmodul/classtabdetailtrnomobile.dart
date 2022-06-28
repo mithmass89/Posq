@@ -30,7 +30,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     checkTransaction();
   }
 

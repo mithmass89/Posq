@@ -95,7 +95,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
     print(widget.balance < 75000 && widget.balance > 80000);
 
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
 
     widget.result = widget.balance;

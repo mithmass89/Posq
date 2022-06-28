@@ -170,7 +170,7 @@ class _EditproductState extends State<Editproduct>
                   });
                   print(pctnett);
                   handler = DatabaseHandler();
-                  handler.initializeDB().whenComplete(() async {
+                  handler.initializeDB(databasename).whenComplete(() async {
                     await handler.updateItems(Item(
                       outletcd: widget.productcode!.outletcd,
                       itemcd: widget.productcode!.itemcd,

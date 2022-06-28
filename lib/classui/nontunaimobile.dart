@@ -82,7 +82,6 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentMobileCreditCard(
-       
           datatrans: widget.datatrans,
           callback: widget.callback,
           zerobill: widget.zerobill,

@@ -218,7 +218,7 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   getSf(String user, String email) async {
@@ -598,7 +598,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
     print('outlet ${widget.outletinfo.outletcd}');
     formattedDate = formatter.format(now);
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     handler.getTrno(widget.outletinfo.outletcd).then((value) {
       setState(() {
         nexttrno = value.first.trnonext;
@@ -726,7 +726,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
         actions: <Widget>[
           ElevatedButton(
               onPressed: () {
-                handler.initializeDB().whenComplete(() async {
+                handler.initializeDB(databasename).whenComplete(() async {
                   await insertIafjrndt(formattedDate);
                 }).then((_) {
                   handler.retrievetotaltransaksi(widget.trno!).then((value) {
@@ -855,7 +855,7 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -934,7 +934,7 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   Future<dynamic> checkTrno() async {
@@ -953,7 +953,7 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
 
   getTrno() async {
     handler = DatabaseHandler();
-    await handler.initializeDB();
+    await handler.initializeDB(databasename);
     await handler.getTrno(widget.outletcd).then((value) {
       setState(() {
         trnolanjut = '${widget.outletcd}${value.first.trnonext}';
@@ -1049,7 +1049,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     checkTransaction();
   }
 
@@ -1324,7 +1324,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
     super.initState();
     formattedDate = formatter.format(now);
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   Future<int> insertIafjrnhd() async {
@@ -1483,7 +1483,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
     super.initState();
     formattedDate = formatter.format(now);
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   Future<int> insertIafjrnhd() async {
@@ -1658,7 +1658,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
     super.initState();
     formattedDate = formatter.format(now);
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   Future<int> insertIafjrnhd() async {

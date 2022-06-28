@@ -65,7 +65,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
     paymentapi = PaymentGate();
 

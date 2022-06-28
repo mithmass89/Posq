@@ -36,7 +36,7 @@ class _MainappsState extends State<Mainapps> {
 
   checkNewApp() async {
     this.handler = DatabaseHandler();
-    this.handler.initializeDB().whenComplete(() async {
+    this.handler.initializeDB(databasename).whenComplete(() async {
       await handler.retrieveUsers().then((value) {
         if (value.isNotEmpty) {
           setState(() {

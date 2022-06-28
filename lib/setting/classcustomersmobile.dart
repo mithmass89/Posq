@@ -22,7 +22,7 @@ class _ClassListCustomersState extends State<ClassListCustomers> {
     super.initState();
 
     this.handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   @override

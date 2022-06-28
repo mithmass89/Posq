@@ -34,7 +34,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
    
   }

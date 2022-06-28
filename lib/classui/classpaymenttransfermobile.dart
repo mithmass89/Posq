@@ -63,7 +63,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
     paymentapi = PaymentGate();
     print(widget.result);

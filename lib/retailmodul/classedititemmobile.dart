@@ -48,7 +48,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
     widget.editamount.text = widget.data.rateamt.toString();
     widget.editqty.text = qty.toString();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     getInfoItem();
     getInfoAdditional();
   }

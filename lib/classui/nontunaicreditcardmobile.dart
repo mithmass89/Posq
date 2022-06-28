@@ -68,7 +68,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
     paymentapi = PaymentGate();
     print(widget.result);

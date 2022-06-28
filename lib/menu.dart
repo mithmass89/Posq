@@ -51,7 +51,7 @@ class _MenuMainState extends State<MenuMain> {
 
   getTrno() async {
     handler = DatabaseHandler();
-    await handler.initializeDB();
+    await handler.initializeDB(databasename);
     await handler.getTrno(widget.pscd).then((value) {
       setState(() {
         trno = '${widget.pscd}${value.first.trnonext}';

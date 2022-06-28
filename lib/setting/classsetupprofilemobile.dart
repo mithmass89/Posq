@@ -156,8 +156,11 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                       height: MediaQuery.of(context).size.height * 0.05,
                       width: MediaQuery.of(context).size.width * 0.9,
                       onpressed: () {
+                        setState(() {
+                          databasename=outletcd.text;
+                        });
                         handler = DatabaseHandler();
-                        handler.initializeDB().whenComplete(() async {
+                        handler.initializeDB(databasename).whenComplete(() async {
                           await addOutlet().whenComplete(() async {
                             print(handler.retrieveUsers().then((value) {
                               print('${value.map((e) => e)}');

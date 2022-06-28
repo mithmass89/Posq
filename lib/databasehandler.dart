@@ -7,11 +7,16 @@ import 'package:path_provider/path_provider.dart'
 import 'package:posq/model.dart';
 import 'package:sqflite/sqflite.dart';
 
+ var databasename='posq';
+
 class DatabaseHandler {
-  Future<Database> initializeDB() async {
+  Future<Database> initializeDB(String dbname) async {
+    //orignal path is documentsDirectory
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    // path is only test
+      String path = await getDatabasesPath();
     return openDatabase(
-      join(documentsDirectory.path, 'posq.db'),
+      join(path, '${dbname}.db'),
       onCreate: (
         database,
         version,
@@ -53,6 +58,19 @@ class DatabaseHandler {
     );
   }
 
+  Future<void> deleteDB() async {
+   try{
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    print('deleting db');
+    // db=null;
+    deleteDatabase(documentsDirectory.path);
+    }catch( e){
+    print(e.toString());
+     }
+
+print('db is deleted');
+}
+
   Future<Database> upgradeDB() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'posq.db');
@@ -74,7 +92,7 @@ class DatabaseHandler {
 
   Future<int> insertOutlet(List<Outlet> users) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var user in users) {
       result = await db.insert('Outlet', user.toMap());
       print(user.outletname);
@@ -84,7 +102,7 @@ class DatabaseHandler {
 
   Future<int> insertCustomers(List<Costumers> users) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var user in users) {
       result = await db.insert('arscomp', user.toMap());
       print(user.compdesc);
@@ -94,7 +112,7 @@ class DatabaseHandler {
 
   Future<int> insertCustomersTrno(List<CostumersSavedManual> users) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var user in users) {
       result = await db.insert('customertemp', user.toMap());
     }
@@ -103,7 +121,7 @@ class DatabaseHandler {
 
   Future<int> registerItem(List<RegisterItem> items) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var user in items) {
       result = await db.insert('registeritem', user.toMap());
       print('item saved');
@@ -113,7 +131,7 @@ class DatabaseHandler {
 
   Future<int> insertItem(List<Item> items) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var item in items) {
       result = await db.insert('psspsitem', item.toMap());
       print(item.itemdesc);
@@ -123,7 +141,7 @@ class DatabaseHandler {
 
   Future<int> insertPromo(List<Promo> items) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var item in items) {
       result = await db.insert('promo', item.toMap());
       print(item.promodesc);
@@ -133,7 +151,7 @@ class DatabaseHandler {
 
   Future<int> insertIafjrndt(List<IafjrndtClass> items) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var item in items) {
       result = await db.insert('iafjrndt', item.toMap());
       print(items.last.statustrans);
@@ -143,7 +161,7 @@ class DatabaseHandler {
 
   Future<int> insertIafjrnhd(List<IafjrnhdClass> items) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var item in items) {
       result = await db.insert('iafjrnhd', item.toMap());
     }
@@ -153,7 +171,7 @@ class DatabaseHandler {
 
   Future<int> insertCtg(List<Ctg> ctg) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var ctgs in ctg) {
       result = await db.insert('ctg', ctgs.toMap());
       print(ctgs.ctgcd);
@@ -163,7 +181,7 @@ class DatabaseHandler {
 
   Future<int> insertCtgArscomp(List<Ctg> ctg) async {
     int result = 0;
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     for (var ctgs in ctg) {
       result = await db.insert('ctgarscomp', ctgs.toMap());
       print(ctgs.ctgcd);
@@ -172,27 +190,27 @@ class DatabaseHandler {
   }
 
   Future<List<Outlet>> retrieveUsers() async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.query('Outlet');
     return queryResult.map((e) => Outlet.fromMap(e)).toList();
   }
 
   Future<List<CostumersSavedManual>> retrieveGuestinfo(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult =
         await db.rawQuery("select * from customertemp where trno='${trno}' ");
     return queryResult.map((e) => CostumersSavedManual.fromMap(e)).toList();
   }
 
   Future<List<Promo>> retrievePromo(String query) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db
         .rawQuery('select * from promo where promodesc like "%$query%"');
     return queryResult.map((e) => Promo.fromMap(e)).toList();
   }
 
   Future<List<Costumers>> retrieveListCustomers(String query) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db
         .rawQuery('select * from arscomp where compdesc like "%$query%"');
     print(queryResult);
@@ -200,7 +218,7 @@ class DatabaseHandler {
   }
 
   Future<List<IafjrndtClass>> summarybill(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery('''
 select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as taxamt ,sum(x.serviceamt) as serviceamt ,sum(x.nettamt) as nettamt from
 (select trno,sum(rvnamt) as rvnamt ,"0" as  discamt, sum(taxamt) as taxamt,sum(serviceamt) as serviceamt,sum(nettamt) as nettamt from iafjrndt where trno="$trno" 
@@ -214,7 +232,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
   }
 
   Future<List<IafjrnhdClass>> summaryPayment(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         'select sum(totalamt) as totalamt from iafjrnhd where trno="$trno" and pymtmthd<>"Discount" and active="1"');
     if (queryResult.first.isEmpty) {
@@ -226,21 +244,21 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
   }
 
   Future<List<Ctg>> retrieveCTG() async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.query('Ctg');
 
     return queryResult.map((e) => Ctg.fromMap(e)).toList();
   }
 
   Future<List<Ctg>> retrieveCtgArscomp() async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.query('ctgarscomp');
 
     return queryResult.map((e) => Ctg.fromMap(e)).toList();
   }
 
   Future<List<Item>> retrieveItems(String query) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db
         .rawQuery("select * from psspsitem where itemdesc like '%$query%'");
 
@@ -248,7 +266,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
   }
 
   Future<List<Item>> getSpesifikItem(String itemcd) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult =
         await db.rawQuery("select * from psspsitem where itemcd='${itemcd}'");
     print('hasil checkitem : ${queryResult.length}');
@@ -260,7 +278,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
   }
 
   Future<List<IafjrndtClass>> retrievetotaltransaksi(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select trdt,count(trno) as trno,trdesc from iafjrndt where trno like '%$trno%' and active='1'");
 
@@ -268,7 +286,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
   }
 
   Future<List<IafjrndtClass>> checktotalItem(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select count(qty) as qty,trdesc from iafjrndt where trno like '%$trno%' and active='1'");
 
@@ -276,7 +294,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
   }
 
   Future<List<Item>> getItemFromBarcode(String itemcd) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult =
         await db.rawQuery("select * from psspsitem where itemcd='${itemcd}'");
 
@@ -284,7 +302,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
   }
 
   Future<List<IafjrndtClass>> checktotalAmountNett(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery('''
 select sum(x.nettamt) as nettamt from
 (select trno,sum(rvnamt) as rvnamt ,"0" as  discamt, sum(taxamt) as taxamt,sum(serviceamt) as serviceamt,sum(nettamt) as nettamt from iafjrndt where trno="$trno" and active='1'
@@ -298,7 +316,7 @@ select sum(x.nettamt) as nettamt from
   }
 
   Future<List<Outlet>> getTrno(String pscd) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select outletcd,outletname,telp,alamat,trnonext,kodepos,trnopynext from Outlet where outletcd='$pscd'");
 
@@ -306,7 +324,7 @@ select sum(x.nettamt) as nettamt from
   }
 
   Future<List<IafjrndtClass>> retrieveDetailIafjrndt(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select *  from iafjrndt where trno = '$trno' and active='1'");
     // print(queryResult.last['trno'].toString());
@@ -315,11 +333,11 @@ select sum(x.nettamt) as nettamt from
   }
 
   Future<List<IafjrndtClass>> retrieveDetailIafjrndt2(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        '''select trno,trdt,pscd,itemcd,qty,rvnamt,taxamt,serviceamt,nettamt  from iafjrndt where trno = '$trno' and active='1'
-        union 
-        select trno,trdt,pscd,'Discount' as itemcd,1 as qty,0 as rvnamt,0 as taxamt,0 as serviceamt,ftotamt as nettamt  from iafjrnhd where trno='$trno' and active='1' and pymtmthd='Discount'
+        '''select trdesc,trno,trdt,pscd,itemcd,qty,rvnamt,taxamt,serviceamt,nettamt  from iafjrndt where trno = '$trno' and active='1'
+        union
+        select '' as trdesc,trno,trdt,pscd,'Discount' as itemcd,1 as qty,0 as rvnamt,0 as taxamt,0 as serviceamt,ftotamt as nettamt  from iafjrnhd where trno='$trno' and active='1' and pymtmthd='Discount'
         ''');
     // print(queryResult);
 
@@ -327,7 +345,7 @@ select sum(x.nettamt) as nettamt from
   }
 
   Future<List<RegisterItem>> retrieveRegisterItem(String itemcd) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db
         .rawQuery("select *  from registeritem where itemcd = '$itemcd' ");
     print(queryResult.last['barcode'].toString());
@@ -336,7 +354,7 @@ select sum(x.nettamt) as nettamt from
   }
 
   Future<List<IafjrnhdClass>> retriveListHeader(String trdt) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         '''select iafjrndt.trno as trno,iafjrnhd.pymtmthd as pymtmthd,iafjrnhd.ftotamt as ftotamt from iafjrndt 
         left join iafjrnhd on iafjrnhd.trno=iafjrndt.trno  where iafjrndt.trdt='$trdt' and iafjrndt.active='1'  and pymtmthd<>'Discount'
@@ -347,7 +365,7 @@ select sum(x.nettamt) as nettamt from
   }
 
   Future<List<IafjrndtClass>> retriveSavedTransaction(String query) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         ''' select x.trdt,x.trno,z.trno as trno1,sum(x.nettamt) as nettamt,x.statustrans,x.time from iafjrndt x 
         left join iafjrnhd z on x.trno=z.trno where x.active='1' and (z.trno is null  or (pymtmthd='Discount'))   and (x.trno like '%$query%'  or x.statustrans like '%$query%') 
@@ -359,7 +377,7 @@ select sum(x.nettamt) as nettamt from
   }
 
   Future<List<IafjrndtClass>> retriveSavedTransaction2(String query) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery('''
 select * from (select x.trdt as trdt,x.trno as trno, sum(x.nettamt) as nettamt,x.statustrans as statustrans,x.time as time from 
        ( select trdt,trno,sum(nettamt) as nettamt,statustrans,time from iafjrndt where (trno like '%$query%' or statustrans like '%$query%') and active='1'  group by trno
@@ -380,7 +398,7 @@ where x.nettamt<>0
   }
 
   Future<List<IafjrnhdClass>> retriveListDetailPayment(String trno) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select * from iafjrnhd where trno='${trno}' and active='1' and pymtmthd<>'Discount'");
     print(queryResult);
@@ -389,7 +407,7 @@ where x.nettamt<>0
   }
 
   Future<void> deleteUser(int id) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'Outlet',
       where: "id = ?",
@@ -398,7 +416,7 @@ where x.nettamt<>0
   }
 
   Future<void> deleteCustomers(int id) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'arscomp',
       where: "id = ?",
@@ -408,7 +426,7 @@ where x.nettamt<>0
 
 ////update Class///////
   Future<void> updateItems(Item items) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE psspsitem 
     SET outletcd=?,itemcd=?,itemdesc = ?, description = ? ,costamt=?,slsamt = ?,slsnett=?,taxpct=?,svchgpct=?,revenuecoa=?,taxcoa=?,svchgcoa=?,slsfl=?,costcoa=?,ctg=?,stock=?,pathimage=?
@@ -436,7 +454,7 @@ where x.nettamt<>0
   }
 
   Future<void> activeZeroiafjrndt(IafjrndtClass iafjrndt) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE iafjrndt 
     SET active='0' WHERE id = ?
@@ -446,7 +464,7 @@ where x.nettamt<>0
   }
 
   Future<void> activeZeroiafjrndttrno(IafjrndtClass iafjrndt) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE iafjrndt 
     SET active=? WHERE trno = ?
@@ -457,7 +475,7 @@ where x.nettamt<>0
   }
 
   Future<void> activeZeroiafjrnhdtrno(IafjrnhdClass iafjrnhd) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE iafjrnhd 
     SET active=? WHERE trno = ?
@@ -468,7 +486,7 @@ where x.nettamt<>0
   }
 
   Future<void> updateTrnoNext(Outlet iafjrndt) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE Outlet 
     SET trnonext=? WHERE outletcd = ?
@@ -479,7 +497,7 @@ where x.nettamt<>0
   }
 
   Future<void> updateArscomp(Costumers pelanggan) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE arscomp 
     SET compdesc=?,address=?,email=?,telp=?,pic=?,active=? WHERE compcd =?
@@ -495,7 +513,7 @@ where x.nettamt<>0
   }
 
   Future<void> updatePromo(Promo promo) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE promo 
     SET promocd=?,promodesc=?,amount=?,pct=?,type=?,maxdisc=?,mindisc=? WHERE id =?
@@ -512,7 +530,7 @@ where x.nettamt<>0
   }
 
   Future<void> updateIafjrndtitem(IafjrndtClass iafjrndt) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE iafjrndt 
     SET itemcd=?,trdesc=?,qty=?,rateamt=?,discamt=?,discpct=?,rvnamt=?,taxamt=?,serviceamt=?,nettamt=?,taxpct=?,servicepct=? WHERE id = ?
@@ -535,7 +553,7 @@ where x.nettamt<>0
   }
 
   Future<void> deleteCTG(int id) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'ctg',
       where: "id = ?",
@@ -544,7 +562,7 @@ where x.nettamt<>0
   }
 
   Future<void> deleteItem(int id) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'psspsitem',
       where: "id = ?",
@@ -553,7 +571,7 @@ where x.nettamt<>0
   }
 
   Future<void> deleteiafjrndtItems(int id) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'iafjrndt',
       where: "id = ?",
@@ -562,7 +580,7 @@ where x.nettamt<>0
   }
 
   Future<void> deletepayment(int id) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'iafjrnhd',
       where: "id = ?",
@@ -571,7 +589,7 @@ where x.nettamt<>0
   }
 
   Future<void> deletepaPromo(String trno) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'iafjrnhd',
       where: "trno = ?",
@@ -580,7 +598,7 @@ where x.nettamt<>0
   }
 
   Future<void> deletePromo(int id) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     await db.delete(
       'promo',
       where: "id = ?",
@@ -589,7 +607,7 @@ where x.nettamt<>0
   }
 
   Future<void> deletePromoActive(String trno) async {
-    final db = await initializeDB();
+    final db = await initializeDB(databasename);
     print(trno);
     await db.rawDelete('delete from iafjrnhd where trno="$trno"');
   }
@@ -597,7 +615,7 @@ where x.nettamt<>0
   Future queryCheckOutlet() async {
     var maxid;
     // get a reference to the database
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
 
     // raw query
     List<Map> result =
@@ -611,7 +629,7 @@ where x.nettamt<>0
   Future queryCheckItem() async {
     var maxid;
     // get a reference to the database
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
 
     // raw query
     List<Map> result =
@@ -625,7 +643,7 @@ where x.nettamt<>0
   Future queryCheckRegister(String barcode) async {
     var maxid;
     // get a reference to the database
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
 
     // raw query
     List<Map> result = await db
@@ -644,7 +662,7 @@ where x.nettamt<>0
   }
 
   Future checkPendingTransaction(String query) async {
-    final Database db = await initializeDB();
+    final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
 '''
 select * from (select x.trdt as trdt,x.trno as trno, sum(x.nettamt) as nettamt,x.statustrans as statustrans,x.time as time from 

@@ -29,7 +29,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
   void initState() {
     super.initState();
     this.handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     handler.retrieveItems(query).then((value) {
       if (value.length != 0) {
         setState(() {

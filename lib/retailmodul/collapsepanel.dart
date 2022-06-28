@@ -45,7 +45,7 @@ class _CollapsePanelRetailState extends State<CollapsePanelRetail> {
     super.initState();
     // widget.pc.open();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     trno = widget.trno.toString();
     getDataSlide();
     print('trno on collapse ${widget.trno.toString()}');

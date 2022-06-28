@@ -42,11 +42,11 @@ class _ClassEditCustomersState extends State<ClassEditCustomers> {
     email!.text = widget.listdata.email!;
     pic!.text = widget.listdata.pic!;
     this.handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
   }
 
   updateCustomers() async {
-    await handler.initializeDB();
+    await handler.initializeDB(databasename);
     handler.updateArscomp(Costumers(
         compdesc: compdesc!.text,
         address: address!.text,

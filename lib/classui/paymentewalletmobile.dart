@@ -59,7 +59,7 @@ class _PaymentEwalletMobileState extends State<PaymentEwalletMobile> {
     super.initState();
     handler = DatabaseHandler();
 
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     paymentapi = PaymentGate();
     formattedDate = formatter.format(now);
     List.generate(

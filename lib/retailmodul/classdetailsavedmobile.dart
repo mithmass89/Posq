@@ -37,7 +37,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     _controller = TabController(length: 2, vsync: this);
   }
 

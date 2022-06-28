@@ -67,7 +67,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
     trno = widget.trno;
     formattedDate = formatter.format(now);
     getDataSlide();
@@ -76,7 +76,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
 
   getDataSlide() async {
     handler = DatabaseHandler();
-    await handler.initializeDB();
+    await handler.initializeDB(databasename);
     handler.retrieveDetailIafjrndt(widget.trno.toString()).then((isi) {
       if (isi.isNotEmpty) {
         setState(() {

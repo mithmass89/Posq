@@ -94,7 +94,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       } else {
         ///checkitem
         handler = DatabaseHandler();
-        handler.initializeDB();
+        handler.initializeDB(databasename);
         handler.checktotalItem(value.trno.toString()).then((value) {
           setState(() {
             item = value.first.qty;
@@ -162,7 +162,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 //terakir sampai sini / pengen refresh
   getDataSlide() async {
     handler = DatabaseHandler();
-    await handler.initializeDB();
+    await handler.initializeDB(databasename);
     handler.retrieveDetailIafjrndt(trno.toString()).then((isi) {
       if (isi.isNotEmpty) {
         setState(() {
@@ -232,7 +232,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     print(_scrollisanimated);
     ToastContext().init(context);
     handler = DatabaseHandler();
-    handler.initializeDB();
+    handler.initializeDB(databasename);
 
     formattedDate = formatter.format(now);
     checkPending();
@@ -283,7 +283,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
   getTrno() async {
     handler = DatabaseHandler();
-    await handler.initializeDB();
+    await handler.initializeDB(databasename);
     await handler.getTrno(widget.pscd).then((value) {
       setState(() {
         trno = '${widget.pscd}${value.first.trnonext}';
