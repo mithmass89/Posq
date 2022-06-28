@@ -18,8 +18,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DialogClass1 extends StatefulWidget {
+  final bool fromreopen;
   const DialogClass1({
     Key? key,
+    required this.fromreopen,
   }) : super(key: key);
 
   @override
@@ -678,7 +680,11 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
       taxpct: 0,
       servicepct: 0,
       statustrans: 'prosess',
-      time :now.hour.toString() + ":" + now.minute.toString() + ":" + now.second.toString(),
+      time: now.hour.toString() +
+          ":" +
+          now.minute.toString() +
+          ":" +
+          now.second.toString(),
     );
     List<IafjrndtClass> listiafjrndt = [iafjrndt];
     return await handler.insertIafjrndt(listiafjrndt);
@@ -905,11 +911,14 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
 class DialogClassCancelorder extends StatefulWidget {
   final String trno;
   final String outletcd;
- final  Outlet outletinfo;
+  final Outlet outletinfo;
+
   const DialogClassCancelorder({
     Key? key,
     required this.trno,
-    required this.outletcd,required this.outletinfo,
+    required this.outletcd,
+    required this.outletinfo,
+ 
   }) : super(key: key);
 
   @override
@@ -920,7 +929,6 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
   late DatabaseHandler handler;
   int? trno;
   String? trnolanjut;
- 
 
   @override
   void initState() {
@@ -929,9 +937,7 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
     handler.initializeDB();
   }
 
-
-
-    Future<dynamic> checkTrno() async {
+  Future<dynamic> checkTrno() async {
     await handler.getTrno(widget.outletcd.toString()).then((value) {
       setState(() {
         trno = value.first.trnonext;
@@ -945,7 +951,7 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
         Outlet(outletcd: widget.outletcd.toString(), trnonext: trno! + 1));
   }
 
-    getTrno() async {
+  getTrno() async {
     handler = DatabaseHandler();
     await handler.initializeDB();
     await handler.getTrno(widget.outletcd).then((value) {
@@ -954,7 +960,6 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
       });
     });
   }
-
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -983,7 +988,7 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
         actions: <Widget>[
           TextButton(
               onPressed: () async {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(false);
               },
               child: Text('Batal')),
           TextButton(
@@ -992,22 +997,23 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
                     IafjrndtClass(active: '0', trno: widget.trno));
                 await handler.activeZeroiafjrnhdtrno(
                     IafjrnhdClass(active: '0', trno: widget.trno));
-               
+
                 // Navigator.of(context).pushNamedAndRemoveUntil(
                 //     '/', (Route<dynamic> route) => false);
-                 await checkTrno().whenComplete(() async {
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.remove('savecostmrs');
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => ClassRetailMainMobile(
-                                          pscd: widget.outletcd,
-                                          trno:trnolanjut,
-                                          outletinfo: widget.outletinfo,
-                                          qty: 0,
-                                        )),
-                                (Route<dynamic> route) => false);
-                          });
+                await checkTrno().whenComplete(() async {
+                  await  getTrno();
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('savecostmrs');
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => ClassRetailMainMobile(
+                                pscd: widget.outletcd,
+                                trno: trnolanjut,
+                                outletinfo: widget.outletinfo,
+                                qty: 0,
+                              )),
+                      (Route<dynamic> route) => false);
+                });
               },
               child: Text('OK!'))
         ],
@@ -1020,12 +1026,14 @@ class DialogClassReopen extends StatefulWidget {
   final String trno;
   final Outlet outletinfo;
   final String pscd;
+  final bool fromreopen;
 
   const DialogClassReopen({
     Key? key,
     required this.trno,
     required this.outletinfo,
     required this.pscd,
+    required this.fromreopen,
   }) : super(key: key);
 
   @override
@@ -1243,6 +1251,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ClassRetailMainMobile(
+   
                             outletinfo: widget.outletinfo,
                             pscd: widget.pscd,
                             qty: 0,
@@ -1281,6 +1290,7 @@ class DialogClassEwallet extends StatefulWidget {
   final String? compdesc;
   final String? url;
   final bool? fromtrfbank;
+
   DialogClassEwallet({
     Key? key,
     required this.trno,
@@ -1294,6 +1304,7 @@ class DialogClassEwallet extends StatefulWidget {
     required this.compdesc,
     this.url,
     this.fromtrfbank,
+  
   }) : super(key: key);
 
   @override
@@ -1398,6 +1409,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                      
                               frombanktransfer: false,
                               cash: false,
                               outletinfo: widget.outletinfo,
@@ -1433,6 +1445,7 @@ class DialogClassBankTransfer extends StatefulWidget {
   final String? transactionstatus;
   final num? grossmaount;
   final String? paymenttype;
+
   DialogClassBankTransfer({
     Key? key,
     required this.trno,
@@ -1449,6 +1462,7 @@ class DialogClassBankTransfer extends StatefulWidget {
     this.transactionstatus,
     this.grossmaount,
     required this.paymenttype,
+ 
   }) : super(key: key);
 
   @override
@@ -1569,6 +1583,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                  
                               frombanktransfer: true,
                               virtualaccount: widget.virtualaccount,
                               cash: false,
@@ -1605,6 +1620,7 @@ class DialogClassMandiribiller extends StatefulWidget {
   final String? transactionstatus;
   final num? grossmaount;
   final String? paymenttype;
+
   DialogClassMandiribiller({
     Key? key,
     required this.trno,
@@ -1621,6 +1637,7 @@ class DialogClassMandiribiller extends StatefulWidget {
     this.transactionstatus,
     this.grossmaount,
     required this.paymenttype,
+
   }) : super(key: key);
 
   @override
@@ -1767,6 +1784,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                
                               frombanktransfer: true,
                               cash: false,
                               outletinfo: widget.outletinfo,

@@ -23,6 +23,7 @@ class PaymentEwalletMobile extends StatefulWidget {
   final Outlet? outletinfo;
   final bool? discbyamount;
   final List<IafjrndtClass> datatrans;
+
   PaymentEwalletMobile(
       {Key? key,
       required this.trno,
@@ -32,7 +33,7 @@ class PaymentEwalletMobile extends StatefulWidget {
       this.outletname,
       this.outletinfo,
       this.discbyamount,
-      required this.datatrans})
+      required this.datatrans, })
       : super(key: key);
 
   @override
@@ -154,6 +155,7 @@ class _PaymentEwalletMobileState extends State<PaymentEwalletMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassEwallet(
+                            
                                 url: qr,
                                 compcd: compcd,
                                 compdesc: compdesc,
@@ -203,6 +205,7 @@ class _PaymentEwalletMobileState extends State<PaymentEwalletMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassEwallet(
+                              
                                 url: qr,
                                 compcd: compcd,
                                 compdesc: compdesc,
@@ -251,6 +254,7 @@ class _PaymentEwalletMobileState extends State<PaymentEwalletMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassEwallet(
+                              
                                 url: qr,
                                 compcd: compcd,
                                 compdesc: compdesc,
@@ -298,6 +302,7 @@ class _PaymentEwalletMobileState extends State<PaymentEwalletMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassEwallet(
+                             
                                 url: qr,
                                 compcd: compcd,
                                 compdesc: compdesc,
@@ -344,6 +349,7 @@ class _PaymentEwalletMobileState extends State<PaymentEwalletMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassEwallet(
+                      
                                 compcd: compcd,
                                 compdesc: compdesc,
                                 result: widget.result,

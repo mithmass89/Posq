@@ -178,7 +178,9 @@ class _AppsMobileState extends State<AppsMobile> {
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DialogClass1();
+                                return DialogClass1(
+                                  fromreopen: false,
+                                );
                               });
                         },
                       )

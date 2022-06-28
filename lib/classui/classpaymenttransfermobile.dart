@@ -23,6 +23,7 @@ class PaymentTransferMobile extends StatefulWidget {
   final Outlet? outletinfo;
   final bool? discbyamount;
   final List<IafjrndtClass> datatrans;
+
   PaymentTransferMobile(
       {Key? key,
       required this.trno,
@@ -161,6 +162,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                              
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -226,6 +228,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                            
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -280,6 +283,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+             
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -340,6 +344,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassMandiribiller(
+                        
                                 paymenttype: 'Account',
                                 bill_key: bill_key,
                                 biller_code: biller_code,
@@ -392,6 +397,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                       
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,

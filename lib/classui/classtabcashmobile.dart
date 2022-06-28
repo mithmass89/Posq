@@ -21,6 +21,7 @@ class PaymentCashMobile extends StatefulWidget {
   late num? hasildiscpct;
   final int? balance;
   final String? outletname;
+
   PaymentCashMobile({
     Key? key,
     this.balance,
@@ -281,6 +282,7 @@ class _PaymentCashMobileState extends State<PaymentCashMobile> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       ClassPaymetSucsessMobile(
+                                
                                         frombanktransfer: false,
                                         cash: true,
                                         outletinfo: widget.outletinfo,
@@ -303,6 +305,7 @@ class _PaymentCashMobileState extends State<PaymentCashMobile> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       ClassPaymetSucsessMobile(
+                                  
                                         frombanktransfer: false,
                                         cash: true,
                                         outletinfo: widget.outletinfo,

@@ -25,27 +25,27 @@ class PaymentDebitCardMobile extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   late bool zerobill;
   final Function callback;
-  PaymentDebitCardMobile(
-      {Key? key,
-      required this.trno,
-      required this.pscd,
-      required this.balance,
-      this.outletname,
-      this.outletinfo,
-      this.discbyamount,
-      required this.datatrans,
-      required this.zerobill,
-      this.result,
-      required this.callback})
-      : super(key: key);
+
+  PaymentDebitCardMobile({
+    Key? key,
+    required this.trno,
+    required this.pscd,
+    required this.balance,
+    this.outletname,
+    this.outletinfo,
+    this.discbyamount,
+    required this.datatrans,
+    required this.zerobill,
+    this.result,
+    required this.callback,
+  }) : super(key: key);
 
   @override
   State<PaymentDebitCardMobile> createState() => _PaymentDebitCardMobileState();
 }
 
 class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
-
-    late DatabaseHandler handler;
+  late DatabaseHandler handler;
   var formattedDate;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
@@ -63,8 +63,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
   String guestname = 'None';
   List<Midtransitem> listitem = [];
 
-
- @override
+  @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
@@ -98,7 +97,6 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -406,9 +404,8 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                     });
                   },
                 ),
-                 ButtonClassPayment2(
+                ButtonClassPayment2(
                   name: 'Lainnya',
-              
                   height: MediaQuery.of(context).size.height * 0.1,
                   width: MediaQuery.of(context).size.width * 0.1,
                   onpressed: () async {

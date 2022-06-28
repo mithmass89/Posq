@@ -26,7 +26,7 @@ class PaymentMobileClass extends StatefulWidget {
       required this.balance,
       required this.outletname,
       required this.outletinfo,
-      required this.datatrans})
+      required this.datatrans,})
       : super(key: key);
 
   @override
@@ -339,6 +339,7 @@ class _PaymentMobileClassState extends State<PaymentMobileClass>
                       width: MediaQuery.of(context).size.width * 0.85,
                       child: TabBarView(controller: controller, children: [
                         PaymentCashMobile(
+                  
                           outletinfo: widget.outletinfo!,
                           outletname: widget.outletname,
                           discbyamount: discbyamount,
@@ -353,6 +354,7 @@ class _PaymentMobileClassState extends State<PaymentMobileClass>
                           balance: widget.balance.toInt(),
                         ),
                         PaymentEwalletMobile(
+                  
                           datatrans: widget.datatrans,
                           result: result,
                           discbyamount: discbyamount,
@@ -363,6 +365,7 @@ class _PaymentMobileClassState extends State<PaymentMobileClass>
                           balance: widget.balance.toInt(),
                         ),
                         PaymentTransferMobile(
+                     
                           datatrans: widget.datatrans,
                           result: result,
                           discbyamount: discbyamount,

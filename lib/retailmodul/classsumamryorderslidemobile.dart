@@ -16,6 +16,7 @@ class SummaryOrderSlidemobile extends StatefulWidget {
   final Function? updatedata;
   final VoidCallback? refreshdata;
    final  Outlet outletinfo;
+
   SummaryOrderSlidemobile(
       {Key? key,
       required this.trno,
@@ -95,7 +96,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                       title: Text('Discount'),
                       trailing: x.first.discamt == 0
                           ? Container(
-                              width: MediaQuery.of(context).size.width * 0.05,
+                              width: MediaQuery.of(context).size.width * 0.06,
                               child: TextButton(
                                   onPressed: () async {
                                     var hasil = await Navigator.push(
@@ -135,7 +136,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                       x.first.discamt, 0)),
                                   Container(
                                       width: MediaQuery.of(context).size.width *
-                                          0.05,
+                                          0.065,
                                       child: TextButton(
                                           onPressed: () async {
                                             await handler
@@ -187,6 +188,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                         await showDialog(
                             context: context,
                             builder: (_) => DialogClassCancelorder(
+                      
                               outletinfo: widget.outletinfo,
                                 outletcd: widget.pscd!,
                                 trno: x.first.trno!)).then((_) {

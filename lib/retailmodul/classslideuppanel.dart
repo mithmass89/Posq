@@ -26,6 +26,7 @@ class SlideUpPanel extends StatefulWidget {
   final bool animated;
   late num? sum;
 
+
   SlideUpPanel(
       {Key? key,
       required this.controllers,
@@ -358,6 +359,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
+                
                     outletinfo: widget.outletinfo,
                     refreshdata: widget.refreshdata,
                     updatedata:(){

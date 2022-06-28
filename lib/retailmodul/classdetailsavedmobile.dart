@@ -98,6 +98,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
                       context,
                       MaterialPageRoute(
                           builder: (context) => ClassRetailMainMobile(
+                  
                                 outletinfo: widget.outletinfo,
                                 pscd: widget.pscd,
                                 qty: 0,

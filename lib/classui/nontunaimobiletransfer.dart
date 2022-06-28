@@ -23,6 +23,7 @@ class NonTunaiMobileTransfer extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   late bool zerobill;
   final Function callback;
+
   NonTunaiMobileTransfer(
       {Key? key,
       required this.trno,
@@ -158,6 +159,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                           
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -219,6 +221,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                           
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -270,6 +273,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                              
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -327,6 +331,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassMandiribiller(
+                         
                                 paymenttype: 'Account',
                                 bill_key: bill_key,
                                 biller_code: biller_code,
@@ -376,6 +381,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                               
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -428,6 +434,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                             
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,

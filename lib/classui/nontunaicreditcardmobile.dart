@@ -25,6 +25,7 @@ class PaymentMobileCreditCard extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   late bool zerobill;
   final Function callback;
+
   PaymentMobileCreditCard({
     Key? key,
     required this.trno,
@@ -36,7 +37,7 @@ class PaymentMobileCreditCard extends StatefulWidget {
     required this.datatrans,
     this.result,
     required this.zerobill,
-    required this.callback,
+    required this.callback
   }) : super(key: key);
 
   @override
@@ -160,6 +161,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                        
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -221,6 +223,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                         
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -272,6 +275,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                        
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -329,6 +333,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassMandiribiller(
+                          
                                 paymenttype: 'Account',
                                 bill_key: bill_key,
                                 biller_code: biller_code,
@@ -378,6 +383,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                        
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -430,6 +436,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                             
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,

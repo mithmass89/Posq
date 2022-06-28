@@ -23,18 +23,19 @@ class NonTunaiMobile extends StatefulWidget {
   late bool zerobill;
   final Function callback;
   final List<IafjrndtClass> datatrans;
-  NonTunaiMobile(
-      {Key? key,
-      required this.amountcash,
-      required this.balance,
-      this.trno,
-      this.pscd,
-      required this.zerobill,
-      required this.result,
-      required this.outletinfo,
-      required this.callback,
-      required this.datatrans})
-      : super(key: key);
+
+  NonTunaiMobile({
+    Key? key,
+    required this.amountcash,
+    required this.balance,
+    this.trno,
+    this.pscd,
+    required this.zerobill,
+    required this.result,
+    required this.outletinfo,
+    required this.callback,
+    required this.datatrans,
+  }) : super(key: key);
 
   @override
   State<NonTunaiMobile> createState() => _NonTunaiMobileState();
@@ -57,6 +58,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      shrinkWrap: true,
       children: [
         EWalletClassNonTunai(
           datatrans: widget.datatrans,
@@ -80,6 +82,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentMobileCreditCard(
+       
           datatrans: widget.datatrans,
           callback: widget.callback,
           zerobill: widget.zerobill,

@@ -31,6 +31,7 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
   bool haspayment = false;
   TabController? _controller;
   num? amount = 0;
+  int? trnolanjut;
 
   @override
   void initState() {
@@ -55,6 +56,20 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
     });
   }
 
+  Future<dynamic> checkTrno() async {
+    await handler.getTrno(widget.pscd.toString()).then((value) {
+      setState(() {
+        trnolanjut = value.first.trnonext;
+      });
+    });
+    await updateTrnonext();
+  }
+
+  updateTrnonext() async {
+    await handler.updateTrnoNext(
+        Outlet(outletcd: widget.pscd.toString(), trnonext: trnolanjut! + 1));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +87,6 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
             width: MediaQuery.of(context).size.width * 0.95,
             height: MediaQuery.of(context).size.width * 0.05,
           ),
-       
           Container(
             width: MediaQuery.of(context).size.width * 0.95,
             height: MediaQuery.of(context).size.width * 0.12,
@@ -107,10 +121,12 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
             children: [
               ButtonNoIcon(
                 onpressed: () async {
+                  await checkTrno();
                   await Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ClassRetailMainMobile(
+                                
                                 outletinfo: widget.outletinfo,
                                 pscd: widget.pscd,
                                 qty: 0,

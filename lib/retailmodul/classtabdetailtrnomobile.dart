@@ -113,7 +113,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                       dense: true,
                                       title: Text('Total'),
                                       trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.nettamt, 0)}'),
+                                          '${CurrencyFormat.convertToIdr(x.first.rvnamt, 0)}'),
                                     ),
                                     ListTile(
                                       visualDensity: VisualDensity(

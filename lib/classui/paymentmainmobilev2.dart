@@ -20,16 +20,17 @@ class PaymentV2MobileClass extends StatefulWidget {
   final String? outletname;
   final Outlet? outletinfo;
   final List<IafjrndtClass> datatrans;
-  const PaymentV2MobileClass(
-      {Key? key,
-      required this.trno,
-      required this.pscd,
-      required this.trdt,
-      required this.balance,
-      this.outletname,
-      this.outletinfo,
-      required this.datatrans})
-      : super(key: key);
+
+  const PaymentV2MobileClass({
+    Key? key,
+    required this.trno,
+    required this.pscd,
+    required this.trdt,
+    required this.balance,
+    this.outletname,
+    this.outletinfo,
+    required this.datatrans,
+  }) : super(key: key);
 
   @override
   State<PaymentV2MobileClass> createState() => _PaymentV2MobileClassState();
@@ -252,7 +253,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                         ),
                         NonTunaiMobile(
                           // datatrans: widget.datatrans,
-                          datatrans:listdata,
+                          datatrans: listdata,
                           callback: checkbalance,
                           zerobill: zerobill,
                           result: result!,

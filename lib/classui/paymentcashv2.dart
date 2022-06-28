@@ -245,6 +245,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ClassPaymetSucsessMobile(
+                           
                                       frombanktransfer: false,
                                       cash: true,
                                       outletinfo: widget.outletinfo,

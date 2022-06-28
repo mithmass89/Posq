@@ -80,7 +80,7 @@ class _ClassSavedTransactionMobileState
                 typekeyboard: TextInputType.text),
           ),
           FutureBuilder(
-              future: this.handler.retriveSavedTransaction(query),
+              future: this.handler.retriveSavedTransaction2(query),
               builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
                 var x = snapshot.data ?? [];
                 if (x.isNotEmpty) {

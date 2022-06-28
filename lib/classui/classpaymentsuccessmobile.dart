@@ -22,6 +22,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
   final Outlet? outletinfo;
   final bool? cash;
 
+
   const ClassPaymetSucsessMobile({
     Key? key,
     required this.trno,

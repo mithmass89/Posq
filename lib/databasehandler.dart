@@ -350,9 +350,30 @@ select sum(x.nettamt) as nettamt from
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         ''' select x.trdt,x.trno,z.trno as trno1,sum(x.nettamt) as nettamt,x.statustrans,x.time from iafjrndt x 
-        left join iafjrnhd z on x.trno=z.trno where x.active='1' and (z.trno is null  or (pymtmthd='Discount'))  and (x.trno like '%$query%'  or x.statustrans like '%$query%') 
+        left join iafjrnhd z on x.trno=z.trno where x.active='1' and (z.trno is null  or (pymtmthd='Discount'))   and (x.trno like '%$query%'  or x.statustrans like '%$query%') 
         
           group by x.trno''');
+    print(queryResult);
+
+    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+  }
+
+  Future<List<IafjrndtClass>> retriveSavedTransaction2(String query) async {
+    final Database db = await initializeDB();
+    final List<Map<String, Object?>> queryResult = await db.rawQuery('''
+select * from (select x.trdt as trdt,x.trno as trno, sum(x.nettamt) as nettamt,x.statustrans as statustrans,x.time as time from 
+       ( select trdt,trno,sum(nettamt) as nettamt,statustrans,time from iafjrndt where (trno like '%$query%' or statustrans like '%$query%') and active='1'  group by trno
+        union
+        select trdt,trno,sum(totalamt) as nettamt,'' as statustrans,'' as time from iafjrnhd where (trno like '%$query%' or statustrans like '%$query%') and active='1' and pymtmthd='Discount' group by trno
+        union
+        select trdt,trno,sum(-totalamt) as nettamt,'' as statustrans,'' as time from iafjrnhd where (trno like '%$query%' or statustrans like '%$query%') and active='1' and pymtmthd<>'Discount' group by trno)X
+
+    
+group by x.trno)X
+
+where x.nettamt<>0
+      
+          ''');
     print(queryResult);
 
     return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
@@ -412,7 +433,6 @@ select sum(x.nettamt) as nettamt from
       items.pathimage,
       items.id
     ]);
-
   }
 
   Future<void> activeZeroiafjrndt(IafjrndtClass iafjrndt) async {
@@ -626,10 +646,20 @@ select sum(x.nettamt) as nettamt from
   Future checkPendingTransaction(String query) async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-         ''' select x.trdt,x.trno,z.trno as trno1,sum(x.nettamt) as nettamt,x.statustrans,x.time from iafjrndt x 
-        left join iafjrnhd z on x.trno=z.trno where x.active='1' and (z.trno is null  or pymtmthd='Discount')  and (x.trno like '%$query%'  or x.statustrans like '%$query%') 
-        
-          group by x.trno''');
+'''
+select * from (select x.trdt as trdt,x.trno as trno, sum(x.nettamt) as nettamt,x.statustrans as statustrans,x.time as time from 
+       ( select trdt,trno,sum(nettamt) as nettamt,statustrans,time from iafjrndt where (trno like '%$query%' or statustrans like '%$query%') and active='1'  group by trno
+        union
+        select trdt,trno,sum(totalamt) as nettamt,'' as statustrans,'' as time from iafjrnhd where (trno like '%$query%' or statustrans like '%$query%') and active='1' and pymtmthd='Discount' group by trno
+        union
+        select trdt,trno,sum(-totalamt) as nettamt,'' as statustrans,'' as time from iafjrnhd where (trno like '%$query%' or statustrans like '%$query%') and active='1' and pymtmthd<>'Discount' group by trno)X
+
+    
+group by x.trno)X
+
+where x.nettamt<>0
+      
+          ''');
     print(queryResult.length);
 
     return queryResult.length;

@@ -44,6 +44,7 @@ class ClassRetailMainMobile extends StatefulWidget {
   final int qty;
   late String? trno;
 
+
   ClassRetailMainMobile(
       {Key? key,
       required this.pscd,
@@ -86,7 +87,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
   set string(IafjrndtClass value) {
     setState(() {
-      trno = value.trno;
+      trno = value.trno??widget.trno;
       if (value.trno == null) {
         item = 0;
         sum = 0;
@@ -613,6 +614,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       switch (_scrollisanimated) {
                         case true:
                           return SlideUpPanel(
+                       
                             sum: sum,
                             animated: _scrollisanimated,
                             outletinfo: Outlet(
@@ -731,6 +733,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 MaterialPageRoute(
                                     builder: (context) => ClassRetailMainMobile(
                                           pscd: widget.outletinfo.outletcd,
+                                 
                                           trno: trno,
                                           outletinfo: widget.outletinfo,
                                           qty: 0,
@@ -764,6 +767,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           context,
                           MaterialPageRoute(
                               builder: (context) => PaymentV2MobileClass(
+                                 
                                     datatrans: listdata!,
                                     outletinfo: widget.outletinfo,
                                     balance: sum.toInt(),

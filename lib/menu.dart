@@ -79,6 +79,7 @@ class _MenuMainState extends State<MenuMain> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ClassRetailMainMobile(
+                
                           trno: trno,
                           qty: 0,
                           pscd: widget.pscd.toString(),

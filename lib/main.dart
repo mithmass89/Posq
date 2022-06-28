@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (context) => Mainapps(),
         '/RetailMain': (context) => ClassRetailMainMobile(
+     
               outletinfo: Outlet(outletcd: ''),
               pscd: '',
               qty: 0,
@@ -59,6 +60,7 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
             builder: (_) => ClassRetailMainMobile(
+          
                   outletinfo: Outlet(outletcd: ''),
                   pscd: '',
                   qty: 0,
@@ -66,6 +68,7 @@ class RouteGenerator {
       case '/RetailMain':
         return MaterialPageRoute(
             builder: (_) => ClassRetailMainMobile(
+              
                   outletinfo: Outlet(outletcd: ''),
                   pscd: '',
                   qty: 0,
