@@ -1,22 +1,31 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/model.dart';
 import 'package:posq/setting/classdetailkelolaproduct.dart';
 
 class ClassKelolaStockMobile extends StatefulWidget {
-  final TextEditingController stock;
-  final TextEditingController adjusmentplus;
-  final TextEditingController adjusmentmin;
+  late TextEditingController stocknow;
+  final TextEditingController adjusmentstock;
   final TextEditingController minproduct;
   final num qty;
   final TextEditingController catatan;
+  late Gntrantp? gntrantp;
+  late int trackstock;
+  final Item? data;
+  final Function? trackstockcallback;
 
   ClassKelolaStockMobile(
       {Key? key,
-      required this.stock,
+      required this.stocknow,
       required this.qty,
-      required this.adjusmentplus,
-      required this.adjusmentmin,
-      required this.minproduct,required this.catatan})
+      required this.minproduct,
+      required this.catatan,
+      required this.adjusmentstock,
+      required this.trackstock,
+      this.gntrantp,
+      required this.data,required this.trackstockcallback})
       : super(key: key);
 
   @override
@@ -25,6 +34,31 @@ class ClassKelolaStockMobile extends StatefulWidget {
 
 class _ClassKelolaStockMobileState extends State<ClassKelolaStockMobile> {
   bool seedetail = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkproductDetail();
+  }
+
+  checkproductDetail() {
+    if (widget.data != null) {
+      setState(() {
+        seedetail = true;
+      });
+    }
+    if (widget.trackstock == 1) {
+      setState(() {
+        seedetail = true;
+      });
+    }else{
+     setState(() {
+        seedetail = false;
+      });
+    }
+    ;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -48,7 +82,12 @@ class _ClassKelolaStockMobileState extends State<ClassKelolaStockMobile> {
               onChanged: (value) {
                 setState(() {
                   seedetail = value;
-                  print(seedetail);
+                  if (seedetail == true) {
+                  widget.trackstockcallback!(1);
+                  } else {
+                      widget.trackstockcallback!(0);
+                  }
+                  print(widget.trackstock);
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -73,10 +112,10 @@ class _ClassKelolaStockMobileState extends State<ClassKelolaStockMobile> {
         Container(
           height: MediaQuery.of(context).size.height * 0.09,
           child: TextFieldMobile2(
-            suffixIcon: TextButton(onPressed: (){}, child: Text('Riwayat')),
+            suffixIcon: TextButton(onPressed: () {}, child: Text('Riwayat')),
             readonly: true,
             label: 'Stok Barang Saat ini',
-            controller: widget.stock,
+            controller: widget.stocknow,
             typekeyboard: TextInputType.text,
             onChanged: (value) {
               setState(() {});
@@ -86,12 +125,16 @@ class _ClassKelolaStockMobileState extends State<ClassKelolaStockMobile> {
         Container(
           height: MediaQuery.of(context).size.height * 0.05,
         ),
-      seedetail==true?  ClassDetailKelolaProduct(
-          catatan: widget.catatan,
-          adjusmentmin: widget.adjusmentmin,
-          adjusmentplus: widget.adjusmentplus,
-          minproduct: widget.minproduct,
-        ):Container()
+        seedetail == true
+            ? ClassDetailKelolaProduct(
+              stocknow: widget.stocknow,
+                trackstock: widget.trackstock,
+                gntrantp: widget.gntrantp,
+                catatan: widget.catatan,
+                adjusmentstock: widget.adjusmentstock,
+                minproduct: widget.minproduct,
+              )
+            : Container()
       ],
     );
   }

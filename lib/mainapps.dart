@@ -6,6 +6,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mainapps extends StatefulWidget {
   final String? title;
@@ -31,7 +32,19 @@ class _MainappsState extends State<Mainapps> {
   @override
   void initState() {
     super.initState();
-    checkNewApp();
+    checkSF().whenComplete(() {
+      checkNewApp();
+    });
+  }
+
+  Future<dynamic> checkSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String dbpref = prefs.getString('database') ?? "";
+    if (dbpref.isNotEmpty) {
+      setState(() {
+        databasename = dbpref;
+      });
+    }
   }
 
   checkNewApp() async {

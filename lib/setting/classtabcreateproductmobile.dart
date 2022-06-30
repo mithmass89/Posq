@@ -1,9 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/image.dart';
 import 'package:posq/model.dart';
+import 'package:toast/toast.dart';
 
 enum ImageSourceType { gallery, camera }
 
@@ -17,6 +22,8 @@ class ClassTabCreateProducr extends StatefulWidget {
   late TextEditingController pcttax;
   late TextEditingController pctservice;
   late TextEditingController description;
+  late TextEditingController barcode;
+  late TextEditingController sku;
   late String? selectedctg;
   final Function? callbackctg;
 
@@ -33,6 +40,8 @@ class ClassTabCreateProducr extends StatefulWidget {
     required this.description,
     this.selectedctg,
     this.callbackctg,
+    required this.barcode,
+    required this.sku,
   }) : super(key: key);
 
   @override
@@ -48,11 +57,34 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
   String? query = '';
   late DatabaseHandler handler;
   bool detailon = false;
+  String _scanBarcode = 'Unknown';
 
   @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
+  }
+
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+      widget.barcode.text = barcodeScanRes;
+    });
   }
 
   @override
@@ -223,7 +255,6 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                           }),
                       Container(
                         child: TextFieldMobile2(
-                  
                           minLines: null,
                           maxline: null,
                           expands: true,
@@ -241,6 +272,28 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                       TextFieldMobile2(
                         label: 'Harga Modal',
                         controller: widget.amountcost,
+                        typekeyboard: TextInputType.number,
+                        onChanged: (value) {},
+                      ),
+                      TextFieldMobile2(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.qr_code_scanner_outlined),
+                          iconSize: 30,
+                          color: Colors.blue,
+                          splashColor: Colors.transparent,
+                          onPressed: () async {
+                            final text = await scanBarcodeNormal();
+                          },
+                        ),
+                        label: 'Barcode',
+                        controller: widget.barcode,
+                        typekeyboard: TextInputType.number,
+                        onChanged: (value) {},
+                      ),
+                       TextFieldMobile2(
+                     
+                        label: 'SKU',
+                        controller: widget.sku,
                         typekeyboard: TextInputType.number,
                         onChanged: (value) {},
                       ),

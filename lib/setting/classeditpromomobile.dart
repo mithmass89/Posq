@@ -19,7 +19,6 @@ class _ClassEditPromoMobileState extends State<ClassEditPromoMobile> {
   TextEditingController nilaidiskonamount = TextEditingController();
   TextEditingController nilaidiskonpct = TextEditingController();
   TextEditingController maxdisc = TextEditingController();
-  bool _value = false;
   int val = -1;
   bool readOnlypct = true;
   bool readOnlyamount = true;

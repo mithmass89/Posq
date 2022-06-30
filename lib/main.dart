@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'POS Demo',
       theme: ThemeData(
-        textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(),
+        textTheme: GoogleFonts.nunitoSansTextTheme(textTheme).copyWith(),
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,

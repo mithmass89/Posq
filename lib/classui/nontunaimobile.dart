@@ -1,7 +1,7 @@
+// ignore_for_file: unused_import, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/midtrans.dart';
 import 'package:posq/classui/nontunaicreditcardmobile.dart';
 import 'package:posq/classui/nontunaidebitcardmobile.dart';

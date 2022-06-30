@@ -6,6 +6,7 @@ import 'package:posq/classui/classformat.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:toast/toast.dart';
 
 class ClassitemRetailMobile extends StatefulWidget {
   final image;
@@ -38,6 +39,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
     super.initState();
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
+    ToastContext().init(context);
   }
 
   Future<int> insertIafjrndt() async {
@@ -60,15 +62,15 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       ratebs2: 1,
       rateamtcost: widget.item.costamt,
       rateamt: widget.item.slsamt,
-      rateamtservice: widget.item.slsamt! * widget.item.svchgpct / 100,
-      rateamttax: widget.item.slsamt! * widget.item.taxpct / 100,
+      rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
+      rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
       rateamttotal: widget.item.slsnett,
       rvnamt: 1 * widget.item.slsamt!.toDouble(),
-      taxamt: widget.item.slsamt! * widget.item.taxpct / 100,
-      serviceamt: widget.item.slsamt! * widget.item.svchgpct / 100,
+      taxamt: widget.item.slsamt! * widget.item.taxpct! / 100,
+      serviceamt: widget.item.slsamt! * widget.item.svchgpct! / 100,
       nettamt: 1 * widget.item.slsamt! +
-          widget.item.slsamt! * widget.item.taxpct / 100 +
-          widget.item.slsamt! * widget.item.svchgpct / 100,
+          widget.item.slsamt! * widget.item.taxpct! / 100 +
+          widget.item.slsamt! * widget.item.svchgpct! / 100,
       rebateamt: 0,
       rvncoa: 'REVENUE',
       taxcoa: 'TAX',
@@ -105,37 +107,76 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-            onTap: () async {
+          dense: true,
+          onTap: () async {
+            if (widget.item.stock != 0 && widget.item.trackstock == 1) {
+              await insertIafjrndt();
+              //update to main // callback
+              ClassRetailMainMobile.of(context)!.string = result!;
+            } else if (widget.item.trackstock == 0) {
               await insertIafjrndt();
               ClassRetailMainMobile.of(context)!.string = result!;
-            },
-            leading: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 0.5,
-                ),
-              ),
-              // color: Colors.blue,
-              height: MediaQuery.of(context).size.height * 0.13,
-              width: MediaQuery.of(context).size.width * 0.19,
-              child: Image.file(
-                widget.image,
-                fit: BoxFit.cover,
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
-                  return Center(child: const Text('No Image'));
-                },
+            } else {
+              Toast.show("Kamu Kehabisan Stock",
+                  duration: Toast.lengthLong, gravity: Toast.center);
+            }
+          },
+          leading: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+                width: 0.5,
               ),
             ),
-            // contentPadding: EdgeInsets.all(8.0),
-            title: Text(widget.item.itemdesc),
-            subtitle: Text(widget.item.description == 'Empty'
-                ? ''
-                : widget.item.description.toString()),
-            trailing: Text(
-              '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
-            )),
+            // color: Colors.blue,
+            height: MediaQuery.of(context).size.height * 0.13,
+            width: MediaQuery.of(context).size.width * 0.19,
+            child: Image.file(
+              widget.image,
+              fit: BoxFit.cover,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return Center(child: const Text('No Image'));
+              },
+            ),
+          ),
+          // contentPadding: EdgeInsets.all(8.0),
+          title: Text(widget.item.itemdesc!),
+          subtitle: Text(widget.item.description == 'Empty'
+              ? ''
+              : widget.item.description.toString()),
+          trailing: widget.item.trackstock == 1
+              ? Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: Text(
+                        '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.036,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: Row(
+                        children: [
+                          Text(
+                            'Stock',
+                          ),
+                          Text(
+                            widget.item.stock.toString(),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              : Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: Text(
+                    '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
+                  ),
+                ),
+        ),
         Divider(
           thickness: 1,
           indent: 20,

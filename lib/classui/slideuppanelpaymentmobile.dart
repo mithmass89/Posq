@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SlideupPayment extends StatefulWidget {
   final String trno;

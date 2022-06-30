@@ -32,7 +32,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                     Container(
                       alignment: Alignment.center,
                       height: MediaQuery.of(context).size.height * 0.04,
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.5,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.white,

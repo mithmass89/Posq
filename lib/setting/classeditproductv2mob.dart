@@ -18,7 +18,11 @@ class Editproduct extends StatefulWidget {
   final Item? productcode;
   final String? pscd;
 
-  const Editproduct({Key? key, this.productcode, this.pscd}) : super(key: key);
+  Editproduct({
+    Key? key,
+    this.productcode,
+    this.pscd,
+  }) : super(key: key);
 
   @override
   State<Editproduct> createState() => _EditproductState();
@@ -41,8 +45,11 @@ class _EditproductState extends State<Editproduct>
   final description = TextEditingController();
   final minproduct = TextEditingController();
   final adjusmentmin = TextEditingController();
-  final adjusmentplus = TextEditingController();
+  final adjusmentstock = TextEditingController();
   final catatan = TextEditingController();
+  final barcode = TextEditingController();
+  final sku = TextEditingController();
+
   bool forresto = false;
   bool forretail = false;
   String? selectedctg = 'Pilih Kategori';
@@ -58,7 +65,7 @@ class _EditproductState extends State<Editproduct>
   String? taxcoa;
   String? svchgcoa;
   num? qty = 0;
-
+  late int trackstock;
   set string(String value) => setState(() => pathimage = value);
 
   @override
@@ -67,8 +74,8 @@ class _EditproductState extends State<Editproduct>
     handler = DatabaseHandler();
     controller = TabController(vsync: this, length: 2);
     handler = DatabaseHandler();
-    productcd.text = widget.productcode!.itemcd;
-    productname.text = widget.productcode!.itemdesc;
+    productcd.text = widget.productcode!.itemcd!;
+    productname.text = widget.productcode!.itemdesc!;
     description.text = widget.productcode!.description.toString();
     amountcost.text = widget.productcode!.costamt.toString();
     amountsales.text = widget.productcode!.slsamt.toString();
@@ -76,17 +83,27 @@ class _EditproductState extends State<Editproduct>
     pcttax.text = widget.productcode!.taxpct.toString();
     pctservice.text = widget.productcode!.svchgpct.toString();
     stock.text = widget.productcode!.stock.toString();
-    salesflag = widget.productcode!.slsfl.toInt();
+    salesflag = widget.productcode!.slsfl!.toInt();
     costcoa = widget.productcode!.costcoa;
     revenuecoa = widget.productcode!.revenuecoa;
     taxcoa = widget.productcode!.taxcoa;
     svchgcoa = widget.productcode!.svchgcoa;
     pathimage = widget.productcode!.pathimage;
+    stock.text = widget.productcode!.stock.toString();
+    print('test barcode : ${widget.productcode!.barcode}');
+    barcode.text = widget.productcode!.barcode.toString();
+    sku.text = widget.productcode!.sku.toString();
   }
 
   getCtg(String ctg) {
     setState(() {
       selectedctg = ctg;
+    });
+  }
+
+    updateStockTrack(value) {
+    setState(() {
+      trackstock = value;
     });
   }
 
@@ -128,6 +145,8 @@ class _EditproductState extends State<Editproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      barcode: barcode,
+                      sku: sku,
                       callbackctg: getCtg,
                       productcd: productcd,
                       productname: productname,
@@ -141,12 +160,14 @@ class _EditproductState extends State<Editproduct>
                       selectedctg: selectedctg,
                     ),
                     ClassKelolaStockMobile(
+                      trackstockcallback:updateStockTrack,
+                      data: widget.productcode!,
+                      trackstock: widget.productcode!.trackstock!,
                       catatan: catatan,
                       minproduct: minproduct,
-                      adjusmentmin: adjusmentmin,
-                      adjusmentplus: adjusmentplus,
+                      adjusmentstock: adjusmentstock,
                       qty: qty!,
-                      stock: stock,
+                      stocknow: stock,
                     )
                   ],
                 ),
@@ -172,6 +193,7 @@ class _EditproductState extends State<Editproduct>
                   handler = DatabaseHandler();
                   handler.initializeDB(databasename).whenComplete(() async {
                     await handler.updateItems(Item(
+                      trackstock: widget.productcode!.trackstock,
                       outletcd: widget.productcode!.outletcd,
                       itemcd: widget.productcode!.itemcd,
                       itemdesc: productname.text,
@@ -191,8 +213,10 @@ class _EditproductState extends State<Editproduct>
                       costcoa: costcoa.toString(),
                       ctg: selectedctg,
                       pathimage: pathimage,
-                      stock: num.parse(stock.text),
+                      stock:widget.productcode!.stock,
                       id: widget.productcode!.id,
+                      barcode:barcode.text ,
+                      sku: sku.text
                     ));
                     setState(() {});
                   }).then((_) {

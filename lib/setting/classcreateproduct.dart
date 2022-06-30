@@ -40,10 +40,15 @@ class _CreateproductState extends State<Createproduct>
   final pcttax = TextEditingController();
   final pctservice = TextEditingController();
   final description = TextEditingController();
-    final minproduct = TextEditingController();
+  final minproduct = TextEditingController();
   final adjusmentmin = TextEditingController();
-  final adjusmentplus = TextEditingController();
-   final catatan = TextEditingController();
+  final adjusmentstock = TextEditingController();
+  final catatan = TextEditingController();
+  final barcode = TextEditingController();
+  final sku = TextEditingController();
+
+  late int trackstock;
+  Gntrantp? gntrantp;
   bool forresto = false;
   bool forretail = false;
   String? selectedctg = 'Pilih Kategori';
@@ -63,6 +68,14 @@ class _CreateproductState extends State<Createproduct>
     super.initState();
     handler = DatabaseHandler();
     controller = TabController(vsync: this, length: 2);
+    adjusmentstock.addListener(() {});
+    trackstock = 0;
+  }
+
+  updateStockTrack(value) {
+    setState(() {
+      trackstock = value;
+    });
   }
 
   Future<int> addItem() async {
@@ -93,12 +106,21 @@ class _CreateproductState extends State<Createproduct>
               : num.parse(amountsales.text),
       ctg: selectedctg ?? '',
       slsfl: 1,
-      stock: num.parse(stock.text.isEmpty ? '0' : stock.text),
+      stock: num.parse(adjusmentstock.text.isEmpty ? '0' : adjusmentstock.text),
       pathimage: pathimage ?? 'Empty',
       description: description.text.isEmpty ? 'Empty' : description.text,
+      trackstock: trackstock,
+      sku: sku.text,
+      barcode: barcode.text,
     );
     List<Item> listctg = [ctg];
     return await handler.insertItem(listctg);
+  }
+
+  Future<int> addStock() async {
+    Glftrdt ctg = Glftrdt(active: 1, prd: '', trno: '');
+    List<Glftrdt> listctg = [ctg];
+    return await handler.insertGlftrdt(listctg);
   }
 
   @override
@@ -133,6 +155,8 @@ class _CreateproductState extends State<Createproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      barcode: barcode,
+                      sku: sku,
                       productcd: productcd,
                       productname: productname,
                       amountcost: amountcost,
@@ -144,11 +168,14 @@ class _CreateproductState extends State<Createproduct>
                       description: description,
                     ),
                     ClassKelolaStockMobile(
+                      trackstockcallback: updateStockTrack,
+                      data: widget.productcode,
+                      trackstock: trackstock,
+                      gntrantp: gntrantp,
                       catatan: catatan,
                       minproduct: minproduct,
-                      adjusmentmin: adjusmentmin,
-                      adjusmentplus: adjusmentplus,
-                      stock: stock,
+                      adjusmentstock: adjusmentstock,
+                      stocknow: stock,
                       qty: qty!,
                     )
                   ],
@@ -161,33 +188,44 @@ class _CreateproductState extends State<Createproduct>
             top: MediaQuery.of(context).size.height * 0.80,
             child: ButtonNoIcon(
                 name: 'Save',
-                color: Colors.blue,
+                color: productname.text != '' &&
+                        productcd.text != '' &&
+                        amountsales.text != ''
+                    ? Colors.blue
+                    : Colors.grey[300],
                 textcolor: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.94,
-                onpressed: () async {
-                  setState(() {
-                    pctnett = pcttax == '' || pctservice == ''
-                        ? (double.parse(pcttax == '' ? '0.0' : pcttax.text) +
-                                double.parse(pctservice == ''
-                                    ? '0.0'
-                                    : pctservice.text)) /
-                            100
-                        : 0;
-                  });
-                  print(pctnett);
-                  handler = DatabaseHandler();
-                  handler.initializeDB(databasename).whenComplete(() async {
-                    await addItem().whenComplete(() async {
-                      print(handler.retrieveItems(query!).then((value) {
-                        print('${value.map((e) => e.itemdesc)}');
-                      }));
-                    });
-                    setState(() {});
-                  }).then((_) {
-                    Navigator.of(context).pop(context);
-                  });
-                }),
+                onpressed: productname.text != '' &&
+                        productcd.text != '' &&
+                        amountsales.text != ''
+                    ? () async {
+                        setState(() {
+                          pctnett = pcttax == '' || pctservice == ''
+                              ? (double.parse(
+                                          pcttax == '' ? '0.0' : pcttax.text) +
+                                      double.parse(pctservice == ''
+                                          ? '0.0'
+                                          : pctservice.text)) /
+                                  100
+                              : 0;
+                        });
+                        print(pctnett);
+                        handler = DatabaseHandler();
+                        handler
+                            .initializeDB(databasename)
+                            .whenComplete(() async {
+                          await addItem().whenComplete(() async {
+                            print(handler.retrieveItems(query!).then((value) {
+                              print('${value.map((e) => e.itemdesc)}');
+                            }));
+                          });
+                          setState(() {});
+                        }).then((_) {
+                          Navigator.of(context).pop(context);
+                        });
+                      }
+                    : null),
           ),
         ],
       ),

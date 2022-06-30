@@ -24,7 +24,6 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
   late DatabaseHandler handler;
   List<IafjrnhdClass> data = [];
   bool haspayment = false;
-  TabController? _controller;
 
   @override
   void initState() {
@@ -193,7 +192,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                     width: MediaQuery.of(context).size.width * 0.90,
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.17,
                     width: MediaQuery.of(context).size.width * 0.90,
                     child: FutureBuilder(
                         future:
@@ -212,7 +211,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                     title:
                                         Text(data[index].pymtmthd.toString()),
                                     trailing:
-                                        Text(data[index].ftotamt.toString()),
+                                        Text( '${CurrencyFormat.convertToIdr(data[index].ftotamt, 0)}'),
                                   );
                                 });
                           } else {

@@ -45,43 +45,49 @@ class Outlet {
 
 class Item {
   final int? id;
-  final String outletcd;
-  final String itemcd;
-  final String itemdesc;
+  final String? outletcd;
+  final String? itemcd;
+  final String? itemdesc;
   final num? slsamt;
   final num? costamt;
   final num? slsnett;
-  final num taxpct;
-  final num svchgpct;
-  final String revenuecoa;
-  final String taxcoa;
+  final num? taxpct;
+  final num? svchgpct;
+  final String? revenuecoa;
+  final String? taxcoa;
   final String? svchgcoa;
-  final int slsfl;
-  final String costcoa;
+  final int? slsfl;
+  final String? costcoa;
   final String? ctg;
   final num? stock;
   final String? pathimage;
   final String? description;
+  final int? trackstock;
+  final String? barcode;
+  final String? sku;
 
   Item({
     this.id,
-    required this.outletcd,
-    required this.itemcd,
-    required this.itemdesc,
-    required this.slsamt,
-    required this.costamt,
-    required this.slsnett,
-    required this.taxpct,
-    required this.svchgpct,
-    required this.revenuecoa,
-    required this.taxcoa,
-    required this.svchgcoa,
-    required this.slsfl,
-    required this.costcoa,
-    required this.ctg,
-    required this.stock,
+    this.outletcd,
+    this.itemcd,
+    this.itemdesc,
+    this.slsamt,
+    this.costamt,
+    this.slsnett,
+    this.taxpct,
+    this.svchgpct,
+    this.revenuecoa,
+    this.taxcoa,
+    this.svchgcoa,
+    this.slsfl,
+    this.costcoa,
+    this.ctg,
+    this.stock,
     this.pathimage,
     this.description,
+    this.trackstock,
+    this.barcode,
+    this.sku,
   });
 
   Item.fromMap(
@@ -103,7 +109,10 @@ class Item {
         ctg = res["ctg"],
         stock = res["stock"],
         pathimage = res["pathimage"],
-        description = res["description"];
+        description = res["description"],
+        trackstock = res["trackstock"],
+        barcode = res["barcode"],
+        sku = res["sku"];
 
   Map<String, Object?> toMap() {
     return {
@@ -125,6 +134,9 @@ class Item {
       'stock': stock,
       'pathimage': pathimage,
       'description': description,
+      'trackstock': trackstock,
+      'barcode': barcode,
+      'sku': sku,
     };
   }
 }
@@ -768,6 +780,175 @@ class Promo {
       'amount': amount,
       'mindisc': mindisc,
       'maxdisc': maxdisc,
+    };
+  }
+}
+
+class Gntrantp {
+  final int? id;
+  final String trtp;
+  final String? ProgNm;
+  final int? reftp;
+  final String? refprefix;
+  final int trnonext;
+
+  Gntrantp({
+    this.id,
+    required this.trtp,
+    this.ProgNm,
+    this.reftp,
+    this.refprefix,
+    required this.trnonext,
+  });
+
+  Gntrantp.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        trtp = res["trtp"],
+        ProgNm = res["ProgNm"],
+        reftp = res["reftp"],
+        refprefix = res["refprefix"],
+        trnonext = res["trnonext"];
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'trtp': trtp,
+      'ProgNm': ProgNm,
+      'reftp': reftp,
+      'refprefix': refprefix,
+      'trnonext': trnonext,
+    };
+  }
+}
+
+class Glftrdt {
+  final int? id;
+  final String trno;
+  final String? prodcd;
+  final String? subtrno;
+  final String? cbcd;
+  final String? compcd;
+  final String? whto;
+  final String? whfr;
+  final double? qtyconv;
+  final String? unituse;
+  final String? currcd;
+  final double? baseamt1;
+  final double? baseamt2;
+  final double? unitamt;
+  final double? totalprice;
+  final double? taxpct;
+  final double? taxamt;
+  final double? discpct;
+  final double? discamount;
+  final double? totalaftdisctax;
+  final String? trcoa;
+  final double? fdbamt;
+  final double? fcramt;
+  final double? ldbamt;
+  final double? lcramt;
+  final String? trdt;
+  final String? notes;
+  final String? trtpcd;
+  final int active;
+  final String prd;
+
+  Glftrdt({
+    this.id,
+    required this.trno,
+    this.prodcd,
+    this.subtrno,
+    this.cbcd,
+    this.compcd,
+    this.whto,
+    this.whfr,
+    this.qtyconv,
+    this.unituse,
+    this.currcd,
+    this.baseamt1,
+    this.baseamt2,
+    this.unitamt,
+    this.totalprice,
+    this.taxpct,
+    this.taxamt,
+    this.discpct,
+    this.discamount,
+    this.totalaftdisctax,
+    this.trcoa,
+    this.fdbamt,
+    this.fcramt,
+    this.ldbamt,
+    this.lcramt,
+    this.trdt,
+    this.notes,
+    this.trtpcd,
+    required this.active,
+    required this.prd,
+  });
+
+  Glftrdt.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        trno = res["trno"],
+        prodcd = res["prodcd"],
+        subtrno = res["subtrno"],
+        cbcd = res["cbcd"],
+        compcd = res["compcd"],
+        whto = res["whto"],
+        whfr = res["whfr"],
+        qtyconv = res["qtyconv"],
+        unituse = res["unituse"],
+        currcd = res["currcd"],
+        baseamt1 = res["baseamt1"],
+        baseamt2 = res["baseamt2"],
+        unitamt = res["unitamt"],
+        totalprice = res["totalprice"],
+        taxpct = res["taxpct"],
+        taxamt = res["taxamt"],
+        discpct = res["discpct"],
+        discamount = res["discamount"],
+        totalaftdisctax = res["totalaftdisctax"],
+        trcoa = res["trcoa"],
+        fdbamt = res["fdbamt"],
+        fcramt = res["fcramt"],
+        ldbamt = res["ldbamt"],
+        lcramt = res["lcramt"],
+        trdt = res["trdt"],
+        notes = res["notes"],
+        trtpcd = res["trtpcd"],
+        active = res["active"],
+        prd = res["prd"];
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'trno': trno,
+      'prodcd': prodcd,
+      'subtrno': subtrno,
+      'cbcd': cbcd,
+      'compcd': compcd,
+      'whto': whto,
+      'whfr': whfr,
+      'qtyconv': qtyconv,
+      'unituse': unituse,
+      'currcd': currcd,
+      'baseamt1': baseamt1,
+      'baseamt2': baseamt2,
+      'unitamt': unitamt,
+      'totalprice': totalprice,
+      'taxpct': taxpct,
+      'taxamt': taxamt,
+      'discpct': discpct,
+      'discamount': discamount,
+      'totalaftdisctax': totalaftdisctax,
+      'trcoa': trcoa,
+      'fdbamt': fdbamt,
+      'fcramt': fcramt,
+      'ldbamt': ldbamt,
+      'lcramt': lcramt,
+      'trdt': trdt,
+      'notes': notes,
+      'active': active,
+      'prd': prd,
     };
   }
 }

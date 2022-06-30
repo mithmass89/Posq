@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classpaymentsuccessmobile.dart';
-import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/nontunaimobile.dart';
-import 'package:posq/classui/nontunaimobiletransfer.dart';
 import 'package:posq/classui/paymentcashv2.dart';
 import 'package:posq/classui/slideuppanelpaymentmobile.dart';
 import 'package:posq/databasehandler.dart';
@@ -39,7 +36,6 @@ class PaymentV2MobileClass extends StatefulWidget {
 class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
     with SingleTickerProviderStateMixin {
   TabController? _controller;
-  int _selectedIndex = 0;
   bool additional = false;
   bool discbyamount = true;
   TextEditingController discountpct = TextEditingController(text: '0');

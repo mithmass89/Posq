@@ -325,6 +325,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       print(barcodeScanRes);
 
       await handler.queryCheckRegister(barcodeScanRes).then((value) async {
+        print(value);
         if (value == 'Oke item masih kosong') {
           Toast.show("Produk tidak Terdaftar",
               duration: Toast.lengthLong, gravity: Toast.center);
@@ -395,6 +396,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       trdesc: items.itemdesc,
       taxpct: items.taxpct,
       servicepct: items.svchgpct,
+      time: now.hour.toString() +
+          ":" +
+          now.minute.toString() +
+          ":" +
+          now.second.toString(),
     );
     List<IafjrndtClass> listiafjrndt = [iafjrndt2];
 

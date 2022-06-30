@@ -60,26 +60,29 @@ class _ClassproductmobileState extends State<Classproductmobile> {
           if (x.isNotEmpty) {
             return Column(
               children: [
-                TextFieldMobile(
-                  hint: 'Example Menu Description',
-                  label: 'Search',
-                  controller: search,
-                  onChanged: (value) async {
-                    setState(() {
-                      query = value;
-                      print(value);
-                    });
-                  },
-                  typekeyboard: TextInputType.text,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFieldMobile(
+                    hint: 'Example Menu Description',
+                    label: 'Search',
+                    controller: search,
+                    onChanged: (value) async {
+                      setState(() {
+                        query = value;
+                        print(value);
+                      });
+                    },
+                    typekeyboard: TextInputType.text,
+                  ),
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.75,
                   width: MediaQuery.of(context).size.width * 1,
                   child: ListView.builder(
-                    itemCount: snapshot.data?.length,
+                    itemCount: x.length,
                     itemBuilder: (BuildContext context, int index) {
                       var _image =
-                          File(snapshot.data![index].pathimage.toString());
+                          File(x[index].pathimage.toString());
                       return Column(
                         children: [
                           Dismissible(
@@ -90,13 +93,13 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: Icon(Icons.delete_forever),
                             ),
-                            key: ValueKey<int>(snapshot.data![index].id!),
+                            key: ValueKey<int>(x[index].id!),
                             onDismissed: (DismissDirection direction) async {
                               await this
                                   .handler
-                                  .deleteItem(snapshot.data![index].id!);
+                                  .deleteItem(x[index].id!);
                               setState(() {
-                                snapshot.data!.remove(snapshot.data![index]);
+                               x.remove(x[index]);
                               });
                             },
                             child: ListTile(
@@ -104,9 +107,8 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          Editproduct(
-                                            productcode: snapshot.data![index],
+                                      builder: (context) => Editproduct(
+                                            productcode: x[index],
                                           )),
                                 ).then((_) {
                                   setState(() {});
@@ -134,9 +136,19 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                 ),
                               ),
                               contentPadding: EdgeInsets.all(8.0),
-                              title: Text(snapshot.data![index].itemdesc),
+                              title: Text(x[index].itemdesc!),
                               subtitle: Text(
-                                  snapshot.data![index].slsnett.toString()),
+                                  x[index].slsnett.toString()),
+                              trailing: Container(
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                child: x[index].trackstock==1? Row(
+                                  children: [
+                                    Text('Stok :'),
+                                    Text(
+                                        x[index].stock.toString()),
+                                  ],
+                                ):Container(),
+                              ),
                             ),
                           ),
                           Divider(

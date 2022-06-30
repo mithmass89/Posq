@@ -50,8 +50,8 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    productcd.text = widget.productcode!.itemcd;
-    productname.text = widget.productcode!.itemdesc;
+    productcd.text = widget.productcode!.itemcd!;
+    productname.text = widget.productcode!.itemdesc!;
     description.text = widget.productcode!.description.toString();
     amountcost.text = widget.productcode!.costamt.toString();
     amountsales.text = widget.productcode!.slsamt.toString();
@@ -59,7 +59,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
     pcttax.text = widget.productcode!.taxpct.toString();
     pctservice.text = widget.productcode!.svchgpct.toString();
     stock.text = widget.productcode!.stock.toString();
-    salesflag = widget.productcode!.slsfl.toInt();
+    salesflag = widget.productcode!.slsfl!.toInt();
     costcoa = widget.productcode!.costcoa;
     revenuecoa = widget.productcode!.revenuecoa;
     taxcoa = widget.productcode!.taxcoa;
@@ -88,6 +88,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
       stock: num.parse(stock.text),
       pathimage: pathimage,
       description: description.text,
+      trackstock: 0,
     );
     List<Item> listctg = [ctg];
     return await handler.insertItem(listctg);
@@ -264,9 +265,9 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       ClassScanRegisterProdMobile(
-                                        produk: widget.productcode!.itemcd,
+                                        produk: widget.productcode!.itemcd!,
                                         produkname:
-                                            widget.productcode!.itemdesc,
+                                            widget.productcode!.itemdesc!,
                                       )),
                             );
                           },
@@ -295,6 +296,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
                     handler = DatabaseHandler();
                     handler.initializeDB(databasename).whenComplete(() async {
                       await handler.updateItems(Item(
+                        trackstock: 0,
                         outletcd: widget.productcode!.outletcd,
                         itemcd: widget.productcode!.itemcd,
                         itemdesc: productname.text,

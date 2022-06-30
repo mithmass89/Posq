@@ -7,14 +7,14 @@ import 'package:path_provider/path_provider.dart'
 import 'package:posq/model.dart';
 import 'package:sqflite/sqflite.dart';
 
- var databasename='posq';
+var databasename = 'posq';
 
 class DatabaseHandler {
   Future<Database> initializeDB(String dbname) async {
     //orignal path is documentsDirectory
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     // path is only test
-      String path = await getDatabasesPath();
+    String path = await getDatabasesPath();
     return openDatabase(
       join(path, '${dbname}.db'),
       onCreate: (
@@ -25,7 +25,15 @@ class DatabaseHandler {
           "CREATE TABLE Outlet(id INTEGER PRIMARY KEY AUTOINCREMENT,outletcd varchar(20) NOT NULL, outletname varchar(100) ,telp INTEGER , alamat varchar(100) , kodepos varchar(20) ,trnonext INTEGER NOT NULL,trnopynext INTEGER NOT NULL)",
         );
         await database.execute(
-          "CREATE TABLE psspsitem(id INTEGER PRIMARY KEY AUTOINCREMENT,outletcd varchar(100) NOT NULL, itemcd varchar(100) NOT NULL,itemdesc varchar(100) NOT NULL, slsamt decimal NOT NULL, costamt decimal NOT NULL,slsnett decimal NOT NULL,taxpct decimal NOT NULL,svchgpct decimal NOT NULL,revenuecoa varchar(100) NOT NULL,taxcoa varchar(100) NOT NULL,svchgcoa varchar(100) NOT NULL,slsfl INTEGER NOT NULL,costcoa varchar(100) NOT NULL,ctg varchar(100) NOT NULL,stock double NOT NULL,pathimage varchar(100) NOT NULL,description Text)",
+          '''CREATE TABLE psspsitem(id INTEGER PRIMARY KEY AUTOINCREMENT
+          ,outletcd varchar(100) NOT NULL, itemcd varchar(100) NOT NULL
+          ,itemdesc varchar(100) NOT NULL, slsamt decimal NOT NULL, costamt decimal NOT NULL
+          ,slsnett decimal NOT NULL,taxpct decimal NOT NULL,svchgpct decimal NOT NULL
+          ,revenuecoa varchar(100) NOT NULL,taxcoa varchar(100) NOT NULL,svchgcoa varchar(100) NOT NULL
+          ,slsfl INTEGER NOT NULL,costcoa varchar(100) NOT NULL,ctg varchar(100) NOT NULL
+          ,stock double NOT NULL,pathimage varchar(100) NOT NULL,description Text,trackstock INTEGER NOT NULL,
+          barcode varchar(100),SKU varchar(100)
+          )''',
         );
 
         await database.execute(
@@ -36,7 +44,18 @@ class DatabaseHandler {
         );
 
         await database.execute(
-          "CREATE TABLE iafjrndt(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL,pscd varchar(100) NOT NULL, trno varchar(100) NOT NULL,split varchar(100) NOT NULL,trnobill varchar(100) NOT NULL,itemcd varchar(100) NOT NULL,trno1 varchar(100) NOT NULL,itemseq INTEGER NOT NULL,cono varchar(100) NOT NULL,waitercd varchar(100) NOT NULL,discpct decimal NOT NULL,discamt decimal NOT NULL,qty INT NOT NULL,ratecurcd varchar(100) NOT NULL,ratebs1 decimal NOT NULL,ratebs2 decimal NOT NULL,rateamtcost decimal NOT NULL,rateamt decimal NOT NULL,rateamtservice decimal NOT NULL,rateamttax decimal NOT NULL,rateamttotal decimal NOT NULL,rvnamt decimal NOT NULL,taxamt decimal NOT NULL,serviceamt decimal NOT NULL,nettamt decimal NOT NULL,rebateamt decimal NOT NULL,rvncoa varchar(100) NOT NULL,taxcoa varchar(100) NOT NULL,servicecoa varchar(100) NOT NULL,costcoa varchar(100) NOT NULL,active varchar(100) NOT NULL,usercrt varchar(100) NOT NULL,userupd varchar(100) NOT NULL,userdel varchar(100) NOT NULL,prnkitchen varchar(100) NOT NULL,prnkitchentm varchar(100) NOT NULL,confirmed varchar(100) NOT NULL,trdesc varchar(100) NOT NULL,taxpct decimal NOT NULL,servicepct decimal NOT NULL,statustrans varchar(100),time varchar(20) NOT NULl)",
+          '''CREATE TABLE iafjrndt(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL,pscd varchar(100) NOT NULL
+          , trno varchar(100) NOT NULL,split varchar(100) NOT NULL,trnobill varchar(100) NOT NULL,itemcd varchar(100) NOT NULL
+          ,trno1 varchar(100) NOT NULL,itemseq INTEGER NOT NULL,cono varchar(100) NOT NULL
+          ,waitercd varchar(100) NOT NULL,discpct decimal NOT NULL,discamt decimal NOT NULL
+          ,qty INT NOT NULL,ratecurcd varchar(100) NOT NULL,ratebs1 decimal NOT NULL,ratebs2 decimal NOT NULL
+          ,rateamtcost decimal NOT NULL,rateamt decimal NOT NULL
+          ,rateamtservice decimal NOT NULL,rateamttax decimal NOT NULL
+          ,rateamttotal decimal NOT NULL,rvnamt decimal NOT NULL,taxamt decimal NOT NULL
+          ,serviceamt decimal NOT NULL,nettamt decimal NOT NULL,rebateamt decimal NOT NULL
+          ,rvncoa varchar(100) NOT NULL,taxcoa varchar(100) NOT NULL,servicecoa varchar(100) NOT NULL
+          ,costcoa varchar(100) NOT NULL,active varchar(100) NOT NULL,usercrt varchar(100) NOT NULL
+          ,userupd varchar(100) NOT NULL,userdel varchar(100) NOT NULL,prnkitchen varchar(100) NOT NULL,prnkitchentm varchar(100) NOT NULL,confirmed varchar(100) NOT NULL,trdesc varchar(100) NOT NULL,taxpct decimal NOT NULL,servicepct decimal NOT NULL,statustrans varchar(100),time varchar(20) NOT NULl)''',
         );
         await database.execute(
           "CREATE TABLE iafjrnhd(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL, trno varchar(100) NOT NULL, split varchar(100) NOT NULL, pscd varchar(100) NOT NULL, docno varchar(100), trtm varchar(100) NOT NULL, disccd varchar(100), pax varchar(100) NOT NULL, trdesc varchar(100), trdesc2 varchar(100), pymtmthd varchar(100) NOT NULL, currcd varchar(100) NOT NULL, currbs1 varchar(100), currbs2 varchar(100),ftotamt decimal NOT NULL,totalamt decimal NOT NULL,framtrmn decimal NOT NULL,amtrmn decimal NOT NULL,cardcd varchar(100),cardno varchar(100),cardnm varchar(100),cardexp varchar(100),dpno varchar(100),compcd varchar(100) NOT NULL,compdesc varchar(100),active varchar(100) NOT NULL,usercrt varchar(100) NOT NULL,slstp varchar(100) NOT NULL,guestname varchar(100),guestphone varchar(100),virtualaccount varchar(100),billerkey varchar(100),billercode varchar(100),qrcode varchar(200),statustrans varchar(200))",
@@ -53,23 +72,35 @@ class DatabaseHandler {
         await database.execute(
           "CREATE TABLE customertemp(id INTEGER PRIMARY KEY AUTOINCREMENT,outletcd varchar(100) NOT NULL,trno varchar(100) NOT NULL,nama varchar(200),telp varchar(200),email varchar(200),alamat varchar(200))",
         );
+        await database.execute(
+          "CREATE TABLE gntrantp(id INTEGER PRIMARY KEY AUTOINCREMENT,trtp char(10) NOT NULL,ProgNm varchar(100) NOT NULL,reftp INTEGER NOT NULL,refprefix varchar(50) NOT NULL,trnonext INTEGER NOT NULL)",
+        );
+        await database.execute(
+          '''CREATE TABLE glftrdt(id INTEGER PRIMARY KEY AUTOINCREMENT,trno varchar(50) NOT NULL
+          ,prodcd varchar(50),subtrno varchar(50),cbcd char(10)
+          ,compcd varchar(50),whto varchar(50),whfr varchar(50),qtyconv decimal,unituse varchar(10),currcd varchar(50)
+          ,baseamt1 decimal,baseamt2 decimal,unitamt decimal,totalprice decimal,taxpct decimal 
+          , taxamt decimal ,discpct decimal , discamount decimal,totalaftdisctax decimal
+          ,trcoa varchar(100) NOT NULL,fdbamt decimal,fcramt decimal,ldbamt decimal 
+          ,lcramt decimal,trdt varchar(20),notes varchar(200),trtpcd char(10),active INTEGER NOT NULL,prd varchar(20) NOT NULL )''',
+        );
       },
       version: 1,
     );
   }
 
   Future<void> deleteDB() async {
-   try{
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    print('deleting db');
-    // db=null;
-    deleteDatabase(documentsDirectory.path);
-    }catch( e){
-    print(e.toString());
-     }
+    try {
+      Directory documentsDirectory = await getApplicationDocumentsDirectory();
+      print('deleting db');
+      // db=null;
+      deleteDatabase(documentsDirectory.path);
+    } catch (e) {
+      print(e.toString());
+    }
 
-print('db is deleted');
-}
+    print('db is deleted');
+  }
 
   Future<Database> upgradeDB() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
@@ -96,6 +127,16 @@ print('db is deleted');
     for (var user in users) {
       result = await db.insert('Outlet', user.toMap());
       print(user.outletname);
+    }
+    return result;
+  }
+
+  Future<int> insertGntrantp(List<Gntrantp> transtype) async {
+    int result = 0;
+    final Database db = await initializeDB(databasename);
+    for (var user in transtype) {
+      result = await db.insert('gntrantp', user.toMap());
+      print(user.ProgNm);
     }
     return result;
   }
@@ -134,7 +175,17 @@ print('db is deleted');
     final Database db = await initializeDB(databasename);
     for (var item in items) {
       result = await db.insert('psspsitem', item.toMap());
-      print(item.itemdesc);
+      print(' ini barcode : ${item.barcode}');
+    }
+    return result;
+  }
+
+  Future<int> insertGlftrdt(List<Glftrdt> items) async {
+    int result = 0;
+    final Database db = await initializeDB(databasename);
+    for (var item in items) {
+      result = await db.insert('glftrdt', item.toMap());
+      print(item.trno);
     }
     return result;
   }
@@ -193,6 +244,12 @@ print('db is deleted');
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.query('Outlet');
     return queryResult.map((e) => Outlet.fromMap(e)).toList();
+  }
+
+  Future<List<Gntrantp>> retrivegntranstp() async {
+    final Database db = await initializeDB(databasename);
+    final List<Map<String, Object?>> queryResult = await db.query('gntrantp');
+    return queryResult.map((e) => Gntrantp.fromMap(e)).toList();
   }
 
   Future<List<CostumersSavedManual>> retrieveGuestinfo(String trno) async {
@@ -259,8 +316,31 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
 
   Future<List<Item>> retrieveItems(String query) async {
     final Database db = await initializeDB(databasename);
-    final List<Map<String, Object?>> queryResult = await db
-        .rawQuery("select * from psspsitem where itemdesc like '%$query%'");
+    final List<Map<String, Object?>> queryResult =
+        await db.rawQuery('''select   Y.id as id,Y.itemcd as itemcd,
+     itemdesc,
+     slsamt,
+     costamt,
+     slsnett,
+     taxpct,
+     svchgpct,
+     revenuecoa,
+     taxcoa,
+     svchgcoa,
+     slsfl,
+     costcoa,
+     ctg,
+     Y.outletcd as outletcd,
+      Y.stock-ifnull(X.stock,0) as stock,
+    pathimage,
+    description,
+    sku,
+    barcode,
+    trackstock from (select * from psspsitem)Y
+        left join (select itemcd as itemcd,sum(qty) as stock from iafjrndt where active='1' group by itemcd) X 
+        on Y.itemcd=X.itemcd
+        
+         where itemdesc like '%$query%' ''');
 
     return queryResult.map((e) => Item.fromMap(e)).toList();
   }
@@ -429,7 +509,10 @@ where x.nettamt<>0
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE psspsitem 
-    SET outletcd=?,itemcd=?,itemdesc = ?, description = ? ,costamt=?,slsamt = ?,slsnett=?,taxpct=?,svchgpct=?,revenuecoa=?,taxcoa=?,svchgcoa=?,slsfl=?,costcoa=?,ctg=?,stock=?,pathimage=?
+    SET outletcd=?,itemcd=?,itemdesc = ?, description = ? 
+    ,costamt=?,slsamt = ?,slsnett=?,taxpct=?,svchgpct=?
+    ,revenuecoa=?,taxcoa=?,svchgcoa=?,slsfl=?,costcoa=?
+    ,ctg=?,stock=?,pathimage=?,barcode=?,sku=?
     WHERE id = ?
     ''', [
       items.outletcd,
@@ -449,7 +532,9 @@ where x.nettamt<>0
       items.ctg,
       items.stock,
       items.pathimage,
-      items.id
+      items.barcode,
+      items.sku,
+      items.id,
     ]);
   }
 
@@ -646,8 +731,8 @@ where x.nettamt<>0
     final Database db = await initializeDB(databasename);
 
     // raw query
-    List<Map> result = await db
-        .rawQuery('select * from registeritem where barcode="${barcode}"');
+    List<Map> result =
+        await db.rawQuery('select * from psspsitem where barcode="${barcode}"');
 
     // print the results
     print(result.isEmpty);
@@ -663,8 +748,7 @@ where x.nettamt<>0
 
   Future checkPendingTransaction(String query) async {
     final Database db = await initializeDB(databasename);
-    final List<Map<String, Object?>> queryResult = await db.rawQuery(
-'''
+    final List<Map<String, Object?>> queryResult = await db.rawQuery('''
 select * from (select x.trdt as trdt,x.trno as trno, sum(x.nettamt) as nettamt,x.statustrans as statustrans,x.time as time from 
        ( select trdt,trno,sum(nettamt) as nettamt,statustrans,time from iafjrndt where (trno like '%$query%' or statustrans like '%$query%') and active='1'  group by trno
         union
