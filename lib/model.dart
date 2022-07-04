@@ -790,7 +790,7 @@ class Gntrantp {
   final String? ProgNm;
   final int? reftp;
   final String? refprefix;
-  final int trnonext;
+  final int? trnonext;
 
   Gntrantp({
     this.id,
@@ -798,7 +798,7 @@ class Gntrantp {
     this.ProgNm,
     this.reftp,
     this.refprefix,
-    required this.trnonext,
+    this.trnonext,
   });
 
   Gntrantp.fromMap(Map<String, dynamic> res)
@@ -825,6 +825,7 @@ class Glftrdt {
   final int? id;
   final String trno;
   final String? prodcd;
+  final String? proddesc;
   final String? subtrno;
   final String? cbcd;
   final String? compcd;
@@ -850,13 +851,17 @@ class Glftrdt {
   final String? trdt;
   final String? notes;
   final String? trtpcd;
-  final int active;
-  final String prd;
+  final int? active;
+  final String? prd;
+  final String? supcd;
+  final double? qtyremain;
+  final int itemseq;
 
   Glftrdt({
     this.id,
     required this.trno,
     this.prodcd,
+    this.proddesc,
     this.subtrno,
     this.cbcd,
     this.compcd,
@@ -882,14 +887,18 @@ class Glftrdt {
     this.trdt,
     this.notes,
     this.trtpcd,
-    required this.active,
-    required this.prd,
+    this.active,
+    this.prd,
+    this.supcd,
+    this.qtyremain,
+    required this.itemseq,
   });
 
   Glftrdt.fromMap(Map<String, dynamic> res)
       : id = res["id"],
         trno = res["trno"],
         prodcd = res["prodcd"],
+        proddesc = res["proddesc"],
         subtrno = res["subtrno"],
         cbcd = res["cbcd"],
         compcd = res["compcd"],
@@ -916,13 +925,17 @@ class Glftrdt {
         notes = res["notes"],
         trtpcd = res["trtpcd"],
         active = res["active"],
-        prd = res["prd"];
+        prd = res["prd"],
+        supcd = res["supcd"],
+        qtyremain = res["qtyremain"],
+        itemseq = res["itemseq"];
 
   Map<String, Object?> toMap() {
     return {
       'id': id,
       'trno': trno,
       'prodcd': prodcd,
+      'proddesc': proddesc,
       'subtrno': subtrno,
       'cbcd': cbcd,
       'compcd': compcd,
@@ -947,8 +960,12 @@ class Glftrdt {
       'lcramt': lcramt,
       'trdt': trdt,
       'notes': notes,
+      'trtpcd': trtpcd,
       'active': active,
       'prd': prd,
+      'supcd': supcd,
+      'qtyremain': qtyremain,
+      'itemseq': itemseq,
     };
   }
 }

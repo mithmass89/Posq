@@ -44,7 +44,6 @@ class ClassRetailMainMobile extends StatefulWidget {
   final int qty;
   late String? trno;
 
-
   ClassRetailMainMobile(
       {Key? key,
       required this.pscd,
@@ -62,7 +61,7 @@ class ClassRetailMainMobile extends StatefulWidget {
 class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     with SingleTickerProviderStateMixin {
   final PanelController _pc = PanelController();
-   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final search = TextEditingController();
   TabController? controller;
   IafjrndtClass? iafjrndt;
@@ -87,7 +86,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
   set string(IafjrndtClass value) {
     setState(() {
-      trno = value.trno??widget.trno;
+      trno = value.trno ?? widget.trno;
       if (value.trno == null) {
         item = 0;
         sum = 0;
@@ -422,7 +421,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-             key: _scaffoldKey,
+        key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         drawer: DrawerRetailMain(
           outletinfo: widget.outletinfo,
@@ -482,7 +481,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 color: Colors.white,
                                 splashColor: Colors.transparent,
                                 onPressed: () {
-                                        _scaffoldKey.currentState!.openDrawer();
+                                  _scaffoldKey.currentState!.openDrawer();
                                 },
                               ),
                               Container(
@@ -620,7 +619,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       switch (_scrollisanimated) {
                         case true:
                           return SlideUpPanel(
-                       
                             sum: sum,
                             animated: _scrollisanimated,
                             outletinfo: Outlet(
@@ -739,7 +737,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 MaterialPageRoute(
                                     builder: (context) => ClassRetailMainMobile(
                                           pscd: widget.outletinfo.outletcd,
-                                 
                                           trno: trno,
                                           outletinfo: widget.outletinfo,
                                           qty: 0,
@@ -773,7 +770,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           context,
                           MaterialPageRoute(
                               builder: (context) => PaymentV2MobileClass(
-                                 
                                     datatrans: listdata!,
                                     outletinfo: widget.outletinfo,
                                     balance: sum.toInt(),

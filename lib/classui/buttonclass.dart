@@ -177,6 +177,69 @@ class _ButtonNoIconAnimatedState extends State<ButtonNoIconAnimated> {
   }
 }
 
+class ButtonNoIcon2 extends StatefulWidget {
+  final VoidCallback? onpressed;
+  final String? iconasset;
+  final double? height;
+  final double? width;
+  final String? name;
+  final color;
+  final textcolor;
+  final widget;
+
+
+  const ButtonNoIcon2({
+    Key? key,
+    this.onpressed,
+    this.height,
+    this.width,
+    this.name,
+    this.iconasset,
+    this.color,
+    this.textcolor,
+    this.widget,
+ 
+  }) : super(key: key);
+
+  @override
+  State<ButtonNoIcon2> createState() => _ButtonNoIcon2State();
+}
+
+class _ButtonNoIcon2State extends State<ButtonNoIcon2> {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      //  elevation: 2,
+      child: InkWell(
+        onTap: widget.onpressed,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                widget.name.toString(),
+                style: TextStyle(color: widget.textcolor),
+              ),
+              height: widget.height,
+              width: widget.width,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  color: widget.color),
+         
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 class Bouncing extends StatefulWidget {
@@ -539,7 +602,8 @@ class _ButtonClassPayment2State extends State<ButtonClassPayment2> {
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Container(
-            child: Text(widget.name.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(widget.name.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold)),
             alignment: Alignment.center,
             height: widget.height,
             width: widget.width,

@@ -77,12 +77,13 @@ class DatabaseHandler {
         );
         await database.execute(
           '''CREATE TABLE glftrdt(id INTEGER PRIMARY KEY AUTOINCREMENT,trno varchar(50) NOT NULL
-          ,prodcd varchar(50),subtrno varchar(50),cbcd char(10)
+          ,prodcd varchar(50),proddesc varchar(200),subtrno varchar(50),cbcd char(10),supcd varchar(200)
           ,compcd varchar(50),whto varchar(50),whfr varchar(50),qtyconv decimal,unituse varchar(10),currcd varchar(50)
           ,baseamt1 decimal,baseamt2 decimal,unitamt decimal,totalprice decimal,taxpct decimal 
           , taxamt decimal ,discpct decimal , discamount decimal,totalaftdisctax decimal
           ,trcoa varchar(100) NOT NULL,fdbamt decimal,fcramt decimal,ldbamt decimal 
-          ,lcramt decimal,trdt varchar(20),notes varchar(200),trtpcd char(10),active INTEGER NOT NULL,prd varchar(20) NOT NULL )''',
+          ,lcramt decimal,trdt varchar(20),notes varchar(200),trtpcd char(10),active INTEGER NOT NULL
+          ,prd varchar(20) NOT NULL,qtyremain decimal,itemseq INTEGER NOT NULL )''',
         );
       },
       version: 1,
@@ -180,15 +181,25 @@ class DatabaseHandler {
     return result;
   }
 
-  Future<int> insertGlftrdt(List<Glftrdt> items) async {
+  Future<int> insertGltrdt(List<Glftrdt> items) async {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var item in items) {
       result = await db.insert('glftrdt', item.toMap());
-      print(item.trno);
+      print(items.first.fdbamt);
     }
     return result;
   }
+
+  // Future<int> insertGlftrdt(List<Glftrdt> items) async {
+  //   int result = 0;
+  //   final Database db = await initializeDB(databasename);
+  //   for (var item in items) {
+  //     result = await db.insert('glftrdt', item.toMap());
+  //     print(item.trno);
+  //   }
+  //   return result;
+  // }
 
   Future<int> insertPromo(List<Promo> items) async {
     int result = 0;
@@ -250,6 +261,46 @@ class DatabaseHandler {
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.query('gntrantp');
     return queryResult.map((e) => Gntrantp.fromMap(e)).toList();
+  }
+
+  Future<List<dynamic>> getDataRR() async {
+    final Database db = await initializeDB(databasename);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        '''select id, trno, prodcd, proddesc, subtrno ,cbcd, supcd, compcd, whto
+        , whfr , sum(qtyconv) as qtyconv, unituse, currcd, baseamt1, baseamt2, unitamt, sum(totalprice) as totalprice, taxpct
+        , taxamt, discpct, discamount, totalaftdisctax
+        , trcoa, fdbamt, fcramt, ldbamt, lcramt, trdt, notes 
+        , trtpcd, active, prd, sum(qtyremain) as qtyremain  from glftrdt where trcoa='Inventory' and trtpcd='7010' and active='1' group by trno ''');
+    // print(queryResult);
+    return queryResult;
+  }
+
+  Future<List<dynamic>> getDataReturnRR() async {
+    final Database db = await initializeDB(databasename);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        '''select id, trno, prodcd, proddesc, subtrno ,cbcd, supcd, compcd, whto
+        , whfr , sum(qtyconv) as qtyconv, unituse, currcd, baseamt1, baseamt2, unitamt, sum(totalprice) as totalprice, taxpct
+        , taxamt, discpct, discamount, totalaftdisctax
+        , trcoa, fdbamt, fcramt, ldbamt, lcramt, trdt, notes 
+        , trtpcd, active, prd, qtyremain from glftrdt where trcoa='Inventory' and trtpcd='7081' group by trno ''');
+    // print(queryResult);
+    return queryResult;
+  }
+
+  Future<List<dynamic>> getDataDetailTrnoGrouped(String trno) async {
+    final Database db = await initializeDB(databasename);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        '''select * from glftrdt where active='1' and trtpcd='7010' and trcoa='AP-Pembelian' and trno='${trno}' ''');
+    // print(queryResult);
+    return queryResult;
+  }
+
+  Future<List<dynamic>> getDataDetailTrno(String trno) async {
+    final Database db = await initializeDB(databasename);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        '''select * from glftrdt where active='1' and trtpcd='7010'  and trno='${trno}' ''');
+    // print(queryResult);
+    return queryResult;
   }
 
   Future<List<CostumersSavedManual>> retrieveGuestinfo(String trno) async {
@@ -331,7 +382,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
      costcoa,
      ctg,
      Y.outletcd as outletcd,
-      Y.stock-ifnull(X.stock,0) as stock,
+      Y.stock-ifnull(X.stock,0)+ifnull(Z.stock,0)-ifnull(Q.stock,0) as stock,
     pathimage,
     description,
     sku,
@@ -339,7 +390,11 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
     trackstock from (select * from psspsitem)Y
         left join (select itemcd as itemcd,sum(qty) as stock from iafjrndt where active='1' group by itemcd) X 
         on Y.itemcd=X.itemcd
+        left join (select prodcd as itemcd,sum(qtyconv) as stock from glftrdt where active='1'  and trtpcd='7010' and trcoa='Inventory')Z
         
+        on x.itemcd=Z.itemcd
+                left join (select prodcd as itemcd,sum(qtyconv) as stock from glftrdt where active='1'  and trtpcd='7081' and trcoa='AP-Pembelian')Q
+            on x.itemcd=Q.itemcd
          where itemdesc like '%$query%' ''');
 
     return queryResult.map((e) => Item.fromMap(e)).toList();
@@ -395,12 +450,30 @@ select sum(x.nettamt) as nettamt from
     return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
   }
 
+//   Future<List<Glftrdt>> getDataRR() async {
+//     final Database db = await initializeDB(databasename);
+//     final List<Map<String, Object?>> queryResult = await db.rawQuery('''
+// select * from glftrdt where  active='1' and trtpcd='7010' and trcoa='AP-Pembelian'
+
+//         ''');
+//     print(queryResult);
+//     return queryResult.map((e) => Glftrdt.fromMap(e)).toList();
+//   }
+
   Future<List<Outlet>> getTrno(String pscd) async {
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select outletcd,outletname,telp,alamat,trnonext,kodepos,trnopynext from Outlet where outletcd='$pscd'");
 
     return queryResult.map((e) => Outlet.fromMap(e)).toList();
+  }
+
+  Future<List<Gntrantp>> getTrnoNextBO(String trtp) async {
+    final Database db = await initializeDB(databasename);
+    final List<Map<String, Object?>> queryResult =
+        await db.rawQuery("select * from gntrantp where trtp='${trtp}'");
+
+    return queryResult.map((e) => Gntrantp.fromMap(e)).toList();
   }
 
   Future<List<IafjrndtClass>> retrieveDetailIafjrndt(String trno) async {
@@ -538,6 +611,16 @@ where x.nettamt<>0
     ]);
   }
 
+  Future<void> updateQtyRemain(double qty, String trno, int itemseq) async {
+    final db = await initializeDB(databasename);
+    await db.rawUpdate('''
+    UPDATE glftrdt 
+    SET qtyremain=? WHERE trno=? and itemseq=?
+    ''', [qty, '${trno}',itemseq]);
+    print(qty);
+    print(trno);
+  }
+
   Future<void> activeZeroiafjrndt(IafjrndtClass iafjrndt) async {
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
@@ -570,6 +653,27 @@ where x.nettamt<>0
     ]);
   }
 
+  Future<void> activeZeroGlftrdt(String trno) async {
+    final db = await initializeDB(databasename);
+    await db.rawUpdate('''
+    UPDATE glftrdt 
+    SET active=0 WHERE trno = ?
+    ''', [
+      trno,
+    ]);
+  }
+
+  
+  Future<void> activeZeroReceivingitemseq(String trno,int itemseq) async {
+    final db = await initializeDB(databasename);
+    await db.rawUpdate('''
+    UPDATE glftrdt 
+    SET active=0 WHERE trno = ? and itemseq=?
+    ''', [
+      trno,itemseq
+    ]);
+  }
+
   Future<void> updateTrnoNext(Outlet iafjrndt) async {
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
@@ -578,6 +682,62 @@ where x.nettamt<>0
     ''', [
       iafjrndt.trnonext,
       iafjrndt.outletcd,
+    ]);
+  }
+
+  Future<void> updateTrnoGntrantp(Gntrantp trno) async {
+    final db = await initializeDB(databasename);
+    await db.rawUpdate('''
+    UPDATE gntrantp 
+    SET trnonext=trnonext+1 WHERE trtp=?
+    ''', [trno.trtp]);
+  }
+
+  Future<void> updateRRDebit(Glftrdt data) async {
+    final db = await initializeDB(databasename);
+    await db.rawUpdate('''
+    UPDATE glftrdt 
+    SET prodcd=?,proddesc=?,notes=?,supcd=?,qtyconv=?,unitamt=?,totalprice=?,totalaftdisctax=?,
+    fdbamt=?,ldbamt=?,qtyremain=?
+     WHERE trno=? and itemseq=? and trcoa='Inventory'
+    ''', [
+      data.prodcd,
+      data.proddesc,
+      data.notes,
+      data.supcd,
+      data.qtyconv,
+      data.unitamt,
+      data.totalprice,
+      data.totalaftdisctax,
+      data.fdbamt,
+      data.ldbamt,
+      data.qtyremain,
+      data.trno,
+      data.itemseq
+    ]);
+  }
+
+  Future<void> updateRRCredit(Glftrdt data) async {
+    final db = await initializeDB(databasename);
+    await db.rawUpdate('''
+    UPDATE glftrdt 
+    SET prodcd=?,proddesc=?,notes=?,supcd=?,qtyconv=?,unitamt=?,totalprice=?,totalaftdisctax=?,
+    fcramt=?,lcramt=?,qtyremain=?
+     WHERE trno=?  and itemseq=? and trcoa='AP-Pembelian'
+    ''', [
+      data.prodcd,
+      data.proddesc,
+      data.notes,
+      data.supcd,
+      data.qtyconv,
+      data.unitamt,
+      data.totalprice,
+      data.totalaftdisctax,
+      data.fcramt,
+      data.lcramt,
+      data.qtyremain,
+      data.trno,
+      data.itemseq,
     ]);
   }
 
@@ -643,6 +803,15 @@ where x.nettamt<>0
       'ctg',
       where: "id = ?",
       whereArgs: [id],
+    );
+  }
+
+  Future<void> deleteTrno(String trno) async {
+    final db = await initializeDB(databasename);
+    await db.delete(
+      'glftrdt',
+      where: "trno = ?",
+      whereArgs: [trno],
     );
   }
 

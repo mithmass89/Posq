@@ -8,7 +8,6 @@ import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/image.dart';
 import 'package:posq/model.dart';
-import 'package:toast/toast.dart';
 
 enum ImageSourceType { gallery, camera }
 
@@ -57,7 +56,6 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
   String? query = '';
   late DatabaseHandler handler;
   bool detailon = false;
-  String _scanBarcode = 'Unknown';
 
   @override
   void initState() {
@@ -82,7 +80,6 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
     if (!mounted) return;
 
     setState(() {
-      _scanBarcode = barcodeScanRes;
       widget.barcode.text = barcodeScanRes;
     });
   }
@@ -282,7 +279,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                           color: Colors.blue,
                           splashColor: Colors.transparent,
                           onPressed: () async {
-                            final text = await scanBarcodeNormal();
+                            scanBarcodeNormal();
                           },
                         ),
                         label: 'Barcode',

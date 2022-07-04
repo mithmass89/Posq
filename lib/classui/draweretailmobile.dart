@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classlisttransactionmobile.dart';
+import 'package:posq/setting/classcustomersmobile.dart';
+import 'package:posq/setting/classpromomobile.dart';
+import 'package:posq/setting/classtypeadjusmentstock.dart';
 
 class DrawerRetailMain extends StatefulWidget {
   final String? outletname;
@@ -77,9 +80,12 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             leading: Icon(
               Icons.shop_outlined,
             ),
-            title: Text('Kasir'),
+            title: Text('Kelola Promo'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return ClassPromoMobile();
+              }));
             },
           ),
           ListTile(
@@ -112,7 +118,12 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             ),
             title: const Text('Kelola Produk'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return ClassAdjusmentType(
+                  pscd: widget.outletinfo,
+                );
+              }));
             },
           ),
           ListTile(
@@ -121,7 +132,10 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             ),
             title: const Text('Pelanggan'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return ClassListCustomers();
+              }));
             },
           ),
           ListTile(

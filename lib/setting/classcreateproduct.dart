@@ -117,11 +117,7 @@ class _CreateproductState extends State<Createproduct>
     return await handler.insertItem(listctg);
   }
 
-  Future<int> addStock() async {
-    Glftrdt ctg = Glftrdt(active: 1, prd: '', trno: '');
-    List<Glftrdt> listctg = [ctg];
-    return await handler.insertGlftrdt(listctg);
-  }
+
 
   @override
   Widget build(BuildContext context) {
