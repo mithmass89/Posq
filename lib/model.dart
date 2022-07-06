@@ -171,6 +171,36 @@ class RegisterItem {
   }
 }
 
+class Integrasi {
+  final int? id;
+  final String integrasi;
+  final String keyapi;
+  final String use;
+
+  Integrasi({
+    this.id,
+    required this.integrasi,
+    required this.keyapi,
+    required this.use,
+  });
+
+  Integrasi.fromMap(
+    Map<String, dynamic> res,
+  )   : id = res["id"],
+        integrasi = res["integrasi"],
+        keyapi = res["keyapi"],
+        use = res["use"];
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'integrasi': integrasi,
+      'keyapi': keyapi,
+      'use': use,
+    };
+  }
+}
+
 class Ctg {
   final int? id;
   final String ctgcd;

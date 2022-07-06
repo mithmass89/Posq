@@ -43,7 +43,7 @@ class _SelectProductMobileState extends State<SelectProductMobile> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          'Product List',
+          'Pilih Detail',
           style: TextStyle(color: Colors.white),
         ),
       ),

@@ -44,12 +44,12 @@ class _LookUpDetailTrnoState extends State<LookUpDetailTrno> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          'Product List',
+          'Detail Produk',
           style: TextStyle(color: Colors.white),
         ),
       ),
       body: FutureBuilder(
-        future: this.handler.getDataDetailTrnoGrouped(widget.trno),
+        future: this.handler.getDataDetailTrnoRRGrouped(widget.trno),
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           var x = snapshot.data ?? [];
           if (x.isNotEmpty) {
@@ -105,35 +105,10 @@ class _LookUpDetailTrnoState extends State<LookUpDetailTrno> {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(child: Text('Tidak ada produk')),
-                  Container(
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Createproduct()),
-                            ).then((_) {
-                              setState(() {});
-                            });
-                          },
-                          child: Text('Buat Produk'))),
-                ],
+                children: [],
               ),
             );
           }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Createproduct()),
-          ).then((_) {
-            setState(() {});
-          });
         },
       ),
     );

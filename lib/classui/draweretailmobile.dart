@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classlisttransactionmobile.dart';
 import 'package:posq/setting/classcustomersmobile.dart';
 import 'package:posq/setting/classpromomobile.dart';
-import 'package:posq/setting/classtypeadjusmentstock.dart';
+import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
 
 class DrawerRetailMain extends StatefulWidget {
   final String? outletname;
@@ -166,8 +167,15 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         height: MediaQuery.of(context).size.height * 0.1,
                       ),
                       ListTile(
-                          leading: Icon(Icons.settings),
-                          title: Text('Facebook')),
+                        leading: Icon(Icons.settings),
+                        title: Text('Integrasi '),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return ClassListIntegrasi();
+                          }));
+                        },
+                      ),
                       ListTile(
                           leading: Icon(Icons.help), title: Text('Instagram'))
                     ],

@@ -51,11 +51,14 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   var formattedDate;
   bool zerobill = false;
   List<IafjrndtClass> listdata = [];
+  String serverkeymidtrans='';
+  bool midtransonline=false;
 
   @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
+    checkIntegrasi();
     getDataTransaksi();
     result = widget.balance;
     _controller = TabController(length: 2, vsync: this);
@@ -106,6 +109,26 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
         });
       }
     });
+  }
+
+  
+  Future<dynamic> checkIntegrasi() async {
+    String integrasi = '';
+    String keyapi = '';
+    String use = '';
+
+    await handler.querycheckMidtrans('midtrans').then((value) {
+      if (value.isNotEmpty) {
+        setState(() {
+         serverkeymidtrans = value.first.keyapi;
+          integrasi = value.first.integrasi;
+          keyapi = value.first.keyapi;
+          use = value.first.use;
+          midtransonline = true;
+        });
+      }
+    });
+    return Integrasi(integrasi: integrasi, keyapi: keyapi, use: use);
   }
 
   @override
@@ -250,7 +273,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           amountcash: amountcash,
                         ),
                         NonTunaiMobile(
-                     
+                     midtransonline: midtransonline,
                           datatrans: listdata,
                           callback: checkbalance,
                           zerobill: zerobill,

@@ -42,7 +42,9 @@ class DatabaseHandler {
         await database.execute(
           "CREATE TABLE ctg(id INTEGER PRIMARY KEY AUTOINCREMENT,ctgcd varchar(100) NOT NULL, ctgdesc varchar(100) NOT NULL)",
         );
-
+        await database.execute(
+          "CREATE TABLE integrasi(id INTEGER PRIMARY KEY AUTOINCREMENT,integrasi varchar(200), keyapi varchar(300),use char(5))",
+        );
         await database.execute(
           '''CREATE TABLE iafjrndt(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL,pscd varchar(100) NOT NULL
           , trno varchar(100) NOT NULL,split varchar(100) NOT NULL,trnobill varchar(100) NOT NULL,itemcd varchar(100) NOT NULL
@@ -128,6 +130,16 @@ class DatabaseHandler {
     for (var user in users) {
       result = await db.insert('Outlet', user.toMap());
       print(user.outletname);
+    }
+    return result;
+  }
+
+  Future<int> insertIntegrasi(List<Integrasi> users) async {
+    int result = 0;
+    final Database db = await initializeDB(databasename);
+    for (var user in users) {
+      result = await db.insert('integrasi', user.toMap());
+      print(user.keyapi);
     }
     return result;
   }
@@ -282,15 +294,50 @@ class DatabaseHandler {
         , whfr , sum(qtyconv) as qtyconv, unituse, currcd, baseamt1, baseamt2, unitamt, sum(totalprice) as totalprice, taxpct
         , taxamt, discpct, discamount, totalaftdisctax
         , trcoa, fdbamt, fcramt, ldbamt, lcramt, trdt, notes 
-        , trtpcd, active, prd, qtyremain from glftrdt where trcoa='Inventory' and trtpcd='7081' group by trno ''');
+        , trtpcd, active, prd, qtyremain from glftrdt where trcoa='Inventory' and trtpcd='7081' and active='1' group by trno ''');
     // print(queryResult);
     return queryResult;
   }
 
-  Future<List<dynamic>> getDataDetailTrnoGrouped(String trno) async {
+  Future<List<dynamic>> getDataDetailTrnoRRGrouped(String trno) async {
+    final Database db = await initializeDB(databasename);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery('''
+    select  id, trno, prodcd, proddesc,subtrno ,cbcd, supcd, compcd, whto
+        , whfr , (qtyconv) as qtyconv, unituse, currcd, baseamt1, baseamt2, unitamt, (totalprice) as totalprice, taxpct
+        , taxamt, discpct, discamount, totalaftdisctax
+        , trcoa, fdbamt, fcramt, ldbamt, lcramt, trdt, notes 
+        , trtpcd, active, prd, sum(qtyremain) as qtyremain , itemseq from 
+    (select 
+        id,trno, prodcd, proddesc, subtrno ,cbcd, supcd, compcd, whto
+        , whfr , (qtyconv) as qtyconv, unituse, currcd, baseamt1, baseamt2, unitamt, (totalprice) as totalprice, taxpct
+        , taxamt, discpct, discamount, totalaftdisctax
+        , trcoa, fdbamt, fcramt, ldbamt, lcramt, trdt, notes 
+        , trtpcd, active, prd, qtyremain ,itemseq
+         from glftrdt 
+          where active='1' and trtpcd='7010' and trcoa='AP-Pembelian' and trno='${trno}'
+  union all
+     select 
+        id,trno, prodcd, proddesc,subtrno ,cbcd, supcd, compcd, whto
+        , whfr , (qtyconv) as qtyconv, unituse, currcd, baseamt1, baseamt2, unitamt, (totalprice) as totalprice, taxpct
+        , taxamt, discpct, discamount, totalaftdisctax
+        , trcoa, fdbamt, fcramt, ldbamt, lcramt, trdt, notes 
+        , trtpcd, active, prd,(-qtyconv) as qtyremain ,itemseq
+         from glftrdt 
+          where active='1' and trtpcd='7081' and trcoa='AP-Pembelian' and subtrno='${trno}')X
+
+    group by itemseq
+
+
+          
+           ''');
+    print(queryResult);
+    return queryResult;
+  }
+
+  Future<List<dynamic>> getDataDetailReturnRR(String trno) async {
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        '''select * from glftrdt where active='1' and trtpcd='7010' and trcoa='AP-Pembelian' and trno='${trno}' ''');
+        '''select * from glftrdt where active='1' and trtpcd='7081' and trcoa='AP-Pembelian' and trno='${trno}' ''');
     // print(queryResult);
     return queryResult;
   }
@@ -616,9 +663,18 @@ where x.nettamt<>0
     await db.rawUpdate('''
     UPDATE glftrdt 
     SET qtyremain=? WHERE trno=? and itemseq=?
-    ''', [qty, '${trno}',itemseq]);
+    ''', [qty, '${trno}', itemseq]);
     print(qty);
     print(trno);
+  }
+
+    Future<void> updateServerKeyMidtrans(String keyapi, String integrasi) async {
+    final db = await initializeDB(databasename);
+    await db.rawUpdate('''
+    UPDATE integrasi 
+    SET keyapi=? WHERE integrasi=?
+    ''', ['${keyapi}', '${integrasi}']);
+   
   }
 
   Future<void> activeZeroiafjrndt(IafjrndtClass iafjrndt) async {
@@ -663,15 +719,12 @@ where x.nettamt<>0
     ]);
   }
 
-  
-  Future<void> activeZeroReceivingitemseq(String trno,int itemseq) async {
+  Future<void> activeZeroReceivingitemseq(String trno, int itemseq) async {
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE glftrdt 
     SET active=0 WHERE trno = ? and itemseq=?
-    ''', [
-      trno,itemseq
-    ]);
+    ''', [trno, itemseq]);
   }
 
   Future<void> updateTrnoNext(Outlet iafjrndt) async {
@@ -693,13 +746,13 @@ where x.nettamt<>0
     ''', [trno.trtp]);
   }
 
-  Future<void> updateRRDebit(Glftrdt data) async {
+  Future<void> updateJournalDebit(Glftrdt data) async {
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE glftrdt 
     SET prodcd=?,proddesc=?,notes=?,supcd=?,qtyconv=?,unitamt=?,totalprice=?,totalaftdisctax=?,
     fdbamt=?,ldbamt=?,qtyremain=?
-     WHERE trno=? and itemseq=? and trcoa='Inventory'
+     WHERE trno=? and itemseq=? and trcoa=?
     ''', [
       data.prodcd,
       data.proddesc,
@@ -713,17 +766,18 @@ where x.nettamt<>0
       data.ldbamt,
       data.qtyremain,
       data.trno,
-      data.itemseq
+      data.itemseq,
+      data.trcoa,
     ]);
   }
 
-  Future<void> updateRRCredit(Glftrdt data) async {
+  Future<void> updatejournalCredit(Glftrdt data) async {
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE glftrdt 
     SET prodcd=?,proddesc=?,notes=?,supcd=?,qtyconv=?,unitamt=?,totalprice=?,totalaftdisctax=?,
     fcramt=?,lcramt=?,qtyremain=?
-     WHERE trno=?  and itemseq=? and trcoa='AP-Pembelian'
+     WHERE trno=?  and itemseq=? and trcoa=?
     ''', [
       data.prodcd,
       data.proddesc,
@@ -738,6 +792,7 @@ where x.nettamt<>0
       data.qtyremain,
       data.trno,
       data.itemseq,
+      data.trcoa,
     ]);
   }
 
@@ -880,6 +935,19 @@ where x.nettamt<>0
     // {_id: 2, name: Mary, age: 32}
   }
 
+  Future queryCheckQTYRR(String trno, int itemseq) async {
+    var maxid;
+    // get a reference to the database
+    final Database db = await initializeDB(databasename);
+
+    // raw query
+    List<Map> result = await db.rawQuery(
+        'select qtyremain from glftrdt where trno="${trno}" and itemseq="${itemseq}" and active="1" and trcoa="Inventory" ');
+
+    // print the results
+    return result.map((e) => e['qtyremain']);
+  }
+
   Future queryCheckItem() async {
     var maxid;
     // get a reference to the database
@@ -912,6 +980,19 @@ where x.nettamt<>0
       return result.first['itemcd'];
     }
 
+    // {_id: 2, name: Mary, age: 32}
+  }
+
+  Future<List<Integrasi>> querycheckMidtrans(String type) async {
+    var maxid;
+    // get a reference to the database
+    final Database db = await initializeDB(databasename);
+
+    // raw query
+    final List<Map<String, Object?>>result =
+        await db.rawQuery('select * from integrasi where integrasi="${type}" ');
+
+    return result.map((e) => Integrasi.fromMap(e)).toList();
     // {_id: 2, name: Mary, age: 32}
   }
 

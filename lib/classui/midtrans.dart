@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 
 var api = 'https://api.sandbox.midtrans.com/v2/charge';
-var user = 'SB-Mid-server-J4XJjwc-pTBQYsY4hUFztCP-';
-var basicAuth = 'Basic ' + base64Encode(utf8.encode(user));
+var serverkeymidtrans = '';
+var basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
 
 class PaymentGate {
   static Future<dynamic> getStatusTransaction(String trno) async {
@@ -36,7 +36,7 @@ class PaymentGate {
       String trno,
       String totalamount,
       List<Midtransitem> data) async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode(user));
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
     var body = {
       "payment_type": "gopay",
       "transaction_details": {"order_id": trno, "gross_amount": totalamount},
@@ -81,7 +81,7 @@ class PaymentGate {
       String trno,
       String totalamount,
       List<Midtransitem> data) async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode(user));
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
     var body = {
       "payment_type": "bank_transfer",
       "transaction_details": {"gross_amount": totalamount, "order_id": trno},
@@ -140,7 +140,7 @@ class PaymentGate {
       String trno,
       String totalamount,
       List<Midtransitem> data) async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode(user));
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
     var body = {
       "payment_type": "echannel",
       "transaction_details": {"gross_amount": totalamount, "order_id": trno},
@@ -178,7 +178,7 @@ class PaymentGate {
 
   static Future<dynamic> getvaPermata(String guestname, String email,
       String phone, String trno, List<Midtransitem> data,String amount) async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode(user));
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
     var body = jsonEncode({
       "payment_type": "bank_transfer",
       "bank_transfer": {"bank": "permata", "va_number": "1234567890"},
