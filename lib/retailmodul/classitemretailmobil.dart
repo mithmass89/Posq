@@ -81,7 +81,11 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       userupd: 'Admin',
       userdel: 'Admin',
       prnkitchen: '1',
-      prnkitchentm: '10:10',
+      prnkitchentm: now.hour.toString() +
+          ":" +
+          now.minute.toString() +
+          ":" +
+          now.second.toString(),
       confirmed: '1',
       trdesc: widget.item.itemdesc,
       taxpct: widget.item.taxpct,

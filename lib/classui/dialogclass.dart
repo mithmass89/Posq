@@ -767,7 +767,11 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                         userupd: 'Admin',
                         userdel: 'Admin',
                         prnkitchen: '1',
-                        prnkitchentm: '10:10',
+                        prnkitchentm: now.hour.toString() +
+                            ":" +
+                            now.minute.toString() +
+                            ":" +
+                            now.second.toString(),
                         confirmed: '1',
                         trdesc: widget.controller.text,
                         taxpct: 0,
@@ -918,7 +922,6 @@ class DialogClassCancelorder extends StatefulWidget {
     required this.trno,
     required this.outletcd,
     required this.outletinfo,
- 
   }) : super(key: key);
 
   @override
@@ -1001,7 +1004,7 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
                 // Navigator.of(context).pushNamedAndRemoveUntil(
                 //     '/', (Route<dynamic> route) => false);
                 await checkTrno().whenComplete(() async {
-                  await  getTrno();
+                  await getTrno();
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.remove('savecostmrs');
                   Navigator.of(context).pushAndRemoveUntil(
@@ -1251,7 +1254,6 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ClassRetailMainMobile(
-   
                             outletinfo: widget.outletinfo,
                             pscd: widget.pscd,
                             qty: 0,
@@ -1304,7 +1306,6 @@ class DialogClassEwallet extends StatefulWidget {
     required this.compdesc,
     this.url,
     this.fromtrfbank,
-  
   }) : super(key: key);
 
   @override
@@ -1333,7 +1334,11 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
         trno: widget.trno,
         split: 'A',
         pscd: widget.pscd,
-        trtm: '00:00',
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
         disccd: widget.discbyamount == true ? 'By Amount' : 'By Percent',
         pax: '1',
         pymtmthd: 'EWALLET',
@@ -1369,23 +1374,29 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                       height: MediaQuery.of(context).size.height * 0.2,
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: QrImage(
-                        size: MediaQuery.of(context).size.height * 0.4,
+                        size: MediaQuery.of(context).size.height * 0.6,
                         version: QrVersions.auto,
                         data: widget.url.toString(),
                       ),
                     ),
-                    ButtonClassPayment(
-                      styleasset: BoxFit.fitWidth,
-                      iconasset: 'qris.png',
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.4,
-                    ),
                   ],
+                ),
+                Container(
+                  alignment: Alignment.topCenter,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  decoration: BoxDecoration(
+                
+                    image: DecorationImage(
+                        image: AssetImage('assets/qris.png'),
+                        fit: BoxFit.cover),
+                    // shape: BoxShape.circle,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('copy data'),
+                    Text('copy Text'),
                     IconButton(
                       icon: Icon(Icons.copy),
                       iconSize: 20,
@@ -1400,7 +1411,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                 ),
               ],
             )),
-        title: Text('Pembayaran Via ${widget.compdesc}?'),
+        title: Text('Pembayaran QRIS '),
         actions: <Widget>[
           TextButton(
               onPressed: () async {
@@ -1409,7 +1420,6 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                      
                               frombanktransfer: false,
                               cash: false,
                               outletinfo: widget.outletinfo,
@@ -1462,7 +1472,6 @@ class DialogClassBankTransfer extends StatefulWidget {
     this.transactionstatus,
     this.grossmaount,
     required this.paymenttype,
- 
   }) : super(key: key);
 
   @override
@@ -1492,7 +1501,11 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
       trno: widget.trno,
       split: 'A',
       pscd: widget.pscd,
-      trtm: '00:00',
+      trtm: now.hour.toString() +
+          ":" +
+          now.minute.toString() +
+          ":" +
+          now.second.toString(),
       disccd: widget.discbyamount == true ? 'By Amount' : 'By Percent',
       pax: '1',
       pymtmthd: 'Account',
@@ -1583,7 +1596,6 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                  
                               frombanktransfer: true,
                               virtualaccount: widget.virtualaccount,
                               cash: false,
@@ -1637,7 +1649,6 @@ class DialogClassMandiribiller extends StatefulWidget {
     this.transactionstatus,
     this.grossmaount,
     required this.paymenttype,
-
   }) : super(key: key);
 
   @override
@@ -1667,7 +1678,11 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
         trno: widget.trno,
         split: 'A',
         pscd: widget.pscd,
-        trtm: '00:00',
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
         disccd: widget.discbyamount == true ? 'By Amount' : 'By Percent',
         pax: '1',
         pymtmthd: 'Account',
@@ -1784,7 +1799,6 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                
                               frombanktransfer: true,
                               cash: false,
                               outletinfo: widget.outletinfo,

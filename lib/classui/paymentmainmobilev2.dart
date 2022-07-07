@@ -7,6 +7,7 @@ import 'package:posq/classui/paymentcashv2.dart';
 import 'package:posq/classui/slideuppanelpaymentmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PaymentV2MobileClass extends StatefulWidget {
@@ -51,14 +52,18 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   var formattedDate;
   bool zerobill = false;
   List<IafjrndtClass> listdata = [];
-  String serverkeymidtrans='';
-  bool midtransonline=false;
+  String serverkeymidtrans = '';
+  bool midtransonline = false;
+  String pymtmthd = '';
+  String compcode = '';
+  String compdescription = '';
 
   @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-    checkIntegrasi();
+    formattedDate = formatter.format(now);
+    loadKey();
     getDataTransaksi();
     result = widget.balance;
     _controller = TabController(length: 2, vsync: this);
@@ -75,19 +80,11 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
 
   getDataTransaksi() {
     handler.retrieveDetailIafjrndt2(widget.trno.toString()).then((isi) {
-      if (isi.isNotEmpty) {
-        setState(() {
-          listdata = isi;
-
-          print(listdata.first.trdesc);
-        });
-      } else {
-        setState(() {
-          listdata = [];
-        });
-      }
+      print(List.generate(isi.length, (index) => isi[index].id));
+      setState(() {
+        listdata = isi;
+      });
     });
-    print(listdata);
   }
 
   checkbalance() async {
@@ -111,24 +108,61 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
     });
   }
 
-  
-  Future<dynamic> checkIntegrasi() async {
-    String integrasi = '';
-    String keyapi = '';
-    String use = '';
+  Future<int> insertIafjrnhd() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        trno: '${widget.trno}',
+        split: 'A',
+        pscd: '${widget.pscd}',
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
+        disccd: '',
+        pax: '1',
+        pymtmthd: pymtmthd,
+        ftotamt: double.parse(widget.balance.toString()),
+        totalamt: double.parse(widget.balance.toString()),
+        framtrmn: double.parse(widget.balance.toString()),
+        amtrmn: double.parse(widget.balance.toString()),
+        trdesc: '$pymtmthd ${widget.trno}',
+        trdesc2: '$pymtmthd ${widget.trno}',
+        compcd: compcode,
+        compdesc: compdescription,
+        active: '1',
+        usercrt: 'Admin',
+        slstp: '1',
+        currcd: 'IDR');
+    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
+    print(iafjrnhd);
+    return await handler.insertIafjrnhd(listiafjrnhd);
+  }
 
-    await handler.querycheckMidtrans('midtrans').then((value) {
-      if (value.isNotEmpty) {
-        setState(() {
-         serverkeymidtrans = value.first.keyapi;
-          integrasi = value.first.integrasi;
-          keyapi = value.first.keyapi;
-          use = value.first.use;
-          midtransonline = true;
-        });
-      }
+  loadKey() async {
+    final midtranskey = await SharedPreferences.getInstance();
+    serverkeymidtrans = midtranskey.getString('serverkey') == null
+        ? ''
+        : midtranskey.getString('serverkey')!;
+    if (serverkeymidtrans != '') {
+      setState(() {
+        midtransonline = true;
+      });
+    } else {
+      setState(() {
+        midtransonline = false;
+      });
+    }
+  }
+
+  checkSelected(String? compcd, String? compdesc, String methode) {
+    setState(() {
+      compcd = compcd;
+      compdescription = compdesc!;
+      pymtmthd = methode;
+      zerobill = true;
     });
-    return Integrasi(integrasi: integrasi, keyapi: keyapi, use: use);
+    print('main $compdescription');
   }
 
   @override
@@ -273,7 +307,11 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           amountcash: amountcash,
                         ),
                         NonTunaiMobile(
-                     midtransonline: midtransonline,
+                          pymtmthd: pymtmthd,
+                          compcode: compcode,
+                          compdescription: compdescription,
+                          checkselected: checkSelected,
+                          midtransonline: midtransonline,
                           datatrans: listdata,
                           callback: checkbalance,
                           zerobill: zerobill,
@@ -299,7 +337,8 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: ElevatedButton(
                   onPressed: zerobill == true
-                      ? () {
+                      ? () async {
+                          await insertIafjrnhd();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -309,8 +348,11 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                                       outletinfo: widget.outletinfo,
                                       outletname: widget.outletname,
                                       outletcd: widget.pscd,
-                                      amount: double.parse(amountcash.text),
-                                      paymenttype: 'Cash',
+                                      amount: amountcash.text == '' ||
+                                              amountcash.text.isEmpty
+                                          ? widget.balance
+                                          : double.parse(amountcash.text),
+                                      paymenttype: pymtmthd,
                                       trno: widget.trno.toString(),
                                       trdt: formattedDate,
                                     )),

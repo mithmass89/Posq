@@ -23,20 +23,28 @@ class EWalletClassNonTunai extends StatefulWidget {
   final Function callback;
   final List<IafjrndtClass> datatrans;
   final bool midtransonline;
-
-  EWalletClassNonTunai({
-    Key? key,
-    required this.amountcash,
-    required this.balance,
-    this.trno,
-    this.pscd,
-    required this.outletinfo,
-    required this.callback,
-    required this.zerobill,
-    required this.result,
-    required this.midtransonline,
-    required this.datatrans,
-  }) : super(key: key);
+  late String? compcode;
+  late String? compdescription;
+  late String? pymtmthd;
+  final void Function(String compcd, String compdesc, String methode)
+      checkselected;
+  EWalletClassNonTunai(
+      {Key? key,
+      required this.amountcash,
+      required this.balance,
+      this.trno,
+      this.pscd,
+      required this.outletinfo,
+      required this.callback,
+      required this.zerobill,
+      required this.result,
+      required this.midtransonline,
+      required this.datatrans,
+      this.compcode,
+      this.compdescription,
+      this.pymtmthd,
+      required this.checkselected})
+      : super(key: key);
 
   @override
   State<EWalletClassNonTunai> createState() => _EWalletClassNonTunaiState();
@@ -64,6 +72,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
     handler.initializeDB(databasename);
     paymentapi = PaymentGate();
     formattedDate = formatter.format(now);
+   
     List.generate(
         widget.datatrans.length,
         (index) => listitem.add(Midtransitem(
@@ -72,7 +81,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                 '${widget.datatrans[index].nettamt! / widget.datatrans[index].qty!}'),
             quantity: int.parse('${widget.datatrans[index].qty}'),
             name: '${widget.datatrans[index].trdesc}')));
-    print(listitem);
+    print(' hasil : $listitem');
   }
 
   @override
@@ -90,14 +99,14 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
           Row(
             children: [
               Container(
-                child: Text('E-Wallet',
+                child: Text('E - Wallet',
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           ),
           Container(
             padding: EdgeInsets.all(5),
-            color: Colors.grey[100],
+            // color: Colors.grey[100],
             height: MediaQuery.of(context).size.height * 0.2,
             width: MediaQuery.of(context).size.width * 0.90,
             child: GridView(
@@ -109,286 +118,397 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                 crossAxisCount: 3,
               ),
               children: [
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'gopay.jpg',
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  onpressed: () async {
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.goPayQris(
-                              'gopay',
-                              guestname,
-                              email,
-                              phone,
-                              widget.trno.toString(),
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        print(value);
-                        if (value['status_code'] != '406') {
-                          List action = value['actions'];
-                          setState(() {
-                            qr = action.first['url'];
-                          });
-                          setState(() {
-                            compcd = 'gopay';
-                            compdesc = 'gopay';
-                          });
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassEwallet(
-                                  url: qr,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo.outletcd,
-                                  trno: widget.trno.toString(),
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        } else {
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'gopay'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'gopay.jpg',
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    onpressed: () async {
+                      print(serverkeymidtrans);
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.goPayQris(
+                                'gopay',
+                                guestname,
+                                email,
+                                phone,
+                                widget.trno.toString(),
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          print(value);
+                          if (value['status_code'] != '406') {
+                            List action = value['actions'];
+                            setState(() {
+                              qr = action.first['url'];
+                            });
+                            setState(() {
+                              compcd = 'gopay';
+                              compdesc = 'gopay';
+                            });
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassEwallet(
+                                    url: qr,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo.outletcd,
+                                    trno: widget.trno.toString(),
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          } else {
+                            Toast.show("Payment Request already sent",
+                                duration: Toast.lengthLong,
+                                gravity: Toast.center);
+                          }
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'gopay',
+                            widget.compdescription = 'gopay', 'E-Wallet');
+                        // setState(() {
+                        //   widget.compcode = 'gopay';
+                        //   widget.compdescription = 'gopay';
+                        // });
+                        print('di child ${widget.compdescription}');
+                      }
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'ovo'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    styleasset: BoxFit.fitWidth,
+                    name: '',
+                    iconasset: 'ovo.png',
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    onpressed: () async {
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.goPayQris(
+                                'qris',
+                                guestname,
+                                email,
+                                phone,
+                                widget.trno.toString(),
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          print(value);
+                          if (value['status_code'] != '406') {
+                            List action = value['actions'];
+                            setState(() {
+                              qr = action.first['url'];
+                            });
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassEwallet(
+                                    url: qr,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo.outletcd,
+                                    trno: widget.trno.toString(),
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          } else {
+                            Toast.show("Payment Request already sent",
+                                duration: Toast.lengthLong,
+                                gravity: Toast.center);
+                          }
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'ovo',
+                            widget.compdescription = 'ovo', 'E-Wallet');
+                        // setState(() {
+                        //   widget.compcd = 'ovo';
+                        //   widget.compdesc = 'ovo';
+                        // });
+                        print('di child ${widget.compdescription}');
+                      }
+
+                      setState(() {
+                        compcd = 'ovo';
+                        compdesc = 'ovo';
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'dana'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'logo-dana-indonesia.jpg',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      setState(() {
+                        compcd = 'dana';
+                        compdesc = 'dana';
+                      });
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.goPayQris(
+                                'qris',
+                                guestname,
+                                email,
+                                phone,
+                                widget.trno.toString(),
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
+                            List action = value['actions'];
+                            setState(() {
+                              qr = action.first['url'];
+                            });
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassEwallet(
+                                    url: qr,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo.outletcd,
+                                    trno: widget.trno.toString(),
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          }
                           Toast.show("Payment Request already sent",
                               duration: Toast.lengthLong,
                               gravity: Toast.center);
-                        }
-                      });
-                    } else {}
-                  },
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'dana',
+                            widget.compdescription = 'dana', 'E-Wallet');
+                        // setState(() {
+                        //   widget.compcd = 'dana';
+                        //   widget.compdesc = 'dana';
+                        // });
+                        print('di child ${widget.compdescription}');
+                      }
+                    },
+                  ),
                 ),
-                ButtonClassPayment(
-                  styleasset: BoxFit.fitWidth,
-                  name: '',
-                  iconasset: 'ovo.png',
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  onpressed: () async {
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.goPayQris(
-                              'qris',
-                              guestname,
-                              email,
-                              phone,
-                              widget.trno.toString(),
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          List action = value['actions'];
-                          setState(() {
-                            qr = action.first['url'];
-                          });
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassEwallet(
-                                  url: qr,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo.outletcd,
-                                  trno: widget.trno.toString(),
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        } else {
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'shoopepay'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'logo-shopeepay.png',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      setState(() {
+                        compcd = 'shoopepay';
+                        compdesc = 'shoopepay';
+                      });
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.goPayQris(
+                                'qris',
+                                guestname,
+                                email,
+                                phone,
+                                widget.trno!,
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
+                            List action = value['actions'];
+                            setState(() {
+                              qr = action.first['url'];
+                            });
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassEwallet(
+                                    url: qr,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo.outletcd,
+                                    trno: widget.trno.toString(),
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          }
                           Toast.show("Payment Request already sent",
                               duration: Toast.lengthLong,
                               gravity: Toast.center);
-                        }
-                      });
-                    } else {}
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'shoopepay',
+                            widget.compdescription = 'shoopepay', 'E-Wallet');
 
-                    setState(() {
-                      compcd = 'ovo';
-                      compdesc = 'ovo';
-                    });
-                  },
+                        print('di child ${widget.compdescription}');
+                        // setState(() {
+                        //   widget.compcd = 'shoopepay';
+                        //   widget.compdesc = 'shoopepay';
+                        // });
+                      }
+                    },
+                  ),
                 ),
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'logo-dana-indonesia.jpg',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    setState(() {
-                      compcd = 'dana';
-                      compdesc = 'dana';
-                    });
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.goPayQris(
-                              'qris',
-                              guestname,
-                              email,
-                              phone,
-                              widget.trno.toString(),
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          List action = value['actions'];
-                          setState(() {
-                            qr = action.first['url'];
-                          });
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassEwallet(
-                                  url: qr,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo.outletcd,
-                                  trno: widget.trno.toString(),
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        }
-                        Toast.show("Payment Request already sent",
-                            duration: Toast.lengthLong, gravity: Toast.center);
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'link'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'link.png',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      setState(() {
+                        compcd = 'link';
+                        compdesc = 'link';
                       });
-                    } else {}
-                  },
-                ),
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'logo-shopeepay.png',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    setState(() {
-                      compcd = 'shoopepay';
-                      compdesc = 'shoopepay';
-                    });
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.goPayQris(
-                              'qris',
-                              guestname,
-                              email,
-                              phone,
-                              widget.trno!,
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          List action = value['actions'];
-                          setState(() {
-                            qr = action.first['url'];
-                          });
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassEwallet(
-                                  url: qr,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo.outletcd,
-                                  trno: widget.trno.toString(),
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        }
-                        Toast.show("Payment Request already sent",
-                            duration: Toast.lengthLong, gravity: Toast.center);
-                      });
-                    } else {}
-                  },
-                ),
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'link.png',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    setState(() {
-                      compcd = 'link';
-                      compdesc = 'link';
-                    });
 
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.goPayQris(
-                              'qris',
-                              guestname,
-                              email,
-                              phone,
-                              widget.trno.toString(),
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          List action = value['actions'];
-                          setState(() {
-                            qr = action.first['url'];
-                          });
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassEwallet(
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo.outletcd,
-                                  trno: widget.trno.toString(),
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        }
-                        Toast.show("Payment Request already sent",
-                            duration: Toast.lengthLong, gravity: Toast.center);
-                      });
-                    }
-                  },
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.goPayQris(
+                                'qris',
+                                guestname,
+                                email,
+                                phone,
+                                widget.trno.toString(),
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
+                            List action = value['actions'];
+                            setState(() {
+                              qr = action.first['url'];
+                            });
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassEwallet(
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo.outletcd,
+                                    trno: widget.trno.toString(),
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          }
+                          Toast.show("Payment Request already sent",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'link',
+                            widget.compdescription = 'link', 'E-Wallet');
+
+                        print('di child ${widget.compdescription}');
+                        // setState(() {
+                        //   widget.compcd = 'link';
+                        //   widget.compdesc = 'link';
+                        // });
+                      }
+                    },
+                  ),
                 ),
-                ButtonClassPayment2(
-                  name: 'Lainnya',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    setState(() {
-                      compcd = 'other';
-                      compdesc = 'other';
-                    });
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.goPayQris(
-                              'qris',
-                              guestname,
-                              email,
-                              phone,
-                              widget.trno.toString(),
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          List action = value['actions'];
-                          setState(() {
-                            qr = action.first['url'];
-                          });
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassEwallet(
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo.outletcd,
-                                  trno: widget.trno.toString(),
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        }
-                        Toast.show("Payment Request already sent",
-                            duration: Toast.lengthLong, gravity: Toast.center);
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'other'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment2(
+                    name: 'Lainnya',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      setState(() {
+                        compcd = 'other';
+                        compdesc = 'other';
                       });
-                    } else {}
-                  },
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.goPayQris(
+                                'qris',
+                                guestname,
+                                email,
+                                phone,
+                                widget.trno.toString(),
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
+                            List action = value['actions'];
+                            setState(() {
+                              qr = action.first['url'];
+                            });
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassEwallet(
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo.outletcd,
+                                    trno: widget.trno.toString(),
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          }
+                          Toast.show("Payment Request already sent",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        setState(() {
+                          widget.compcode = '';
+                          widget.compdescription = '';
+                        });
+                        widget.checkselected(widget.compcode = 'other',
+                            widget.compdescription = 'other', 'E-Wallet');
+
+                        print('di child ${widget.compdescription}');
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
@@ -403,12 +523,14 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(color: Colors.yellow[100]),
                     child: Text('Integrasi Pembayaran Online')),
-                TextButton(onPressed: () {
-                       Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return ClassPaymentMidtrans();
-                          }));
-                }, child: Text('disini'))
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return ClassPaymentMidtrans();
+                      }));
+                    },
+                    child: Text('disini'))
               ],
             ),
           ),

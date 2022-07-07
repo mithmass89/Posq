@@ -425,6 +425,11 @@ class IafjrndtClass {
       // 'phone': phone,
     };
   }
+
+  // @override
+  // String toString() {
+  //   return '{"id": "$id"}';
+  // }
 }
 
 class IafjrnhdClass {

@@ -26,6 +26,9 @@ class NonTunaiMobileTransfer extends StatefulWidget {
   late bool zerobill;
   final Function callback;
   final bool midtransonline;
+  late String? compcode;
+  late String? compdescription;
+  final void Function(String compcd, String compdesc,String methode) checkselected;
 
   NonTunaiMobileTransfer(
       {Key? key,
@@ -39,7 +42,10 @@ class NonTunaiMobileTransfer extends StatefulWidget {
       required this.zerobill,
       required this.datatrans,
       required this.midtransonline,
-      required this.callback})
+      required this.callback,
+      this.compcode,
+      this.compdescription,
+      required this.checkselected})
       : super(key: key);
 
   @override
@@ -134,83 +140,31 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
               childAspectRatio: 1.6,
               crossAxisCount: 3,
               children: [
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'bca.png',
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  onpressed: () async {
-                    await PaymentGate.bankTransfer(
-                            guestname,
-                            'bca',
-                            phone,
-                            email,
-                            widget.trno,
-                            widget.result.toString(),
-                            listitem.toList())
-                        .then((value) async {
-                      if (value['status_code'] != '406') {
-                        List x = value['va_numbers'];
-                        print(x.first['va_number']);
-                        setState(() {
-                          virtualaccount = x.first['va_number'];
-                          bank = x.first['bank'];
-                          transactionstatus = value['transaction_status'];
-                          totalamount = num.parse(value['gross_amount']);
-                        });
-                        await showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogClassBankTransfer(
-                                paymenttype: 'Account',
-                                virtualaccount: virtualaccount,
-                                bank: bank,
-                                transactionstatus: transactionstatus,
-                                grossmaount: totalamount,
-                                compcd: compcd,
-                                compdesc: compdesc,
-                                result: widget.result,
-                                balance: widget.balance,
-                                pscd: widget.outletinfo!.outletcd,
-                                trno: widget.trno,
-                                outletinfo: widget.outletinfo,
-                              );
-                            });
-                        setState(() {
-                          compcd = 'BCA VA';
-                          compdesc = 'BCA VA';
-                        });
-                      }
-                      Toast.show(
-                          "Payment Information already sent to customers email",
-                          duration: Toast.lengthLong,
-                          gravity: Toast.center);
-                    });
-                  },
-                ),
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'bni.png',
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  onpressed: () async {
-                    setState(() {
-                      compcd = 'BNIVA';
-                      compdesc = 'BNI VA';
-                    });
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.bankTransfer(
-                              guestname,
-                              'bni',
-                              phone,
-                              email,
-                              widget.trno,
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          if (value != null) {
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'BCA VA'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'bca.png',
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    onpressed: () async {
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.bankTransfer(
+                                guestname,
+                                'bca',
+                                phone,
+                                email,
+                                widget.trno,
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
                             List x = value['va_numbers'];
                             print(x.first['va_number']);
                             setState(() {
@@ -219,257 +173,405 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                               transactionstatus = value['transaction_status'];
                               totalamount = num.parse(value['gross_amount']);
                             });
+                            await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassBankTransfer(
+                                    paymenttype: 'Account',
+                                    virtualaccount: virtualaccount,
+                                    bank: bank,
+                                    transactionstatus: transactionstatus,
+                                    grossmaount: totalamount,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo!.outletcd,
+                                    trno: widget.trno,
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                            setState(() {
+                              compcd = 'BCA VA';
+                              compdesc = 'BCA VA';
+                            });
                           }
-                          await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassBankTransfer(
-                                  paymenttype: 'Account',
-                                  virtualaccount: virtualaccount,
-                                  bank: bank,
-                                  transactionstatus: transactionstatus,
-                                  grossmaount: totalamount,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo!.outletcd,
-                                  trno: widget.trno,
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        }
-                        Toast.show(
-                            "Payment Information already sent to customers email",
-                            duration: Toast.lengthLong,
-                            gravity: Toast.center);
-                      });
-                    } else {}
-                  },
+                          Toast.show(
+                              "Payment Information already sent to customers email",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'BCAVA',
+                            widget.compdescription = 'BCA VA','Transfer');
+                        // setState(() {
+                        //   widget.compcode = 'BCAVA';
+                        //   widget.compdescription = 'BCA VA';
+                        // });
+                      }
+                    },
+                  ),
                 ),
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'bri.png',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.bankTransfer(
-                              guestname,
-                              'bri',
-                              phone,
-                              email,
-                              widget.trno,
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          List x = value['va_numbers'];
-                          print(x.first['va_number']);
-                          setState(() {
-                            virtualaccount = x.first['va_number'];
-                            bank = x.first['bank'];
-                            transactionstatus = value['transaction_status'];
-                            totalamount = num.parse(value['gross_amount']);
-                          });
-                          await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassBankTransfer(
-                                  paymenttype: 'Account',
-                                  virtualaccount: virtualaccount,
-                                  bank: bank,
-                                  transactionstatus: transactionstatus,
-                                  grossmaount: totalamount,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo!.outletcd,
-                                  trno: widget.trno,
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                          setState(() {
-                            compcd = 'BRIVA';
-                            compdesc = 'BRI VA';
-                          });
-                        }
-                        Toast.show(
-                            "Payment Information already sent to customers email",
-                            duration: Toast.lengthLong,
-                            gravity: Toast.center);
+                Container(
+                   decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'BNI VA'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'bni.png',
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    onpressed: () async {
+                      setState(() {
+                        compcd = 'BNIVA';
+                        compdesc = 'BNI VA';
                       });
-                    } else {}
-                  },
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.bankTransfer(
+                                guestname,
+                                'bni',
+                                phone,
+                                email,
+                                widget.trno,
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
+                            if (value != null) {
+                              List x = value['va_numbers'];
+                              print(x.first['va_number']);
+                              setState(() {
+                                virtualaccount = x.first['va_number'];
+                                bank = x.first['bank'];
+                                transactionstatus = value['transaction_status'];
+                                totalamount = num.parse(value['gross_amount']);
+                              });
+                            }
+                            await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassBankTransfer(
+                                    paymenttype: 'Account',
+                                    virtualaccount: virtualaccount,
+                                    bank: bank,
+                                    transactionstatus: transactionstatus,
+                                    grossmaount: totalamount,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo!.outletcd,
+                                    trno: widget.trno,
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          }
+                          Toast.show(
+                              "Payment Information already sent to customers email",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'BNIVA',
+                            widget.compdescription = 'BNI VA','Transfer');
+                        // setState(() {
+                        //   widget.compcode = 'BNIVA';
+                        //   widget.compdescription = 'BNI VA';
+                        // });
+                      }
+                    },
+                  ),
                 ),
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'mandiri.png',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.mandiribillers(
-                              guestname,
-                              phone,
-                              email,
-                              widget.trno,
-                              widget.result.toString(),
-                              listitem.toList())
-                          .then((value) async {
-                        if (value['status_code'] != '406') {
-                          print(value['bill_key']);
-                          setState(() {
-                            bill_key = value['bill_key'];
-                            biller_code = value['biller_code'];
-                            transactionstatus = value['transaction_status'];
-                            totalamount = num.parse(value['gross_amount']);
-                          });
-                          setState(() {
-                            compcd = 'MANDIRIVA';
-                            compdesc = 'MANDIRI VA';
-                          });
-                          await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassMandiribiller(
-                                  paymenttype: 'Account',
-                                  bill_key: bill_key,
-                                  biller_code: biller_code,
-                                  transactionstatus: transactionstatus,
-                                  grossmaount: totalamount,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo!.outletcd,
-                                  trno: widget.trno,
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                        }
-                        Toast.show(
-                            "Payment Information already sent to customers email",
-                            duration: Toast.lengthLong,
-                            gravity: Toast.center);
-                      });
-                    } else {}
-                  },
+                Container(
+                      decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'BRI VA'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'bri.png',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.bankTransfer(
+                                guestname,
+                                'bri',
+                                phone,
+                                email,
+                                widget.trno,
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
+                            List x = value['va_numbers'];
+                            print(x.first['va_number']);
+                            setState(() {
+                              virtualaccount = x.first['va_number'];
+                              bank = x.first['bank'];
+                              transactionstatus = value['transaction_status'];
+                              totalamount = num.parse(value['gross_amount']);
+                            });
+                            await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassBankTransfer(
+                                    paymenttype: 'Account',
+                                    virtualaccount: virtualaccount,
+                                    bank: bank,
+                                    transactionstatus: transactionstatus,
+                                    grossmaount: totalamount,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo!.outletcd,
+                                    trno: widget.trno,
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                            setState(() {
+                              compcd = 'BRIVA';
+                              compdesc = 'BRI VA';
+                            });
+                          }
+                          Toast.show(
+                              "Payment Information already sent to customers email",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'BRIVA',
+                            widget.compdescription = 'BRI VA','Transfer');
+                        setState(() {
+                          compcd = 'BRIVA';
+                          compdesc = 'BRI VA';
+                        });
+                      }
+                    },
+                  ),
                 ),
-                ButtonClassPayment(
-                  name: '',
-                  iconasset: 'permatabank.png',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.getvaPermata(
-                        guestname,
-                        email,
-                        phone,
-                        widget.trno,
-                        listitem.toList(),
-                        widget.result.toString(),
-                      ).then((value) async {
-                        if (value['status_code'] != '406') {
-                          print(value);
-                          setState(() {
-                            virtualaccount = value['permata_va_number'];
-                            bank = 'permata bank';
-                            transactionstatus = value['transaction_status'];
-                            totalamount = num.parse(value['gross_amount']);
-                          });
-                          await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassBankTransfer(
-                                  paymenttype: 'Account',
-                                  virtualaccount: virtualaccount,
-                                  bank: bank,
-                                  transactionstatus: transactionstatus,
-                                  grossmaount: totalamount,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo!.outletcd,
-                                  trno: widget.trno,
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                          setState(() {
-                            compcd = 'PERMATAVA';
-                            compdesc = 'PERMATA VA';
-                          });
-                        }
-                        Toast.show(
-                            "Payment Information already sent to customers email",
-                            duration: Toast.lengthLong,
-                            gravity: Toast.center);
-                      });
-                    }
-                  },
+                Container(
+                      decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'MANDIRI VA'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'mandiri.png',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.mandiribillers(
+                                guestname,
+                                phone,
+                                email,
+                                widget.trno,
+                                widget.result.toString(),
+                                listitem.toList())
+                            .then((value) async {
+                          if (value['status_code'] != '406') {
+                            print(value['bill_key']);
+                            setState(() {
+                              bill_key = value['bill_key'];
+                              biller_code = value['biller_code'];
+                              transactionstatus = value['transaction_status'];
+                              totalamount = num.parse(value['gross_amount']);
+                            });
+                            setState(() {
+                              compcd = 'MANDIRIVA';
+                              compdesc = 'MANDIRI VA';
+                            });
+                            await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassMandiribiller(
+                                    paymenttype: 'Account',
+                                    bill_key: bill_key,
+                                    biller_code: biller_code,
+                                    transactionstatus: transactionstatus,
+                                    grossmaount: totalamount,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo!.outletcd,
+                                    trno: widget.trno,
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                          }
+                          Toast.show(
+                              "Payment Information already sent to customers email",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'MANDIRIVA',
+                            widget.compdescription = 'MANDIRI VA','Transfer');
+                        setState(() {
+                          widget.compcode = 'MANDIRIVA';
+                          widget.compdescription = 'MANDIRI VA';
+                        });
+                      }
+                    },
+                  ),
                 ),
-                ButtonClassPayment2(
-                  name: 'Lainnya',
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  onpressed: () async {
-                    if (widget.midtransonline == true) {
-                      await PaymentGate.getvaPermata(
-                        guestname,
-                        email,
-                        phone,
-                        widget.trno,
-                        listitem.toList(),
-                        widget.result.toString(),
-                      ).then((value) async {
-                        if (value['status_code'] != '406') {
-                          print(value);
-                          setState(() {
-                            virtualaccount = value['permata_va_number'];
-                            bank = 'permata bank';
-                            transactionstatus = value['transaction_status'];
-                            totalamount = num.parse(value['gross_amount']);
-                          });
-                          await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassBankTransfer(
-                                  paymenttype: 'Account',
-                                  virtualaccount: virtualaccount,
-                                  bank: bank,
-                                  transactionstatus: transactionstatus,
-                                  grossmaount: totalamount,
-                                  compcd: compcd,
-                                  compdesc: compdesc,
-                                  result: widget.result,
-                                  balance: widget.balance,
-                                  pscd: widget.outletinfo!.outletcd,
-                                  trno: widget.trno,
-                                  outletinfo: widget.outletinfo,
-                                );
-                              });
-                          setState(() {
-                            compcd = 'PERMATAVA';
-                            compdesc = 'PERMATA VA';
-                          });
-                        }
-                        Toast.show(
-                            "Payment Information already sent to customers email",
-                            duration: Toast.lengthLong,
-                            gravity: Toast.center);
-                      });
-                    }else{
-                      
-                    }
-                  },
+                Container(
+                      decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'PERMATA VA'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment(
+                    name: '',
+                    iconasset: 'permatabank.png',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.getvaPermata(
+                          guestname,
+                          email,
+                          phone,
+                          widget.trno,
+                          listitem.toList(),
+                          widget.result.toString(),
+                        ).then((value) async {
+                          if (value['status_code'] != '406') {
+                            print(value);
+                            setState(() {
+                              virtualaccount = value['permata_va_number'];
+                              bank = 'permata bank';
+                              transactionstatus = value['transaction_status'];
+                              totalamount = num.parse(value['gross_amount']);
+                            });
+                            await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassBankTransfer(
+                                    paymenttype: 'Account',
+                                    virtualaccount: virtualaccount,
+                                    bank: bank,
+                                    transactionstatus: transactionstatus,
+                                    grossmaount: totalamount,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo!.outletcd,
+                                    trno: widget.trno,
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                            setState(() {
+                              compcd = 'PERMATAVA';
+                              compdesc = 'PERMATA VA';
+                            });
+                          }
+                          Toast.show(
+                              "Payment Information already sent to customers email",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'PERMATAVA',
+                            widget.compdescription = 'PERMATA VA','Transfer');
+                        setState(() {
+                          widget.compcode = 'PERMATAVA';
+                          widget.compdescription = 'PERMATA VA';
+                        });
+                      }
+                    },
+                  ),
+                ),
+                Container(
+                          decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.compdescription == 'Lainnya'
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: ButtonClassPayment2(
+                    name: 'Lainnya',
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    onpressed: () async {
+                      if (widget.midtransonline == true) {
+                        await PaymentGate.getvaPermata(
+                          guestname,
+                          email,
+                          phone,
+                          widget.trno,
+                          listitem.toList(),
+                          widget.result.toString(),
+                        ).then((value) async {
+                          if (value['status_code'] != '406') {
+                            print(value);
+                            setState(() {
+                              virtualaccount = value['permata_va_number'];
+                              bank = 'permata bank';
+                              transactionstatus = value['transaction_status'];
+                              totalamount = num.parse(value['gross_amount']);
+                            });
+                            await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogClassBankTransfer(
+                                    paymenttype: 'Account',
+                                    virtualaccount: virtualaccount,
+                                    bank: bank,
+                                    transactionstatus: transactionstatus,
+                                    grossmaount: totalamount,
+                                    compcd: compcd,
+                                    compdesc: compdesc,
+                                    result: widget.result,
+                                    balance: widget.balance,
+                                    pscd: widget.outletinfo!.outletcd,
+                                    trno: widget.trno,
+                                    outletinfo: widget.outletinfo,
+                                  );
+                                });
+                            setState(() {
+                              compcd = 'PERMATAVA';
+                              compdesc = 'PERMATA VA';
+                            });
+                          }
+                          Toast.show(
+                              "Payment Information already sent to customers email",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        });
+                      } else {
+                        widget.checkselected(widget.compcode = 'Lainnya',
+                            widget.compdescription = 'Lainnya','Transfer');
+                        setState(() {
+                          widget.compcode = 'Lainnya';
+                          widget.compdescription = 'Lainnya';
+                        });
+                      }
+                    },
+                  ),
                 ),
                 // Padding(
                 //   padding: const EdgeInsets.all(10.0),

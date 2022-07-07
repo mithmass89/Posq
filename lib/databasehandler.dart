@@ -535,11 +535,11 @@ select sum(x.nettamt) as nettamt from
   Future<List<IafjrndtClass>> retrieveDetailIafjrndt2(String trno) async {
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        '''select trdesc,trno,trdt,pscd,itemcd,qty,rvnamt,taxamt,serviceamt,nettamt  from iafjrndt where trno = '$trno' and active='1'
+        '''select id,trdesc,trno,trdt,pscd,itemcd,qty as qty,rvnamt,taxamt,serviceamt,nettamt  from iafjrndt where trno = '$trno' and active='1' 
         union
-        select '' as trdesc,trno,trdt,pscd,'Discount' as itemcd,1 as qty,0 as rvnamt,0 as taxamt,0 as serviceamt,ftotamt as nettamt  from iafjrnhd where trno='$trno' and active='1' and pymtmthd='Discount'
+        select 0 as id,'Discount' as trdesc,trno,trdt,pscd,'Discount' as itemcd,1 as qty,0 as rvnamt,0 as taxamt,0 as serviceamt,ftotamt as nettamt  from iafjrnhd where trno='$trno' and active='1' and pymtmthd='Discount'
         ''');
-    // print(queryResult);
+    print(' hasil query ${queryResult.map((e) => IafjrndtClass.fromMap(e)).toList()}');
 
     return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
   }

@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unnecessary_this, prefer_const_constructors, sized_box_for_whitespace, unnecessary_new, avoid_print, unused_field
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/midtrans.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/appsmobile.dart';
@@ -32,9 +33,17 @@ class _MainappsState extends State<Mainapps> {
   @override
   void initState() {
     super.initState();
+    loadKey();
     checkSF().whenComplete(() {
       checkNewApp();
     });
+  }
+
+  loadKey() async {
+    final midtranskey = await SharedPreferences.getInstance();
+    serverkeymidtrans = midtranskey.getString('serverkey') == null
+        ? ''
+        : midtranskey.getString('serverkey')!;
   }
 
   Future<dynamic> checkSF() async {

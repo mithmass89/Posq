@@ -5,6 +5,8 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 PaymentGate? paymentapi;
 
@@ -24,34 +26,21 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
     super.initState();
     handler = DatabaseHandler();
     paymentapi = PaymentGate();
-    checkIntegrasi();
+    loadKey();
+    ToastContext().init(context);
   }
 
-  Future<dynamic> checkIntegrasi() async {
-    String integrasi = '';
-    String keyapi = '';
-    String use = '';
+  simpanKeyMidtrans() async {
+    final midtranskey = await SharedPreferences.getInstance();
+    await midtranskey.setString('serverkey', serverkey.text);
+  }
 
-    await handler.querycheckMidtrans('midtrans').then((value) {
-      if (value.isNotEmpty) {
-        setState(() {
-          serverkey.text = value.first.keyapi;
-          integrasi = value.first.integrasi;
-          keyapi = value.first.keyapi;
-          use = value.first.use;
-        });
-      }
+  loadKey() async {
+    final midtranskey = await SharedPreferences.getInstance();
+    serverkey.text = midtranskey.getString('serverkey')!;
+    setState(() {
+      serverkeymidtrans = serverkey.text;
     });
-    return Integrasi(integrasi: integrasi, keyapi: keyapi, use: use);
-  }
-
-  Future<int> insertConnection() async {
-    Integrasi integrasi = Integrasi(
-        integrasi: 'midtrans',
-        keyapi: serverkey.text,
-        use: serverkey.text == '' ? '0' : '1');
-    List<Integrasi> listintegrasi = [integrasi];
-    return await handler.insertIntegrasi(listintegrasi);
   }
 
   @override
@@ -91,7 +80,7 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.05,
                   ),
-                  Text('Demo Key : SB-Mid-server-J4XJjwc-pTBQYsY4hUFztCP- '),
+                  // Text('Demo Key : SB-Mid-server-J4XJjwc-pTBQYsY4hUFztCP- '),
                 ],
               ),
               SizedBox(
@@ -100,7 +89,7 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Copy dummy key'),
+                  Text('Coba dummy key'),
                   IconButton(
                     icon: Icon(Icons.copy),
                     iconSize: 20,
@@ -109,6 +98,8 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
                     onPressed: () {
                       Clipboard.setData(ClipboardData(
                           text: 'SB-Mid-server-J4XJjwc-pTBQYsY4hUFztCP-'));
+                      Toast.show("Clipboard Copy",
+                          duration: Toast.lengthLong, gravity: Toast.center);
                     },
                   ),
                 ],
@@ -124,22 +115,13 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
               height: MediaQuery.of(context).size.height * 0.05,
               width: MediaQuery.of(context).size.width * 0.85,
               onpressed: () async {
-                await checkIntegrasi().then((value) async {
-                  if (value != null) {
-                    await handler.updateServerKeyMidtrans(
-                      serverkey.text,
-                      'midtrans',
-                    );
-                     Navigator.of(context).pop();
-                  } else {
-                    await insertConnection().whenComplete(() {
-                      setState(() {
-                        serverkeymidtrans = serverkey.text;
-                      });
-                      Navigator.of(context).pop();
-                    });
-                  }
+                await simpanKeyMidtrans();
+                setState(() {
+                  serverkeymidtrans = serverkey.text;
                 });
+                Toast.show("Server Key tersimpan",
+                    duration: Toast.lengthLong, gravity: Toast.center);
+                Navigator.of(context).pop();
               },
               name: 'Simpan',
             ),

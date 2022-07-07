@@ -187,7 +187,6 @@ class ButtonNoIcon2 extends StatefulWidget {
   final textcolor;
   final widget;
 
-
   const ButtonNoIcon2({
     Key? key,
     this.onpressed,
@@ -198,7 +197,6 @@ class ButtonNoIcon2 extends StatefulWidget {
     this.color,
     this.textcolor,
     this.widget,
- 
   }) : super(key: key);
 
   @override
@@ -231,7 +229,6 @@ class _ButtonNoIcon2State extends State<ButtonNoIcon2> {
                   ),
                   borderRadius: BorderRadius.circular(10),
                   color: widget.color),
-         
             ),
           ],
         ),
@@ -530,6 +527,7 @@ class ButtonClassPayment extends StatefulWidget {
   final double? width;
   final String? name;
   final styleasset;
+  final colors;
   const ButtonClassPayment(
       {Key? key,
       this.onpressed,
@@ -537,7 +535,8 @@ class ButtonClassPayment extends StatefulWidget {
       this.width,
       this.name,
       this.iconasset,
-      this.styleasset})
+      this.styleasset,
+      this.colors})
       : super(key: key);
 
   @override
@@ -558,7 +557,7 @@ class _ButtonClassPaymentState extends State<ButtonClassPayment> {
             height: widget.height,
             width: widget.width,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.transparent,
                 image: DecorationImage(
                   scale: 4,
                   image: AssetImage(widget.iconasset.toString()),

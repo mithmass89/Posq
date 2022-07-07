@@ -163,6 +163,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     handler = DatabaseHandler();
     await handler.initializeDB(databasename);
     handler.retrieveDetailIafjrndt(trno.toString()).then((isi) {
+      print(isi);
       if (isi.isNotEmpty) {
         setState(() {
           listdata = isi;

@@ -24,6 +24,10 @@ class NonTunaiMobile extends StatefulWidget {
   final Function callback;
   final List<IafjrndtClass> datatrans;
   final bool midtransonline;
+  late String? compcode;
+  late String? compdescription;
+  late String? pymtmthd;
+  final void Function(String compcd, String compdesc,String methode) checkselected;
 
   NonTunaiMobile({
     Key? key,
@@ -35,7 +39,12 @@ class NonTunaiMobile extends StatefulWidget {
     required this.result,
     required this.outletinfo,
     required this.callback,
-    required this.datatrans,required this.midtransonline,
+    required this.datatrans,
+    required this.midtransonline,
+    this.compcode,
+    this.compdescription,
+    required this.checkselected,
+    required this.pymtmthd,
   }) : super(key: key);
 
   @override
@@ -62,7 +71,10 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
       shrinkWrap: true,
       children: [
         EWalletClassNonTunai(
-          midtransonline:widget.midtransonline,
+          checkselected: widget.checkselected,
+          compcode: widget.compcode,
+          compdescription: widget.compdescription,
+          midtransonline: widget.midtransonline,
           datatrans: widget.datatrans,
           callback: widget.callback,
           zerobill: widget.zerobill,
@@ -74,7 +86,10 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           amountcash: widget.amountcash,
         ),
         NonTunaiMobileTransfer(
-          midtransonline:widget.midtransonline,
+          checkselected: widget.checkselected,
+          compcode: widget.compcode,
+          compdescription: widget.compdescription,
+          midtransonline: widget.midtransonline,
           datatrans: widget.datatrans,
           callback: widget.callback,
           zerobill: widget.zerobill,
@@ -85,7 +100,10 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentMobileCreditCard(
-          midtransonline:widget.midtransonline,
+         checkselected: widget.checkselected,
+          compcode: widget.compcode,
+          compdescription: widget.compdescription,
+          midtransonline: widget.midtransonline,
           datatrans: widget.datatrans,
           callback: widget.callback,
           zerobill: widget.zerobill,
@@ -96,7 +114,10 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentDebitCardMobile(
-            midtransonline:widget.midtransonline,
+        checkselected: widget.checkselected,
+          compcode: widget.compcode,
+          compdescription: widget.compdescription,
+          midtransonline: widget.midtransonline,
           datatrans: widget.datatrans,
           callback: widget.callback,
           zerobill: widget.zerobill,

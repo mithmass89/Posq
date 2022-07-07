@@ -36,7 +36,7 @@ class PaymentGate {
       String trno,
       String totalamount,
       List<Midtransitem> data) async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$serverkeymidtrans'));
     var body = {
       "payment_type": "gopay",
       "transaction_details": {"order_id": trno, "gross_amount": totalamount},
@@ -69,6 +69,8 @@ class PaymentGate {
       print(rooms);
       return rooms;
     } else {
+            print(response.statusCode);
+                     print(response.body);
       return response;
     }
   }
