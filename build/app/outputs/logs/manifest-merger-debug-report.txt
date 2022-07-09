@@ -10,6 +10,7 @@ MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:sqflite] E:\posplay2\posplay2\posplay\posplay\posq\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-14:12
 MERGED from [:path_provider_android] E:\posplay2\posplay2\posplay\posplay\posq\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\655ff95270209dd291c438887048ba6e\material-1.3.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e0933a81fc48b17fda6a0b345e31cc66\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
@@ -88,6 +89,8 @@ MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:15:5-19:19
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-17:19
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-17:19
+MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-12:19
+MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-12:19
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\655ff95270209dd291c438887048ba6e\material-1.3.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\655ff95270209dd291c438887048ba6e\material-1.3.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e0933a81fc48b17fda6a0b345e31cc66\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
@@ -176,6 +179,8 @@ MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\pos
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] E:\posplay2\posplay2\posplay\posplay\posq\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] E:\posplay2\posplay2\posplay\posplay\posq\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] E:\posplay2\posplay2\posplay\posplay\posq\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] E:\posplay2\posplay2\posplay\posplay\posq\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\655ff95270209dd291c438887048ba6e\material-1.3.0\AndroidManifest.xml:20:5-44
@@ -314,6 +319,14 @@ ADDED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\bui
 		ADDED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
 	android:name
 		ADDED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+activity#io.flutter.plugins.urllauncher.WebViewActivity
+ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+	android:exported
+		ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+	android:theme
+		ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+	android:name
+		ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
 activity#com.google.android.gms.common.api.GoogleApiActivity
 ADDED from [com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
 	android:exported

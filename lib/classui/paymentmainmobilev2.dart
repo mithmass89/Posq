@@ -52,6 +52,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   var formattedDate;
   bool zerobill = false;
   List<IafjrndtClass> listdata = [];
+    List<IafjrndtClass> listdatabill = [];
   String serverkeymidtrans = '';
   bool midtransonline = false;
   String pymtmthd = '';
@@ -83,11 +84,13 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
       print(List.generate(isi.length, (index) => isi[index].id));
       setState(() {
         listdata = isi;
+     
       });
+      
     });
   }
 
-  checkbalance() async {
+  Future<dynamic> checkbalance() async {
     await handler.summaryPayment(widget.trno).then((value) {
       print('ini value check ${value.first.totalamt}');
 
@@ -157,7 +160,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
 
   checkSelected(String? compcd, String? compdesc, String methode) {
     setState(() {
-      compcd = compcd;
+      compcode = compcd!;
       compdescription = compdesc!;
       pymtmthd = methode;
       zerobill = true;
@@ -297,6 +300,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                       controller: _controller,
                       children: [
                         PaymentCashV2Mobile(
+                          datatrans: listdata,
                           callback: checkbalance,
                           zerobill: zerobill,
                           result: result!,
@@ -338,11 +342,35 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                 child: ElevatedButton(
                   onPressed: zerobill == true
                       ? () async {
-                          await insertIafjrnhd();
-                          Navigator.pushReplacement(
+                        print('ini compcode $compcode');
+                          if (compcode != '' || compcode.isNotEmpty) {
+                            await insertIafjrnhd().whenComplete(() {
+                               Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ClassPaymetSucsessMobile(
+                                      datatrans: listdata,
+                                      frombanktransfer: false,
+                                      cash: true,
+                                      outletinfo: widget.outletinfo,
+                                      outletname: widget.outletname,
+                                      outletcd: widget.pscd,
+                                      amount: amountcash.text == '' ||
+                                              amountcash.text.isEmpty
+                                          ? widget.balance
+                                          : double.parse(amountcash.text),
+                                      paymenttype: pymtmthd,
+                                      trno: widget.trno.toString(),
+                                      trdt: formattedDate,
+                                    )));
+                            });
+                          } else {
+                            print('dari  cash');
+                                Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClassPaymetSucsessMobile(
+                                      datatrans: listdata,
                                       frombanktransfer: false,
                                       cash: true,
                                       outletinfo: widget.outletinfo,
@@ -357,6 +385,9 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                                       trdt: formattedDate,
                                     )),
                           );
+                          }
+
+                      
                         }
                       : null,
                   child: Text('Selesaikan'),

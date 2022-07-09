@@ -1292,6 +1292,7 @@ class DialogClassEwallet extends StatefulWidget {
   final String? compdesc;
   final String? url;
   final bool? fromtrfbank;
+  final List<IafjrndtClass> datatrans;
 
   DialogClassEwallet({
     Key? key,
@@ -1306,6 +1307,7 @@ class DialogClassEwallet extends StatefulWidget {
     required this.compdesc,
     this.url,
     this.fromtrfbank,
+    required this.datatrans,
   }) : super(key: key);
 
   @override
@@ -1386,7 +1388,6 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                   height: MediaQuery.of(context).size.height * 0.04,
                   width: MediaQuery.of(context).size.width * 0.4,
                   decoration: BoxDecoration(
-                
                     image: DecorationImage(
                         image: AssetImage('assets/qris.png'),
                         fit: BoxFit.cover),
@@ -1420,6 +1421,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                              datatrans: widget.datatrans,
                               frombanktransfer: false,
                               cash: false,
                               outletinfo: widget.outletinfo,
@@ -1455,6 +1457,8 @@ class DialogClassBankTransfer extends StatefulWidget {
   final String? transactionstatus;
   final num? grossmaount;
   final String? paymenttype;
+                             final List<IafjrndtClass> datatrans;
+
 
   DialogClassBankTransfer({
     Key? key,
@@ -1471,7 +1475,7 @@ class DialogClassBankTransfer extends StatefulWidget {
     this.bank,
     this.transactionstatus,
     this.grossmaount,
-    required this.paymenttype,
+    required this.paymenttype,required this.datatrans,
   }) : super(key: key);
 
   @override
@@ -1486,6 +1490,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
   var formattedDate;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
+  
 
   @override
   void initState() {
@@ -1596,6 +1601,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                          datatrans:widget.datatrans,
                               frombanktransfer: true,
                               virtualaccount: widget.virtualaccount,
                               cash: false,
@@ -1632,6 +1638,7 @@ class DialogClassMandiribiller extends StatefulWidget {
   final String? transactionstatus;
   final num? grossmaount;
   final String? paymenttype;
+     final List<IafjrndtClass> datatrans;
 
   DialogClassMandiribiller({
     Key? key,
@@ -1648,7 +1655,7 @@ class DialogClassMandiribiller extends StatefulWidget {
     this.biller_code,
     this.transactionstatus,
     this.grossmaount,
-    required this.paymenttype,
+    required this.paymenttype,required this.datatrans,
   }) : super(key: key);
 
   @override
@@ -1799,6 +1806,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                          datatrans: widget.datatrans,
                               frombanktransfer: true,
                               cash: false,
                               outletinfo: widget.outletinfo,

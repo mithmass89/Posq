@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 PaymentGate? paymentapi;
 
@@ -21,7 +23,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
   final String? outletname;
   final Outlet? outletinfo;
   final bool? cash;
-
+  final List<IafjrndtClass> datatrans;
 
   const ClassPaymetSucsessMobile({
     Key? key,
@@ -36,6 +38,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
     required this.cash,
     this.virtualaccount,
     required this.frombanktransfer,
+    required this.datatrans,
   }) : super(key: key);
 
   @override
@@ -49,15 +52,33 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   String? nexttrno;
   String? statustransaction = '';
   final bool pending = true;
+  final TextEditingController _telp =
+      TextEditingController(text: '82221769478');
+  final TextEditingController _email = TextEditingController();
+  List<String> string = [];
+  List<String> summary = [];
+  List<String> payment = [];
+  num subtotal = 0;
+  num discounts = 0;
+  num total = 0;
+  num tax = 0;
+  num service = 0;
+  num grantotal = 0;
+
   @override
   void initState() {
     super.initState();
+
+    generateDataWA();
+    removeDiscount();
+
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
+    getSummary();
+     getListPayament();
     checkTrno();
     if (widget.cash == false) {
       PaymentGate.getStatusTransaction(widget.trno).then((value) {
-        print(value);
         setState(() {
           statustransaction = value;
         });
@@ -72,7 +93,6 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   Stream<String> _getstatus() async* {
     if (widget.cash == false) {
       await PaymentGate.getStatusTransaction(widget.trno).then((value) {
-        print(value);
         setState(() {
           statustransaction = value;
         });
@@ -87,7 +107,6 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
       setState(() {
         trno = value.first.trnonext;
       });
-      print('ini trno $trno');
     });
     await updateTrnonext();
   }
@@ -114,9 +133,37 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     });
   }
 
+  generateDataWA() {
+    List.generate(widget.datatrans.length, (index) {
+      string.add(
+          '${widget.datatrans[index].trdesc.toString().padRight(23)}\n   ${widget.datatrans[index].qty.toString().padLeft(40)}X\t   ${widget.datatrans[index].nettamt.toString().padRight(10)}\n');
+    });
+  }
+
+  removeDiscount() {
+    string.removeWhere((element) => element.contains('Discount'));
+  }
+
+  getSummary() async {
+    await handler.summarybill(widget.datatrans.first.trno!).then((value) {
+   List.generate(value.length, (index) {
+    summary.add('total'.padRight(16,'  ')+':'.padRight(2)+'${value[index].rvnamt.toString().padLeft(20)}\n'+'discount'.padRight(14,'  ')+':'.padRight(2)+'${value[index].discamt.toString().padLeft(20)}\n'+'pajak'.padRight(15,'  ')+':'.padRight(2)+'${value[index].taxamt.toString().padLeft(20)}\n'+'service'.padRight(15,'  ')+':'.padRight(2)+'${value[index].serviceamt.toString().padLeft(20)}\n'+'grand total'.padRight(15,'  ')+':'.padRight(2)+'${value[index].nettamt.toString().padLeft(20)}\n');
+   });
+    });
+  }
+
+  getListPayament() {
+    handler.retriveListDetailPayment(widget.trno).then((value) {
+      List.generate(value.length, (index) {
+        payment.add('${value[index].compdesc.toString().padRight(15,'  ')}${value[index].ftotamt.toString().padLeft(23,' ')}\n');
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: StreamBuilder(
           stream: _getstatus(),
           builder: (context, AsyncSnapshot<String> snapshot) {
@@ -149,286 +196,101 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      width: MediaQuery.of(context).size.height * 0.8,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Status Transaksi',
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                  )),
-                              Container(
-                                  alignment: Alignment.centerRight,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text(
-                                        statustransaction == null
-                                            ? 'Success'
-                                            : statustransaction.toString(),
-                                        style: TextStyle(
-                                            color: _getColorByEventtext(
-                                                statustransaction!)),
-                                      ))),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Payment Type',
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                  )),
-                              Container(
-                                  alignment: Alignment.centerRight,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(widget.paymenttype),
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Jumlah Transaksi',
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                  )),
-                              Container(
-                                  alignment: Alignment.centerRight,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(widget.amount.toString()),
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Nomer Transaksi',
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                  )),
-                              Container(
-                                  alignment: Alignment.centerRight,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(widget.trno.toString()),
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Tanggal Transaksi',
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                  )),
-                              Container(
-                                  alignment: Alignment.centerRight,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(widget.trdt.toString()),
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Nama Outlet',
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                  )),
-                              Container(
-                                  alignment: Alignment.centerRight,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(widget.outletinfo!.outletname
-                                        .toString()),
-                                  )),
-                            ],
-                          ),
-                          widget.cash == false
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                        alignment: Alignment.centerLeft,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.2,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text(
-                                            'Virtual Account',
-                                            style: TextStyle(
-                                                color: Colors.black54),
-                                          ),
-                                        )),
-                                    Container(
-                                        alignment: Alignment.centerRight,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.2,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text(
-                                              widget.virtualaccount.toString()),
-                                        )),
-                                  ],
-                                )
-                              : Container(),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ButtonNoIcon(
-                                textcolor: Colors.white,
-                                color: Colors.blue,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                width:
-                                    MediaQuery.of(context).size.height * 0.18,
-                                onpressed: () {},
-                                name: 'PRINT',
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                width:
-                                    MediaQuery.of(context).size.height * 0.05,
-                              ),
-                              ButtonNoIcon(
-                                textcolor: Colors.white,
-                                color: Colors.blue,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                width:
-                                    MediaQuery.of(context).size.height * 0.18,
-                                onpressed: () async {
-                                  await getTrno();
-                                  print(widget.outletcd);
-                                  print(nexttrno);
-                                  print(widget.outletinfo);
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => ClassRetailMainMobile(
-                                            pscd: widget.outletcd!,
-                                            trno: nexttrno,
-                                            outletinfo: widget.outletinfo!,
-                                            qty: 0,
-                                          )),
-                                      (Route<dynamic> route) => false);
-                                },
-                                name: 'TRANSAKSI BARU',
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                          ),
-                          ButtonNoIcon(
-                            textcolor: Colors.white,
-                            color: Colors.blue,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            width: MediaQuery.of(context).size.height * 0.18,
-                            onpressed: () {},
-                            name: 'CETAK TIKET',
-                          )
-                        ],
+                  
+                    TextFieldMobile2(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          Icons.send,
+                        ),
+                        iconSize: 20,
+                        color: Colors.blue,
+                        splashColor: Colors.purple,
+                        onPressed: () {
+                          String subtotal = 'subtotal';
+                          String discount = 'Discount';
+                          String taxs = 'Pajak';
+                          String services = 'Service';
+                          String grandtotal = 'Grand Total';
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          var whatsappUrl =
+                              "whatsapp://send?phone=${"+62" + _telp.text}" +
+                                  "&text=" +
+                                  '''
+Outlet : ${widget.outletname}
+Trx    : ${widget.trno}
+
+item
+-----------------------------------------          
+${string.reduce((value, element) => value + element)}
+-----------------------------------------
+${summary.reduce((value, element) => value + element)}
+-----------------------------------------
+${payment.reduce((value, element) => value + element)}
+''';
+                          try {
+                            launch(whatsappUrl);
+                          } catch (e) {
+                            //To handle error and display error message
+                            print('gagal kirim $e');
+                          }
+                        },
                       ),
+                      label: 'Whatsapp',
+                      controller: _telp,
+                      onChanged: (String value) {},
+                      typekeyboard: TextInputType.text,
+                    ),
+
+                    TextFieldMobile2(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          Icons.send,
+                        ),
+                        iconSize: 20,
+                        color: Colors.blue,
+                        splashColor: Colors.purple,
+                        onPressed: () {},
+                      ),
+                      label: 'E-mail',
+                      controller: _email,
+                      onChanged: (String value) {},
+                      typekeyboard: TextInputType.text,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.27,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ButtonNoIcon(
+                          textcolor: Colors.white,
+                          color: Colors.blue,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          width: MediaQuery.of(context).size.height * 0.18,
+                          onpressed: () async {},
+                          name: 'Print',
+                        ),
+                        ButtonNoIcon(
+                          textcolor: Colors.white,
+                          color: Colors.blue,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          width: MediaQuery.of(context).size.height * 0.18,
+                          onpressed: () async {
+                            await getTrno();
+
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => ClassRetailMainMobile(
+                                          pscd: widget.outletcd!,
+                                          trno: nexttrno,
+                                          outletinfo: widget.outletinfo!,
+                                          qty: 0,
+                                        )),
+                                (Route<dynamic> route) => false);
+                          },
+                          name: 'TRANSAKSI BARU',
+                        ),
+                      ],
                     ),
                   ],
                 ),

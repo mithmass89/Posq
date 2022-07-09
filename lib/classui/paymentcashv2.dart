@@ -18,6 +18,7 @@ class PaymentCashV2Mobile extends StatefulWidget {
   late num result;
   late bool zerobill;
   final Function callback;
+  final List<IafjrndtClass> datatrans;
 
   PaymentCashV2Mobile(
       {Key? key,
@@ -28,7 +29,8 @@ class PaymentCashV2Mobile extends StatefulWidget {
       required this.result,
       required this.zerobill,
       required this.outletinfo,
-      required this.callback})
+      required this.callback,
+      required this.datatrans})
       : super(key: key);
 
   @override
@@ -237,7 +239,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 //// checking balance //////
                 onpressed: widget.result <= 0 || widget.result == 0
                     ? () async {
-                        if ( widget.result == 0)
+                        if (widget.result == 0)
                           await insertIafjrnhd().whenComplete(() {
                             setState(() {});
                           });
@@ -247,7 +249,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ClassPaymetSucsessMobile(
-                           
+                                      datatrans: widget.datatrans,
                                       frombanktransfer: false,
                                       cash: true,
                                       outletinfo: widget.outletinfo,

@@ -426,10 +426,10 @@ class IafjrndtClass {
     };
   }
 
-  // @override
-  // String toString() {
-  //   return '{"id": "$id"}';
-  // }
+  @override
+  String toString() {
+    return '{"id": "$id","trdt": "$trdt", "trno": "$trno", "split": "$split", "trdesc": "$trdesc","qty": "$qty","rateamt": "$rateamt","nettamt": "$nettamt"}';
+  }
 }
 
 class IafjrnhdClass {

@@ -28,7 +28,8 @@ class NonTunaiMobileTransfer extends StatefulWidget {
   final bool midtransonline;
   late String? compcode;
   late String? compdescription;
-  final void Function(String compcd, String compdesc,String methode) checkselected;
+  final void Function(String compcd, String compdesc, String methode)
+      checkselected;
 
   NonTunaiMobileTransfer(
       {Key? key,
@@ -178,6 +179,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -204,7 +206,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'BCAVA',
-                            widget.compdescription = 'BCA VA','Transfer');
+                            widget.compdescription = 'BCA VA', 'Transfer');
                         // setState(() {
                         //   widget.compcode = 'BCAVA';
                         //   widget.compdescription = 'BCA VA';
@@ -214,7 +216,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                   ),
                 ),
                 Container(
-                   decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border.all(
                       color: widget.compdescription == 'BNI VA'
                           ? Colors.blue
@@ -257,6 +259,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -279,7 +282,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'BNIVA',
-                            widget.compdescription = 'BNI VA','Transfer');
+                            widget.compdescription = 'BNI VA', 'Transfer');
                         // setState(() {
                         //   widget.compcode = 'BNIVA';
                         //   widget.compdescription = 'BNI VA';
@@ -289,7 +292,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                   ),
                 ),
                 Container(
-                      decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border.all(
                       color: widget.compdescription == 'BRI VA'
                           ? Colors.blue
@@ -326,6 +329,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -352,7 +356,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'BRIVA',
-                            widget.compdescription = 'BRI VA','Transfer');
+                            widget.compdescription = 'BRI VA', 'Transfer');
                         setState(() {
                           compcd = 'BRIVA';
                           compdesc = 'BRI VA';
@@ -362,7 +366,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                   ),
                 ),
                 Container(
-                      decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border.all(
                       color: widget.compdescription == 'MANDIRI VA'
                           ? Colors.blue
@@ -401,6 +405,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     bill_key: bill_key,
                                     biller_code: biller_code,
@@ -423,7 +428,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'MANDIRIVA',
-                            widget.compdescription = 'MANDIRI VA','Transfer');
+                            widget.compdescription = 'MANDIRI VA', 'Transfer');
                         setState(() {
                           widget.compcode = 'MANDIRIVA';
                           widget.compdescription = 'MANDIRI VA';
@@ -433,7 +438,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                   ),
                 ),
                 Container(
-                      decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border.all(
                       color: widget.compdescription == 'PERMATA VA'
                           ? Colors.blue
@@ -468,6 +473,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -494,7 +500,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'PERMATAVA',
-                            widget.compdescription = 'PERMATA VA','Transfer');
+                            widget.compdescription = 'PERMATA VA', 'Transfer');
                         setState(() {
                           widget.compcode = 'PERMATAVA';
                           widget.compdescription = 'PERMATA VA';
@@ -504,7 +510,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                   ),
                 ),
                 Container(
-                          decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border.all(
                       color: widget.compdescription == 'Lainnya'
                           ? Colors.blue
@@ -538,6 +544,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -564,7 +571,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'Lainnya',
-                            widget.compdescription = 'Lainnya','Transfer');
+                            widget.compdescription = 'Lainnya', 'Transfer');
                         setState(() {
                           widget.compcode = 'Lainnya';
                           widget.compdescription = 'Lainnya';

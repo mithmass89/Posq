@@ -178,6 +178,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -253,6 +254,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                          datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -318,6 +320,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                          datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -389,6 +392,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
+                                          datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     bill_key: bill_key,
                                     biller_code: biller_code,
@@ -452,6 +456,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                          datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -518,6 +523,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                          datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
