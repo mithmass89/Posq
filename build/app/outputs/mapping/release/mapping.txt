@@ -1,8 +1,21 @@
 # compiler: R8
 # compiler_version: 2.1.62
 # min_api: 21
-# pg_map_id: 030c7a7
+# pg_map_id: 7756497
 # common_typos_disable
+android.print.PdfConvert -> a.a.a:
+    void print(android.content.Context,android.print.PrintDocumentAdapter,android.print.PrintAttributes,android.print.PdfConvert$Result) -> a
+    byte[] readFile(java.io.File) -> b
+android.print.PdfConvert$1 -> a.a.a$a:
+    android.content.Context val$context -> a
+    android.print.PrintDocumentAdapter val$adapter -> c
+    android.print.PdfConvert$Result val$result -> b
+android.print.PdfConvert$1$1 -> a.a.a$a$a:
+    java.io.File val$finalOutputFile -> a
+    android.print.PdfConvert$1 this$0 -> b
+android.print.PdfConvert$Result -> a.a.a$b:
+    void onSuccess(java.io.File) -> a
+    void onError(java.lang.String) -> b
 android.support.v4.media.MediaBrowserCompat$CustomActionCallback -> android.support.v4.media.a:
     void onError(java.lang.String,android.os.Bundle,android.os.Bundle) -> a
     void onProgressUpdate(java.lang.String,android.os.Bundle,android.os.Bundle) -> b
@@ -281,23 +294,23 @@ android.support.v4.media.session.PlaybackStateCompatApi21$CustomAction -> androi
     java.lang.CharSequence getName(java.lang.Object) -> d
 android.support.v4.media.session.PlaybackStateCompatApi22 -> android.support.v4.media.session.h:
     android.os.Bundle getExtras(java.lang.Object) -> a
-android.support.v4.os.IResultReceiver -> a.a.a.a.a:
+android.support.v4.os.IResultReceiver -> a.b.a.a.a:
     void send(int,android.os.Bundle) -> U
-android.support.v4.os.IResultReceiver$Stub -> a.a.a.a.a$a:
+android.support.v4.os.IResultReceiver$Stub -> a.b.a.a.a$a:
     android.support.v4.os.IResultReceiver asInterface(android.os.IBinder) -> X
-android.support.v4.os.IResultReceiver$Stub$Proxy -> a.a.a.a.a$a$a:
+android.support.v4.os.IResultReceiver$Stub$Proxy -> a.b.a.a.a$a$a:
     android.os.IBinder mRemote -> a
-android.support.v4.os.ResultReceiver -> a.a.a.a.b:
+android.support.v4.os.ResultReceiver -> a.b.a.a.b:
     android.os.Handler mHandler -> b
     android.support.v4.os.IResultReceiver mReceiver -> c
     void onReceiveResult(int,android.os.Bundle) -> a
-android.support.v4.os.ResultReceiver$1 -> a.a.a.a.b$a:
+android.support.v4.os.ResultReceiver$1 -> a.b.a.a.b$a:
     android.support.v4.os.ResultReceiver createFromParcel(android.os.Parcel) -> a
     android.support.v4.os.ResultReceiver[] newArray(int) -> b
-android.support.v4.os.ResultReceiver$MyResultReceiver -> a.a.a.a.b$b:
+android.support.v4.os.ResultReceiver$MyResultReceiver -> a.b.a.a.b$b:
     android.support.v4.os.ResultReceiver this$0 -> a
     void send(int,android.os.Bundle) -> U
-android.support.v4.os.ResultReceiver$MyRunnable -> a.a.a.a.b$c:
+android.support.v4.os.ResultReceiver$MyRunnable -> a.b.a.a.b$c:
     android.os.Bundle mResultData -> c
     int mResultCode -> b
     android.support.v4.os.ResultReceiver this$0 -> d
@@ -5680,7 +5693,7 @@ androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior -> androidx.coordin
     boolean onStartNestedScroll(androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View,android.view.View,android.view.View,int) -> z
 androidx.coordinatorlayout.widget.CoordinatorLayout$DefaultBehavior -> androidx.coordinatorlayout.widget.CoordinatorLayout$d:
 androidx.coordinatorlayout.widget.CoordinatorLayout$HierarchyChangeListener -> androidx.coordinatorlayout.widget.CoordinatorLayout$e:
-    androidx.coordinatorlayout.widget.CoordinatorLayout this$0 -> a
+    androidx.coordinatorlayout.widget.CoordinatorLayout this$0 -> b
 androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams -> androidx.coordinatorlayout.widget.CoordinatorLayout$f:
     boolean mDidBlockInteraction -> m
     boolean mDidAcceptNestedScrollTouch -> n
@@ -18312,8 +18325,8 @@ com.google.android.material.chip.ChipGroup$LayoutParams -> com.google.android.ma
 com.google.android.material.chip.ChipGroup$OnCheckedChangeListener -> com.google.android.material.chip.ChipGroup$d:
     void onCheckedChanged(com.google.android.material.chip.ChipGroup,int) -> a
 com.google.android.material.chip.ChipGroup$PassThroughHierarchyChangeListener -> com.google.android.material.chip.ChipGroup$e:
-    android.view.ViewGroup$OnHierarchyChangeListener onHierarchyChangeListener -> a
-    com.google.android.material.chip.ChipGroup this$0 -> b
+    android.view.ViewGroup$OnHierarchyChangeListener onHierarchyChangeListener -> b
+    com.google.android.material.chip.ChipGroup this$0 -> c
     android.view.ViewGroup$OnHierarchyChangeListener access$202(com.google.android.material.chip.ChipGroup$PassThroughHierarchyChangeListener,android.view.ViewGroup$OnHierarchyChangeListener) -> a
 com.google.android.material.circularreveal.CircularRevealCompat -> c.a.a.b.p.a:
     android.animation.Animator createCircularReveal(com.google.android.material.circularreveal.CircularRevealWidget,float,float,float) -> a
@@ -21621,8 +21634,8 @@ io.flutter.embedding.engine.mutatorsstack.FlutterMutatorView -> io.flutter.embed
     void readyToDisplay(io.flutter.embedding.engine.mutatorsstack.FlutterMutatorsStack,int,int,int,int) -> b
     void unsetOnDescendantFocusChangeListener() -> c
 io.flutter.embedding.engine.mutatorsstack.FlutterMutatorView$1 -> io.flutter.embedding.engine.mutatorsstack.a$a:
-    android.view.View$OnFocusChangeListener val$userFocusListener -> a
-    android.view.View val$mutatorView -> b
+    android.view.View$OnFocusChangeListener val$userFocusListener -> b
+    android.view.View val$mutatorView -> c
 io.flutter.embedding.engine.mutatorsstack.FlutterMutatorsStack$FlutterMutator -> io.flutter.embedding.engine.mutatorsstack.FlutterMutatorsStack$a:
     android.graphics.Matrix matrix -> a
     android.graphics.Matrix getMatrix() -> a
@@ -22985,6 +22998,56 @@ io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin -> io.flutter.plugi
     void teardownChannel() -> b
     void onAttachedToEngine(io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterPluginBinding) -> d
     void onDetachedFromEngine(io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterPluginBinding) -> h
+io.flutter.plugins.urllauncher.MethodCallHandlerImpl -> io.flutter.plugins.urllauncher.a:
+    io.flutter.plugins.urllauncher.UrlLauncher urlLauncher -> a
+    io.flutter.plugin.common.MethodChannel channel -> b
+    android.os.Bundle extractBundle(java.util.Map) -> a
+    void onCanLaunch(io.flutter.plugin.common.MethodChannel$Result,java.lang.String) -> b
+    void onCloseWebView(io.flutter.plugin.common.MethodChannel$Result) -> c
+    void onLaunch(io.flutter.plugin.common.MethodCall,io.flutter.plugin.common.MethodChannel$Result,java.lang.String) -> d
+    void startListening(io.flutter.plugin.common.BinaryMessenger) -> e
+    void stopListening() -> f
+    void onMethodCall(io.flutter.plugin.common.MethodCall,io.flutter.plugin.common.MethodChannel$Result) -> j
+io.flutter.plugins.urllauncher.UrlLauncher -> io.flutter.plugins.urllauncher.b:
+    android.content.Context applicationContext -> a
+    android.app.Activity activity -> b
+    boolean canLaunch(java.lang.String) -> a
+    void closeWebView() -> b
+    io.flutter.plugins.urllauncher.UrlLauncher$LaunchStatus launch(java.lang.String,android.os.Bundle,boolean,boolean,boolean) -> c
+    void setActivity(android.app.Activity) -> d
+io.flutter.plugins.urllauncher.UrlLauncher$LaunchStatus -> io.flutter.plugins.urllauncher.b$a:
+    io.flutter.plugins.urllauncher.UrlLauncher$LaunchStatus[] $VALUES -> e
+    io.flutter.plugins.urllauncher.UrlLauncher$LaunchStatus ACTIVITY_NOT_FOUND -> d
+    io.flutter.plugins.urllauncher.UrlLauncher$LaunchStatus OK -> b
+    io.flutter.plugins.urllauncher.UrlLauncher$LaunchStatus NO_ACTIVITY -> c
+io.flutter.plugins.urllauncher.UrlLauncherPlugin -> io.flutter.plugins.urllauncher.c:
+    io.flutter.plugins.urllauncher.MethodCallHandlerImpl methodCallHandler -> a
+    io.flutter.plugins.urllauncher.UrlLauncher urlLauncher -> b
+    void onAttachedToActivity(io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding) -> c
+    void onAttachedToEngine(io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterPluginBinding) -> d
+    void onDetachedFromActivity() -> e
+    void onReattachedToActivityForConfigChanges(io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding) -> g
+    void onDetachedFromEngine(io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterPluginBinding) -> h
+    void onDetachedFromActivityForConfigChanges() -> i
+io.flutter.plugins.urllauncher.WebViewActivity -> io.flutter.plugins.urllauncher.WebViewActivity:
+    java.lang.String URL_EXTRA -> g
+    java.lang.String ACTION_CLOSE -> f
+    java.lang.String ENABLE_DOM_EXTRA -> i
+    java.lang.String ENABLE_JS_EXTRA -> h
+    android.content.IntentFilter closeIntentFilter -> e
+    android.webkit.WebView webview -> d
+    android.content.BroadcastReceiver broadcastReceiver -> b
+    android.webkit.WebViewClient webViewClient -> c
+    android.webkit.WebView access$000(io.flutter.plugins.urllauncher.WebViewActivity) -> a
+    android.content.Intent createIntent(android.content.Context,java.lang.String,boolean,boolean,android.os.Bundle) -> b
+    java.util.Map extractHeaders(android.os.Bundle) -> c
+io.flutter.plugins.urllauncher.WebViewActivity$1 -> io.flutter.plugins.urllauncher.WebViewActivity$a:
+    io.flutter.plugins.urllauncher.WebViewActivity this$0 -> a
+io.flutter.plugins.urllauncher.WebViewActivity$2 -> io.flutter.plugins.urllauncher.WebViewActivity$b:
+io.flutter.plugins.urllauncher.WebViewActivity$FlutterWebChromeClient -> io.flutter.plugins.urllauncher.WebViewActivity$c:
+    io.flutter.plugins.urllauncher.WebViewActivity this$0 -> a
+io.flutter.plugins.urllauncher.WebViewActivity$FlutterWebChromeClient$1 -> io.flutter.plugins.urllauncher.WebViewActivity$c$a:
+    io.flutter.plugins.urllauncher.WebViewActivity$FlutterWebChromeClient this$1 -> a
 io.flutter.util.PathUtils -> d.a.d.a:
     java.lang.String getCacheDirectory(android.content.Context) -> a
     java.lang.String getDataDirectory(android.content.Context) -> b
@@ -23350,3 +23413,81 @@ io.flutter.view.VsyncWaiter$1 -> io.flutter.view.e$a:
 io.flutter.view.VsyncWaiter$1$1 -> io.flutter.view.e$a$a:
     long val$cookie -> a
     io.flutter.view.VsyncWaiter$1 this$1 -> b
+net.nfet.flutter.printing.PrintingHandler -> net.nfet.flutter.printing.a:
+    android.app.Activity activity -> a
+    io.flutter.plugin.common.MethodChannel channel -> b
+    void onCompleted(net.nfet.flutter.printing.PrintingJob,boolean,java.lang.String) -> a
+    void onHtmlError(net.nfet.flutter.printing.PrintingJob,java.lang.String) -> b
+    void onHtmlRendered(net.nfet.flutter.printing.PrintingJob,byte[]) -> c
+    void onLayout(net.nfet.flutter.printing.PrintingJob,java.lang.Double,double,double,double,double,double) -> d
+    void onPageRasterEnd(net.nfet.flutter.printing.PrintingJob,java.lang.String) -> e
+    void onPageRasterized(net.nfet.flutter.printing.PrintingJob,byte[],int,int) -> f
+    void onMethodCall(io.flutter.plugin.common.MethodCall,io.flutter.plugin.common.MethodChannel$Result) -> j
+net.nfet.flutter.printing.PrintingHandler$1 -> net.nfet.flutter.printing.a$a:
+    net.nfet.flutter.printing.PrintingJob val$printJob -> a
+    void success(java.lang.Object) -> a
+    void error(java.lang.String,java.lang.String,java.lang.Object) -> b
+    void notImplemented() -> c
+net.nfet.flutter.printing.PrintingJob -> net.nfet.flutter.printing.b:
+    android.content.Context context -> a
+    android.print.PrintJob printJob -> c
+    net.nfet.flutter.printing.PrintingHandler printing -> b
+    int index -> g
+    android.print.PrintManager printManager -> h
+    byte[] documentData -> d
+    android.print.PrintDocumentAdapter$LayoutResultCallback callback -> f
+    java.lang.String jobName -> e
+    android.print.PrintJob access$000(net.nfet.flutter.printing.PrintingJob) -> a
+    android.print.PrintJob access$002(net.nfet.flutter.printing.PrintingJob,android.print.PrintJob) -> b
+    net.nfet.flutter.printing.PrintingHandler access$100(net.nfet.flutter.printing.PrintingJob) -> c
+    android.content.Context access$200(net.nfet.flutter.printing.PrintingJob) -> d
+    void cancelJob(java.lang.String) -> e
+    void convertHtml(java.lang.String,android.print.PrintAttributes$MediaSize,android.print.PrintAttributes$Margins,java.lang.String) -> f
+    java.util.List getAllPredefinedSizes() -> g
+    void printPdf(java.lang.String,java.lang.Double,java.lang.Double) -> h
+    java.util.HashMap printingInfo() -> i
+    void rasterPdf(byte[],java.util.ArrayList,java.lang.Double) -> j
+    void setDocument(byte[]) -> k
+    void sharePdf(android.content.Context,byte[],java.lang.String,java.lang.String,java.lang.String,java.util.ArrayList) -> l
+net.nfet.flutter.printing.PrintingJob$1 -> net.nfet.flutter.printing.b$a:
+    net.nfet.flutter.printing.PrintingJob this$0 -> b
+net.nfet.flutter.printing.PrintingJob$1$1 -> net.nfet.flutter.printing.b$a$a:
+    net.nfet.flutter.printing.PrintingJob$1 this$1 -> c
+    boolean[] val$wait -> b
+net.nfet.flutter.printing.PrintingJob$1$2 -> net.nfet.flutter.printing.b$a$b:
+    net.nfet.flutter.printing.PrintingJob$1 this$1 -> c
+    java.lang.Exception val$e -> b
+net.nfet.flutter.printing.PrintingJob$2 -> net.nfet.flutter.printing.b$b:
+    android.print.PrintAttributes$Margins val$margins -> b
+    android.webkit.WebView val$webView -> c
+    android.print.PrintAttributes$MediaSize val$size -> a
+    net.nfet.flutter.printing.PrintingJob this$0 -> d
+net.nfet.flutter.printing.PrintingJob$2$1 -> net.nfet.flutter.printing.b$b$a:
+    net.nfet.flutter.printing.PrintingJob$2 this$1 -> a
+    void onSuccess(java.io.File) -> a
+    void onError(java.lang.String) -> b
+net.nfet.flutter.printing.PrintingJob$3 -> net.nfet.flutter.printing.b$c:
+    java.lang.Double val$scale -> d
+    byte[] val$data -> b
+    java.util.ArrayList val$pages -> c
+    net.nfet.flutter.printing.PrintingJob this$0 -> e
+net.nfet.flutter.printing.PrintingJob$3$1 -> net.nfet.flutter.printing.b$c$a:
+    net.nfet.flutter.printing.PrintingJob$3 this$1 -> e
+    int val$height -> d
+    java.nio.ByteBuffer val$buf -> b
+    int val$width -> c
+net.nfet.flutter.printing.PrintingJob$3$2 -> net.nfet.flutter.printing.b$c$b:
+    net.nfet.flutter.printing.PrintingJob$3 this$1 -> c
+    java.lang.String val$finalError -> b
+net.nfet.flutter.printing.PrintingPlugin -> net.nfet.flutter.printing.c:
+    net.nfet.flutter.printing.PrintingHandler handler -> c
+    android.app.Activity activity -> a
+    io.flutter.plugin.common.MethodChannel channel -> b
+    void onAttachedToActivity(android.app.Activity) -> a
+    void onAttachedToEngine(io.flutter.plugin.common.BinaryMessenger) -> b
+    void onAttachedToActivity(io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding) -> c
+    void onAttachedToEngine(io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterPluginBinding) -> d
+    void onDetachedFromActivity() -> e
+    void onReattachedToActivityForConfigChanges(io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding) -> g
+    void onDetachedFromEngine(io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterPluginBinding) -> h
+    void onDetachedFromActivityForConfigChanges() -> i

@@ -553,12 +553,14 @@ select sum(x.nettamt) as nettamt from
     return queryResult.map((e) => RegisterItem.fromMap(e)).toList();
   }
 
-  Future<List<IafjrnhdClass>> retriveListHeader(String trdt) async {
+  Future<List<IafjrnhdClass>> retriveListHeader(String query) async {
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         '''select iafjrndt.trno as trno,iafjrnhd.pymtmthd as pymtmthd,iafjrnhd.ftotamt as ftotamt from iafjrndt 
-        left join iafjrnhd on iafjrnhd.trno=iafjrndt.trno  where iafjrndt.trdt='$trdt' and iafjrndt.active='1'  and pymtmthd<>'Discount'
-        group by iafjrndt.trno order by pymtmthd,iafjrnhd.trno ''');
+        left join iafjrnhd on iafjrnhd.trno=iafjrndt.trno   where iafjrndt.active='1'  and pymtmthd<>'Discount' and (iafjrnhd.trno like '%$query%' or  iafjrnhd.pymtmthd like '%$query%' or  iafjrnhd.trdt like '%$query%')
+        group by iafjrndt.trno order by pymtmthd,iafjrnhd.trdt 
+       
+        ''');
     print(queryResult);
 
     return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classdetailtrnomobile.dart';
@@ -26,7 +27,8 @@ class _ListtransactionState extends State<Listtransaction> {
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   int? pending;
-
+  String? query = '';
+  final TextEditingController search = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -46,48 +48,66 @@ class _ListtransactionState extends State<Listtransaction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Transaksi hari ini'),
+        title: Text('Riwayat Transaksi'),
         actions: [],
       ),
-      body: FutureBuilder(
-          future: this.handler.retriveListHeader(formattedDate),
-          builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
-            var x = snapshot.data ?? [];
-            if (x.isNotEmpty) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    width: MediaQuery.of(context).size.width * 1,
-                    child: ListView.builder(
-                        itemCount: x.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: DetailTrno(
-                              datatransaksi: IafjrnhdClass(
-                                pymtmthd: x[index].pymtmthd,
-                                totalamt: x[index].ftotamt,
-                                trdt: x[index].trdt,
-                              ),
-                              trno: x[index].trno,
-                              outletinfo: widget.outletinfo,
-                              pscd: widget.pscd.toString(),
-                            ),
-                          );
-                        }),
-                  )
-                ],
-              );
-            }
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Nothing here')],
-              ),
-            );
-          }),
+      body: Column(
+        children: [
+          TextFieldMobile2(
+            hint: 'Search',
+            suffixIcon: Icon(
+              Icons.search,
+            ),
+            controller: search,
+            onChanged: (value) {
+              setState(() {
+                query = value;
+              });
+            },
+            typekeyboard: TextInputType.text,
+          ),
+          FutureBuilder(
+              future: this.handler.retriveListHeader(query!),
+              builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
+                var x = snapshot.data ?? [];
+                if (x.isNotEmpty) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        width: MediaQuery.of(context).size.width * 1,
+                        child: ListView.builder(
+                            itemCount: x.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {},
+                                child: DetailTrno(
+                                  datatransaksi: IafjrnhdClass(
+                                    pymtmthd: x[index].pymtmthd,
+                                    totalamt: x[index].ftotamt,
+                                    trdt: x[index].trdt,
+                                  ),
+                                  trno: x[index].trno,
+                                  outletinfo: widget.outletinfo,
+                                  pscd: widget.pscd.toString(),
+                                ),
+                              );
+                            }),
+                      )
+                    ],
+                  );
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text('Nothing here')],
+                  ),
+                );
+              }),
+        ],
+      ),
     );
   }
 }

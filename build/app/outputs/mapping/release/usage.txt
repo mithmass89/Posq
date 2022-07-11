@@ -411,6 +411,7 @@ com.google.android.material.color.MaterialColors:
 kotlin.coroutines.experimental.migration.ExperimentalSuspendFunction2Migration
 kotlin.jvm.internal.markers.KMutableCollection
 androidx.appcompat.resources.R$string
+net.nfet.flutter.printing.R$layout
 com.google.common.io.CharStreams
 io.flutter.plugins.imagepicker.R$dimen
 androidx.collection.SparseArrayCompat:
@@ -806,6 +807,7 @@ com.google.common.graph.EndpointPair$1
 com.google.android.gms.tasks.CancellationToken
 androidx.vectordrawable.R$dimen
 androidx.annotation.RawRes
+io.flutter.plugins.urllauncher.R$layout
 androidx.constraintlayout.solver.GoalRow
 androidx.fragment.R$dimen
 io.flutter.plugins.pathprovider.R$color
@@ -899,6 +901,7 @@ androidx.core.app.NotificationCompatJellybean:
     private static java.lang.reflect.Field sActionIntentField
     private static boolean sActionsAccessFailed
 com.google.common.eventbus.SubscriberRegistry$1
+net.nfet.flutter.printing.R$xml
 io.flutter.embedding.android.FlutterFragment$ActivityCallThrough
 com.google.android.material.textfield.MaterialAutoCompleteTextView:
     public void <init>(android.content.Context)
@@ -1079,6 +1082,8 @@ kotlin.sequences.SequencesKt
 kotlin.text.MatcherMatchResult
 androidx.core.R$styleable:
     private void <init>()
+net.nfet.flutter.printing.PrintingPlugin:
+    public static void registerWith(io.flutter.plugin.common.PluginRegistry$Registrar)
 com.google.android.gms.vision.face.FaceDetector$Builder
 com.google.common.util.concurrent.Service$State$2
 com.google.common.collect.Multimaps$AsMap$EntrySet$1
@@ -1404,6 +1409,7 @@ com.google.common.base.package-info
 com.google.common.io.BaseEncoding$StandardBaseEncoding$1
 com.google.common.collect.MapMakerInternalMap$Values
 com.google.common.collect.Synchronized$SynchronizedObject
+net.nfet.flutter.printing.BuildConfig
 androidx.core.view.VelocityTrackerCompat
 androidx.core.text.PrecomputedTextCompat$PrecomputedTextFutureTask$PrecomputedTextCallback
 com.google.common.collect.ForwardingNavigableSet$StandardDescendingSet
@@ -3233,6 +3239,7 @@ com.google.common.base.Functions$ConstantFunction
 com.google.common.collect.Tables$TransposeTable$1
 com.google.common.primitives.Bytes$ByteArrayAsList
 androidx.constraintlayout.motion.widget.KeyCycleOscillator$TranslationXset
+net.nfet.flutter.printing.R$integer
 androidx.slidingpanelayout.R$integer
 androidx.recyclerview.widget.ItemTouchHelper$Callback
 com.google.android.gms.internal.vision.zzjb$zzd
@@ -3286,6 +3293,7 @@ com.google.android.gms.common.server.response.zac
 com.google.android.material.datepicker.MaterialDatePicker$InputMode
 com.google.common.base.Splitter$Strategy
 com.google.android.gms.vision.text.Element
+net.nfet.flutter.printing.R$drawable
 com.google.common.collect.ImmutableMultimap$FieldSettersHolder
 androidx.viewpager.widget.PagerTabStrip$1
 androidx.core.content.PermissionChecker$PermissionResult
@@ -3381,6 +3389,8 @@ androidx.core.provider.FontsContractCompat$FontFamilyResult:
     public static final int STATUS_OK
     public static final int STATUS_WRONG_CERTIFICATES
     public static final int STATUS_UNEXPECTED_DATA_PROVIDED
+android.print.PdfConvert:
+    public void <init>()
 kotlin.Deprecated
 io.flutter.plugin.platform.PlatformViewFactory:
     public void <init>(io.flutter.plugin.common.MessageCodec)
@@ -3424,6 +3434,7 @@ com.google.common.collect.AbstractNavigableMap
 androidx.swiperefreshlayout.R$string
 androidx.activity.R$dimen
 com.google.android.gms.common.internal.Constants
+net.nfet.flutter.printing.R$dimen
 com.google.android.gms.internal.vision.zzea
 com.google.android.gms.common.internal.BaseGmsClient:
     protected void <init>(android.content.Context,android.os.Looper,int,com.google.android.gms.common.internal.BaseGmsClient$BaseConnectionCallbacks,com.google.android.gms.common.internal.BaseGmsClient$BaseOnConnectionFailedListener,java.lang.String)
@@ -3558,6 +3569,7 @@ androidx.viewpager2.R$styleable
 com.google.common.collect.SortedMultisets$ElementSet
 com.google.android.gms.tasks.zze
 kotlin.jvm.internal.Ref$FloatRef
+io.flutter.plugins.urllauncher.R$id
 io.flutter.embedding.engine.renderer.FlutterRenderer:
     public android.graphics.Bitmap getBitmap()
     public void setAccessibilityFeatures(int)
@@ -3675,6 +3687,7 @@ io.flutter.embedding.engine.renderer.FlutterRenderer$ViewportMetrics:
 com.google.android.gms.common.annotation.NonNullApi
 com.amolg.flutterbarcodescanner.camera.CameraSource$PictureCallback
 com.google.common.eventbus.SubscriberRegistry
+io.flutter.plugins.urllauncher.R
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$FlutterEngineContentProviderPluginBinding:
     void <init>(android.content.ContentProvider)
     public android.content.ContentProvider getContentProvider()
@@ -4118,6 +4131,7 @@ com.google.common.base.Splitter$2$1
 com.google.android.gms.internal.common.zzh
 com.google.common.base.Present
 kotlin.collections.CollectionsKt__CollectionsKt
+io.flutter.plugins.urllauncher.R$style
 androidx.cursoradapter.R
 androidx.appcompat.widget.ActivityChooserModel$ActivitySorter
 com.google.common.primitives.Bytes
@@ -4512,8 +4526,8 @@ kotlin.sequences.MergingSequence
 com.google.android.gms.internal.vision.zzes
 kotlin.internal.ContractsDsl
 androidx.constraintlayout.motion.utils.StopLogic
-com.google.android.gms.common.server.response.zad
 android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl
+com.google.android.gms.common.server.response.zad
 androidx.customview.view.AbsSavedState:
     protected void <init>(android.os.Parcel)
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$FlutterEngineServicePluginBinding:
@@ -4940,6 +4954,7 @@ androidx.core.view.WindowInsetsCompat$Builder:
     public androidx.core.view.WindowInsetsCompat$Builder setDisplayCutout(androidx.core.view.DisplayCutoutCompat)
 com.google.android.gms.common.config.zze
 com.tekartik.sqflite.BuildConfig
+net.nfet.flutter.printing.R
 com.google.common.collect.ForwardingSortedMultiset$StandardElementSet
 androidx.core.text.PrecomputedTextCompat:
     public static androidx.core.text.PrecomputedTextCompat create(java.lang.CharSequence,androidx.core.text.PrecomputedTextCompat$Params)
@@ -5116,6 +5131,7 @@ androidx.core.view.NestedScrollingChildHelper:
 com.google.common.util.concurrent.MoreExecutors$1
 androidx.core.view.DragAndDropPermissionsCompat
 android.support.v4.media.MediaBrowserCompat$MediaBrowserImplBase$MediaServiceConnection$1
+net.nfet.flutter.printing.R$style
 com.google.common.hash.BloomFilterStrategies$LockFreeBitArray
 androidx.transition.Styleable$PatternPathMotion
 com.google.common.math.Stats
@@ -5350,6 +5366,7 @@ androidx.loader.content.ModernAsyncTask$InternalHandler
 androidx.transition.Transition$EpicenterCallback:
     public abstract android.graphics.Rect onGetEpicenter(androidx.transition.Transition)
 com.google.common.collect.Lists$TransformingRandomAccessList
+io.flutter.plugins.urllauncher.R$styleable
 com.google.common.collect.DiscreteDomain$1
 com.google.android.gms.vision.MultiProcessor$Builder:
     public com.google.android.gms.vision.MultiProcessor$Builder setMaxGapFrames(int)
@@ -5659,6 +5676,7 @@ androidx.constraintlayout.widget.R$anim
 com.google.common.collect.SortedIterables
 androidx.constraintlayout.motion.widget.SplineSet$CustomSet
 com.google.common.collect.ImmutableMapEntrySet$RegularEntrySet
+io.flutter.plugins.urllauncher.R$string
 androidx.media.MediaBrowserServiceCompat$MediaBrowserServiceImplBase$2
 kotlin.coroutines.experimental.migration.ContinuationMigration
 androidx.recyclerview.widget.SortedList
@@ -6013,6 +6031,8 @@ com.tekartik.sqflite.operation.ExecuteOperation:
     public java.lang.String getMethod()
 androidx.core.app.NotificationCompat$DecoratedCustomViewStyle
 com.google.common.collect.CollectPreconditions
+io.flutter.plugins.urllauncher.UrlLauncher:
+    private static final java.lang.String TAG
 kotlin.internal.AccessibleLateinitPropertyLiteral
 com.google.android.gms.internal.vision.zzig
 kotlin.jvm.internal.ShortSpreadBuilder
@@ -6059,6 +6079,7 @@ androidx.core.view.ViewConfigurationCompat:
 kotlin.reflect.KType
 com.google.common.collect.LinkedHashMultimap
 com.google.android.gms.vision.text.zzb
+io.flutter.plugins.urllauncher.R$drawable
 com.google.common.collect.Lists$StringAsImmutableList
 com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange
 androidx.transition.Slide$1
@@ -6892,7 +6913,6 @@ com.google.common.collect.MapMakerInternalMap$WeakValueEntry
 androidx.recyclerview.widget.DefaultItemAnimator:
     private static final boolean DEBUG
 io.flutter.embedding.android.FlutterView$TransparencyMode
-androidx.core.view.ScaleGestureDetectorCompat
 androidx.core.view.ViewGroupCompat:
     private void <init>()
     public static boolean onRequestSendAccessibilityEvent(android.view.ViewGroup,android.view.View,android.view.accessibility.AccessibilityEvent)
@@ -6903,6 +6923,7 @@ androidx.core.view.ViewGroupCompat:
     public static int getNestedScrollAxes(android.view.ViewGroup)
     public static final int LAYOUT_MODE_CLIP_BOUNDS
     public static final int LAYOUT_MODE_OPTICAL_BOUNDS
+androidx.core.view.ScaleGestureDetectorCompat
 androidx.core.app.NotificationCompat$CarExtender
 org.checkerframework.checker.nullness.compatqual.KeyForDecl
 com.google.common.collect.AbstractMapBasedMultimap$WrappedList
@@ -7879,6 +7900,7 @@ com.google.common.collect.LinkedHashMultimapGwtSerializationDependencies
 com.google.android.gms.common.util.ProcessUtils
 com.google.common.collect.ImmutableMultiset$1
 com.google.common.reflect.TypeResolver$1
+io.flutter.plugins.urllauncher.R$color
 com.google.android.gms.common.internal.safeparcel.SafeParcelable$Field
 io.flutter.plugins.flutter_plugin_android_lifecycle.R
 androidx.constraintlayout.motion.widget.TimeCycleSplineSet$ElevationSet
@@ -10029,6 +10051,8 @@ com.google.android.gms.tasks.zzq:
 kotlin.jvm.JvmOverloads
 androidx.swiperefreshlayout.widget.CircleImageView
 kotlin.ranges.UIntRange
+io.flutter.plugins.urllauncher.MethodCallHandlerImpl:
+    private static final java.lang.String TAG
 com.google.common.graph.DirectedGraphConnections$PredAndSucc
 com.google.android.gms.internal.vision.zzab
 com.google.android.gms.common.data.DataBufferObserver$Observable
@@ -11055,6 +11079,7 @@ com.google.android.material.chip.ChipDrawable:
     private static final boolean DEBUG
     private static final java.lang.String NAMESPACE_APP
     private static final int MAX_CHIP_ICON_HEIGHT
+net.nfet.flutter.printing.R$attr
 com.google.common.reflect.Types$ClassOwnership$1LocalClass
 kotlin.jvm.internal.TypeReference$asString$args$1
 com.google.android.material.internal.ParcelableSparseIntArray
@@ -12085,6 +12110,7 @@ androidx.constraintlayout.motion.widget.MotionScene$Transition$TransitionOnClick
 androidx.appcompat.widget.VectorEnabledTintResources:
     public static void setCompatVectorFromResourcesEnabled(boolean)
     public static final int MAX_SDK_WHERE_REQUIRED
+io.flutter.plugins.urllauncher.R$integer
 androidx.viewpager2.R$dimen
 kotlin.jvm.internal.markers.KMutableSet
 com.google.common.primitives.SignedBytes
@@ -12345,6 +12371,7 @@ com.amolg.flutterbarcodescanner.camera.GraphicOverlay$Graphic:
     public float scaleY(float)
     public float translateX(float)
     public float translateY(float)
+net.nfet.flutter.printing.R$id
 com.google.common.collect.LinkedHashMultimap$ValueSet
 androidx.lifecycle.ComputableLiveData
 com.google.common.util.concurrent.FluentFuture$TrustedFuture
@@ -12724,6 +12751,7 @@ com.google.common.eventbus.Subscribe
 androidx.core.graphics.drawable.RoundedBitmapDrawable21
 com.google.android.material.transition.TransitionUtils$CanvasOperation
 androidx.constraintlayout.motion.utils.Oscillator
+io.flutter.plugins.urllauncher.R$attr
 com.google.android.material.transition.platform.MaterialSharedAxis$Axis
 com.google.common.base.CaseFormat$StringConverter
 io.flutter.plugins.imagepicker.ImagePickerPlugin:
@@ -14806,6 +14834,7 @@ androidx.transition.ChangeTransform$1
 androidx.dynamicanimation.animation.DynamicAnimation$5
 com.google.android.gms.internal.clearcut.zzge$zzf$zza
 kotlin.io.AccessDeniedException
+io.flutter.plugins.urllauncher.BuildConfig
 com.google.android.gms.common.internal.zza
 com.google.android.gms.vision.text.Line
 com.google.android.material.transition.MaterialContainerTransform$TransitionDrawable$1
@@ -15444,6 +15473,9 @@ com.google.common.eventbus.SubscriberRegistry$MethodIdentifier
 kotlin.sequences.USequencesKt___USequencesKt
 com.google.common.collect.MapMakerInternalMap$WeakKeyStrongValueEntry
 com.google.common.collect.Multimap
+io.flutter.plugins.urllauncher.UrlLauncherPlugin:
+    public static void registerWith(io.flutter.plugin.common.PluginRegistry$Registrar)
+    private static final java.lang.String TAG
 androidx.asynclayoutinflater.R$string
 androidx.recyclerview.widget.RecyclerView$EdgeEffectFactory:
     public static final int DIRECTION_LEFT
@@ -15520,6 +15552,7 @@ androidx.core.content.pm.PermissionInfoCompat$Protection
 com.google.android.gms.common.stats.StatsUtils
 com.google.common.math.IntMath
 kotlin.Experimental
+net.nfet.flutter.printing.R$color
 androidx.constraintlayout.motion.widget.TransitionBuilder
 com.google.common.eventbus.SubscriberExceptionHandler
 com.google.android.gms.tasks.OnCompleteListener
@@ -17052,6 +17085,7 @@ kotlin.reflect.KMutableProperty1
 com.google.common.collect.ImmutableRangeSet$Builder
 com.google.common.util.concurrent.MoreExecutors$ScheduledListeningDecorator
 kotlin.io.ConstantsKt
+net.nfet.flutter.printing.R$string
 androidx.constraintlayout.motion.widget.KeyCycleOscillator$1
 androidx.media.app.NotificationCompat$MediaStyle
 org.checkerframework.checker.nullness.compatqual.PolyNullDecl
@@ -17063,6 +17097,7 @@ com.google.android.material.transition.platform.MaterialContainerTransform$FadeM
 com.google.android.material.timepicker.TimePickerTextInputPresenter
 androidx.constraintlayout.motion.widget.MotionLayout$TransitionListener
 org.intellij.lang.annotations.JdkConstants$TreeSelectionMode
+io.flutter.plugins.urllauncher.R$dimen
 kotlin.coroutines.experimental.intrinsics.IntrinsicsKt__IntrinsicsJvmKt$buildContinuationByInvokeCall$continuation$1
 kotlin.PreconditionsKt
 androidx.slidingpanelayout.R$layout
@@ -20392,6 +20427,7 @@ androidx.appcompat.view.menu.MenuPopup:
 kotlin.time.TimedValue
 com.google.android.gms.internal.vision.zzfz
 androidx.viewpager2.adapter.FragmentStateAdapter$FragmentMaxLifecycleEnforcer$1
+net.nfet.flutter.printing.R$styleable
 com.google.common.cache.LocalCache$WeightedWeakValueReference
 com.google.common.util.concurrent.ListenerCallQueue$Event
 androidx.core.graphics.drawable.DrawableCompat:
@@ -22047,6 +22083,8 @@ androidx.core.app.ComponentActivity:
     private androidx.collection.SimpleArrayMap mExtraDataMap
 io.flutter.plugin.editing.ListenableEditingState$1:
     final synthetic io.flutter.plugin.editing.ListenableEditingState this$0
+net.nfet.flutter.printing.PrintingHandler$1:
+    final synthetic net.nfet.flutter.printing.PrintingHandler this$0
 com.google.android.material.datepicker.MaterialDatePicker:
     static final java.lang.Object CONFIRM_BUTTON_TAG
     static final java.lang.Object CANCEL_BUTTON_TAG
@@ -22073,6 +22111,8 @@ com.google.android.gms.vision.Detector$Detections:
     private final boolean zzc
 com.google.android.gms.internal.vision.zzkz:
     private static final synthetic int[] zzc
+io.flutter.plugins.urllauncher.WebViewActivity$2:
+    final synthetic io.flutter.plugins.urllauncher.WebViewActivity this$0
 androidx.constraintlayout.solver.PriorityGoalRow$1:
     final synthetic androidx.constraintlayout.solver.PriorityGoalRow this$0
 com.google.android.gms.internal.vision.zzjf:
@@ -22436,6 +22476,8 @@ androidx.recyclerview.widget.RecyclerView:
     static final boolean POST_UPDATES_ON_ANIMATION
 com.google.android.gms.common.internal.ClientSettings$Builder:
     private int zac
+net.nfet.flutter.printing.PrintingHandler:
+    static final synthetic boolean $assertionsDisabled
 androidx.transition.Fade$1:
     final synthetic androidx.transition.Fade this$0
 androidx.appcompat.app.ToolbarActionBar
@@ -22445,6 +22487,8 @@ io.flutter.plugin.platform.VirtualDisplayController$1:
     final synthetic io.flutter.plugin.platform.VirtualDisplayController this$0
 com.google.android.material.floatingactionbutton.FloatingActionButtonImpl$DisabledElevationAnimation:
     final synthetic com.google.android.material.floatingactionbutton.FloatingActionButtonImpl this$0
+net.nfet.flutter.printing.PrintingJob:
+    static final synthetic boolean $assertionsDisabled
 androidx.constraintlayout.widget.R$styleable:
     public static final int[] ActionBar
     public static final int[] ActionBarLayout
@@ -22545,5 +22589,5 @@ com.google.android.material.resources.TextAppearance:
     public final boolean textAllCaps
 androidx.appcompat.view.StandaloneActionMode:
     private boolean mFocusable
-io.flutter.plugin.platform.PlatformView$-CC
 androidx.lifecycle.DefaultLifecycleObserver$-CC
+io.flutter.plugin.platform.PlatformView$-CC

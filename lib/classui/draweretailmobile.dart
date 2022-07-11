@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/model.dart';
+import 'package:posq/retailmodul/classlaporanmobile.dart';
 import 'package:posq/retailmodul/classlisttransactionmobile.dart';
 import 'package:posq/setting/classcustomersmobile.dart';
 import 'package:posq/setting/classpromomobile.dart';
@@ -108,9 +109,12 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             leading: Icon(
               Icons.add_chart_outlined,
             ),
-            title: const Text('Laporan'),
+            title: const Text('List Laporan'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return ClassLaporanMobile();
+              }));
             },
           ),
           ListTile(

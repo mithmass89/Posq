@@ -1004,3 +1004,58 @@ class Glftrdt {
     };
   }
 }
+
+class ItemMail {
+  final String item;
+  final num harga;
+
+
+  ItemMail({
+    required this.item,
+    required this.harga,
+
+  });
+
+  ItemMail.fromMap(Map<String, dynamic> res)
+      : item = res["item"],
+        harga = res["harga"];
+
+  @override
+  String toString() {
+    return '{"item": $item, "harga": $harga,}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'item': item,
+        'harga': harga,
+
+      };
+}
+
+class PaymentEmail {
+  final String metode;
+  final num jumlah;
+
+
+  PaymentEmail({
+    required this.metode,
+    required this.jumlah,
+
+  });
+
+  PaymentEmail.fromMap(Map<String, dynamic> res)
+      : metode = res["metode"],
+        jumlah = res["jumlah"];
+
+  @override
+  String toString() {
+    return '{"metode": $metode, "jumlah": $jumlah,}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'metode': metode,
+        'jumlah': jumlah,
+
+      };
+}
+

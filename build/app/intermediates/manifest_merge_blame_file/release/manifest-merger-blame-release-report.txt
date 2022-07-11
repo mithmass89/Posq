@@ -123,20 +123,47 @@
 76        </provider>
 77
 78        <activity
-78-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
-79            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-79-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
+78-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\release\AndroidManifest.xml:8:9-11:74
+79            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+79-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\release\AndroidManifest.xml:9:13-74
 80            android:exported="false"
-80-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
-81            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-81-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
+80-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\release\AndroidManifest.xml:10:13-37
+81            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+81-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\release\AndroidManifest.xml:11:13-71
 82
-83        <meta-data
-83-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:23:9-25:69
-84            android:name="com.google.android.gms.version"
-84-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:24:13-58
-85            android:value="@integer/google_play_services_version" />
-85-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:25:13-66
-86    </application>
-87
-88</manifest>
+83        <provider
+83-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:8:9-16:20
+84            android:name="net.nfet.flutter.printing.PrintFileProvider"
+84-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:9:13-71
+85            android:authorities="com.example.posq.flutter.printing"
+85-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:10:13-68
+86            android:exported="false"
+86-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:11:13-37
+87            android:grantUriPermissions="true" >
+87-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:12:13-47
+88            <meta-data
+88-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\release\AndroidManifest.xml:13:13-15:75
+89                android:name="android.support.FILE_PROVIDER_PATHS"
+89-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\release\AndroidManifest.xml:14:17-67
+90                android:resource="@xml/flutter_printing_file_paths" />
+90-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\release\AndroidManifest.xml:15:17-72
+91        </provider>
+92
+93        <activity
+93-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
+94            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+94-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
+95            android:exported="false"
+95-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
+96            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+96-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
+97
+98        <meta-data
+98-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:23:9-25:69
+99            android:name="com.google.android.gms.version"
+99-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:24:13-58
+100            android:value="@integer/google_play_services_version" />
+100-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:25:13-66
+101    </application>
+102
+103</manifest>
