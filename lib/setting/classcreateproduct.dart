@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/classui/cloudapi.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/image.dart';
@@ -13,6 +14,7 @@ import 'package:posq/setting/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
 
 enum ImageSourceType { gallery, camera }
+ClassCloudApi? apicloud;
 
 class Createproduct extends StatefulWidget {
   final Item? productcode;
@@ -70,6 +72,7 @@ class _CreateproductState extends State<Createproduct>
     controller = TabController(vsync: this, length: 2);
     adjusmentstock.addListener(() {});
     trackstock = 0;
+    apicloud = ClassCloudApi();
   }
 
   updateStockTrack(value) {
@@ -116,8 +119,6 @@ class _CreateproductState extends State<Createproduct>
     List<Item> listctg = [ctg];
     return await handler.insertItem(listctg);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -216,6 +217,47 @@ class _CreateproductState extends State<Createproduct>
                               print('${value.map((e) => e.itemdesc)}');
                             }));
                           });
+                          await ClassCloudApi.insertProduct(
+                              databasename,
+                              Item(
+                                outletcd: widget.pscd.toString(),
+                                itemcd: productcd.text,
+                                itemdesc: productname.text,
+                                costcoa: 'COST',
+                                revenuecoa: 'REVENUE',
+                                taxcoa: 'TAX',
+                                svchgcoa: 'SERVICE',
+                                taxpct: pcttax.text.isEmpty
+                                    ? 0
+                                    : num.parse(pcttax.text),
+                                svchgpct: pctservice.text.isEmpty
+                                    ? 0
+                                    : num.parse(pctservice.text),
+                                costamt: amountcost.text.isEmpty
+                                    ? 0
+                                    : num.parse(amountcost.text),
+                                slsamt: amountsales.text.isEmpty
+                                    ? 0
+                                    : num.parse(amountsales.text),
+                                slsnett: pctnett != 0
+                                    ? num.parse(amountsales.text) * pctnett! +
+                                        num.parse(amountsales.text)
+                                    : amountsales.text.isEmpty
+                                        ? 0
+                                        : num.parse(amountsales.text),
+                                ctg: selectedctg ?? '',
+                                slsfl: 1,
+                                stock: num.parse(adjusmentstock.text.isEmpty
+                                    ? '0'
+                                    : adjusmentstock.text),
+                                pathimage: pathimage ?? 'Empty',
+                                description: description.text.isEmpty
+                                    ? 'Empty'
+                                    : description.text,
+                                trackstock: trackstock,
+                                sku: sku.text,
+                                barcode: barcode.text,
+                              ));
                           setState(() {});
                         }).then((_) {
                           Navigator.of(context).pop(context);

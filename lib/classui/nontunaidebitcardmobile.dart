@@ -205,7 +205,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'DBTBCA',
-                            widget.compdescription = 'Debit Card BCA', 'DC');
+                            widget.compdescription = 'Debit Card BCA', 'Debit Card');
                       }
                     },
                   ),
@@ -277,7 +277,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'DBTBNI',
-                            widget.compdescription = 'Debit Card BNI', 'DC');
+                            widget.compdescription = 'Debit Card BNI', 'Debit Card');
                       }
                     },
                   ),
@@ -347,7 +347,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'DBTBRI',
-                            widget.compdescription = 'Debit Card BRI', 'DC');
+                            widget.compdescription = 'Debit Card BRI', 'Debit Card');
                       }
                     },
                   ),
@@ -417,7 +417,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                         widget.checkselected(
                             widget.compcode = 'DBTMANDIRI',
                             widget.compdescription = 'Debit Card MANDIRI',
-                            'DC');
+                            'Debit Card');
                       }
                     },
                   ),
@@ -487,7 +487,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                         widget.checkselected(
                             widget.compcode = 'DBTPERMATA',
                             widget.compdescription = 'Debit Card PERMATA',
-                            'DC');
+                            'Debit Card');
                       }
                     },
                   ),
@@ -554,7 +554,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'DBTOTHERS',
-                            widget.compdescription = 'Debit Card OTHERS', 'DC');
+                            widget.compdescription = 'Debit Card OTHERS', 'Debit Card');
                       }
                     },
                   ),

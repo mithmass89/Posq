@@ -66,6 +66,7 @@ class TextFieldMobileButton extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback ontap;
   final typekeyboard;
+  final suffixicone;
 
   TextFieldMobileButton({
     Key? key,
@@ -74,6 +75,7 @@ class TextFieldMobileButton extends StatefulWidget {
     required this.onChanged,
     required this.typekeyboard,
     required this.ontap,
+    this.suffixicone,
   }) : super(key: key);
 
   @override
@@ -94,7 +96,9 @@ class _TextFieldMobileButtonState extends State<TextFieldMobileButton> {
         autofocus: false,
         style: const TextStyle(fontSize: 15.0, color: Colors.black),
         decoration: InputDecoration(
-          suffixIcon: const Icon(Icons.arrow_right),
+          suffixIcon: widget.suffixicone == null
+              ? const Icon(Icons.arrow_right)
+              : widget.suffixicone,
           border: InputBorder.none,
           filled: true,
           fillColor: Colors.grey[200],
@@ -197,23 +201,26 @@ class TextFieldMobile2 extends StatefulWidget {
   late FocusNode? focus;
   var expands;
   var minLines;
+  var validator;
 
-  TextFieldMobile2({
-    Key? key,
-    this.label,
-    required this.controller,
-    required this.onChanged,
-    required this.typekeyboard,
-    this.maxline,
-    this.hint,
-    this.enable = true,
-    this.height,
-    this.width,
-    this.suffixIcon,
-    this.readonly,
-    this.focus,
-    this.expands,this.minLines
-  }) : super(key: key);
+  TextFieldMobile2(
+      {Key? key,
+      this.label,
+      required this.controller,
+      required this.onChanged,
+      required this.typekeyboard,
+      this.maxline,
+      this.hint,
+      this.enable = true,
+      this.height,
+      this.width,
+      this.suffixIcon,
+      this.readonly,
+      this.focus,
+      this.validator,
+      this.expands,
+      this.minLines})
+      : super(key: key);
 
   @override
   State<TextFieldMobile2> createState() => _TextFieldMobile2State();
@@ -225,9 +232,11 @@ class _TextFieldMobile2State extends State<TextFieldMobile2> {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: TextFormField(
+        validator: widget.validator,
         // expands: widget.expands,
         // minLines: widget.minLines,
         // maxLines: widget.maxline,
+
         focusNode: widget.focus,
         readOnly: widget.readonly ?? false,
         keyboardType: widget.typekeyboard,

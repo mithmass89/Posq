@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import 'package:posq/classui/classformat.dart';
+
 class Outlet {
   final int? id;
   final String outletcd;
@@ -28,6 +31,11 @@ class Outlet {
         kodepos = res["kodepos"].toString(),
         trnonext = res["trnonext"],
         trnopynext = res["trnopynext"];
+
+  @override
+  String toString() {
+    return '{"id": $id, "outletcd": $outletcd,"outletname": $outletname,"telp": $telp,"alamat": $alamat,"kodepos": $kodepos,"trnonext": $trnonext,"trnopynext": $trnopynext}';
+  }
 
   Map<String, Object?> toMap() {
     return {
@@ -548,6 +556,11 @@ class IafjrnhdClass {
         qrcode = res['qrcode'],
         statustrans = res['statustrans'];
 
+  @override
+  String toString() {
+    return '{ "trno": $trno,"pymtmthd": $pymtmthd,"ftotamt":"$ftotamt"}';
+  }
+
   Map<String, Object?> toMap() {
     return {
       'id': id,
@@ -587,6 +600,20 @@ class IafjrnhdClass {
       'qrcode': qrcode,
     };
   }
+
+  getIndex(int index) {
+    switch (index) {
+      case 0:
+        return trno;
+      case 1:
+        return pymtmthd.toString();
+      case 2:
+        return CurrencyFormat.convertToIdr(ftotamt, 0);
+    }
+    return '';
+  }
+
+  final formatCurrency = new NumberFormat.currency(name: '', decimalDigits: 0);
 }
 
 class Midtransitem {
@@ -1009,11 +1036,9 @@ class ItemMail {
   final String item;
   final num harga;
 
-
   ItemMail({
     required this.item,
     required this.harga,
-
   });
 
   ItemMail.fromMap(Map<String, dynamic> res)
@@ -1028,7 +1053,6 @@ class ItemMail {
   Map<String, dynamic> toJson() => {
         'item': item,
         'harga': harga,
-
       };
 }
 
@@ -1036,11 +1060,9 @@ class PaymentEmail {
   final String metode;
   final num jumlah;
 
-
   PaymentEmail({
     required this.metode,
     required this.jumlah,
-
   });
 
   PaymentEmail.fromMap(Map<String, dynamic> res)
@@ -1055,7 +1077,38 @@ class PaymentEmail {
   Map<String, dynamic> toJson() => {
         'metode': metode,
         'jumlah': jumlah,
-
       };
 }
 
+class Ringkasan {
+  final String trdesc;
+  final num amount;
+
+  final num qtyterjual;
+  final num totaltransaksi;
+
+  Ringkasan({
+    required this.trdesc,
+    required this.amount,
+    required this.qtyterjual,
+    required this.totaltransaksi,
+  });
+
+  Ringkasan.fromMap(Map<String, dynamic> res)
+      : trdesc = res["trdesc"],
+        amount = res["amount"],
+        qtyterjual = res["qtyterjual"],
+        totaltransaksi = res["totaltransaksi"];
+
+  @override
+  String toString() {
+    return '{"trdesc": $trdesc,"amount": $amount, "qtyterjual": $qtyterjual,"totaltransaksi": $totaltransaksi,}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'trdesc': trdesc,
+        'penjualan': amount,
+        'qtyterjual': qtyterjual,
+        'totaltransaksi': totaltransaksi,
+      };
+}

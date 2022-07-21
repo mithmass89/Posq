@@ -3560,9 +3560,9 @@ com.google.common.collect.MutableClassToInstanceMap$2$1
 com.google.android.material.transition.platform.MaskEvaluator
 com.google.common.collect.CompactHashMap$2
 com.google.common.io.ByteSource$SlicedByteSource
-androidx.fragment.app.FragmentTabHost
 android.support.v4.media.MediaBrowserCompat$ItemReceiver:
     void <init>(java.lang.String,android.support.v4.media.MediaBrowserCompat$ItemCallback,android.os.Handler)
+androidx.fragment.app.FragmentTabHost
 com.google.common.util.concurrent.Partially
 javax.annotation.ParametersAreNullableByDefault
 androidx.viewpager2.R$styleable
@@ -4526,8 +4526,8 @@ kotlin.sequences.MergingSequence
 com.google.android.gms.internal.vision.zzes
 kotlin.internal.ContractsDsl
 androidx.constraintlayout.motion.utils.StopLogic
-android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl
 com.google.android.gms.common.server.response.zad
+android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl
 androidx.customview.view.AbsSavedState:
     protected void <init>(android.os.Parcel)
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$FlutterEngineServicePluginBinding:
@@ -6913,6 +6913,7 @@ com.google.common.collect.MapMakerInternalMap$WeakValueEntry
 androidx.recyclerview.widget.DefaultItemAnimator:
     private static final boolean DEBUG
 io.flutter.embedding.android.FlutterView$TransparencyMode
+androidx.core.view.ScaleGestureDetectorCompat
 androidx.core.view.ViewGroupCompat:
     private void <init>()
     public static boolean onRequestSendAccessibilityEvent(android.view.ViewGroup,android.view.View,android.view.accessibility.AccessibilityEvent)
@@ -6923,7 +6924,6 @@ androidx.core.view.ViewGroupCompat:
     public static int getNestedScrollAxes(android.view.ViewGroup)
     public static final int LAYOUT_MODE_CLIP_BOUNDS
     public static final int LAYOUT_MODE_OPTICAL_BOUNDS
-androidx.core.view.ScaleGestureDetectorCompat
 androidx.core.app.NotificationCompat$CarExtender
 org.checkerframework.checker.nullness.compatqual.KeyForDecl
 com.google.common.collect.AbstractMapBasedMultimap$WrappedList
@@ -13695,9 +13695,9 @@ androidx.customview.widget.ExploreByTouchHelper:
     public static final int HOST_ID
     private static final java.lang.String DEFAULT_CLASS_NAME
 com.google.android.material.datepicker.CompositeDateValidator
-io.flutter.embedding.engine.systemchannels.PlatformChannel:
-    private static final java.lang.String TAG
 io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
+    private static final java.lang.String TAG
+io.flutter.embedding.engine.systemchannels.PlatformChannel:
     private static final java.lang.String TAG
 com.google.common.collect.Multisets$FilteredMultiset$1
 com.google.android.gms.common.server.response.zam
@@ -22589,5 +22589,5 @@ com.google.android.material.resources.TextAppearance:
     public final boolean textAllCaps
 androidx.appcompat.view.StandaloneActionMode:
     private boolean mFocusable
-androidx.lifecycle.DefaultLifecycleObserver$-CC
 io.flutter.plugin.platform.PlatformView$-CC
+androidx.lifecycle.DefaultLifecycleObserver$-CC

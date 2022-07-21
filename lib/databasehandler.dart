@@ -22,7 +22,7 @@ class DatabaseHandler {
         version,
       ) async {
         await database.execute(
-          "CREATE TABLE Outlet(id INTEGER PRIMARY KEY AUTOINCREMENT,outletcd varchar(20) NOT NULL, outletname varchar(100) ,telp INTEGER , alamat varchar(100) , kodepos varchar(20) ,trnonext INTEGER NOT NULL,trnopynext INTEGER NOT NULL)",
+          "CREATE TABLE outlet(id INTEGER PRIMARY KEY AUTOINCREMENT,outletcd varchar(20) NOT NULL, outletname varchar(100) ,telp INTEGER , alamat varchar(100) , kodepos varchar(20) ,trnonext INTEGER NOT NULL,trnopynext INTEGER NOT NULL)",
         );
         await database.execute(
           '''CREATE TABLE psspsitem(id INTEGER PRIMARY KEY AUTOINCREMENT
@@ -43,7 +43,7 @@ class DatabaseHandler {
           "CREATE TABLE ctg(id INTEGER PRIMARY KEY AUTOINCREMENT,ctgcd varchar(100) NOT NULL, ctgdesc varchar(100) NOT NULL)",
         );
         await database.execute(
-          "CREATE TABLE integrasi(id INTEGER PRIMARY KEY AUTOINCREMENT,integrasi varchar(200), keyapi varchar(300),use char(5))",
+          "CREATE TABLE integrasi(id INTEGER PRIMARY KEY AUTOINCREMENT,integrasi varchar(200), keyapi varchar(300),uses char(5))",
         );
         await database.execute(
           '''CREATE TABLE iafjrndt(id INTEGER PRIMARY KEY AUTOINCREMENT,trdt varchar(100) NOT NULL,pscd varchar(100) NOT NULL
@@ -117,7 +117,7 @@ class DatabaseHandler {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < newVersion) {
       await db.execute(
-          "ALTER TABLE Outlet ADD COLUMN outletcd varchar(100) NOT NULL;");
+          "ALTER TABLE outlet ADD COLUMN outletcd varchar(100) NOT NULL;");
     }
   }
 
@@ -128,7 +128,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var user in users) {
-      result = await db.insert('Outlet', user.toMap());
+      result = await db.insert('outlet', user.toMap());
       print(user.outletname);
     }
     return result;
@@ -265,7 +265,7 @@ class DatabaseHandler {
 
   Future<List<Outlet>> retrieveUsers() async {
     final Database db = await initializeDB(databasename);
-    final List<Map<String, Object?>> queryResult = await db.query('Outlet');
+    final List<Map<String, Object?>> queryResult = await db.query('outlet');
     return queryResult.map((e) => Outlet.fromMap(e)).toList();
   }
 
@@ -510,7 +510,7 @@ select sum(x.nettamt) as nettamt from
   Future<List<Outlet>> getTrno(String pscd) async {
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        "select outletcd,outletname,telp,alamat,trnonext,kodepos,trnopynext from Outlet where outletcd='$pscd'");
+        "select outletcd,outletname,telp,alamat,trnonext,kodepos,trnopynext from outlet where outletcd='$pscd'");
 
     return queryResult.map((e) => Outlet.fromMap(e)).toList();
   }
@@ -539,7 +539,8 @@ select sum(x.nettamt) as nettamt from
         union
         select 0 as id,'Discount' as trdesc,trno,trdt,pscd,'Discount' as itemcd,1 as qty,0 as rvnamt,0 as taxamt,0 as serviceamt,ftotamt as nettamt  from iafjrnhd where trno='$trno' and active='1' and pymtmthd='Discount'
         ''');
-    print(' hasil query ${queryResult.map((e) => IafjrndtClass.fromMap(e)).toList()}');
+    print(
+        ' hasil query ${queryResult.map((e) => IafjrndtClass.fromMap(e)).toList()}');
 
     return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
   }
@@ -564,6 +565,80 @@ select sum(x.nettamt) as nettamt from
     print(queryResult);
 
     return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+  }
+
+  //////////cashier summry//////////////////////
+  Future<List<IafjrnhdClass>> cashierSummary(
+      String? query, String fromdate, String todate) async {
+    final Database db = await initializeDB(databasename);
+    print(fromdate);
+    print(todate);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        '''select iafjrndt.trno as trno,iafjrnhd.pymtmthd as pymtmthd,sum(iafjrnhd.ftotamt) as ftotamt from iafjrndt 
+        left join iafjrnhd on iafjrnhd.trno=iafjrndt.trno   where iafjrndt.active='1'  and pymtmthd<>'Discount' 
+        and iafjrnhd.trdt between '$fromdate' and '$todate'
+         and (iafjrnhd.trno like '%$query%' or  iafjrnhd.pymtmthd like '%$query%' or  iafjrnhd.trdt like '%$query%')
+        group by iafjrnhd.pymtmthd order by pymtmthd,iafjrnhd.trdt 
+       
+        ''');
+    print(queryResult);
+
+    return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+  }
+
+  //////////cashier summry Detail//////////////////////
+  Future<List<IafjrnhdClass>> cashierSummaryDetail(
+      String? query, String fromdate, String todate) async {
+    final Database db = await initializeDB(databasename);
+    print(fromdate);
+    print(todate);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        '''select iafjrnhd.trdt as trdt,iafjrndt.trno as trno,iafjrnhd.pymtmthd as pymtmthd,sum(iafjrnhd.ftotamt) as ftotamt from iafjrndt 
+        left join iafjrnhd on iafjrnhd.trno=iafjrndt.trno   where iafjrndt.active='1'  and pymtmthd<>'Discount' 
+        and iafjrnhd.trdt between '$fromdate' and '$todate'
+         and (iafjrnhd.trno like '%$query%' or  iafjrnhd.pymtmthd like '%$query%' or  iafjrnhd.trdt like '%$query%')
+        group by iafjrnhd.trno order by pymtmthd,iafjrnhd.trdt 
+       
+        ''');
+    print(queryResult);
+
+    return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+  }
+
+  Future<List<Ringkasan>> ringkasanPenjualan(
+      String fromdate, String todate) async {
+    final Database db = await initializeDB(databasename);
+    print(fromdate);
+    print(todate);
+    final List<Map<String, Object?>> queryResult = await db.rawQuery('''
+  
+      select 'Penjualan Kotor' as trdesc ,sum(nettamt) as amount,sum(qty) as qtyterjual,count(trno) as totaltransaksi from iafjrndt where active='1' and trdt between '$fromdate' and '$todate'
+
+           union  
+
+      select 'Pembelian barang'  as trdesc, ifnull(sum(totalaftdisctax),0) as amount,0 as  qtyterjual,0 as totaltransaksi from glftrdt where active='1' and trdt between '$fromdate' and '$todate' and trtpcd='7010' and trcoa='Inventory'
+     
+     union
+      
+      select 'Retur pembelian'  as trdesc, ifnull(sum(totalaftdisctax),0) as amount,0 as  qtyterjual,0 as totaltransaksi from glftrdt where active='1' and trdt between '$fromdate' and '$todate' and trtpcd='7081' and trcoa='Inventory'
+      
+      union 
+
+      select 'Discount' as trdesc , ifnull(sum(ftotamt),0) as amount,ifnull(sum(0),0) as qtyterjual,count(0) as totaltransaksi from iafjrnhd where active='1' and trdt between '$fromdate' and '$todate' and pymtmthd='Discount'
+
+      union
+
+
+      select 'Penjualan Bersih' as trdesc ,sum(amount) as amount,sum(qtyterjual) as qtyterjual,count(totaltransaksi) as totaltransaksi from 
+      (      select 'Penjualan Kotor' as trdesc ,sum(nettamt) as amount,sum(qty) as qtyterjual,count(trno) as totaltransaksi from iafjrndt where active='1' and trdt between '$fromdate' and '$todate'
+      union 
+      select 'Discount' as trdesc , ifnull(sum(ftotamt),0) as amount,ifnull(sum(0),0) as qtyterjual,count(0) as totaltransaksi from iafjrnhd where active='1' and trdt between '$fromdate' and '$todate' and pymtmthd='Discount'
+      )X
+
+        ''');
+    print(queryResult);
+
+    return queryResult.map((e) => Ringkasan.fromMap(e)).toList();
   }
 
   Future<List<IafjrndtClass>> retriveSavedTransaction(String query) async {
@@ -611,7 +686,7 @@ where x.nettamt<>0
   Future<void> deleteUser(int id) async {
     final db = await initializeDB(databasename);
     await db.delete(
-      'Outlet',
+      'outlet',
       where: "id = ?",
       whereArgs: [id],
     );
@@ -670,13 +745,12 @@ where x.nettamt<>0
     print(trno);
   }
 
-    Future<void> updateServerKeyMidtrans(String keyapi, String integrasi) async {
+  Future<void> updateServerKeyMidtrans(String keyapi, String integrasi) async {
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
     UPDATE integrasi 
     SET keyapi=? WHERE integrasi=?
     ''', ['${keyapi}', '${integrasi}']);
-   
   }
 
   Future<void> activeZeroiafjrndt(IafjrndtClass iafjrndt) async {
@@ -732,7 +806,7 @@ where x.nettamt<>0
   Future<void> updateTrnoNext(Outlet iafjrndt) async {
     final db = await initializeDB(databasename);
     await db.rawUpdate('''
-    UPDATE Outlet 
+    UPDATE outlet 
     SET trnonext=? WHERE outletcd = ?
     ''', [
       iafjrndt.trnonext,
@@ -930,7 +1004,7 @@ where x.nettamt<>0
 
     // raw query
     List<Map> result =
-        await db.rawQuery('SELECT IFNULL(id,1) as id FROM Outlet');
+        await db.rawQuery('SELECT IFNULL(id,1) as id FROM outlet');
 
     // print the results
     return result.map((e) => e['id']);
@@ -991,7 +1065,7 @@ where x.nettamt<>0
     final Database db = await initializeDB(databasename);
 
     // raw query
-    final List<Map<String, Object?>>result =
+    final List<Map<String, Object?>> result =
         await db.rawQuery('select * from integrasi where integrasi="${type}" ');
 
     return result.map((e) => Integrasi.fromMap(e)).toList();

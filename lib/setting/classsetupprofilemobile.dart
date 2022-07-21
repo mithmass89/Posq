@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/classui/cloudapi.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'dart:math';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+ClassCloudApi? apicloud;
 
 class ClassSetupProfileMobile extends StatefulWidget {
   const ClassSetupProfileMobile({Key? key}) : super(key: key);
@@ -35,6 +38,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
+    apicloud = ClassCloudApi();
   }
 
   Future<int> addOutlet() async {
@@ -112,6 +116,23 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
     await savecostmrs.setString('database', dbname);
   }
 
+  initDbCloud(String dbname) async {
+    await ClassCloudApi.createDB(dbname);
+    await ClassCloudApi.CreateOutlet(dbname);
+    await ClassCloudApi.createPsspsitem(dbname);
+    await ClassCloudApi.createRegisterItem(dbname);
+    await ClassCloudApi.createTableCtgItem(dbname);
+    await ClassCloudApi.createTableIntegrasi(dbname);
+    await ClassCloudApi.createTableIafJrndt(dbname);
+    await ClassCloudApi.createTableIafjrnhd(dbname);
+    await ClassCloudApi.createTablearscomp(dbname);
+    await ClassCloudApi.createTablectgarscomp(dbname);
+    await ClassCloudApi.createTablepromo(dbname);
+    await ClassCloudApi.createTableCustomerTemp(dbname);
+    await ClassCloudApi.createTableGntrantp(dbname);
+    await ClassCloudApi.createTableGlftrdt(dbname);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,7 +179,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                           }
                           setState(() {
                             outletcd.text = '${namaoutlet!.substring(0, 5)}'
-                                    '${rng.nextInt(100)}-'
+                                    '${rng.nextInt(100)}'
                                 .replaceAll(' ', '');
                           });
                           print(outletcd.text);
@@ -227,11 +248,24 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                         handler
                             .initializeDB(databasename)
                             .whenComplete(() async {
+                          await initDbCloud(databasename);
                           await addOutlet().whenComplete(() async {
                             print(handler.retrieveUsers().then((value) {
                               print('${value.map((e) => e)}');
                             }));
                           });
+                          //Insert Data outlet to Cloud//
+                          await ClassCloudApi.insertOutletCLD(
+                              databasename,
+                              Outlet(
+                                outletname: namaoutlet.toString(),
+                                telp: num.parse(telp.toString()),
+                                kodepos: kodepos.toString(),
+                                alamat: detail.toString(),
+                                outletcd: outletcd.text,
+                                trnonext: 1,
+                                trnopynext: 1,
+                              ));
                           setState(() {});
                         }).then((_) {
                           Navigator.pushReplacement(

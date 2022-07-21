@@ -205,7 +205,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'CCBCA',
-                            widget.compdescription = 'Credit Card Bca','CC');
+                            widget.compdescription = 'Credit Card Bca','Credit Card');
                       }
                     },
                   ),
@@ -277,7 +277,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'CCBNI',
-                            widget.compdescription = 'Credit Card BNI','CC');
+                            widget.compdescription = 'Credit Card BNI','Credit Card');
                       }
                     },
                   ),
@@ -347,7 +347,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'CCBRI',
-                            widget.compdescription = 'Credit Card BRI','CC');
+                            widget.compdescription = 'Credit Card BRI','Credit Card');
                       }
                     },
                   ),
@@ -415,7 +415,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'CCMANDIRI',
-                            widget.compdescription = 'Credit Card MANDIRI','CC');
+                            widget.compdescription = 'Credit Card MANDIRI','Credit Card');
                       }
                     },
                   ),
@@ -483,7 +483,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'CCPERMATAVA',
-                            widget.compdescription = 'Credit Card PERMATA','CC');
+                            widget.compdescription = 'Credit Card PERMATA','Credit Card');
                       }
                     },
                   ),
@@ -550,7 +550,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                         });
                       } else {
                         widget.checkselected(widget.compcode = 'CCOTHERS',
-                            widget.compdescription = 'Credit Card OTHERS','CC');
+                            widget.compdescription = 'Credit Card OTHERS','Credit Card');
                       }
                     },
                   ),

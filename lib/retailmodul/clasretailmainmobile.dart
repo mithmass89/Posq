@@ -496,7 +496,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     onChanged: (value) {
                                       setState(() {});
                                     },
-                                    typekeyboard: TextInputType.number,
+                                    typekeyboard: TextInputType.text,
                                   )),
                               IconButton(
                                 icon: Icon(Icons.qr_code_scanner_outlined),

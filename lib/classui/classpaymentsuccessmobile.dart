@@ -75,6 +75,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   bool loading = false;
+   bool emailValid=false;
 
   @override
   void initState() {
@@ -127,12 +128,12 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
         Outlet(outletcd: widget.outletcd.toString(), trnonext: trno! + 1));
   }
 
-  Color _getColorByEventtext(String event) {
-    if (statustransaction == "settlement") return Colors.green;
-    if (statustransaction == "pending") return Colors.red;
+  // Color _getColorByEventtext(String event) {
+  //   if (statustransaction == "settlement") return Colors.green;
+  //   if (statustransaction == "pending") return Colors.red;
 
-    return Colors.black;
-  }
+  //   return Colors.black;
+  // }
 
   getTrno() async {
     handler = DatabaseHandler();
@@ -278,7 +279,7 @@ ${payment.reduce((value, element) => value + element)}
                           label: 'Whatsapp',
                           controller: _telp,
                           onChanged: (String value) {},
-                          typekeyboard: TextInputType.text,
+                          typekeyboard: TextInputType.phone,
                         ),
                         TextFieldMobile2(
                           suffixIcon: IconButton(
@@ -288,41 +289,60 @@ ${payment.reduce((value, element) => value + element)}
                             iconSize: 20,
                             color: Colors.blue,
                             splashColor: Colors.purple,
-                            onPressed: () async {
-                              setState(() {
-                                loading = true;
-                              });
-                              await ClassApi.sendMail(
-                                      paymentemail,
-                                      itememail,
-                                      formattedDate,
-                                      widget.outletname!,
-                                      widget.trno,
-                                      totalcharge,
-                                      _email.text)
-                                  .then((value) {
-                                if (value['hasil'] == 'success') {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  Toast.show("Failed send email",
-                                      duration: Toast.lengthLong,
-                                      gravity: Toast.center);
-                                }
-                                print(value['hasil']);
-                                Toast.show("${value['hasil']} sending email",
-                                    duration: Toast.lengthLong,
-                                    gravity: Toast.center);
-                              });
-                            },
+                            onPressed: emailValid == true
+                                ? () async {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    await ClassApi.sendMail(
+                                            paymentemail,
+                                            itememail,
+                                            formattedDate,
+                                            widget.outletname!,
+                                            widget.trno,
+                                            totalcharge,
+                                            _email.text)
+                                        .then((value) {
+                                      if (value['hasil'] == 'success') {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                        Toast.show("Failed send email",
+                                            duration: Toast.lengthLong,
+                                            gravity: Toast.center);
+                                      }
+                                      print(value['hasil']);
+                                      Toast.show(
+                                          "${value['hasil']} sending email",
+                                          duration: Toast.lengthLong,
+                                          gravity: Toast.center);
+                                    });
+                                  }
+                                : null,
                           ),
                           label: 'E-mail',
                           controller: _email,
-                          onChanged: (String value) {},
+                          onChanged: (String value) {
+                            emailValid = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(_email.text);
+                            print(emailValid);
+                          },
+                          validator: (value) {
+                            emailValid = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(_email.text);
+                            print(emailValid);
+                            if (emailValid) {
+                              return 'valid';
+                            } else {
+                              return 'not valid email';
+                            }
+                          },
                           typekeyboard: TextInputType.text,
                         ),
                         SizedBox(
@@ -371,7 +391,7 @@ ${payment.reduce((value, element) => value + element)}
             child: Opacity(
               opacity: loading ? 1.0 : 0,
               child: Container(
-               
+                color: Colors.grey,
                 height: MediaQuery.of(context).size.height * 0.2,
                 width: MediaQuery.of(context).size.width * 0.3,
                 child: Column(
