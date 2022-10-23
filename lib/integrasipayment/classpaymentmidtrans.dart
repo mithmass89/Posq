@@ -50,8 +50,7 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
         title: Text('Midtrans'),
       ),
       body: Stack(
-        overflow: Overflow.visible,
-        children: [
+        clipBehavior: Clip.none, children: [
           Column(
             children: [
               SizedBox(

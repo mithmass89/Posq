@@ -442,8 +442,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                   });
             },
             child: Stack(
-              overflow: Overflow.visible,
-              children: [
+              clipBehavior: Clip.none, children: [
                 SlidingUpPanel(
                     onPanelSlide: (value) {
                       if (value == 0.0) {

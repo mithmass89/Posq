@@ -152,9 +152,10 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                   handler.queryCheckItem().then((value) {
                     maxid = value.toString();
                     widget.productcd.text =
-                        '${widget.selectedctg}${itemdesc!.substring(0, 2)}$maxid';
+                        '${itemdesc!.substring(0, 5)}$maxid';
                   });
                 });
+                print(widget.productcd.text);
               },
             ),
           ),

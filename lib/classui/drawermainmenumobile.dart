@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:posq/setting/classpromomobile.dart';
+import 'package:posq/syncdatabase/syncdb.dart';
 
 class DrawerWidgetMain extends StatelessWidget {
+ 
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -45,9 +47,17 @@ class DrawerWidgetMain extends StatelessWidget {
                 )),
           ),
           _drawerItem(
-              icon: Icons.devices_other,
-              text: 'Others',
-              onTap: () => print('Tap Family menu')),
+              icon: Icons.sync,
+              text: 'Sync Database',
+              onTap: () {
+                 Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SyncDatabaseClass(
+            
+                      )),
+                );
+              }),
         ],
       ),
     );

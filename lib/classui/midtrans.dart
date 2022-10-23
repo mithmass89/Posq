@@ -29,6 +29,7 @@ class PaymentGate {
   }
 
   static Future<dynamic> goPayQris(
+      // pembayaran GOPAY / QRIS
       String method,
       String guestname,
       String email,
@@ -36,18 +37,29 @@ class PaymentGate {
       String trno,
       String totalamount,
       List<Midtransitem> data) async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$serverkeymidtrans'));
+    String basicAuth = 'Basic ' +
+        base64Encode(utf8.encode(
+            '$serverkeymidtrans')); // server key uniqe perclient dari , di berikan ketika client daftar di midtrans
     var body = {
-      "payment_type": "gopay",
-      "transaction_details": {"order_id": trno, "gross_amount": totalamount},
+      "payment_type":
+          "gopay", // wajib di set gopay , tapi nantinya bisa di pakai di semua e-wallet dengan starndart QRIS
+      "transaction_details": {
+        "order_id": trno,
+        "gross_amount": totalamount
+      }, //trno bisa menyesuaikan dengan transaksi punya kita , dan total amount harus sesuai dengan total amount di list item
       "item_details": data,
+
+      /// tipe data list //
       "customer_details": {
         "first_name": guestname,
         "last_name": "",
-        "email": email,
+        "email": email, //bill akan di kirim email
         "phone": phone
       },
-      "gopay": {"enable_callback": false, "callback_url": "someapps://callback"}
+      "gopay": {
+        "enable_callback": false,
+        "callback_url": "someapps://callback"
+      } // jika memakai webhoook eneable callback yes
     };
 
     final url = Uri.parse(
@@ -57,7 +69,7 @@ class PaymentGate {
         .post(url,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
-              'authorization': basicAuth
+              'authorization': basicAuth // menggunakan auth tipe basic//
             },
             body: json.encode(body))
         .timeout(
@@ -65,12 +77,10 @@ class PaymentGate {
         );
 
     if (response.statusCode == 200) {
-      final rooms = json.decode(response.body);
-      print(rooms);
-      return rooms;
+      final _responsemidtrans = json.decode(response.body);
+
+      return _responsemidtrans;
     } else {
-            print(response.statusCode);
-                     print(response.body);
       return response;
     }
   }
@@ -179,7 +189,7 @@ class PaymentGate {
   }
 
   static Future<dynamic> getvaPermata(String guestname, String email,
-      String phone, String trno, List<Midtransitem> data,String amount) async {
+      String phone, String trno, List<Midtransitem> data, String amount) async {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
     var body = jsonEncode({
       "payment_type": "bank_transfer",

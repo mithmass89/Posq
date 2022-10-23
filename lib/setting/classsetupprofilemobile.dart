@@ -8,8 +8,10 @@ import 'package:posq/classui/cloudapi.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'dart:math';
+import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 ClassCloudApi? apicloud;
 
@@ -33,12 +35,16 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
   String? detail;
   num? kodepos;
   String? maxid;
+  bool connect = false;
+  bool _isloading = false;
 
   @override
   void initState() {
     super.initState();
+    ToastContext().init(context);
     handler = DatabaseHandler();
     apicloud = ClassCloudApi();
+    checkInternet();
   }
 
   Future<int> addOutlet() async {
@@ -52,11 +58,11 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
       trnopynext: 1,
     );
     List<Outlet> listOfUsers = [firstUser];
-    await addGntrantp();
+
     return await handler.insertOutlet(listOfUsers);
   }
 
-  Future<int> addGntrantp() async {
+  Future<int> addGntrantp(String dbname) async {
     Gntrantp pembelian = Gntrantp(
       trtp: '7010',
       ProgNm: 'Pembelian',
@@ -107,7 +113,62 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
       returnpembelian,
       returnrequest
     ];
+
     return await handler.insertGntrantp(listOfUsers);
+  }
+
+  Future<dynamic> addTranstpCloud(dbname) async {
+    Gntrantp pembelian = Gntrantp(
+      trtp: '7010',
+      ProgNm: 'Pembelian',
+      reftp: 1,
+      refprefix: 'RR-',
+      trnonext: 1,
+    );
+    Gntrantp storerequest = Gntrantp(
+      trtp: '7020',
+      ProgNm: 'Store Request',
+      reftp: 1,
+      refprefix: 'SR-',
+      trnonext: 1,
+    );
+    Gntrantp stokopname = Gntrantp(
+      trtp: '7050',
+      ProgNm: 'Stock opname',
+      reftp: 1,
+      refprefix: 'ST-',
+      trnonext: 1,
+    );
+    Gntrantp transferinvent = Gntrantp(
+      trtp: '7030',
+      ProgNm: 'Transfer Barang',
+      reftp: 1,
+      refprefix: 'TRF-',
+      trnonext: 1,
+    );
+    Gntrantp returnpembelian = Gntrantp(
+      trtp: '7081',
+      ProgNm: 'Return Pembelian',
+      reftp: 1,
+      refprefix: 'ReturnRR-',
+      trnonext: 1,
+    );
+    Gntrantp returnrequest = Gntrantp(
+      trtp: '7082',
+      ProgNm: 'Return Store',
+      reftp: 1,
+      refprefix: 'ReturnSR-',
+      trnonext: 1,
+    );
+    List<Gntrantp> listOfUsers = [
+      pembelian,
+      storerequest,
+      stokopname,
+      transferinvent,
+      returnpembelian,
+      returnrequest
+    ];
+    return await ClassCloudApi.insertTransTP(dbname, listOfUsers);
   }
 
   getSf(String dbname) async {
@@ -116,7 +177,26 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
     await savecostmrs.setString('database', dbname);
   }
 
-  initDbCloud(String dbname) async {
+  Future<dynamic> checkInternet() async {
+    try {
+      final result = await InternetAddress.lookup('$host');
+      print("ini result : ${result.first}");
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+
+        setState(() {
+          connect = true;
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        connect = false;
+      });
+      print('not connected');
+    }
+  }
+
+  Future<dynamic> initDbCloud(String dbname) async {
     await ClassCloudApi.createDB(dbname);
     await ClassCloudApi.CreateOutlet(dbname);
     await ClassCloudApi.createPsspsitem(dbname);
@@ -140,161 +220,215 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
           title: const Text('Buat Usahamu',
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-              width: MediaQuery.of(context).size.width * 0.9,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Column(
+      body: Stack(
+        clipBehavior: Clip.none, children: [
+          _isloading == false
+              ? SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                child: const Text('Informasi Usaha',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              // TextFieldMobile(
+                              //   typekeyboard: TextInputType.text,
+                              //   onChanged: (value) {
+                              //     setState(() {
+                              //       namaoutlet = value;
+                              //       print(namaoutlet);
+                              //     });
+                              //   },
+                              //   controller: outletcd,
+                              //   label: 'Outlet Code',
+                              // ),
+                              TextFieldMobile2(
+                                typekeyboard: TextInputType.text,
+                                onChanged: (value) {
+                                  setState(() {
+                                    namaoutlet = value;
+                                    var rng = Random();
+                                    for (var i = 0; i < 10; i++) {
+                                      print(rng.nextInt(1000));
+                                    }
+                                    setState(() {
+                                      outletcd.text =
+                                          '${namaoutlet!.substring(0, 5)}'
+                                                  '${rng.nextInt(10000)}'
+                                              .replaceAll(' ', '');
+                                    });
+                                    print(outletcd.text);
+                                  });
+                                },
+                                controller: controllerNameOutlet,
+                                label: 'Nama Outlet',
+                              ),
+                              TextFieldMobile2(
+                                typekeyboard: TextInputType.number,
+                                onChanged: (value) {
+                                  setState(() {
+                                    telp = num.parse(value);
+                                  });
+                                  print(telp);
+                                },
+                                controller: controllerTelp,
+                                label: 'Nomer Telpon',
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                child: const Text(
+                                  'Alamat Usaha',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              TextFieldMobile2(
+                                typekeyboard: TextInputType.text,
+                                onChanged: (value) {
+                                  setState(() {
+                                    detail = value;
+                                  });
+                                },
+                                controller: controllerDetail,
+                                label: 'Detail Alamat',
+                              ),
+                              TextFieldMobile2(
+                                typekeyboard: TextInputType.text,
+                                onChanged: (value) {
+                                  setState(() {
+                                    kodepos = num.parse(value);
+                                  });
+                                  print(kodepos);
+                                },
+                                controller: controllerKodepos,
+                                label: 'Kode Pos',
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              ButtonNoIcon(
+                                color: Colors.blue,
+                                textcolor: Colors.white,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                onpressed: () async {
+                                  setState(() {
+                                    databasename = outletcd.text;
+                                  });
+                                  await getSf(outletcd.text);
+                                  handler = DatabaseHandler();
+                                  handler
+                                      .initializeDB(databasename)
+                                      .whenComplete(() async {
+                                    await addGntrantp(databasename);
+                                    await addOutlet().whenComplete(() async {
+                                      print(
+                                          handler.retrieveUsers().then((value) {
+                                        print('${value.map((e) => e)}');
+                                      }));
+                                    });
+                                    //Insert Data outlet to Cloud//
+                                    await checkInternet()
+                                        .whenComplete(() async {
+                                      if (connect == true) {
+                                        //loading the data insert to server///
+                                        setState(() {
+                                          _isloading = true;
+                                        });
+                                        await initDbCloud(databasename)
+                                            .whenComplete(() async {
+                                          await ClassCloudApi.insertOutletCLD(
+                                              databasename,
+                                              Outlet(
+                                                outletname:
+                                                    namaoutlet.toString(),
+                                                telp:
+                                                    num.parse(telp.toString()),
+                                                kodepos: kodepos.toString(),
+                                                alamat: detail.toString(),
+                                                outletcd: outletcd.text,
+                                                trnonext: 1,
+                                                trnopynext: 1,
+                                              ));
+                                          await addTranstpCloud(databasename)
+                                              .whenComplete(() {
+                                            //loading finish semua data///
+                                            setState(() {
+                                              _isloading = false;
+                                            });
+                                          });
+                                        });
+                                      } else {
+                                        Toast.show("Not Connect to server",
+                                            duration: Toast.lengthLong,
+                                            gravity: Toast.bottom);
+                                      }
+                                    });
+
+                                    setState(() {});
+                                  }).then((_) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AppsMobile(
+                                                profileusaha: Outlet(
+                                                  outletname:
+                                                      namaoutlet.toString(),
+                                                  telp: num.parse(
+                                                      telp.toString()),
+                                                  kodepos: kodepos.toString(),
+                                                  alamat: detail.toString(),
+                                                  outletcd: outletcd.text,
+                                                  trnonext: 1,
+                                                  trnopynext: 1,
+                                                ),
+                                              )),
+                                    );
+                                  });
+
+                                  print('sudah terlaksana');
+                                },
+                                name: 'Save',
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      child: const Text('Informasi Usaha',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    // TextFieldMobile(
-                    //   typekeyboard: TextInputType.text,
-                    //   onChanged: (value) {
-                    //     setState(() {
-                    //       namaoutlet = value;
-                    //       print(namaoutlet);
-                    //     });
-                    //   },
-                    //   controller: outletcd,
-                    //   label: 'Outlet Code',
-                    // ),
-                    TextFieldMobile2(
-                      typekeyboard: TextInputType.text,
-                      onChanged: (value) {
-                        setState(() {
-                          namaoutlet = value;
-                          var rng = Random();
-                          for (var i = 0; i < 10; i++) {
-                            print(rng.nextInt(100));
-                          }
-                          setState(() {
-                            outletcd.text = '${namaoutlet!.substring(0, 5)}'
-                                    '${rng.nextInt(100)}'
-                                .replaceAll(' ', '');
-                          });
-                          print(outletcd.text);
-                        });
-                      },
-                      controller: controllerNameOutlet,
-                      label: 'Nama Outlet',
-                    ),
-                    TextFieldMobile2(
-                      typekeyboard: TextInputType.number,
-                      onChanged: (value) {
-                        setState(() {
-                          telp = num.parse(value);
-                        });
-                        print(telp);
-                      },
-                      controller: controllerTelp,
-                      label: 'Nomer Telpon',
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      child: const Text(
-                        'Alamat Usaha',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                    Center(
+                      child: Opacity(
+                        opacity: _isloading ? 1.0 : 0,
+                        child: CircularProgressIndicator(),
                       ),
                     ),
-                    TextFieldMobile2(
-                      typekeyboard: TextInputType.text,
-                      onChanged: (value) {
-                        setState(() {
-                          detail = value;
-                        });
-                      },
-                      controller: controllerDetail,
-                      label: 'Detail Alamat',
-                    ),
-                    TextFieldMobile2(
-                      typekeyboard: TextInputType.text,
-                      onChanged: (value) {
-                        setState(() {
-                          kodepos = num.parse(value);
-                        });
-                        print(kodepos);
-                      },
-                      controller: controllerKodepos,
-                      label: 'Kode Pos',
+                       Center(
+                      child: Opacity(
+                        opacity: _isloading ? 1.0 : 0,
+                        child: Text('Loading Data')
+                      ),
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    ButtonNoIcon(
-                      color: Colors.blue,
-                      textcolor: Colors.white,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      onpressed: () async {
-                        setState(() {
-                          databasename = outletcd.text;
-                        });
-                        await getSf(outletcd.text);
-                        handler = DatabaseHandler();
-                        handler
-                            .initializeDB(databasename)
-                            .whenComplete(() async {
-                          await initDbCloud(databasename);
-                          await addOutlet().whenComplete(() async {
-                            print(handler.retrieveUsers().then((value) {
-                              print('${value.map((e) => e)}');
-                            }));
-                          });
-                          //Insert Data outlet to Cloud//
-                          await ClassCloudApi.insertOutletCLD(
-                              databasename,
-                              Outlet(
-                                outletname: namaoutlet.toString(),
-                                telp: num.parse(telp.toString()),
-                                kodepos: kodepos.toString(),
-                                alamat: detail.toString(),
-                                outletcd: outletcd.text,
-                                trnonext: 1,
-                                trnopynext: 1,
-                              ));
-                          setState(() {});
-                        }).then((_) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AppsMobile(
-                                      profileusaha: Outlet(
-                                        outletname: namaoutlet.toString(),
-                                        telp: num.parse(telp.toString()),
-                                        kodepos: kodepos.toString(),
-                                        alamat: detail.toString(),
-                                        outletcd: outletcd.text,
-                                        trnonext: 1,
-                                        trnopynext: 1,
-                                      ),
-                                    )),
-                          );
-                        });
-
-                        print('sudah terlaksana');
-                      },
-                      name: 'Save',
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

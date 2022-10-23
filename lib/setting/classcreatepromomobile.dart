@@ -56,8 +56,7 @@ class _ClassCreatePromoMobileState extends State<ClassCreatePromoMobile> {
         title: Text('Buat diskon baru'),
       ),
       body: Stack(
-        overflow: Overflow.visible,
-        children: [
+        clipBehavior: Clip.none, children: [
           Container(
             padding: EdgeInsets.all(10),
             child: Column(

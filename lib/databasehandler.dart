@@ -148,7 +148,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var user in transtype) {
-      result = await db.insert('gntrantp', user.toMap());
+      result = await db.insert('gntrantp', user.toJson());
       print(user.ProgNm);
     }
     return result;

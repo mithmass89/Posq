@@ -12,6 +12,7 @@ import 'package:posq/image.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
+import 'package:toast/toast.dart';
 
 enum ImageSourceType { gallery, camera }
 ClassCloudApi? apicloud;
@@ -62,6 +63,7 @@ class _CreateproductState extends State<Createproduct>
   String? pathimage;
   String? query = '';
   num? qty = 0;
+  bool connect = false;
 
   set string(String value) => setState(() => pathimage = value);
 
@@ -73,6 +75,7 @@ class _CreateproductState extends State<Createproduct>
     adjusmentstock.addListener(() {});
     trackstock = 0;
     apicloud = ClassCloudApi();
+     checkInternet();
   }
 
   updateStockTrack(value) {
@@ -118,6 +121,23 @@ class _CreateproductState extends State<Createproduct>
     );
     List<Item> listctg = [ctg];
     return await handler.insertItem(listctg);
+  }
+
+  Future<dynamic> checkInternet() async {
+    try {
+      final result = await InternetAddress.lookup('$host');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        setState(() {
+          connect = true;
+        });
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      setState(() {
+        connect = false;
+      });
+    }
   }
 
   @override
@@ -207,61 +227,63 @@ class _CreateproductState extends State<Createproduct>
                                   100
                               : 0;
                         });
-                        print(pctnett);
-                        handler = DatabaseHandler();
-                        handler
-                            .initializeDB(databasename)
-                            .whenComplete(() async {
-                          await addItem().whenComplete(() async {
-                            print(handler.retrieveItems(query!).then((value) {
-                              print('${value.map((e) => e.itemdesc)}');
-                            }));
-                          });
-                          await ClassCloudApi.insertProduct(
-                              databasename,
-                              Item(
-                                outletcd: widget.pscd.toString(),
-                                itemcd: productcd.text,
-                                itemdesc: productname.text,
-                                costcoa: 'COST',
-                                revenuecoa: 'REVENUE',
-                                taxcoa: 'TAX',
-                                svchgcoa: 'SERVICE',
-                                taxpct: pcttax.text.isEmpty
-                                    ? 0
-                                    : num.parse(pcttax.text),
-                                svchgpct: pctservice.text.isEmpty
-                                    ? 0
-                                    : num.parse(pctservice.text),
-                                costamt: amountcost.text.isEmpty
-                                    ? 0
-                                    : num.parse(amountcost.text),
-                                slsamt: amountsales.text.isEmpty
-                                    ? 0
-                                    : num.parse(amountsales.text),
-                                slsnett: pctnett != 0
-                                    ? num.parse(amountsales.text) * pctnett! +
-                                        num.parse(amountsales.text)
-                                    : amountsales.text.isEmpty
-                                        ? 0
-                                        : num.parse(amountsales.text),
-                                ctg: selectedctg ?? '',
-                                slsfl: 1,
-                                stock: num.parse(adjusmentstock.text.isEmpty
-                                    ? '0'
-                                    : adjusmentstock.text),
-                                pathimage: pathimage ?? 'Empty',
-                                description: description.text.isEmpty
-                                    ? 'Empty'
-                                    : description.text,
-                                trackstock: trackstock,
-                                sku: sku.text,
-                                barcode: barcode.text,
-                              ));
-                          setState(() {});
-                        }).then((_) {
-                          Navigator.of(context).pop(context);
+                        await checkInternet().whenComplete(() async {
+                          if (connect == true) {
+                            await apicloud!
+                                .insertProduct(
+                                    databasename,
+                                    Item(
+                                      outletcd: widget.pscd.toString(),
+                                      itemcd: productcd.text,
+                                      itemdesc: productname.text,
+                                      costcoa: 'COST',
+                                      revenuecoa: 'REVENUE',
+                                      taxcoa: 'TAX',
+                                      svchgcoa: 'SERVICE',
+                                      taxpct: pcttax.text.isEmpty
+                                          ? 0
+                                          : num.parse(pcttax.text),
+                                      svchgpct: pctservice.text.isEmpty
+                                          ? 0
+                                          : num.parse(pctservice.text),
+                                      costamt: amountcost.text.isEmpty
+                                          ? 0
+                                          : num.parse(amountcost.text),
+                                      slsamt: amountsales.text.isEmpty
+                                          ? 0
+                                          : num.parse(amountsales.text),
+                                      slsnett: pctnett != 0
+                                          ? num.parse(amountsales.text) *
+                                                  pctnett! +
+                                              num.parse(amountsales.text)
+                                          : amountsales.text.isEmpty
+                                              ? 0
+                                              : num.parse(amountsales.text),
+                                      ctg: selectedctg ?? '',
+                                      slsfl: 1,
+                                      stock: num.parse(
+                                          adjusmentstock.text.isEmpty
+                                              ? '0'
+                                              : adjusmentstock.text),
+                                      pathimage: pathimage ?? 'Empty',
+                                      description: description.text.isEmpty
+                                          ? 'Empty'
+                                          : description.text,
+                                      trackstock: trackstock,
+                                      sku: sku.text,
+                                      barcode: barcode.text,
+                                    ))
+                                .then((value) {
+                              print(value);
+                            });
+                          } else {
+                            Toast.show("Not Connect to server",
+                                duration: Toast.lengthLong,
+                                gravity: Toast.bottom);
+                          }
                         });
+
+                        
                       }
                     : null),
           ),

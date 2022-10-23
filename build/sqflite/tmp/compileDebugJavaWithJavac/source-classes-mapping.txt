@@ -20,10 +20,7 @@ com/tekartik/sqflite/SqflitePlugin.java
  com.tekartik.sqflite.SqflitePlugin$6
  com.tekartik.sqflite.SqflitePlugin$7
  com.tekartik.sqflite.SqflitePlugin$8
- com.tekartik.sqflite.SqflitePlugin$BgResult
- com.tekartik.sqflite.SqflitePlugin$BgResult$1
- com.tekartik.sqflite.SqflitePlugin$BgResult$2
- com.tekartik.sqflite.SqflitePlugin$BgResult$3
+ com.tekartik.sqflite.SqflitePlugin$9
 com/tekartik/sqflite/operation/OperationResult.java
  com.tekartik.sqflite.operation.OperationResult
 com/tekartik/sqflite/LogLevel.java

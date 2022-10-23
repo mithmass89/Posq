@@ -21,23 +21,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\9d2ac2ae8a44d697ec01e22fb5b300b2\\core-1.3.1\\res\\values-my\\values-my.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "106",
-                        "startColumns": "4",
-                        "startOffsets": "10357",
-                        "endColumns": "100",
-                        "endOffsets": "10453"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\\jetified-play-services-basement-17.4.0\\res\\values-my\\values.xml",
                     "from": {
                         "startLines": "4",
@@ -71,6 +54,23 @@
                         "endLines": "5,33,34,35,36,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104",
                         "endColumns": "12,75,105,128,84,64,89,74,58,90,64,58,70,61,56,118,57,60,54,72,131,90,88,110,77,76,91,66,65,71,81,81,74,73,71,78,96,80,85,91,73,78,85,53,67,82,80,61,63,62,111,102,103,104,81",
                         "endOffsets": "285,3128,3234,3363,3448,6356,6446,6521,6580,6671,6736,6795,6866,6928,6985,7104,7162,7223,7278,7351,7483,7574,7663,7774,7852,7929,8021,8088,8154,8226,8308,8390,8465,8539,8611,8690,8787,8868,8954,9046,9120,9199,9285,9339,9407,9490,9571,9633,9697,9760,9872,9975,10079,10184,10266"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\06e3ec768726acdebbd7ae27c4da5266\\core-1.8.0\\res\\values-my\\values-my.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "106",
+                        "startColumns": "4",
+                        "startOffsets": "10357",
+                        "endColumns": "100",
+                        "endOffsets": "10453"
                     }
                 },
                 {

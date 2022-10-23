@@ -871,7 +871,12 @@ class Gntrantp {
         refprefix = res["refprefix"],
         trnonext = res["trnonext"];
 
-  Map<String, Object?> toMap() {
+  @override
+  String toString() {
+    return '{"trtp": $trtp,"ProgNm": $ProgNm,"reftp": $reftp,"refprefix": $refprefix,"trnonext": $trnonext}';
+  }
+/// toJson original to object
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'trtp': trtp,

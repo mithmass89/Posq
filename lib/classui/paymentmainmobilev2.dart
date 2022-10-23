@@ -220,8 +220,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
             },
             controller: _pc,
             body: Stack(
-              overflow: Overflow.visible,
-              fit: StackFit.loose,
+              clipBehavior: Clip.none, fit: StackFit.loose,
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height * 0.16,

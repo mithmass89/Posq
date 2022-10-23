@@ -83,7 +83,9 @@ int attr actionOverflowMenuStyle 0x0
 int attr actionProviderClass 0x0
 int attr actionTextColorAlpha 0x0
 int attr actionViewClass 0x0
+int attr activityAction 0x0
 int attr activityChooserViewStyle 0x0
+int attr activityName 0x0
 int attr alertDialogButtonGroupStyle 0x0
 int attr alertDialogCenterButtons 0x0
 int attr alertDialogStyle 0x0
@@ -92,6 +94,7 @@ int attr allowStacking 0x0
 int attr alpha 0x0
 int attr alphabeticModifiers 0x0
 int attr altSrc 0x0
+int attr alwaysExpand 0x0
 int attr animate_relativeTo 0x0
 int attr animationMode 0x0
 int attr appBarLayoutStyle 0x0
@@ -210,6 +213,7 @@ int attr chipSurfaceColor 0x0
 int attr circleCrop 0x0
 int attr circleRadius 0x0
 int attr circularProgressIndicatorStyle 0x0
+int attr clearTop 0x0
 int attr clickAction 0x0
 int attr clockFaceBackgroundColor 0x0
 int attr clockHandColor 0x0
@@ -387,6 +391,8 @@ int attr fastScrollHorizontalThumbDrawable 0x0
 int attr fastScrollHorizontalTrackDrawable 0x0
 int attr fastScrollVerticalThumbDrawable 0x0
 int attr fastScrollVerticalTrackDrawable 0x0
+int attr finishPrimaryWithSecondary 0x0
+int attr finishSecondaryWithPrimary 0x0
 int attr firstBaselineToTopHeight 0x0
 int attr floatingActionButtonStyle 0x0
 int attr flow_firstHorizontalBias 0x0
@@ -416,6 +422,7 @@ int attr fontProviderFetchStrategy 0x0
 int attr fontProviderFetchTimeout 0x0
 int attr fontProviderPackage 0x0
 int attr fontProviderQuery 0x0
+int attr fontProviderSystemFontFamily 0x0
 int attr fontStyle 0x0
 int attr fontVariationSettings 0x0
 int attr fontWeight 0x0
@@ -652,6 +659,7 @@ int attr navigationIconTint 0x0
 int attr navigationMode 0x0
 int attr navigationViewStyle 0x0
 int attr nestedScrollFlags 0x0
+int attr nestedScrollViewStyle 0x0
 int attr nestedScrollable 0x0
 int attr number 0x0
 int attr numericModifiers 0x0
@@ -686,6 +694,7 @@ int attr percentX 0x0
 int attr percentY 0x0
 int attr perpendicularPath_percent 0x0
 int attr pivotAnchor 0x0
+int attr placeholderActivityName 0x0
 int attr placeholderText 0x0
 int attr placeholderTextAppearance 0x0
 int attr placeholderTextColor 0x0
@@ -699,10 +708,12 @@ int attr prefixTextAppearance 0x0
 int attr prefixTextColor 0x0
 int attr preserveIconSpacing 0x0
 int attr pressedTranslationZ 0x0
+int attr primaryActivityName 0x0
 int attr progressBarPadding 0x0
 int attr progressBarStyle 0x0
 int attr queryBackground 0x0
 int attr queryHint 0x0
+int attr queryPatterns 0x0
 int attr radioButtonStyle 0x0
 int attr rangeFillColor 0x0
 int attr ratingBarStyle 0x0
@@ -725,6 +736,8 @@ int attr scrimVisibleHeightTrigger 0x0
 int attr searchHintIcon 0x0
 int attr searchIcon 0x0
 int attr searchViewStyle 0x0
+int attr secondaryActivityAction 0x0
+int attr secondaryActivityName 0x0
 int attr seekBarStyle 0x0
 int attr selectableItemBackground 0x0
 int attr selectableItemBackgroundBorderless 0x0
@@ -735,6 +748,7 @@ int attr shapeAppearanceLargeComponent 0x0
 int attr shapeAppearanceMediumComponent 0x0
 int attr shapeAppearanceOverlay 0x0
 int attr shapeAppearanceSmallComponent 0x0
+int attr shortcutMatchRequired 0x0
 int attr showAnimationBehavior 0x0
 int attr showAsAction 0x0
 int attr showDelay 0x0
@@ -756,6 +770,10 @@ int attr spanCount 0x0
 int attr spinBars 0x0
 int attr spinnerDropDownItemStyle 0x0
 int attr spinnerStyle 0x0
+int attr splitLayoutDirection 0x0
+int attr splitMinSmallestWidth 0x0
+int attr splitMinWidth 0x0
+int attr splitRatio 0x0
 int attr splitTrack 0x0
 int attr srcCompat 0x0
 int attr stackFromEnd 0x0
@@ -1788,6 +1806,7 @@ int id adjust_height 0x0
 int id adjust_width 0x0
 int id alertTitle 0x0
 int id aligned 0x0
+int id androidx_window_activity_scope 0x0
 int id animateToEnd 0x0
 int id animateToStart 0x0
 int id asConfigured 0x0
@@ -1904,6 +1923,8 @@ int id line3 0x0
 int id linear 0x0
 int id listMode 0x0
 int id list_item 0x0
+int id locale 0x0
+int id ltr 0x0
 int id masked 0x0
 int id material_clock_display 0x0
 int id material_clock_face 0x0
@@ -1994,6 +2015,7 @@ int id right_icon 0x0
 int id right_side 0x0
 int id rounded 0x0
 int id row_index_key 0x0
+int id rtl 0x0
 int id save_non_transition_alpha 0x0
 int id save_overlay_view 0x0
 int id sawtooth 0x0
@@ -2048,10 +2070,15 @@ int id tag_accessibility_actions 0x0
 int id tag_accessibility_clickable_spans 0x0
 int id tag_accessibility_heading 0x0
 int id tag_accessibility_pane_title 0x0
+int id tag_on_apply_window_listener 0x0
+int id tag_on_receive_content_listener 0x0
+int id tag_on_receive_content_mime_types 0x0
 int id tag_screen_reader_focusable 0x0
+int id tag_state_description 0x0
 int id tag_transition_group 0x0
 int id tag_unhandled_key_event_manager 0x0
 int id tag_unhandled_key_listeners 0x0
+int id tag_window_insets_animation_callback 0x0
 int id test_checkbox_android_button_tint 0x0
 int id test_checkbox_app_button_tint 0x0
 int id test_radiobutton_android_button_tint 0x0
@@ -3142,6 +3169,11 @@ int styleable ActionMode_titleTextStyle 5
 int[] styleable ActivityChooserView { 0x0, 0x0 }
 int styleable ActivityChooserView_expandActivityOverflowButtonDrawable 0
 int styleable ActivityChooserView_initialActivityCount 1
+int[] styleable ActivityFilter { 0x0, 0x0 }
+int styleable ActivityFilter_activityAction 0
+int styleable ActivityFilter_activityName 1
+int[] styleable ActivityRule { 0x0 }
+int styleable ActivityRule_alwaysExpand 0
 int[] styleable AlertDialog { 0x10100f2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable AlertDialog_android_layout 0
 int styleable AlertDialog_buttonIconDimen 1
@@ -3408,6 +3440,9 @@ int styleable BottomSheetBehavior_Layout_shapeAppearance 11
 int styleable BottomSheetBehavior_Layout_shapeAppearanceOverlay 12
 int[] styleable ButtonBarLayout { 0x0 }
 int styleable ButtonBarLayout_allowStacking 0
+int[] styleable Capability { 0x0, 0x0 }
+int styleable Capability_queryPatterns 0
+int styleable Capability_shortcutMatchRequired 1
 int[] styleable CardView { 0x1010140, 0x101013f, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable CardView_android_minHeight 0
 int styleable CardView_android_minWidth 1
@@ -3893,13 +3928,14 @@ int styleable FloatingActionButton_Behavior_Layout_behavior_autoHide 0
 int[] styleable FlowLayout { 0x0, 0x0 }
 int styleable FlowLayout_itemSpacing 0
 int styleable FlowLayout_lineSpacing 1
-int[] styleable FontFamily { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int[] styleable FontFamily { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable FontFamily_fontProviderAuthority 0
 int styleable FontFamily_fontProviderCerts 1
 int styleable FontFamily_fontProviderFetchStrategy 2
 int styleable FontFamily_fontProviderFetchTimeout 3
 int styleable FontFamily_fontProviderPackage 4
 int styleable FontFamily_fontProviderQuery 5
+int styleable FontFamily_fontProviderSystemFontFamily 6
 int[] styleable FontFamilyFont { 0x1010532, 0x101053f, 0x1010570, 0x1010533, 0x101056f, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable FontFamilyFont_android_font 0
 int styleable FontFamilyFont_android_fontStyle 1
@@ -4455,6 +4491,24 @@ int styleable Spinner_android_entries 1
 int styleable Spinner_android_popupBackground 2
 int styleable Spinner_android_prompt 3
 int styleable Spinner_popupTheme 4
+int[] styleable SplitPairFilter { 0x0, 0x0, 0x0 }
+int styleable SplitPairFilter_primaryActivityName 0
+int styleable SplitPairFilter_secondaryActivityAction 1
+int styleable SplitPairFilter_secondaryActivityName 2
+int[] styleable SplitPairRule { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable SplitPairRule_clearTop 0
+int styleable SplitPairRule_finishPrimaryWithSecondary 1
+int styleable SplitPairRule_finishSecondaryWithPrimary 2
+int styleable SplitPairRule_splitLayoutDirection 3
+int styleable SplitPairRule_splitMinSmallestWidth 4
+int styleable SplitPairRule_splitMinWidth 5
+int styleable SplitPairRule_splitRatio 6
+int[] styleable SplitPlaceholderRule { 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable SplitPlaceholderRule_placeholderActivityName 0
+int styleable SplitPlaceholderRule_splitLayoutDirection 1
+int styleable SplitPlaceholderRule_splitMinSmallestWidth 2
+int styleable SplitPlaceholderRule_splitMinWidth 3
+int styleable SplitPlaceholderRule_splitRatio 4
 int[] styleable State { 0x10100d0, 0x0 }
 int styleable State_android_id 0
 int styleable State_constraints 1

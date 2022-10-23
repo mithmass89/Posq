@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 
-var host = '192.168.1.206';
+var host = '192.168.42.83';
 var api = 'http://$host:8003';
 var serverkey = '';
 String username = 'massmith';
@@ -358,6 +358,7 @@ class ClassCloudApi {
         "trnopynext": "${outlet.trnopynext}"
       }
     };
+    print(body);
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/addoutlet');
     final response = await http.post(url,
@@ -376,10 +377,35 @@ class ClassCloudApi {
     }
   }
 
-  static Future<dynamic> insertProduct(String dbname, Item item) async {
+  static Future<dynamic> insertTransTP(String dbname, List<Gntrantp> gntrantp) async {
+    var body = {
+      "db": {"user": "root", "password": "p3nd3kar", "database": "$dbname"},
+      "values": gntrantp
+    };
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/addtrtpcd');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      print(status);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<dynamic> insertProduct(String dbname, Item item) async {
     var body = {
       "db": {"user": "root", "password": "p3nd3kar", "database": "$dbname"},
       "values": {
+     
         "outletcd": "${item.outletcd}",
         "itemcd": "${item.itemcd}",
         "itemdesc": "${item.itemdesc}",
@@ -402,6 +428,7 @@ class ClassCloudApi {
         "sku": "${item.sku}",
       }
     };
+    print(body);
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/additem');
     final response = await http.post(url,

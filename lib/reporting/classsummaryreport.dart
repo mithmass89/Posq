@@ -118,8 +118,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
         title: Text('Laporan'),
       ),
       body: Stack(
-        overflow: Overflow.visible,
-        children: [
+        clipBehavior: Clip.none, children: [
           Column(
             children: [
               TextFieldMobileButton(
