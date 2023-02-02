@@ -8,6 +8,7 @@ import 'package:posq/appsmobile.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Mainapps extends StatefulWidget {
   final String? title;
@@ -33,13 +34,12 @@ class _MainappsState extends State<Mainapps> {
   @override
   void initState() {
     super.initState();
+    _getProfile();
     loadKey();
     checkSF().whenComplete(() {
       checkNewApp();
     });
   }
-
-  
 
   loadKey() async {
     final midtranskey = await SharedPreferences.getInstance();
@@ -54,6 +54,23 @@ class _MainappsState extends State<Mainapps> {
     if (dbpref.isNotEmpty) {
       setState(() {
         databasename = dbpref;
+      });
+    }
+  }
+
+  Future<void> _getProfile() async {
+    final response = await Supabase.instance.client
+        .from('outlet')
+        .select()
+        .execute();
+    if (response.status!='') {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(response.status.toString())));
+    }
+    if (response.data != null) {
+      setState(() {
+        // name = response.data!['name'] as String;
+        print(response.data);
       });
     }
   }

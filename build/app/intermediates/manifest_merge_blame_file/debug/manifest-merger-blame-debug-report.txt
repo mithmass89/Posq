@@ -29,7 +29,7 @@
 21    <application
 21-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:3:3-24:17
 22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-22-->[androidx.core:core:1.8.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\06e3ec768726acdebbd7ae27c4da5266\core-1.8.0\AndroidManifest.xml:24:18-86
+22-->[androidx.core:core:1.8.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8e86e615f21ac3758e97e94e18045107\core-1.8.0\AndroidManifest.xml:24:18-86
 23        android:debuggable="true"
 24        android:icon="@mipmap/ic_launcher"
 24-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:3:37-71
@@ -152,33 +152,33 @@
 95        </provider>
 96
 97        <uses-library
-97-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a78fdf90e4c1f8464b19895cfb365f3f\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+97-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
 98            android:name="androidx.window.extensions"
-98-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a78fdf90e4c1f8464b19895cfb365f3f\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+98-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
 99            android:required="false" />
-99-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a78fdf90e4c1f8464b19895cfb365f3f\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+99-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
 100        <uses-library
-100-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a78fdf90e4c1f8464b19895cfb365f3f\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+100-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
 101            android:name="androidx.window.sidecar"
-101-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a78fdf90e4c1f8464b19895cfb365f3f\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+101-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
 102            android:required="false" />
-102-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a78fdf90e4c1f8464b19895cfb365f3f\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+102-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
 103
 104        <activity
-104-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
+104-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
 105            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-105-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
+105-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
 106            android:exported="false"
-106-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
+106-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
 107            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-107-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d5d0c9431bc4846b8dce9485fa3f6c9f\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
+107-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
 108
 109        <meta-data
-109-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:23:9-25:69
+109-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:23:9-25:69
 110            android:name="com.google.android.gms.version"
-110-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:24:13-58
+110-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:24:13-58
 111            android:value="@integer/google_play_services_version" />
-111-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\c1e5cf3b1f723b4a1bb61c60fa9a6fb3\jetified-play-services-basement-17.4.0\AndroidManifest.xml:25:13-66
+111-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:25:13-66
 112    </application>
 113
 114</manifest>

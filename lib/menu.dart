@@ -14,6 +14,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 typedef void StringCallback(Outlet val);
 
@@ -50,14 +51,20 @@ class _MenuMainState extends State<MenuMain> {
   }
 
   getTrno() async {
-    handler = DatabaseHandler();
-    await handler.initializeDB(databasename);
-    await handler.getTrno(widget.pscd).then((value) {
-      setState(() {
-        trno = '${widget.pscd}${value.first.trnonext}';
-      });
-      print('ini trno dari menu ${widget.pscd}${value.first.trnonext}');
-    });
+  
+   final data = await Supabase.instance.client.from('outlet').select();
+    print(data);
+   
+  
+    // handler = DatabaseHandler();
+    // await handler.initializeDB(databasename);
+    // await handler.getTrno(widget.pscd).then((value) {
+    //   setState(() {
+    //     trno = '${widget.pscd}${value.first.trnonext}';
+    //   });
+    //   print('ini trno dari menu ${widget.pscd}${value.first.trnonext}');
+    // });
+    
   }
 
   @override

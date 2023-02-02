@@ -1,1 +1,0 @@
-E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\kotlin\com\example\posq\MainActivity.kt
