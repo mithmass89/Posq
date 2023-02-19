@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
+import 'package:uuid/uuid.dart';
 
 class ClassitemRetailMobile extends StatefulWidget {
   final image;
@@ -37,19 +40,74 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
     ToastContext().init(context);
+    print(widget.trno);
   }
 
-  Future<int> insertIafjrndt() async {
-    IafjrndtClass iafjrndt = IafjrndtClass(
+  Future<IafjrndtClass?> insertIafjrndt() async {
+    await ClassApi.insertPosDetail(
+        IafjrndtClass(
+          trdt: widget.trdt,
+          pscd: pscd,
+          transno: widget.trno,
+          split: 'A',
+          transno1: 'trnobill',
+          itemcode: widget.item.itemcode,
+          trno1: widget.trno,
+          itemseq: counter,
+          cono: 'cono',
+          waitercd: 'waitercd',
+          discpct: 0,
+          discamt: 0,
+          qty: 1,
+          ratecurcd: 'Rupiah',
+          ratebs1: 1,
+          ratebs2: 1,
+          rateamtcost: widget.item.costamt,
+          rateamtitem: widget.item.slsamt,
+          rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
+          rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
+          rateamttotal: widget.item.slsnett,
+          revenueamt: 1 * widget.item.slsamt!.toDouble(),
+          taxamt: widget.item.slsamt! * widget.item.taxpct! / 100,
+          serviceamt: widget.item.slsamt! * widget.item.svchgpct! / 100,
+          totalaftdisc: 1 * widget.item.slsamt! +
+              widget.item.slsamt! * widget.item.taxpct! / 100 +
+              widget.item.slsamt! * widget.item.svchgpct! / 100,
+          rebateamt: 0,
+          rvncoa: 'REVENUE',
+          taxcoa: 'TAX',
+          servicecoa: 'SERVICE',
+          costcoa: 'COST',
+          active: 1,
+          usercrt: 'Admin',
+          userupd: 'Admin',
+          userdel: 'Admin',
+          prnkitchen: 0,
+          prnkitchentm: now.hour.toString() +
+              ":" +
+              now.minute.toString() +
+              ":" +
+              now.second.toString(),
+          confirmed: '1',
+          description: widget.item.itemdesc,
+          taxpct: widget.item.taxpct,
+          servicepct: widget.item.svchgpct,
+          statustrans: 'prosess',
+          time: now.hour.toString() +
+              ":" +
+              now.minute.toString() +
+              ":" +
+              now.second.toString(),
+        ),
+        pscd);
+    result = IafjrndtClass(
       trdt: widget.trdt,
-      pscd: widget.item.outletcd,
-      trno: widget.trno,
+      pscd: pscd,
+      transno: widget.trno,
       split: 'A',
-      trnobill: 'trnobill',
-      itemcd: widget.item.itemcd,
+      transno1: 'trnobill',
+      itemcode: widget.item.itemcode,
       trno1: widget.trno,
       itemseq: counter,
       cono: 'cono',
@@ -61,14 +119,14 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       ratebs1: 1,
       ratebs2: 1,
       rateamtcost: widget.item.costamt,
-      rateamt: widget.item.slsamt,
+      rateamtitem: widget.item.slsamt,
       rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
       rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
       rateamttotal: widget.item.slsnett,
-      rvnamt: 1 * widget.item.slsamt!.toDouble(),
+      revenueamt: 1 * widget.item.slsamt!.toDouble(),
       taxamt: widget.item.slsamt! * widget.item.taxpct! / 100,
       serviceamt: widget.item.slsamt! * widget.item.svchgpct! / 100,
-      nettamt: 1 * widget.item.slsamt! +
+      totalaftdisc: 1 * widget.item.slsamt! +
           widget.item.slsamt! * widget.item.taxpct! / 100 +
           widget.item.slsamt! * widget.item.svchgpct! / 100,
       rebateamt: 0,
@@ -76,18 +134,18 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       taxcoa: 'TAX',
       servicecoa: 'SERVICE',
       costcoa: 'COST',
-      active: '1',
+      active: 1,
       usercrt: 'Admin',
       userupd: 'Admin',
       userdel: 'Admin',
-      prnkitchen: '1',
+      prnkitchen: 0,
       prnkitchentm: now.hour.toString() +
           ":" +
           now.minute.toString() +
           ":" +
           now.second.toString(),
       confirmed: '1',
-      trdesc: widget.item.itemdesc,
+      description: widget.item.itemdesc,
       taxpct: widget.item.taxpct,
       servicepct: widget.item.svchgpct,
       statustrans: 'prosess',
@@ -97,11 +155,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
           ":" +
           now.second.toString(),
     );
-    List<IafjrndtClass> listiafjrndt = [iafjrndt];
-    setState(() {
-      result = iafjrndt;
-    });
-    return await handler.insertIafjrndt(listiafjrndt);
+    return result;
   }
 
   @override

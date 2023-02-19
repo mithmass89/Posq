@@ -69,7 +69,7 @@ class _CollapsePanelRetailState extends State<CollapsePanelRetail> {
 
     await handler.checktotalAmountNett(trno).then((value) {
       setState(() {
-        amounttotal = value.first.nettamt;
+        amounttotal = value.first.totalaftdisc;
       });
       ClassRetailMainMobile.of(context)!.string = value.first;
     });

@@ -75,7 +75,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                 dense: true,
                                 visualDensity: VisualDensity(vertical: -2), // t
                                 leading: Text('${x[index].qty.toString()} X'),
-                                title: Text(x[index].trdesc.toString(),
+                                title: Text(x[index].description.toString(),
                                     style: TextStyle(fontSize: 14)),
                                 trailing: Text(
                                     '${CurrencyFormat.convertToIdr(x[index].rateamttotal, 0)}'),
@@ -112,7 +112,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                       dense: true,
                                       title: Text('Total'),
                                       trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.rvnamt, 0)}'),
+                                          '${CurrencyFormat.convertToIdr(x.first.revenueamt, 0)}'),
                                     ),
                                     ListTile(
                                       visualDensity: VisualDensity(
@@ -144,7 +144,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                       dense: true,
                                       title: Text('Grand total'),
                                       trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.nettamt, 0)}'),
+                                          '${CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0)}'),
                                     ),
                                     Divider(
                                       thickness: 2,

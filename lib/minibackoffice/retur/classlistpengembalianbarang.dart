@@ -148,7 +148,7 @@ class _ClassListPengembalianPembelianState
                     );
                   },
                 )).then((_) async {
-                  await handler.getTrnoNextBO(widget.trtpcd.trtp).then((value) {
+                  await handler.getTrnoNextBO(widget.trtpcd.progcd).then((value) {
                     setState(() {
                       widget.trtpcd = value.first;
                     });

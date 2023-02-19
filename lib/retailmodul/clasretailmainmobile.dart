@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/draweretailmobile.dart';
 import 'package:posq/classui/paymentmainmobilev2.dart';
@@ -18,6 +19,7 @@ import 'package:posq/retailmodul/classsavedtransactionmobile.dart';
 import 'package:posq/retailmodul/classslideuppanel.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/collapsepanel.dart';
+import 'package:posq/userinfo.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -26,6 +28,7 @@ import 'package:posq/classui/searchwidget.dart';
 import 'package:collection/collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:uuid/uuid.dart';
 
 // Future<void> main() async {
 //   runApp(ClassRetailMainMobile(
@@ -86,40 +89,24 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
   set string(IafjrndtClass value) {
     setState(() {
-      trno = value.trno ?? widget.trno;
-      if (value.trno == null) {
-        item = 0;
-        sum = 0;
+      trno = value.transno ?? widget.trno;
+      if (value.transno == null) {
+        print('check ${value.transno}');
+        setState(() {
+          item = 0;
+          sum = 0;
+        });
       } else {
-        ///checkitem
-        handler = DatabaseHandler();
-        handler.initializeDB(databasename);
-        handler.checktotalItem(value.trno.toString()).then((value) {
-          setState(() {
-            item = value.first.qty;
-          });
-        });
-
-        // item.add(value.itemcd);
-
-        handler.checktotalAmountNett(value.trno.toString()).then((value) {
-          setState(() {
-            sum = value.first.nettamt != null
-                ? num.parse(value.first.nettamt.toString())
-                : 0;
-          });
-        });
+        getDetailData();
+        getDataSlide();
       }
-
-      getDataSlide();
-      getDetailData();
       iafjrndt = IafjrndtClass(
           trdt: value.trdt,
           pscd: value.pscd,
-          trno: value.trno,
+          transno: value.transno,
           split: value.split,
-          trnobill: value.trnobill,
-          itemcd: value.itemcd,
+          transno1: value.transno1,
+          itemcode: value.itemcode,
           trno1: value.trno1,
           itemseq: value.itemseq,
           cono: value.cono,
@@ -131,14 +118,14 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           ratebs1: value.ratebs1,
           ratebs2: value.ratebs2,
           rateamtcost: value.rateamtcost,
-          rateamt: value.rateamt,
+          rateamtitem: value.rateamtitem,
           rateamtservice: value.rateamtservice,
           rateamttax: value.rateamttax,
           rateamttotal: value.rateamttotal,
-          rvnamt: value.rvnamt,
+          revenueamt: value.revenueamt,
           taxamt: value.taxamt,
           serviceamt: value.serviceamt,
-          nettamt: value.nettamt,
+          totalaftdisc: value.totalaftdisc,
           rebateamt: value.rebateamt,
           rvncoa: value.rvncoa,
           taxcoa: value.taxcoa,
@@ -151,7 +138,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           prnkitchen: value.prnkitchen,
           prnkitchentm: value.trno1,
           confirmed: value.confirmed,
-          trdesc: value.trdesc,
+          description: value.description,
           taxpct: value.taxpct,
           servicepct: value.servicepct);
     });
@@ -160,13 +147,10 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
 //terakir sampai sini / pengen refresh
   getDataSlide() async {
-    handler = DatabaseHandler();
-    await handler.initializeDB(databasename);
-    handler.retrieveDetailIafjrndt(trno.toString()).then((isi) {
-      print(isi);
-      if (isi.isNotEmpty) {
+    ClassApi.getTrnoDetail(trno!, dbname, query!).then((value) {
+      if (value.isNotEmpty) {
         setState(() {
-          listdata = isi;
+          listdata = value;
         });
       } else {
         setState(() {
@@ -177,24 +161,19 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   }
 
   getDetailData() async {
-    handler.retrieveDetailIafjrndt(widget.trno.toString()).then((isi) {
+    await ClassApi.getTrnoDetail(trno!, dbname, query!).then((isi) {
       if (isi.isNotEmpty) {
+ 
+        num totalSlsNett = isi.fold(
+            0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
         setState(() {
           item = isi.length;
+          sum = totalSlsNett;
         });
       } else {
         setState(() {
           item = 0;
         });
-      }
-    });
-
-    await handler.checktotalAmountNett(widget.trno.toString()).then((value) {
-      if (value.length != 0) {
-        setState(() {
-          sum = value.first.nettamt!;
-        });
-        ClassRetailMainMobile.of(context)!.string = value.first;
       }
     });
   }
@@ -227,24 +206,20 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
     _scaffoldKey = GlobalKey<ScaffoldState>();
-    print('ini outletcd ${widget.outletinfo.outletcd}');
     _scrollisanimated = false;
-    print(_scrollisanimated);
     ToastContext().init(context);
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
-
     formattedDate = formatter.format(now);
     checkPending();
     _pc.isAttached;
-    getTrno();
     iafjrndt = IafjrndtClass(
       trdt: '',
       pscd: '',
-      trno: trno,
+      transno: trno,
       split: '',
-      trnobill: '',
-      itemcd: '',
+      transno1: '',
+      itemcode: '',
       trno1: '',
       itemseq: 1,
       cono: '',
@@ -256,39 +231,29 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       ratebs1: 0,
       ratebs2: 0,
       rateamtcost: 0,
-      rateamt: 0,
+      rateamtitem: 0,
       rateamtservice: 0,
       rateamttax: 0,
       rateamttotal: 0,
-      rvnamt: 0,
+      revenueamt: 0,
       taxamt: 0,
       serviceamt: 0,
-      nettamt: 0,
+      totalaftdisc: 0,
       rebateamt: 0,
       rvncoa: '',
       taxcoa: '',
       servicecoa: '',
       costcoa: '',
-      active: '',
+      active: 0,
       usercrt: '',
       userupd: '',
       userdel: '',
-      prnkitchen: '',
+      prnkitchen: 0,
       prnkitchentm: '',
       confirmed: '',
-      trdesc: '',
+      description: '',
     );
     getDetailData();
-  }
-
-  getTrno() async {
-    handler = DatabaseHandler();
-    await handler.initializeDB(databasename);
-    await handler.getTrno(widget.pscd).then((value) {
-      setState(() {
-        trno = '${widget.pscd}${value.first.trnonext}';
-      });
-    });
   }
 
   getSavedCustomers() async {
@@ -302,12 +267,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
         trnolanjut = value.first.trnonext;
       });
     });
-    await updateTrnonext();
-  }
-
-  updateTrnonext() async {
-    await handler.updateTrnoNext(
-        Outlet(outletcd: widget.pscd.toString(), trnonext: trnolanjut! + 1));
   }
 
   Future<void> startBarcodeScanStream() async {
@@ -354,62 +313,56 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     });
   }
 
-  Future<int> insertIafjrndt(Item items) async {
-    IafjrndtClass iafjrndt2 = IafjrndtClass(
-      trdt: formattedDate,
-      pscd: items.outletcd,
-      trno: widget.trno,
-      split: 'A',
-      trnobill: 'trnobill',
-      itemcd: items.itemcd,
-      trno1: widget.trno,
-      itemseq: 1,
-      cono: 'cono',
-      waitercd: 'waitercd',
-      discpct: 0,
-      discamt: 0,
-      qty: 1,
-      ratecurcd: 'Rupiah',
-      ratebs1: 1,
-      ratebs2: 1,
-      rateamtcost: items.costamt,
-      rateamt: items.slsamt,
-      rateamtservice: 0,
-      rateamttax: 0,
-      rateamttotal: items.slsnett,
-      rvnamt: 1 * items.slsamt!.toDouble(),
-      taxamt: 0,
-      serviceamt: 0,
-      nettamt: 1 * items.slsnett!.toDouble(),
-      rebateamt: 0,
-      rvncoa: 'REVENUE',
-      taxcoa: 'TAX',
-      servicecoa: 'SERVICE',
-      costcoa: 'COST',
-      active: '1',
-      usercrt: 'Admin',
-      userupd: 'Admin',
-      userdel: 'Admin',
-      prnkitchen: '1',
-      prnkitchentm: '10:10',
-      confirmed: '1',
-      trdesc: items.itemdesc,
-      taxpct: items.taxpct,
-      servicepct: items.svchgpct,
-      time: now.hour.toString() +
-          ":" +
-          now.minute.toString() +
-          ":" +
-          now.second.toString(),
-    );
-    List<IafjrndtClass> listiafjrndt = [iafjrndt2];
-
-    setState(() {
-      widget.trno = iafjrndt2.trno;
-      // string = iafjrndt2;
-    });
-
-    return await handler.insertIafjrndt(listiafjrndt);
+  insertIafjrndt(Item items) async {
+    await ClassApi.insertPosDetail(
+        IafjrndtClass(
+          trdt: formattedDate,
+          pscd: pscd,
+          transno: widget.trno,
+          split: 'A',
+          transno1: widget.trno,
+          itemcode: items.itemcode,
+          trno1: widget.trno,
+          itemseq: 1,
+          cono: 'cono',
+          waitercd: 'waitercd',
+          discpct: 0,
+          discamt: 0,
+          qty: 1,
+          ratecurcd: 'Rupiah',
+          ratebs1: 1,
+          ratebs2: 1,
+          rateamtcost: items.costamt,
+          rateamtitem: items.slsamt,
+          rateamtservice: 0,
+          rateamttax: 0,
+          rateamttotal: items.slsnett,
+          revenueamt: 1 * items.slsamt!.toDouble(),
+          taxamt: 0,
+          serviceamt: 0,
+          totalaftdisc: 1 * items.slsnett!.toDouble(),
+          rebateamt: 0,
+          rvncoa: 'REVENUE',
+          taxcoa: 'TAX',
+          servicecoa: 'SERVICE',
+          costcoa: 'COST',
+          active: 1,
+          usercrt: 'Admin',
+          userupd: 'Admin',
+          userdel: 'Admin',
+          prnkitchen: 0,
+          prnkitchentm: '10:10',
+          confirmed: '1',
+          description: items.itemdesc,
+          taxpct: items.taxpct,
+          servicepct: items.svchgpct,
+          time: now.hour.toString() +
+              ":" +
+              now.minute.toString() +
+              ":" +
+              now.second.toString(),
+        ),
+        pscd);
   }
 
   @override
@@ -442,7 +395,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                   });
             },
             child: Stack(
-              clipBehavior: Clip.none, children: [
+              clipBehavior: Clip.none,
+              children: [
                 SlidingUpPanel(
                     onPanelSlide: (value) {
                       if (value == 0.0) {
@@ -490,7 +444,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                   width:
                                       MediaQuery.of(context).size.width * 0.62,
                                   child: TextFieldMobile2(
-                                    hint: 'Search',
+                                    hint: 'Searching',
                                     controller: search,
                                     onChanged: (value) {
                                       setState(() {});
@@ -730,7 +684,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                         _pc.open();
                         if (_scrollisanimated == true) {
                           await checkTrno().whenComplete(() async {
-                            await getTrno();
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.remove('savecostmrs');
                             Navigator.of(context).pushAndRemoveUntil(
@@ -780,19 +733,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                   )),
                         );
                         ClassRetailMainMobile.of(context)!.string = result!;
-                        // final result = await Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => PaymentMobileClass(
-                        //             outletinfo: widget.outletinfo,
-                        //             balance: widget.amount!.toInt(),
-                        //             pscd: widget.outletinfo!.outletcd,
-                        //             trdt: widget.trnoinfo!.trdt!,
-                        //             trno: widget.trnoinfo!.trno!,
-                        //             outletname: widget.outletname,
-                        //           )),
-                        // );
-                        // ClassRetailMainMobile.of(context)!.string = result!;
                       },
                       name: 'Bayar'),
                 ),

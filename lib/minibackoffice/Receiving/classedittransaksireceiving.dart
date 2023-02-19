@@ -66,7 +66,7 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
     if (widget.data != null) {
       print(widget.data);
       items = Item(
-          itemcd: widget.data['prodcd'], itemdesc: widget.data['proddesc']);
+          itemcode: widget.data['prodcd'], itemdesc: widget.data['proddesc']);
       _penjual.text = widget.data!['supcd'];
       _note.text = widget.data!['notes'];
       _unit.text = widget.data!['unituse'];
@@ -79,7 +79,7 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
     formatdate = formatter.format(now);
     periode = formaterprd.format(now);
     handler = DatabaseHandler();
-    variance =  widget.data['qtyconv'];
+    variance = widget.data['qtyconv'];
     ToastContext().init(context);
   }
 
@@ -202,8 +202,9 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
                           totalprice.text =
                               (num.parse(unitprice.text) * num.parse(qty.text))
                                   .toString();
-                            variance = num.parse(qty.text)-widget.data['qtyconv'];
-                            print(variance);
+                          variance =
+                              num.parse(qty.text) - widget.data['qtyconv'];
+                          print(variance);
                         });
                       } else {}
                     },
@@ -294,7 +295,7 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
                       await handler.updateJournalDebit(Glftrdt(
                           trno: widget.data['trno'],
                           itemseq: widget.data['itemseq'],
-                          prodcd: items!.itemcd,
+                          prodcd: items!.itemcode,
                           proddesc: items!.itemdesc,
                           notes: _note.text,
                           supcd: _penjual.text,
@@ -304,13 +305,15 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
                           totalaftdisctax: double.parse(totalprice.text),
                           fdbamt: double.parse(totalprice.text),
                           ldbamt: double.parse(totalprice.text),
-                          qtyremain:double.parse(widget.data['qtyremain'].toString())+ variance!.toDouble(),
+                          qtyremain: double.parse(
+                                  widget.data['qtyremain'].toString()) +
+                              variance!.toDouble(),
                           trcoa: 'inventory'));
                       await handler
                           .updatejournalCredit(Glftrdt(
                               trno: widget.data['trno'],
                               itemseq: widget.data['itemseq'],
-                              prodcd: items!.itemcd,
+                              prodcd: items!.itemcode,
                               proddesc: items!.itemdesc,
                               notes: _note.text,
                               supcd: _penjual.text,
@@ -320,7 +323,9 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
                               totalaftdisctax: double.parse(totalprice.text),
                               fcramt: double.parse(totalprice.text),
                               lcramt: double.parse(totalprice.text),
-                              qtyremain: double.parse(widget.data['qtyremain'].toString())+ variance!.toDouble(),
+                              qtyremain: double.parse(
+                                      widget.data['qtyremain'].toString()) +
+                                  variance!.toDouble(),
                               trcoa: 'AP-Pembelian'))
                           .whenComplete(() {
                         Navigator.of(context).pop();

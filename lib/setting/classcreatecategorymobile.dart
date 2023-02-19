@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
+
+ClassApi? apicloud;
 
 class Createctg extends StatefulWidget {
   const Createctg({Key? key}) : super(key: key);
@@ -14,20 +17,17 @@ class Createctg extends StatefulWidget {
 class _CreatectgState extends State<Createctg> {
   final _ctgcd = TextEditingController();
   final _ctgdesc = TextEditingController();
-  late DatabaseHandler handler;
   String? ctgcd;
   String? ctgdesc;
 
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
   }
 
-  Future<int> addCategory() async {
+  addCtg() async {
     Ctg ctg = Ctg(ctgcd: _ctgcd.text, ctgdesc: _ctgdesc.text);
-    List<Ctg> listctg = [ctg];
-    return await handler.insertCtg(listctg);
+    await ClassApi.insertCategory(ctg, pscd);
   }
 
   @override
@@ -40,16 +40,6 @@ class _CreatectgState extends State<Createctg> {
             width: MediaQuery.of(context).size.width * 0.9,
             height: MediaQuery.of(context).size.height * 0.05,
           ),
-          // TextFieldMobile(
-          //   enable: false,
-          //   label: 'Kode',
-          //   controller: _ctgcd,
-          //   onChanged: (String value) {
-          //     setState(() {});
-          //     print(value);
-          //   },
-          //   typekeyboard: TextInputType.text,
-          // ),
           TextFieldMobile2(
             label: 'Deskripsi',
             controller: _ctgdesc,
@@ -73,7 +63,7 @@ class _CreatectgState extends State<Createctg> {
               height: MediaQuery.of(context).size.height * 0.05,
               name: 'Save & Use',
               onpressed: () async {
-                await addCategory();
+                await addCtg();
                 Navigator.of(context)
                     .pop(Ctg(ctgcd: _ctgcd.text, ctgdesc: _ctgdesc.text));
               },
@@ -95,20 +85,13 @@ class CreatectgArscomp extends StatefulWidget {
 class _CreatectgArscompState extends State<CreatectgArscomp> {
   final _ctgcd = TextEditingController();
   final _ctgdesc = TextEditingController();
-  late DatabaseHandler handler;
+  // late DatabaseHandler handler;
   String? ctgcd;
   String? ctgdesc;
 
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-  }
-
-  Future<int> addCategory() async {
-    Ctg ctg = Ctg(ctgcd: _ctgcd.text, ctgdesc: _ctgdesc.text);
-    List<Ctg> listctg = [ctg];
-    return await handler.insertCtgArscomp(listctg);
   }
 
   @override
@@ -122,16 +105,6 @@ class _CreatectgArscompState extends State<CreatectgArscomp> {
             width: MediaQuery.of(context).size.width * 0.9,
             height: MediaQuery.of(context).size.height * 0.05,
           ),
-          // TextFieldMobile(
-          //   enable: false,
-          //   label: 'Kode',
-          //   controller: _ctgcd,
-          //   onChanged: (String value) {
-          //     setState(() {});
-          //     print(value);
-          //   },
-          //   typekeyboard: TextInputType.text,
-          // ),
           TextFieldMobile2(
             label: 'Deskripsi',
             controller: _ctgdesc,
@@ -156,7 +129,7 @@ class _CreatectgArscompState extends State<CreatectgArscomp> {
               height: MediaQuery.of(context).size.height * 0.05,
               name: 'Save & Use',
               onpressed: () async {
-                await addCategory();
+                // await addCategory();
                 Navigator.of(context)
                     .pop(Ctg(ctgcd: _ctgcd.text, ctgdesc: _ctgdesc.text));
               },

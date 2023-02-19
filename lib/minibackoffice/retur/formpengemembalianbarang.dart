@@ -80,7 +80,7 @@ class _ClassPengembalianPembelianMobileState
     items,
   ) async {
     //stok tidak bertambah karena trtpcd tidak terbaca/////
-    print(widget.trtpcd.trtp);
+    print(widget.trtpcd.progcd);
     Glftrdt debit = Glftrdt(
       trno: widget.trtpcd.refprefix! +
           periode! +
@@ -113,7 +113,7 @@ class _ClassPengembalianPembelianMobileState
       lcramt: 0,
       trdt: formatdate,
       notes: _note.text,
-      trtpcd: widget.trtpcd.trtp,
+      trtpcd: widget.trtpcd.progcd,
       active: 1,
       prd: periode!,
       qtyremain: qtyremains - double.parse(qty.text),
@@ -151,7 +151,7 @@ class _ClassPengembalianPembelianMobileState
       lcramt: double.parse(totalprice.text),
       trdt: formatdate,
       notes: _note.text,
-      trtpcd: widget.trtpcd.trtp,
+      trtpcd: widget.trtpcd.progcd,
       active: 1,
       prd: periode!,
       qtyremain: qtyremains - double.parse(qty.text),
@@ -547,7 +547,7 @@ class _ClassPengembalianPembelianMobileState
                             await insertALL(_selectedtrans)
                                 .whenComplete(() async {
                               await handler.updateTrnoGntrantp(Gntrantp(
-                                trtp: '7081',
+                                progcd: '7081',
                               ));
                             });
                           } else {
@@ -576,7 +576,7 @@ class _ClassPengembalianPembelianMobileState
                                 gravity: Toast.center);
                             await addJournal(items!).whenComplete(() async {
                               await handler.updateTrnoGntrantp(Gntrantp(
-                                trtp: '7081',
+                                progcd: '7081',
                               ));
 
                               Toast.show("Pengembalian Sukses",
@@ -599,7 +599,7 @@ class _ClassPengembalianPembelianMobileState
                         });
                       } else {
                         await handler.updateTrnoGntrantp(Gntrantp(
-                          trtp: '7081',
+                          progcd: '7081',
                         ));
                         Navigator.of(context).pop();
                       }

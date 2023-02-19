@@ -72,7 +72,7 @@ class _ClassEditReturnState extends State<ClassEditReturn> {
     if (widget.data != null) {
       print(widget.data);
       items = Item(
-          itemcd: widget.data['prodcd'], itemdesc: widget.data['proddesc']);
+          itemcode: widget.data['prodcd'], itemdesc: widget.data['proddesc']);
       _trno.text = widget.data['subtrno'];
       _note.text = widget.data!['notes'];
       // _unit.text = widget.data!['unituse'];

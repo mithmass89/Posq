@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/searchwidget.dart';
@@ -14,6 +15,7 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:flutter/services.dart';
+import 'package:posq/userinfo.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -347,7 +349,9 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
 }
 
 class DialogTabClass extends StatefulWidget {
-  const DialogTabClass({Key? key}) : super(key: key);
+  const DialogTabClass({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DialogTabClass> createState() => _DialogTabClassState();
@@ -597,97 +601,85 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
     super.initState();
     print('outlet ${widget.outletinfo.outletcd}');
     formattedDate = formatter.format(now);
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
-    handler.getTrno(widget.outletinfo.outletcd).then((value) {
-      setState(() {
-        nexttrno = value.first.trnonext;
-      });
-    });
   }
 
   getDataSlide() async {
-    await handler.retrieveDetailIafjrndt(widget.trno.toString()).then((isi) {
+    await ClassApi.getTrnoDetail(widget.trno!, dbname, '').then((isi) {
       if (isi.isNotEmpty) {
+        num totalSlsNett = isi.fold(
+            0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
         setState(() {
           totalbarang = isi.length;
           print('total barang collpse $totalbarang');
+          amounttotal = totalSlsNett;
         });
       } else {
         setState(() {
           totalbarang = 0;
         });
       }
-
-      print('terpanggil');
-    });
-
-    await handler.checktotalAmountNett(widget.trno.toString()).then((value) {
-      setState(() {
-        amounttotal = value.first.nettamt;
-      });
     });
   }
 
-  Future<int> insertIafjrndt(day) async {
-    IafjrndtClass iafjrndt = IafjrndtClass(
-      trdt: formattedDate,
-      pscd: widget.outletinfo.outletcd,
-      trno: widget.trno,
-      split: 'A',
-      trnobill: 'trnobill',
-      itemcd: widget.controller.text,
-      trno1: widget.trno,
-      itemseq: widget.itemlenght,
-      cono: 'cono',
-      waitercd: 'waitercd',
-      discpct: 0,
-      discamt: 0,
-      qty: 1,
-      ratecurcd: 'Rupiah',
-      ratebs1: 1,
-      ratebs2: 1,
-      rateamtcost: widget.result!.toDouble(),
-      rateamt: widget.result!.toDouble(),
-      rateamtservice: pctservice.text != ''
-          ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
-          : num.parse('0'),
-      rateamttax: pcttax.text != ''
-          ? widget.result!.toDouble() * num.parse(pcttax.text) / 100
-          : num.parse('0'),
-      rateamttotal: widget.result!.toDouble(),
-      rvnamt: 1 * widget.result!.toDouble(),
-      taxamt: pcttax.text != ''
-          ? 1 * widget.result!.toDouble() * num.parse(pcttax.text) / 100
-          : num.parse('0'),
-      serviceamt: pctservice.text != ''
-          ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
-          : num.parse('0'),
-      nettamt: widget.result!.toDouble(),
-      rebateamt: 0,
-      rvncoa: 'REVENUE',
-      taxcoa: 'TAX',
-      servicecoa: 'SERVICE',
-      costcoa: 'COST',
-      active: '1',
-      usercrt: 'Admin',
-      userupd: 'Admin',
-      userdel: 'Admin',
-      prnkitchen: '1',
-      prnkitchentm: '10:10',
-      confirmed: '1',
-      trdesc: widget.controller.text,
-      taxpct: 0,
-      servicepct: 0,
-      statustrans: 'prosess',
-      time: now.hour.toString() +
-          ":" +
-          now.minute.toString() +
-          ":" +
-          now.second.toString(),
-    );
-    List<IafjrndtClass> listiafjrndt = [iafjrndt];
-    return await handler.insertIafjrndt(listiafjrndt);
+  insertIafjrndt(day) async {
+    await ClassApi.insertPosDetail(
+        IafjrndtClass(
+          trdt: formattedDate,
+          pscd: widget.outletinfo.outletcd,
+          transno: widget.trno,
+          split: 'A',
+          transno1: 'trnobill',
+          itemcode: widget.controller.text,
+          trno1: widget.trno,
+          itemseq: widget.itemlenght,
+          cono: 'cono',
+          waitercd: 'waitercd',
+          discpct: 0,
+          discamt: 0,
+          qty: 1,
+          ratecurcd: 'Rupiah',
+          ratebs1: 1,
+          ratebs2: 1,
+          rateamtcost: widget.result!.toDouble(),
+          rateamtitem: widget.result!.toDouble(),
+          rateamtservice: pctservice.text != ''
+              ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
+              : num.parse('0'),
+          rateamttax: pcttax.text != ''
+              ? widget.result!.toDouble() * num.parse(pcttax.text) / 100
+              : num.parse('0'),
+          rateamttotal: widget.result!.toDouble(),
+          revenueamt: 1 * widget.result!.toDouble(),
+          taxamt: pcttax.text != ''
+              ? 1 * widget.result!.toDouble() * num.parse(pcttax.text) / 100
+              : num.parse('0'),
+          serviceamt: pctservice.text != ''
+              ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
+              : num.parse('0'),
+          totalaftdisc: widget.result!.toDouble(),
+          rebateamt: 0,
+          rvncoa: 'REVENUE',
+          taxcoa: 'TAX',
+          servicecoa: 'SERVICE',
+          costcoa: 'COST',
+          active: 1,
+          usercrt: 'Admin',
+          userupd: 'Admin',
+          userdel: 'Admin',
+          prnkitchen: 0,
+          prnkitchentm: '10:10',
+          confirmed: '1',
+          description: widget.controller.text,
+          taxpct: 0,
+          servicepct: 0,
+          statustrans: 'prosess',
+          time: now.hour.toString() +
+              ":" +
+              now.minute.toString() +
+              ":" +
+              now.second.toString(),
+        ),
+        pscd);
   }
 
   @override
@@ -725,19 +717,16 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
         title: Text('Deskripsi Produk'),
         actions: <Widget>[
           ElevatedButton(
-              onPressed: () {
-                handler.initializeDB(databasename).whenComplete(() async {
+              onPressed: () async{
                   await insertIafjrndt(formattedDate);
-                }).then((_) {
-                  handler.retrievetotaltransaksi(widget.trno!).then((value) {
                     setState(() {
                       hasil = IafjrndtClass(
-                        trdt: '2022-05-16',
+                        trdt: formattedDate,
                         pscd: widget.outletinfo.outletcd,
-                        trno: widget.trno,
+                        transno: widget.trno,
                         split: 'A',
-                        trnobill: 'trnobill',
-                        itemcd: widget.controller.text,
+                        transno1: 'trnobill',
+                        itemcode: widget.controller.text,
                         trno1: widget.trno,
                         itemseq: widget.itemlenght,
                         cono: 'cono',
@@ -749,37 +738,37 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                         ratebs1: 1,
                         ratebs2: 1,
                         rateamtcost: widget.result!.toDouble(),
-                        rateamt: widget.result!.toDouble(),
+                        rateamtitem: widget.result!.toDouble(),
                         rateamtservice: 0,
                         rateamttax: 0,
                         rateamttotal: widget.result!.toDouble(),
-                        rvnamt: widget.result!.toDouble(),
+                        revenueamt: widget.result!.toDouble(),
                         taxamt: 0,
                         serviceamt: 0,
-                        nettamt: widget.result!.toDouble(),
+                        totalaftdisc: widget.result!.toDouble(),
                         rebateamt: 0,
                         rvncoa: 'REVENUE',
                         taxcoa: 'TAX',
                         servicecoa: 'SERVICE',
                         costcoa: 'COST',
-                        active: '1',
+                        active: 1,
                         usercrt: 'Admin',
                         userupd: 'Admin',
                         userdel: 'Admin',
-                        prnkitchen: '1',
+                        prnkitchen: 0,
                         prnkitchentm: now.hour.toString() +
                             ":" +
                             now.minute.toString() +
                             ":" +
                             now.second.toString(),
                         confirmed: '1',
-                        trdesc: widget.controller.text,
+                        description: widget.controller.text,
                         taxpct: 0,
                         servicepct: 0,
                       );
                       // ClassRetailMainMobile.of(context)!.string = hasil;
                     });
-                  }).then((_) async {
+              
                     await getDataSlide();
                     setState(() {
                       counter++;
@@ -787,10 +776,10 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     Navigator.of(context).pop(IafjrndtClass(
                       trdt: hasil.trdt,
                       pscd: hasil.pscd,
-                      trno: hasil.trno,
+                      transno: hasil.transno,
                       split: hasil.split,
-                      trnobill: hasil.trnobill,
-                      itemcd: hasil.itemcd,
+                      transno1: hasil.transno,
+                      itemcode: hasil.itemcode,
                       trno1: hasil.trno1,
                       itemseq: hasil.itemseq,
                       cono: hasil.cono,
@@ -802,14 +791,14 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       ratebs1: hasil.ratebs1,
                       ratebs2: hasil.ratebs2,
                       rateamtcost: hasil.rateamtcost,
-                      rateamt: hasil.rateamt,
+                      rateamtitem: hasil.rateamtitem,
                       rateamtservice: hasil.rateamtservice,
                       rateamttax: hasil.rateamttax,
                       rateamttotal: hasil.rateamttotal,
-                      rvnamt: hasil.rvnamt,
+                      revenueamt: hasil.revenueamt,
                       taxamt: hasil.taxamt,
                       serviceamt: hasil.serviceamt,
-                      nettamt: hasil.nettamt,
+                      totalaftdisc: hasil.totalaftdisc,
                       rebateamt: hasil.rebateamt,
                       rvncoa: hasil.rvncoa,
                       taxcoa: hasil.taxcoa,
@@ -822,16 +811,16 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       prnkitchen: hasil.prnkitchen,
                       prnkitchentm: hasil.prnkitchentm,
                       confirmed: hasil.confirmed,
-                      trdesc: hasil.trdesc,
+                      description: hasil.description,
                     ));
-                  });
+          
                   widget.cleartext();
-                });
+              
               },
               child: Text(
                 'Ok!',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ))
@@ -893,7 +882,7 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
           TextButton(
               onPressed: () async {
                 await handler.activeZeroiafjrndttrno(
-                    IafjrndtClass(active: '1', trno: widget.trno));
+                    IafjrndtClass(active: 1, transno: widget.trno));
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               },
@@ -901,7 +890,7 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
           TextButton(
               onPressed: () async {
                 await handler.activeZeroiafjrndttrno(
-                    IafjrndtClass(active: '1', trno: widget.trno));
+                    IafjrndtClass(active: 1, transno: widget.trno));
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               },
@@ -997,9 +986,9 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
           TextButton(
               onPressed: () async {
                 await handler.activeZeroiafjrndttrno(
-                    IafjrndtClass(active: '0', trno: widget.trno));
+                    IafjrndtClass(active: 0, transno: widget.trno));
                 await handler.activeZeroiafjrnhdtrno(
-                    IafjrnhdClass(active: '0', trno: widget.trno));
+                    IafjrnhdClass(active: '1', trno: widget.trno));
 
                 // Navigator.of(context).pushNamedAndRemoveUntil(
                 //     '/', (Route<dynamic> route) => false);
@@ -1105,7 +1094,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                                         VisualDensity(vertical: -2), // t
                                     leading:
                                         Text('${x[index].qty.toString()} X'),
-                                    title: Text(x[index].trdesc.toString(),
+                                    title: Text(x[index].description.toString(),
                                         style: TextStyle(fontSize: 14)),
                                     trailing:
                                         Text(x[index].rateamttotal.toString()),
@@ -1143,8 +1132,8 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                                               vertical: -4), // to compact
                                           dense: true,
                                           title: Text('Total'),
-                                          trailing:
-                                              Text(x.first.rvnamt.toString()),
+                                          trailing: Text(
+                                              x.first.revenueamt.toString()),
                                         ),
                                         ListTile(
                                           visualDensity: VisualDensity(
@@ -1175,8 +1164,8 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                                               vertical: -4), // to compact
                                           dense: true,
                                           title: Text('Grand total'),
-                                          trailing:
-                                              Text(x.first.nettamt.toString()),
+                                          trailing: Text(
+                                              x.first.totalaftdisc.toString()),
                                         ),
                                         Divider(
                                           thickness: 2,
@@ -1457,8 +1446,7 @@ class DialogClassBankTransfer extends StatefulWidget {
   final String? transactionstatus;
   final num? grossmaount;
   final String? paymenttype;
-                             final List<IafjrndtClass> datatrans;
-
+  final List<IafjrndtClass> datatrans;
 
   DialogClassBankTransfer({
     Key? key,
@@ -1475,7 +1463,8 @@ class DialogClassBankTransfer extends StatefulWidget {
     this.bank,
     this.transactionstatus,
     this.grossmaount,
-    required this.paymenttype,required this.datatrans,
+    required this.paymenttype,
+    required this.datatrans,
   }) : super(key: key);
 
   @override
@@ -1490,7 +1479,6 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
   var formattedDate;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
-  
 
   @override
   void initState() {
@@ -1601,7 +1589,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                          datatrans:widget.datatrans,
+                              datatrans: widget.datatrans,
                               frombanktransfer: true,
                               virtualaccount: widget.virtualaccount,
                               cash: false,
@@ -1638,7 +1626,7 @@ class DialogClassMandiribiller extends StatefulWidget {
   final String? transactionstatus;
   final num? grossmaount;
   final String? paymenttype;
-     final List<IafjrndtClass> datatrans;
+  final List<IafjrndtClass> datatrans;
 
   DialogClassMandiribiller({
     Key? key,
@@ -1655,7 +1643,8 @@ class DialogClassMandiribiller extends StatefulWidget {
     this.biller_code,
     this.transactionstatus,
     this.grossmaount,
-    required this.paymenttype,required this.datatrans,
+    required this.paymenttype,
+    required this.datatrans,
   }) : super(key: key);
 
   @override
@@ -1806,7 +1795,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                          datatrans: widget.datatrans,
+                              datatrans: widget.datatrans,
                               frombanktransfer: true,
                               cash: false,
                               outletinfo: widget.outletinfo,

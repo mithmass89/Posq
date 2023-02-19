@@ -167,7 +167,9 @@ class _ClassListDetailRecevingState extends State<ClassListDetailReceving> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Createproduct()),
+                                  builder: (context) =>  Createproduct(
+                                        pscd: widget.pscd.outletcd,
+                                  )),
                             ).then((_) {
                               setState(() {});
                             });

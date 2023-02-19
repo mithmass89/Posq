@@ -9,6 +9,7 @@ class TextFieldMobile extends StatefulWidget {
   final TextEditingController controller;
   final int? maxline;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onSumbit;
   final typekeyboard;
   final bool? enable;
 
@@ -21,6 +22,7 @@ class TextFieldMobile extends StatefulWidget {
     this.maxline,
     this.hint,
     this.enable = true,
+    this.onSumbit,
   }) : super(key: key);
 
   @override
@@ -42,6 +44,7 @@ class _TextFieldMobileState extends State<TextFieldMobile> {
           maxLines: widget.maxline,
           keyboardType: widget.typekeyboard,
           onChanged: widget.onChanged,
+          onFieldSubmitted: widget.onSumbit,
           controller: widget.controller,
           decoration: InputDecoration(
               hintText: widget.hint,

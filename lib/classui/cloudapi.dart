@@ -406,8 +406,8 @@ class ClassCloudApi {
       "db": {"user": "root", "password": "p3nd3kar", "database": "$dbname"},
       "values": {
      
-        "outletcd": "${item.outletcd}",
-        "itemcd": "${item.itemcd}",
+        "outletcd": "${item.outletcode}",
+        "itemcd": "${item.itemcode}",
         "itemdesc": "${item.itemdesc}",
         "slsamt": "${item.slsamt}",
         "costamt": "${item.costamt}",

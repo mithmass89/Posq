@@ -98,7 +98,7 @@ class _ClassSavedTransactionMobileState
                                   children: [
                                     ClassListSavedMobile(
                                       datatransaksi: snapshot.data![index],
-                                      trno: x[index].trno,
+                                      trno: x[index].transno,
                                       outletinfo: widget.outletinfo,
                                       pscd: widget.pscd.toString(),
                                     ),

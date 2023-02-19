@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
+
+ClassApi? apicloud;
 
 class CategoryList extends StatefulWidget {
   late int? index;
@@ -14,19 +18,19 @@ class CategoryList extends StatefulWidget {
 }
 
 class _CategoryListState extends State<CategoryList> {
-  late DatabaseHandler handler;
 
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
+
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: handler.retrieveCTG(),
+        future: ClassApi.getCTG(dbname),
         builder: (BuildContext context, AsyncSnapshot<List<Ctg>> snapshot) {
           var x = snapshot.data ?? [];
           if (x.isNotEmpty) {
@@ -43,7 +47,7 @@ class _CategoryListState extends State<CategoryList> {
                     ),
                     key: ValueKey<int>(x[index].id!),
                     onDismissed: (DismissDirection direction) async {
-                      await handler.deleteCTG(x[index].id!);
+                      await ClassApi.deleteCTG(pscd,x[index].id!);
                       setState(() {
                         snapshot.data!.remove(snapshot.data![index]);
                       });
@@ -51,8 +55,7 @@ class _CategoryListState extends State<CategoryList> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).pop(Ctg(
-                            ctgcd: x[index].ctgcd,
-                            ctgdesc: x[index].ctgdesc));
+                            ctgcd: x[index].ctgcd, ctgdesc: x[index].ctgdesc));
                       },
                       child: Card(
                           child: ListTile(
@@ -83,11 +86,11 @@ class _CategoryListState extends State<CategoryList> {
   }
 }
 
-
 class CategoryListArscomp extends StatefulWidget {
   late int? index;
   late TabController? controller;
-  CategoryListArscomp({Key? key, this.index, this.controller}) : super(key: key);
+  CategoryListArscomp({Key? key, this.index, this.controller})
+      : super(key: key);
 
   @override
   State<CategoryListArscomp> createState() => _CategoryListArscompState();
@@ -106,7 +109,7 @@ class _CategoryListArscompState extends State<CategoryListArscomp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: handler.retrieveCtgArscomp(),
+        // future: handler.retrieveCtgArscomp(),
         builder: (BuildContext context, AsyncSnapshot<List<Ctg>> snapshot) {
           var x = snapshot.data ?? [];
           if (x.isNotEmpty) {
@@ -131,8 +134,7 @@ class _CategoryListArscompState extends State<CategoryListArscomp> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).pop(Ctg(
-                            ctgcd: x[index].ctgcd,
-                            ctgdesc: x[index].ctgdesc));
+                            ctgcd: x[index].ctgcd, ctgdesc: x[index].ctgdesc));
                       },
                       child: Card(
                           child: ListTile(
@@ -162,4 +164,3 @@ class _CategoryListArscompState extends State<CategoryListArscomp> {
     );
   }
 }
-

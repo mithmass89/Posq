@@ -437,7 +437,7 @@ class NumPad extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.backspace,
-                    color: iconColor,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -458,7 +458,7 @@ class NumPad extends StatelessWidget {
                       clear();
                     },
                     child: Text('C',
-                        style: TextStyle(color: Colors.white, fontSize: 20))),
+                        style: TextStyle(color: Colors.black, fontSize: 20))),
               ),
             ],
           ),
@@ -495,7 +495,7 @@ class NumberButton extends StatelessWidget {
       height: heightsize,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: color,
+          backgroundColor: color,
           // shape: RoundedRectangleBorder(
           //   borderRadius: BorderRadius.circular(size / 2),
           // ),
@@ -606,6 +606,58 @@ class _ButtonClassPayment2State extends State<ButtonClassPayment2> {
             height: widget.height,
             width: widget.width,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingButton extends StatefulWidget {
+  final VoidCallback? onpressed;
+  final String? iconasset;
+  final double? height;
+  final double? width;
+  final String? name;
+  final color;
+  final textcolor;
+  final widget;
+  late bool? isLoading;
+  LoadingButton({
+    this.onpressed,
+    this.height,
+    this.width,
+    this.name,
+    this.iconasset,
+    this.color,
+    this.textcolor,
+    this.widget,
+    this.isLoading,
+  });
+
+  @override
+  _LoadingButtonState createState() => _LoadingButtonState();
+}
+
+class _LoadingButtonState extends State<LoadingButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 5,
+      child: InkWell(
+        onTap: widget.isLoading! ? null : widget.onpressed!,
+        child: Container(
+          alignment: Alignment.center,
+          height: widget.height,
+          width: widget.width,
+          color: Colors.blue,
+          child: widget.isLoading!
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+              : Text(
+                  widget.name.toString(),
+                  style: TextStyle(color: widget.textcolor),
+                ),
         ),
       ),
     );

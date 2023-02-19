@@ -144,16 +144,6 @@ class DatabaseHandler {
     return result;
   }
 
-  Future<int> insertGntrantp(List<Gntrantp> transtype) async {
-    int result = 0;
-    final Database db = await initializeDB(databasename);
-    for (var user in transtype) {
-      result = await db.insert('gntrantp', user.toJson());
-      print(user.ProgNm);
-    }
-    return result;
-  }
-
   Future<int> insertCustomers(List<Costumers> users) async {
     int result = 0;
     final Database db = await initializeDB(databasename);
@@ -187,7 +177,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var item in items) {
-      result = await db.insert('psspsitem', item.toMap());
+      result = await db.insert('psspsitem', item.toJson());
       print(' ini barcode : ${item.barcode}');
     }
     return result;
@@ -227,7 +217,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var item in items) {
-      result = await db.insert('iafjrndt', item.toMap());
+      result = await db.insert('iafjrndt', item.toJson());
       print(items.last.statustrans);
     }
     return result;
@@ -247,7 +237,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var ctgs in ctg) {
-      result = await db.insert('ctg', ctgs.toMap());
+      // result = await db.insert('ctg', ctgs.toMap());
       print(ctgs.ctgcd);
     }
     return result;
@@ -257,7 +247,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var ctgs in ctg) {
-      result = await db.insert('ctgarscomp', ctgs.toMap());
+      // result = await db.insert('ctgarscomp', ctgs.toMap());
       print(ctgs.ctgcd);
     }
     return result;
@@ -383,7 +373,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
          
         ''');
     print(queryResult);
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
   Future<List<IafjrnhdClass>> summaryPayment(String trno) async {
@@ -398,19 +388,19 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
     return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
   }
 
-  Future<List<Ctg>> retrieveCTG() async {
-    final Database db = await initializeDB(databasename);
-    final List<Map<String, Object?>> queryResult = await db.query('Ctg');
+  // Future<List<Ctg>> retrieveCTG() async {
+  //   final Database db = await initializeDB(databasename);
+  //   final List<Map<String, Object?>> queryResult = await db.query('Ctg');
 
-    return queryResult.map((e) => Ctg.fromMap(e)).toList();
-  }
+  //   return queryResult.map((e) => Ctg.fromMap(e)).toList();
+  // }
 
-  Future<List<Ctg>> retrieveCtgArscomp() async {
-    final Database db = await initializeDB(databasename);
-    final List<Map<String, Object?>> queryResult = await db.query('ctgarscomp');
+  // Future<List<Ctg>> retrieveCtgArscomp() async {
+  //   final Database db = await initializeDB(databasename);
+  //   final List<Map<String, Object?>> queryResult = await db.query('ctgarscomp');
 
-    return queryResult.map((e) => Ctg.fromMap(e)).toList();
-  }
+  //   return queryResult.map((e) => Ctg.fromMap(e)).toList();
+  // }
 
   Future<List<Item>> retrieveItems(String query) async {
     final Database db = await initializeDB(databasename);
@@ -444,7 +434,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
             on x.itemcd=Q.itemcd
          where itemdesc like '%$query%' ''');
 
-    return queryResult.map((e) => Item.fromMap(e)).toList();
+    return queryResult.map((e) => Item.fromJson(e)).toList();
   }
 
   Future<List<Item>> getSpesifikItem(String itemcd) async {
@@ -455,7 +445,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
     if (queryResult.length == 0) {
       return [];
     } else {
-      return queryResult.map((e) => Item.fromMap(e)).toList();
+      return queryResult.map((e) => Item.fromJson(e)).toList();
     }
   }
 
@@ -464,7 +454,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select trdt,count(trno) as trno,trdesc from iafjrndt where trno like '%$trno%' and active='1'");
 
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
   Future<List<IafjrndtClass>> checktotalItem(String trno) async {
@@ -472,7 +462,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         "select count(qty) as qty,trdesc from iafjrndt where trno like '%$trno%' and active='1'");
 
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
   Future<List<Item>> getItemFromBarcode(String itemcd) async {
@@ -480,7 +470,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
     final List<Map<String, Object?>> queryResult =
         await db.rawQuery("select * from psspsitem where itemcd='${itemcd}'");
 
-    return queryResult.map((e) => Item.fromMap(e)).toList();
+    return queryResult.map((e) => Item.fromJson(e)).toList();
   }
 
   Future<List<IafjrndtClass>> checktotalAmountNett(String trno) async {
@@ -494,7 +484,7 @@ select sum(x.nettamt) as nettamt from
          
         ''');
 
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
 //   Future<List<Glftrdt>> getDataRR() async {
@@ -529,7 +519,7 @@ select sum(x.nettamt) as nettamt from
         "select *  from iafjrndt where trno = '$trno' and active='1'");
     // print(queryResult.last['trno'].toString());
 
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
   Future<List<IafjrndtClass>> retrieveDetailIafjrndt2(String trno) async {
@@ -540,9 +530,9 @@ select sum(x.nettamt) as nettamt from
         select 0 as id,'Discount' as trdesc,trno,trdt,pscd,'Discount' as itemcd,1 as qty,0 as rvnamt,0 as taxamt,0 as serviceamt,ftotamt as nettamt  from iafjrnhd where trno='$trno' and active='1' and pymtmthd='Discount'
         ''');
     print(
-        ' hasil query ${queryResult.map((e) => IafjrndtClass.fromMap(e)).toList()}');
+        ' hasil query ${queryResult.map((e) => IafjrndtClass.fromJson(e)).toList()}');
 
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
   Future<List<RegisterItem>> retrieveRegisterItem(String itemcd) async {
@@ -650,7 +640,7 @@ select sum(x.nettamt) as nettamt from
           group by x.trno''');
     print(queryResult);
 
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
   Future<List<IafjrndtClass>> retriveSavedTransaction2(String query) async {
@@ -671,7 +661,7 @@ where x.nettamt<>0
           ''');
     print(queryResult);
 
-    return queryResult.map((e) => IafjrndtClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrndtClass.fromJson(e)).toList();
   }
 
   Future<List<IafjrnhdClass>> retriveListDetailPayment(String trno) async {
@@ -712,8 +702,8 @@ where x.nettamt<>0
     ,ctg=?,stock=?,pathimage=?,barcode=?,sku=?
     WHERE id = ?
     ''', [
-      items.outletcd,
-      items.itemcd,
+      items.outletcode,
+      items.itemcode,
       items.itemdesc,
       items.description,
       items.costamt,
@@ -731,7 +721,6 @@ where x.nettamt<>0
       items.pathimage,
       items.barcode,
       items.sku,
-      items.id,
     ]);
   }
 
@@ -770,7 +759,7 @@ where x.nettamt<>0
     SET active=? WHERE trno = ?
     ''', [
       iafjrndt.active,
-      iafjrndt.trno,
+      iafjrndt.transno,
     ]);
   }
 
@@ -819,7 +808,7 @@ where x.nettamt<>0
     await db.rawUpdate('''
     UPDATE gntrantp 
     SET trnonext=trnonext+1 WHERE trtp=?
-    ''', [trno.trtp]);
+    ''', [trno.progcd]);
   }
 
   Future<void> updateJournalDebit(Glftrdt data) async {
@@ -911,16 +900,16 @@ where x.nettamt<>0
     UPDATE iafjrndt 
     SET itemcd=?,trdesc=?,qty=?,rateamt=?,discamt=?,discpct=?,rvnamt=?,taxamt=?,serviceamt=?,nettamt=?,taxpct=?,servicepct=? WHERE id = ?
     ''', [
-      iafjrndt.itemcd,
-      iafjrndt.trdesc,
+      iafjrndt.itemcode,
+      iafjrndt.description,
       iafjrndt.qty,
-      iafjrndt.rateamt,
+      iafjrndt.rateamtitem,
       iafjrndt.discamt,
       iafjrndt.discpct,
-      iafjrndt.rvnamt,
+      iafjrndt.revenueamt,
       iafjrndt.taxamt,
       iafjrndt.serviceamt,
-      iafjrndt.nettamt,
+      iafjrndt.totalaftdisc,
       iafjrndt.taxpct,
       iafjrndt.servicepct,
       iafjrndt.id

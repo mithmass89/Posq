@@ -44,9 +44,9 @@ class _ClassAdjusmentTypeState extends State<ClassAdjusmentType> {
                       children: [
                         ListTile(
                           title: Text(x[index].ProgNm!),
-                          trailing: Text(x[index].trtp),
+                          trailing: Text(x[index].progcd),
                           onTap: () {
-                            if (x[index].trtp == '7010') {
+                            if (x[index].progcd == '7010') {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
                                 return ClassListPembelian(
@@ -55,7 +55,7 @@ class _ClassAdjusmentTypeState extends State<ClassAdjusmentType> {
                                 );
                               }));
                             }
-                            if (x[index].trtp == '7081') {
+                            if (x[index].progcd == '7081') {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
                                 return ClassListPengembalianPembelian(

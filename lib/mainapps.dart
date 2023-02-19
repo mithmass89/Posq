@@ -1,6 +1,9 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unnecessary_this, prefer_const_constructors, sized_box_for_whitespace, unnecessary_new, avoid_print, unused_field
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/midtrans.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/databasehandler.dart';
@@ -8,7 +11,10 @@ import 'package:posq/appsmobile.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'userinfo.dart';
+
+ClassApi? apicloud;
 
 class Mainapps extends StatefulWidget {
   final String? title;
@@ -24,7 +30,6 @@ class Mainapps extends StatefulWidget {
 }
 
 class _MainappsState extends State<Mainapps> {
-  late DatabaseHandler handler;
   DateTime currentTime = DateTime.now();
   String? time;
   String? date;
@@ -34,11 +39,8 @@ class _MainappsState extends State<Mainapps> {
   @override
   void initState() {
     super.initState();
-    _getProfile();
     loadKey();
-    checkSF().whenComplete(() {
-      checkNewApp();
-    });
+    checkNewApp();
   }
 
   loadKey() async {
@@ -48,58 +50,27 @@ class _MainappsState extends State<Mainapps> {
         : midtranskey.getString('serverkey')!;
   }
 
-  Future<dynamic> checkSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String dbpref = prefs.getString('database') ?? "";
-    if (dbpref.isNotEmpty) {
-      setState(() {
-        databasename = dbpref;
-      });
-    }
-  }
-
-  Future<void> _getProfile() async {
-    final response = await Supabase.instance.client
-        .from('outlet')
-        .select()
-        .execute();
-    if (response.status!='') {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(response.status.toString())));
-    }
-    if (response.data != null) {
-      setState(() {
-        // name = response.data!['name'] as String;
-        print(response.data);
-      });
-    }
-  }
-
   checkNewApp() async {
-    this.handler = DatabaseHandler();
-    this.handler.initializeDB(databasename).whenComplete(() async {
-      await handler.retrieveUsers().then((value) {
-        if (value.isNotEmpty) {
-          setState(() {
-            hasoutlet = true;
-            outletinfo = Outlet(
-              outletcd: value.first.outletcd,
-              outletname: value.first.outletname,
-              telp: value.first.telp,
-              alamat: value.first.alamat,
-              kodepos: value.first.kodepos,
-              trnonext: value.first.trnonext,
-              trnopynext: value.first.trnopynext,
-            );
-          });
-        } else {
-          if (value.isEmpty) {
-            setState(() {
-              hasoutlet = false;
-            });
-          }
-        }
-      });
+    await getOutlet(usercd);
+  }
+
+  getOutlet(String usercd) async {
+    await ClassApi.getOutlets(usercd).then((value) {
+      if (value.isNotEmpty) {
+        setState(() {
+          pscd = value.first['outletcd'];
+          dbname = value.first['outletcd'];
+          hasoutlet = true;
+          outletinfo = Outlet(
+              outletcd: value.first['outletcd'],
+              outletname: value.first['outletdesc'],
+              alamat: value.first['alamat'],
+              telp: num.parse(value.first['telp']),
+              kodepos: value.first['kodepos'].toString(),
+              profile: value.first['profile'],
+              trnonext: value.first['billnext']);
+        });
+      }
     });
   }
 
@@ -135,8 +106,6 @@ class _MainappsState extends State<Mainapps> {
                     telp: outletinfo!.telp,
                     alamat: outletinfo!.alamat,
                     kodepos: outletinfo!.kodepos,
-                    trnonext: outletinfo!.trnonext,
-                    trnopynext: outletinfo!.trnopynext,
                   ),
                 );
               } else {

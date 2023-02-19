@@ -55,13 +55,13 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
           semanticLabel: 'Text to announce in accessibility modes',
         ),
       ),
-      title: Text(widget.datatransaksi!.trno.toString()),
+      title: Text(widget.datatransaksi!.transno.toString()),
       subtitle: Text(widget.datatransaksi!.time!),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-              '${CurrencyFormat.convertToIdr(widget.datatransaksi!.nettamt, 0)}'),
+              '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
           Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.28,

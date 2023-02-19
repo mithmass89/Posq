@@ -4,17 +4,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
+import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/classitemretailmobil.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/classcreateproduct.dart';
+
+import '../userinfo.dart';
 
 class ClassRetailProductMobile extends StatefulWidget {
   final String trno;
   final String? pscd;
   late final controller;
   ClassRetailProductMobile(
-      {Key? key, required this.trno, required this.pscd,required this.controller})
+      {Key? key,
+      required this.trno,
+      required this.pscd,
+      required this.controller})
       : super(key: key);
 
   @override
@@ -29,14 +36,18 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
-   
+  }
+
+  Future<List<Item>> getitemOutlet(query) async {
+    List<Item> data =
+        await ClassApi.getItemList(widget.pscd!, widget.pscd!, query);
+    return data;
   }
 
   @override
@@ -46,9 +57,24 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
       height: MediaQuery.of(context).size.height * 0.60,
       width: MediaQuery.of(context).size.width * 1,
       child: FutureBuilder(
-          future: handler.retrieveItems(widget.controller.text),
+          future: getitemOutlet(widget.controller.text),
           builder: (context, AsyncSnapshot<List<Item>> snapshot) {
             var x = snapshot.data ?? [];
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return ShimmerLoading(
+                isLoading: isLoading,
+                child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return ShimmerLoading(
+                          isLoading: isLoading,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            child: Text(''),
+                          ));
+                    }),
+              );
+            }
             if (x.isNotEmpty) {
               return ListView.builder(
                   itemCount: snapshot.data!.length,

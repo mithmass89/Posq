@@ -84,14 +84,14 @@ class _ClassPembelianMobileState extends State<ClassPembelianMobile> {
   ) async {
     print(items);
     //stok tidak bertambah karena trtpcd tidak terbaca/////
-    print(widget.trtpcd.trtp);
+    print(widget.trtpcd.progcd);
     Glftrdt debit = Glftrdt(
       trno: widget.trtpcd.refprefix! +
           periode! +
           '-' +
           widget.trtpcd.trnonext.toString(),
-      prodcd: items.itemcd,
-      proddesc:  _product.text,
+      prodcd: items.itemcode,
+      proddesc: _product.text,
       subtrno: widget.trtpcd.refprefix! +
           periode! +
           '-' +
@@ -120,7 +120,7 @@ class _ClassPembelianMobileState extends State<ClassPembelianMobile> {
       lcramt: 0,
       trdt: formatdate,
       notes: _note.text,
-      trtpcd: widget.trtpcd.trtp,
+      trtpcd: widget.trtpcd.progcd,
       active: 1,
       prd: periode!,
       qtyremain: double.parse(qty.text),
@@ -135,14 +135,14 @@ class _ClassPembelianMobileState extends State<ClassPembelianMobile> {
   Future<int> addJournalCredit(
     Item items,
   ) async {
-     print(items);
+    print(items);
     Glftrdt credit = Glftrdt(
       trno: widget.trtpcd.refprefix! +
           periode! +
           '-' +
           widget.trtpcd.trnonext.toString(),
-      prodcd: items.itemcd,
-      proddesc:  _product.text,
+      prodcd: items.itemcode,
+      proddesc: _product.text,
       subtrno: widget.trtpcd.refprefix! +
           periode! +
           '-' +
@@ -171,7 +171,7 @@ class _ClassPembelianMobileState extends State<ClassPembelianMobile> {
       lcramt: double.parse(totalprice.text),
       trdt: formatdate,
       notes: _note.text,
-      trtpcd: widget.trtpcd.trtp,
+      trtpcd: widget.trtpcd.progcd,
       active: 1,
       prd: periode!,
       qtyremain: double.parse(qty.text),
@@ -418,7 +418,7 @@ class _ClassPembelianMobileState extends State<ClassPembelianMobile> {
                       await addJournalDebit(items!).whenComplete(() async {
                         await addJournalCredit(items!).whenComplete(() async {
                           await handler.updateTrnoGntrantp(Gntrantp(
-                            trtp: '7010',
+                            progcd: '7010',
                           ));
                           Toast.show("Pembelian Sukses",
                               duration: Toast.lengthLong,

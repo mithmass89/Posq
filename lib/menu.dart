@@ -14,7 +14,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 typedef void StringCallback(Outlet val);
 
@@ -23,7 +23,7 @@ typedef void StringCallback(Outlet val);
 class MenuMain extends StatefulWidget {
   final StringCallback callback;
   late Outlet? outletinfo;
-  final String pscd;
+  late final String pscd;
 
   MenuMain(
       {Key? key,
@@ -37,7 +37,6 @@ class MenuMain extends StatefulWidget {
 }
 
 class _MenuMainState extends State<MenuMain> {
-  late DatabaseHandler handler;
   String? trno = '';
 
   deleteDatabase() async {
@@ -47,24 +46,10 @@ class _MenuMainState extends State<MenuMain> {
   @override
   void initState() {
     super.initState();
-    getTrno();
-  }
-
-  getTrno() async {
-  
-   final data = await Supabase.instance.client.from('outlet').select();
-    print(data);
-   
-  
-    // handler = DatabaseHandler();
-    // await handler.initializeDB(databasename);
-    // await handler.getTrno(widget.pscd).then((value) {
-    //   setState(() {
-    //     trno = '${widget.pscd}${value.first.trnonext}';
-    //   });
-    //   print('ini trno dari menu ${widget.pscd}${value.first.trnonext}');
-    // });
-    
+    print(widget.pscd);
+    var uuid = Uuid();
+    var random = uuid.v4();
+     trno = random;
   }
 
   @override
@@ -86,11 +71,10 @@ class _MenuMainState extends State<MenuMain> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ClassRetailMainMobile(
-                
                           trno: trno,
                           qty: 0,
                           pscd: widget.pscd.toString(),
-                          outletinfo:widget.outletinfo!,
+                          outletinfo: widget.outletinfo!,
                         )),
               );
             },
@@ -139,7 +123,10 @@ class _MenuMainState extends State<MenuMain> {
             onpressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Productmain()),
+                MaterialPageRoute(
+                    builder: (context) => Productmain(
+                          pscd: widget.outletinfo!.outletcd,
+                        )),
               );
             },
             name: 'Product',

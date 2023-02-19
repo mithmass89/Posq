@@ -6,7 +6,6 @@ INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\And
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-25:12
 MERGED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-25:12
 MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:app_links] E:\posplay2\posplay2\posplay\posplay\posq\build\app_links\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
@@ -64,7 +63,6 @@ MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Mitro\.gradle
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\403e5322101e882ebd13d146c86f92ca\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\16e110bf603f94cf61f970a18f3907e3\core-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\9a0e475eb211916dfa0da9de1d6c02a3\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:17:1-22:12
-MERGED from [org.microg:safe-parcel:1.7.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\fb086ef942009711eadf2081e599f783\jetified-safe-parcel-1.7.0\AndroidManifest.xml:6:1-14:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5bfc0955e244073bdc8cc139cda5e092\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\debug\AndroidManifest.xml:1:1-7:12
@@ -181,8 +179,6 @@ INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\And
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
 MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:app_links] E:\posplay2\posplay2\posplay\posplay\posq\build\app_links\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:app_links] E:\posplay2\posplay2\posplay\posplay\posq\build\app_links\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
@@ -297,8 +293,6 @@ MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\Mitro\.gradle\cache
 MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\16e110bf603f94cf61f970a18f3907e3\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\9a0e475eb211916dfa0da9de1d6c02a3\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\9a0e475eb211916dfa0da9de1d6c02a3\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
-MERGED from [org.microg:safe-parcel:1.7.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\fb086ef942009711eadf2081e599f783\jetified-safe-parcel-1.7.0\AndroidManifest.xml:10:5-12:41
-MERGED from [org.microg:safe-parcel:1.7.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\fb086ef942009711eadf2081e599f783\jetified-safe-parcel-1.7.0\AndroidManifest.xml:10:5-12:41
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5bfc0955e244073bdc8cc139cda5e092\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5bfc0955e244073bdc8cc139cda5e092\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\debug\AndroidManifest.xml

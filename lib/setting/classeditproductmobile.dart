@@ -49,8 +49,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    productcd.text = widget.productcode!.itemcd!;
+    productcd.text = widget.productcode!.itemcode!;
     productname.text = widget.productcode!.itemdesc!;
     description.text = widget.productcode!.description.toString();
     amountcost.text = widget.productcode!.costamt.toString();
@@ -69,8 +68,8 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
 
   Future<int> addItem() async {
     Item ctg = Item(
-      outletcd: 'OUTLET',
-      itemcd: productcd.text,
+      outletcode: 'OUTLET',
+      itemcode: productcd.text,
       itemdesc: productname.text,
       costcoa: 'COST',
       revenuecoa: 'REVENUE',
@@ -265,7 +264,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       ClassScanRegisterProdMobile(
-                                        produk: widget.productcode!.itemcd!,
+                                        produk: widget.productcode!.itemcode!,
                                         produkname:
                                             widget.productcode!.itemdesc!,
                                       )),
@@ -297,8 +296,8 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
                     handler.initializeDB(databasename).whenComplete(() async {
                       await handler.updateItems(Item(
                         trackstock: 0,
-                        outletcd: widget.productcode!.outletcd,
-                        itemcd: widget.productcode!.itemcd,
+                        outletcode: widget.productcode!.outletcode,
+                        itemcode: widget.productcode!.itemcode,
                         itemdesc: productname.text,
                         description: description.text,
                         slsamt: num.parse(amountsales.text),

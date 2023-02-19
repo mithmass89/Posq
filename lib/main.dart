@@ -6,13 +6,9 @@ import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
-  await Supabase.initialize(
-      url: 'https://nombrqzyjbsjrqpdauac.supabase.co',
-      anonKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vbWJycXp5amJzanJxcGRhdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTY0OTcyNTAsImV4cCI6MTk3MjA3MzI1MH0.HaMhfDPzjSTLtYYa05gO1C4CcpHKeBaGQChRgq0w3NM');
+
   runApp(MyApp(
     onGenerateRoute: RouteGenerator.generateRoute,
   ));
@@ -32,8 +28,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
+      
       title: 'POS Demo',
       theme: ThemeData(
+        useMaterial3: true,
         textTheme: GoogleFonts.nunitoSansTextTheme(textTheme).copyWith(),
         primarySwatch: Colors.blue,
       ),

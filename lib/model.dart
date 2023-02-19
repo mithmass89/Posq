@@ -10,6 +10,8 @@ class Outlet {
   final String? kodepos;
   final int? trnonext;
   final int? trnopynext;
+  final int? slstp;
+  final String? profile;
 
   Outlet({
     this.id,
@@ -20,6 +22,8 @@ class Outlet {
     this.kodepos,
     this.trnonext,
     this.trnopynext,
+    this.slstp,
+    this.profile,
   });
 
   Outlet.fromMap(Map<String, dynamic> res)
@@ -30,11 +34,13 @@ class Outlet {
         alamat = res["alamat"],
         kodepos = res["kodepos"].toString(),
         trnonext = res["trnonext"],
-        trnopynext = res["trnopynext"];
+        trnopynext = res["trnopynext"],
+        slstp = res['slstp'],
+        profile = res['profile'];
 
   @override
   String toString() {
-    return '{"id": $id, "outletcd": $outletcd,"outletname": $outletname,"telp": $telp,"alamat": $alamat,"kodepos": $kodepos,"trnonext": $trnonext,"trnopynext": $trnopynext}';
+    return '{"id": $id, "outletcd": $outletcd,"outletname": $outletname,"telp": $telp,"alamat": $alamat,"kodepos": $kodepos,"trnonext": $trnonext,"trnopynext": $trnopynext,slstp:$slstp,profile:$profile}';
   }
 
   Map<String, Object?> toMap() {
@@ -46,15 +52,17 @@ class Outlet {
       'alamat': alamat,
       'kodepos': kodepos.toString(),
       'trnonext': trnonext,
-      'trnopynext': trnopynext
+      'trnopynext': trnopynext,
+      'slstp': slstp,
+      'profile': profile,
     };
   }
 }
 
 class Item {
   final int? id;
-  final String? outletcd;
-  final String? itemcd;
+  final String? outletcode;
+  final String? itemcode;
   final String? itemdesc;
   final num? slsamt;
   final num? costamt;
@@ -76,8 +84,8 @@ class Item {
 
   Item({
     this.id,
-    this.outletcd,
-    this.itemcd,
+    this.outletcode,
+    this.itemcode,
     this.itemdesc,
     this.slsamt,
     this.costamt,
@@ -98,11 +106,11 @@ class Item {
     this.sku,
   });
 
-  Item.fromMap(
+  Item.fromJson(
     Map<String, dynamic> res,
   )   : id = res["id"],
-        outletcd = res["outletcd"],
-        itemcd = res["itemcd"],
+        outletcode = res["outletcode"],
+        itemcode = res["itemcode"],
         itemdesc = res["itemdesc"],
         slsamt = res["slsamt"],
         costamt = res["costamt"],
@@ -122,11 +130,16 @@ class Item {
         barcode = res["barcode"],
         sku = res["sku"];
 
-  Map<String, Object?> toMap() {
+  @override
+  String toString() {
+    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku}';
+  }
+
+  Map<String, Object?> toJson() {
     return {
       'id': id,
-      'outletcd': outletcd,
-      'itemcd': itemcd,
+      'outletcode': outletcode,
+      'itemcode': itemcode,
       'itemdesc': itemdesc,
       'slsamt': slsamt,
       'costamt': costamt,
@@ -220,13 +233,18 @@ class Ctg {
     required this.ctgdesc,
   });
 
-  Ctg.fromMap(
+  Ctg.fromJson(
     Map<String, dynamic> res,
   )   : id = res["id"],
         ctgcd = res["ctgcd"],
         ctgdesc = res["ctgdesc"];
 
-  Map<String, Object?> toMap() {
+  @override
+  String toString() {
+    return '{"id": $id, "ctgcd": $ctgcd,"ctgdesc": $ctgdesc}';
+  }
+
+  Map<String, Object?> toJson() {
     return {
       'id': id,
       'ctgcd': ctgcd,
@@ -239,10 +257,11 @@ class IafjrndtClass {
   final int? id;
   final String? trdt;
   final String? pscd;
-  late final String? trno;
+  late final String? transno;
   final String? split;
-  final String? trnobill;
-  final String? itemcd;
+  final String? transno1;
+  final String? itemdesc;
+  final String? itemcode;
   final String? trno1;
   final int? itemseq;
   final String? cono;
@@ -254,27 +273,27 @@ class IafjrndtClass {
   final num? ratebs1;
   final num? ratebs2;
   final num? rateamtcost;
-  final num? rateamt;
+  final num? rateamtitem;
   final num? rateamtservice;
   final num? rateamttax;
   final num? rateamttotal;
-  final num? rvnamt;
+  final num? revenueamt;
   final num? taxamt;
   final num? serviceamt;
-  final num? nettamt;
+  final num? totalaftdisc;
   final num? rebateamt;
   final String? rvncoa;
   final String? taxcoa;
   final String? servicecoa;
   final String? costcoa;
-  final String? active;
+  final int? active;
   final String? usercrt;
   final String? userupd;
   final String? userdel;
-  final String? prnkitchen;
+  final int? prnkitchen;
   final String? prnkitchentm;
   final String? confirmed;
-  final String? trdesc;
+  final String? description;
   final num? taxpct;
   final num? servicepct;
   final String? statustrans;
@@ -287,10 +306,11 @@ class IafjrndtClass {
     this.id,
     this.trdt,
     this.pscd,
-    this.trno,
+    this.transno,
     this.split,
-    this.trnobill,
-    this.itemcd,
+    this.transno1,
+    this.itemcode,
+    this.itemdesc,
     this.trno1,
     this.itemseq,
     this.cono,
@@ -302,14 +322,14 @@ class IafjrndtClass {
     this.ratebs1,
     this.ratebs2,
     this.rateamtcost,
-    this.rateamt,
+    this.rateamtitem,
     this.rateamtservice,
     this.rateamttax,
     this.rateamttotal,
-    this.rvnamt,
+    this.revenueamt,
     this.taxamt,
     this.serviceamt,
-    this.nettamt,
+    this.totalaftdisc,
     this.rebateamt,
     this.rvncoa,
     this.taxcoa,
@@ -322,7 +342,7 @@ class IafjrndtClass {
     this.prnkitchen,
     this.prnkitchentm,
     this.confirmed,
-    this.trdesc,
+    this.description,
     this.taxpct,
     this.servicepct,
     this.statustrans,
@@ -332,15 +352,16 @@ class IafjrndtClass {
     // this.phone,
   });
 
-  IafjrndtClass.fromMap(
+  IafjrndtClass.fromJson(
     Map<String, dynamic> res,
   )   : id = res["id"],
         trdt = res["trdt"],
         pscd = res["pscd"],
-        trno = res["trno"].toString(),
+        transno = res["transno"].toString(),
         split = res["split"],
-        trnobill = res["trnobill"],
-        itemcd = res["itemcd"],
+        transno1 = res["transno"],
+        itemcode = res["itemcode"],
+        itemdesc = res["itemdesc"],
         trno1 = res["trno1"],
         itemseq = res["itemseq"],
         cono = res["cono"],
@@ -352,14 +373,14 @@ class IafjrndtClass {
         ratebs1 = res["ratebs1"],
         ratebs2 = res["ratebs2"],
         rateamtcost = res["rateamtcost"],
-        rateamt = res["rateamt"],
+        rateamtitem = res["rateamtitem"],
         rateamtservice = res["rateamtservice"],
         rateamttax = res["rateamttax"],
         rateamttotal = res["rateamttotal"],
-        rvnamt = res["rvnamt"],
+        revenueamt = res["revenueamt"],
         taxamt = res["taxamt"],
         serviceamt = res["serviceamt"],
-        nettamt = res["nettamt"],
+        totalaftdisc = res["totalaftdisc"],
         rebateamt = res["rebateamt"],
         rvncoa = res["rvncoa"],
         taxcoa = res["taxcoa"],
@@ -372,7 +393,7 @@ class IafjrndtClass {
         prnkitchen = res["prnkitchen"],
         prnkitchentm = res["prnkitchentm"],
         confirmed = res["confirmed"],
-        trdesc = res["trdesc"],
+        description = res["description"],
         taxpct = res["taxpct"],
         servicepct = res["servicepct"],
         statustrans = res["statustrans"],
@@ -383,15 +404,16 @@ class IafjrndtClass {
 
   ;
 
-  Map<String, Object?> toMap() {
+  Map<String, Object?> toJson() {
     return {
       'id': id,
       'trdt': trdt,
       'pscd': pscd,
-      'trno': trno,
+      'transno': transno,
       'split': split,
-      'trnobill': trnobill,
-      'itemcd': itemcd,
+      'transno1': transno,
+      'itemcd': itemcode,
+      'itemdesc': itemdesc,
       'trno1': trno1,
       'itemseq': itemseq,
       'cono': cono,
@@ -403,14 +425,14 @@ class IafjrndtClass {
       'ratebs1': ratebs1,
       'ratebs2': ratebs2,
       'rateamtcost': rateamtcost,
-      'rateamt': rateamt,
+      'rateamtitem': rateamtitem,
       'rateamtservice': rateamtservice,
       'rateamttax': rateamttax,
       'rateamttotal': rateamttotal,
-      'rvnamt': rvnamt,
+      'revenueamt': revenueamt,
       'taxamt': taxamt,
       'serviceamt': serviceamt,
-      'nettamt': nettamt,
+      'totalaftdisc': totalaftdisc,
       'rebateamt': rebateamt,
       'rvncoa': rvncoa,
       'taxcoa': taxcoa,
@@ -423,7 +445,7 @@ class IafjrndtClass {
       'prnkitchen': prnkitchen,
       'prnkitchentm': prnkitchentm,
       'confirmed': confirmed,
-      'trdesc': trdesc,
+      'description': description,
       'taxpct': taxpct,
       'servicepct': servicepct,
       'statustrans': statustrans,
@@ -436,7 +458,7 @@ class IafjrndtClass {
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "trno": "$trno", "split": "$split", "trdesc": "$trdesc","qty": "$qty","rateamt": "$rateamt","nettamt": "$nettamt"}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc"}';
   }
 }
 
@@ -848,42 +870,43 @@ class Promo {
 
 class Gntrantp {
   final int? id;
-  final String trtp;
+  final String progcd;
   final String? ProgNm;
-  final int? reftp;
   final String? refprefix;
+  final String? profile;
   final int? trnonext;
 
   Gntrantp({
     this.id,
-    required this.trtp,
+    required this.progcd,
     this.ProgNm,
-    this.reftp,
     this.refprefix,
     this.trnonext,
+    this.profile,
   });
 
   Gntrantp.fromMap(Map<String, dynamic> res)
       : id = res["id"],
-        trtp = res["trtp"],
+        progcd = res["progcd"],
         ProgNm = res["ProgNm"],
-        reftp = res["reftp"],
         refprefix = res["refprefix"],
-        trnonext = res["trnonext"];
+        trnonext = res["trnonext"],
+        profile = res["profile"];
 
   @override
   String toString() {
-    return '{"trtp": $trtp,"ProgNm": $ProgNm,"reftp": $reftp,"refprefix": $refprefix,"trnonext": $trnonext}';
+    return '{"progcd": $progcd,"ProgNm": $ProgNm,"refprefix": $refprefix,"trnonext": $trnonext,profile:$profile}';
   }
-/// toJson original to object
+
+  /// toJson original to object
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'trtp': trtp,
+      'progcd': progcd,
       'ProgNm': ProgNm,
-      'reftp': reftp,
       'refprefix': refprefix,
       'trnonext': trnonext,
+      'profile': profile
     };
   }
 }

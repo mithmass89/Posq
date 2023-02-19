@@ -54,16 +54,16 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
         pymtmthd: 'Discount',
         ftotamt: data.amount != 0
             ? 0 - data.amount!
-            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
+            : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
         totalamt: data.amount != 0
             ? 0 - data.amount!
-            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
+            : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
         framtrmn: data.amount != 0
             ? 0 - data.amount!
-            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
+            : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
         amtrmn: data.amount != 0
             ? 0 - data.amount!
-            : 0 - ((widget.databill!.rvnamt! * data.pct!) / 100),
+            : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
         trdesc: 'Discount ${widget.trno}',
         trdesc2: 'Discount ${data.promodesc}',
         compcd: 'Discount',

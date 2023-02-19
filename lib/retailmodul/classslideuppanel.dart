@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/retailmodul/classedititemmobile.dart';
@@ -9,6 +10,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/classsumamryorderslidemobile.dart';
+import 'package:posq/userinfo.dart';
 
 typedef void StringCallback(IafjrndtClass val);
 
@@ -17,7 +19,7 @@ class SlideUpPanel extends StatefulWidget {
   final StringCallback callback;
   final IafjrndtClass? trnoinfo;
   final Outlet outletinfo;
-  final int? qty;
+  late int? qty;
   final num? amount;
   final List<IafjrndtClass> listdata;
   final Function? updatedata;
@@ -25,7 +27,6 @@ class SlideUpPanel extends StatefulWidget {
   final String trno;
   final bool animated;
   late num? sum;
-
 
   SlideUpPanel(
       {Key? key,
@@ -66,8 +67,6 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
     trno = widget.trno;
     formattedDate = formatter.format(now);
     getDataSlide();
@@ -75,12 +74,15 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   }
 
   getDataSlide() async {
-    handler = DatabaseHandler();
-    await handler.initializeDB(databasename);
-    handler.retrieveDetailIafjrndt(widget.trno.toString()).then((isi) {
+    await ClassApi.getTrnoDetail(trno, dbname, query).then((isi) {
       if (isi.isNotEmpty) {
+        num totalSlsNett = isi.fold(
+            0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
         setState(() {
           totalbarang = isi.length;
+          amounttotal = totalSlsNett;
+          ClassRetailMainMobile.of(context)!.string =
+              IafjrndtClass(totalaftdisc: totalSlsNett);
         });
       } else {
         setState(() {
@@ -89,11 +91,14 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
       }
     });
 
-    await handler.checktotalAmountNett(trno).then((value) {
-      setState(() {
-        amounttotal = value.first.nettamt;
-      });
-      ClassRetailMainMobile.of(context)!.string = value.first;
+    await ClassApi.getSumTrans(trno, dbname, query).then((value) {
+      if (value.isNotEmpty) {
+        setState(() {
+          amounttotal = value.first.totalaftdisc;
+        });
+      } else {
+        amounttotal = 0;
+      }
     });
   }
 
@@ -111,13 +116,6 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                 Icons.menu_sharp,
                 size: 25,
               )),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: Divider(),
-          //     ),
-          //   ],
-          // ),
 
           Container(
             decoration: BoxDecoration(
@@ -169,7 +167,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       double.parse(widget.qty.toString())
                   : MediaQuery.of(context).size.height * 0.11 * 4,
               child: FutureBuilder(
-                  future: handler.retrieveDetailIafjrndt(widget.trno),
+                  future: ClassApi.getTrnoDetail(trno, dbname, ''),
                   builder:
                       (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
                     if (snapshot.hasData) {
@@ -184,36 +182,25 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                 direction: DismissDirection.endToStart,
                                 onDismissed:
                                     (DismissDirection direction) async {
-                                  await handler
-                                      .deleteiafjrndtItems(
-                                          snapshot.data![index].id!.toInt())
+                                  await ClassApi.deactivePosdetail(
+                                          snapshot.data![index].id!.toInt(),
+                                          dbname)
                                       .whenComplete(() {
                                     setState(() {
                                       snapshot.data!
                                           .remove(snapshot.data![index]);
                                     });
-                                  }).then((value) {
-                                    getDataSlide();
+                                    widget.refreshdata;
+                                    ClassRetailMainMobile.of(context)!.string =
+                                        IafjrndtClass(
+                                            trdt: widget.trnoinfo!.trdt,
+                                            pscd: widget.trnoinfo!.pscd,
+                                            description: '',
+                                            totalaftdisc: 0,
+                                            transno: snapshot.data!.length == 0
+                                                ? null
+                                                : widget.trnoinfo!.transno);
                                   });
-                                  print(
-                                      'ini lenght : ${snapshot.data!.length}');
-                                  if (snapshot.data!.length == 0) {
-                                    await handler
-                                        .deletePromoActive(widget.trno)
-                                        .then((_) async {
-                                      setState(() {});
-
-                                      await widget.refreshdata;
-                                      await handler
-                                          .checktotalAmountNett(
-                                              widget.trno.toString())
-                                          .then((value) async {
-                                        setState(() {
-                                          widget.sum = value.first.nettamt!;
-                                        });
-                                      });
-                                    });
-                                  }
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -243,12 +230,13 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                             ClassRetailMainMobile.of(context)!
                                                     .string =
                                                 IafjrndtClass(
-                                                    trdt: widget.trnoinfo!.trno,
+                                                    trdt: widget
+                                                        .trnoinfo!.transno,
                                                     pscd: widget.trnoinfo!.pscd,
-                                                    trdesc: '',
-                                                    nettamt: 0,
-                                                    trno:
-                                                        widget.trnoinfo!.trno);
+                                                    description: '',
+                                                    totalaftdisc: 0,
+                                                    transno: widget
+                                                        .trnoinfo!.transno);
                                           } else {
                                             ClassRetailMainMobile.of(context)!
                                                 .string = result;
@@ -258,14 +246,14 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                         visualDensity: VisualDensity(
                                             vertical: -2), // to compact
                                         title: Text(
-                                            snapshot.data![index].trdesc!,
+                                            snapshot.data![index].description!,
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
                                         subtitle: Row(
                                           children: [
                                             Text(
-                                                '${CurrencyFormat.convertToIdr(snapshot.data![index].rateamt, 0)},',
+                                                '${CurrencyFormat.convertToIdr(snapshot.data![index].rateamtitem, 0)},',
                                                 style: TextStyle(fontSize: 12)),
                                             SizedBox(
                                               width: MediaQuery.of(context)
@@ -328,7 +316,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                       .width *
                                                   0.3,
                                               child: Text(
-                                                  '${CurrencyFormat.convertToIdr(snapshot.data![index].rvnamt, 0)}',
+                                                  '${CurrencyFormat.convertToIdr(snapshot.data![index].revenueamt, 0)}',
                                                   style: TextStyle(
                                                       fontSize: 12,
                                                       color: Colors.black54)),
@@ -354,15 +342,13 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                     }
                     return Container();
                   })),
-
           widget.qty != 0
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
-                
                     outletinfo: widget.outletinfo,
                     refreshdata: widget.refreshdata,
-                    updatedata:(){
+                    updatedata: () {
                       widget.refreshdata;
                     },
                     sum: widget.sum,
@@ -374,54 +360,6 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                   flex: 1,
                   child: Text(''),
                 ),
-          // Expanded(
-          //   flex: 1,
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //     children: [
-          //       Bouncing(
-          //           onPress: () {
-          //             print('simpan');
-          //           },
-          //           child: Container(
-          //             alignment: Alignment.center,
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(12),
-          //               color: Colors.blue,
-          //             ),
-          //             height: MediaQuery.of(context).size.height * 0.06,
-          //             width: MediaQuery.of(context).size.width * 0.4,
-          //             child: Text(
-          //               'Simpan',
-          //               style: TextStyle(
-          //                   color: Colors.white,
-          //                   fontWeight: FontWeight.bold,
-          //                   fontSize: 12),
-          //             ),
-          //           )),
-          //       Bouncing(
-          //           onPress: () async {
-
-          //           },
-          //           child: Container(
-          //             alignment: Alignment.center,
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(12),
-          //               color: Colors.blue,
-          //             ),
-          //             height: MediaQuery.of(context).size.height * 0.06,
-          //             width: MediaQuery.of(context).size.width * 0.4,
-          //             child: Text(
-          //               'Bayar Rp.${widget.amount ?? 0}',
-          //               style: TextStyle(
-          //                   color: Colors.white,
-          //                   fontWeight: FontWeight.bold,
-          //                   fontSize: 12),
-          //             ),
-          //           )),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );

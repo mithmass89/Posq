@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
@@ -11,6 +12,7 @@ import 'package:posq/image.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
+import 'package:posq/userinfo.dart';
 
 enum ImageSourceType { gallery, camera }
 
@@ -71,10 +73,10 @@ class _EditproductState extends State<Editproduct>
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
+
     controller = TabController(vsync: this, length: 2);
-    handler = DatabaseHandler();
-    productcd.text = widget.productcode!.itemcd!;
+
+    productcd.text = widget.productcode!.itemcode!;
     productname.text = widget.productcode!.itemdesc!;
     description.text = widget.productcode!.description.toString();
     amountcost.text = widget.productcode!.costamt.toString();
@@ -101,7 +103,7 @@ class _EditproductState extends State<Editproduct>
     });
   }
 
-    updateStockTrack(value) {
+  updateStockTrack(value) {
     setState(() {
       trackstock = value;
     });
@@ -160,7 +162,7 @@ class _EditproductState extends State<Editproduct>
                       selectedctg: selectedctg,
                     ),
                     ClassKelolaStockMobile(
-                      trackstockcallback:updateStockTrack,
+                      trackstockcallback: updateStockTrack,
                       data: widget.productcode!,
                       trackstock: widget.productcode!.trackstock!,
                       catatan: catatan,
@@ -190,38 +192,36 @@ class _EditproductState extends State<Editproduct>
                         100;
                   });
                   print(pctnett);
-                  handler = DatabaseHandler();
-                  handler.initializeDB(databasename).whenComplete(() async {
-                    await handler.updateItems(Item(
-                      trackstock: widget.productcode!.trackstock,
-                      outletcd: widget.productcode!.outletcd,
-                      itemcd: widget.productcode!.itemcd,
-                      itemdesc: productname.text,
-                      description: description.text,
-                      slsamt: num.parse(amountsales.text),
-                      costamt: num.parse(amountcost.text),
-                      slsnett: pctnett != 0
-                          ? num.parse(amountsales.text) * pctnett!.toDouble() +
-                              num.parse(amountsales.text)
-                          : num.parse(amountsales.text),
-                      taxpct: num.parse(pcttax.text),
-                      svchgpct: num.parse(pctservice.text),
-                      revenuecoa: revenuecoa.toString(),
-                      taxcoa: taxcoa.toString(),
-                      svchgcoa: svchgcoa,
-                      slsfl: salesflag!.toInt(),
-                      costcoa: costcoa.toString(),
-                      ctg: selectedctg,
-                      pathimage: pathimage,
-                      stock:widget.productcode!.stock,
-                      id: widget.productcode!.id,
-                      barcode:barcode.text ,
-                      sku: sku.text
-                    ));
-                    setState(() {});
-                  }).then((_) {
-                    Navigator.of(context).pop(context);
-                  });
+
+                  await ClassApi.updateProduct(
+                      Item(
+                          trackstock: widget.productcode!.trackstock,
+                          outletcode: widget.productcode!.outletcode,
+                          itemcode: widget.productcode!.itemcode,
+                          itemdesc: productname.text,
+                          description: description.text,
+                          slsamt: num.parse(amountsales.text),
+                          costamt: num.parse(amountcost.text),
+                          slsnett: pctnett != 0
+                              ? num.parse(amountsales.text) *
+                                      pctnett!.toDouble() +
+                                  num.parse(amountsales.text)
+                              : num.parse(amountsales.text),
+                          taxpct: num.parse(pcttax.text),
+                          svchgpct: num.parse(pctservice.text),
+                          revenuecoa: revenuecoa.toString(),
+                          taxcoa: taxcoa.toString(),
+                          svchgcoa: svchgcoa,
+                          slsfl: salesflag!.toInt(),
+                          costcoa: costcoa.toString(),
+                          ctg: selectedctg,
+                          pathimage: pathimage,
+                          stock: widget.productcode!.stock,
+                          id: widget.productcode!.id,
+                          barcode: barcode.text,
+                          sku: sku.text),
+                      pscd);
+                  Navigator.of(context).pop(context);
                 }),
           ),
         ],

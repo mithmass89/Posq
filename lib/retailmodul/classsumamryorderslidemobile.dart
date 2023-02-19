@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/classcreatepromomobile.dart';
@@ -8,6 +9,7 @@ import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/selectdiscountmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class SummaryOrderSlidemobile extends StatefulWidget {
   final String trno;
@@ -15,7 +17,7 @@ class SummaryOrderSlidemobile extends StatefulWidget {
   late num? sum;
   final Function? updatedata;
   final VoidCallback? refreshdata;
-   final  Outlet outletinfo;
+  final Outlet outletinfo;
 
   SummaryOrderSlidemobile(
       {Key? key,
@@ -23,7 +25,8 @@ class SummaryOrderSlidemobile extends StatefulWidget {
       required this.pscd,
       required this.sum,
       required this.updatedata,
-      required this.refreshdata,required this.outletinfo})
+      required this.refreshdata,
+      required this.outletinfo})
       : super(key: key);
 
   @override
@@ -38,17 +41,14 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    result = Promo(promocd: '', amount: 0);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: handler.summarybill(widget.trno),
+        future: ClassApi.getSumTrans(widget.trno, dbname, ''),
         builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
           var x = snapshot.data ?? [];
-
           if (x.isNotEmpty) {
             return SizedBox(
               width: MediaQuery.of(context).size.width * 1,
@@ -62,7 +62,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                     dense: true,
                     title: Text('Total'),
                     trailing:
-                        Text(CurrencyFormat.convertToIdr(x.first.rvnamt, 0)),
+                        Text(CurrencyFormat.convertToIdr(x.first.revenueamt, 0)),
                   ),
                   ListTile(
                       onTap: x.first.discamt == 0
@@ -141,7 +141,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                           onPressed: () async {
                                             await handler
                                                 .deletePromoActive(
-                                                    x.first.trno!)
+                                                    x.first.transno!)
                                                 .whenComplete(() {
                                               setState(() {});
                                             });
@@ -151,7 +151,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                                 .then((value) async {
                                               setState(() {
                                                 widget.sum =
-                                                    value.first.nettamt!;
+                                                    value.first.totalaftdisc!;
                                               });
                                               await widget.updatedata;
                                               await widget.refreshdata!;
@@ -180,18 +180,17 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                     visualDensity: VisualDensity(vertical: -4), // to compact
                     dense: true,
                     title: Text('Grand total'),
-                    trailing:
-                        Text(CurrencyFormat.convertToIdr(x.first.nettamt, 0)),
+                    trailing: Text(
+                        CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0)),
                   ),
                   TextButton(
                       onPressed: () async {
                         await showDialog(
                             context: context,
                             builder: (_) => DialogClassCancelorder(
-                      
-                              outletinfo: widget.outletinfo,
+                                outletinfo: widget.outletinfo,
                                 outletcd: widget.pscd!,
-                                trno: x.first.trno!)).then((_) {
+                                trno: x.first.transno!)).then((_) {
                           setState(() {});
                         });
                       },
