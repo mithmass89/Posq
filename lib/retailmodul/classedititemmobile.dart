@@ -455,67 +455,10 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                             ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) * (service.text == '' ? 0 : num.parse(service.text) / 100) +
                             ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) * (tax.text == '' ? 0 : num.parse(tax.text) / 100),
                         id: widget.data.id),
-                    pscd);
-                // await handler.updateIafjrndtitem(IafjrndtClass(
-                //     itemcode: widget.data.itemcode,
-                //     description: widget.editdesc.text,
-                //     qty: qty.toInt(),
-                //     rateamtitem: int.parse(widget.editamount.text),
-                //     discamt: discbyamount == true
-                //         ? (discountamount.text == ''
-                //             ? 0
-                //             : qty.toInt() * num.parse(discountamount.text))
-                //         : (qty.toInt() *
-                //             (int.parse(widget.editamount.text) *
-                //                 num.parse(discountpct.text==''?'0':discountpct.text) /
-                //                 100)),
-                //     discpct: discountpct.text == ''
-                //         ? 0
-                //         : num.parse(discountpct.text),
-                //     taxpct: tax.text == '' ? 0 : num.parse(tax.text),
-                //     servicepct:
-                //         service.text == '' ? 0 : num.parse(service.text),
-                //     revenueamt: (qty.toInt() * int.parse(widget.editamount.text)) -
-                //         (discbyamount == true
-                //             ? (discountamount.text == ''
-                //                 ? 0
-                //                 : qty.toInt() * num.parse(discountamount.text))
-                //             : (qty.toInt() *
-                //                 (int.parse(widget.editamount.text) *
-                //                     num.parse(discountpct.text==''?'0':discountpct.text) /
-                //                     100))),
-                //     taxamt: ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text==''?'0':discountpct.text) / 100)))) *
-                //         (tax.text == '' ? 0 : num.parse(tax.text) / 100),
-                //     serviceamt: ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text==''?'0':discountpct.text) / 100)))) *
-                //         (service.text == ''
-                //             ? 0
-                //             : num.parse(service.text) / 100),
-                //     totalaftdisc: (qty.toInt() * int.parse(widget.editamount.text)) -
-                //         (discbyamount == true
-                //             ? (discountamount.text == ''
-                //                 ? 0
-                //                 : qty.toInt() * num.parse(discountamount.text))
-                //             : (qty.toInt() *
-                //                 (int.parse(widget.editamount.text) *
-                //                     num.parse(discountpct.text==''?'0':discountpct.text) /
-                //                     100))) +
-                //         ((qty.toInt() * int.parse(widget.editamount.text)) -
-                //                 (discbyamount == true
-                //                     ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text))
-                //                     : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text==''?'0':discountpct.text) / 100)))) *
-                //             (service.text == '' ? 0 : num.parse(service.text) / 100) +
-                //         ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text==''?'0':discountpct.text) / 100)))) * (tax.text == '' ? 0 : num.parse(tax.text) / 100),
-                //     id: widget.data.id));
-                // Navigator.of(context).pop(IafjrndtClass(
-                //   itemcode: widget.data.itemcode,
-                //   description: widget.editdesc.text,
-                //   qty: qty.toInt(),
-                //   rateamtitem: int.parse(widget.editamount.text),
-                //   revenueamt: qty.toInt() * int.parse(widget.editamount.text),
-                //   taxamt: 0,
-                //   serviceamt: 0,
-                //   totalaftdisc: qty.toInt() * int.parse(widget.editamount.text),
-                // ));
+                    pscd).whenComplete(() {
+                      Navigator.of(context).pop();
+                    });
+             
               },
               child: Container(
                 alignment: Alignment.center,
@@ -524,7 +467,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                   color: Colors.blue,
                 ),
                 height: MediaQuery.of(context).size.height * 0.06,
-                width: MediaQuery.of(context).size.width * 0.9,
+                width: MediaQuery.of(context).size.width * 0.6,
                 child: Text(
                   'Simpan',
                   style: TextStyle(

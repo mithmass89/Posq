@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/classui/classpaymentsuccessmobile.dart';
+import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/searchwidget.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/classcategorylist.dart';
@@ -18,6 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:posq/userinfo.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class DialogClass1 extends StatefulWidget {
   final bool fromreopen;
@@ -717,105 +718,104 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
         title: Text('Deskripsi Produk'),
         actions: <Widget>[
           ElevatedButton(
-              onPressed: () async{
-                  await insertIafjrndt(formattedDate);
-                    setState(() {
-                      hasil = IafjrndtClass(
-                        trdt: formattedDate,
-                        pscd: widget.outletinfo.outletcd,
-                        transno: widget.trno,
-                        split: 'A',
-                        transno1: 'trnobill',
-                        itemcode: widget.controller.text,
-                        trno1: widget.trno,
-                        itemseq: widget.itemlenght,
-                        cono: 'cono',
-                        waitercd: 'waitercd',
-                        discpct: 0,
-                        discamt: 0,
-                        qty: 1,
-                        ratecurcd: 'Rupiah',
-                        ratebs1: 1,
-                        ratebs2: 1,
-                        rateamtcost: widget.result!.toDouble(),
-                        rateamtitem: widget.result!.toDouble(),
-                        rateamtservice: 0,
-                        rateamttax: 0,
-                        rateamttotal: widget.result!.toDouble(),
-                        revenueamt: widget.result!.toDouble(),
-                        taxamt: 0,
-                        serviceamt: 0,
-                        totalaftdisc: widget.result!.toDouble(),
-                        rebateamt: 0,
-                        rvncoa: 'REVENUE',
-                        taxcoa: 'TAX',
-                        servicecoa: 'SERVICE',
-                        costcoa: 'COST',
-                        active: 1,
-                        usercrt: 'Admin',
-                        userupd: 'Admin',
-                        userdel: 'Admin',
-                        prnkitchen: 0,
-                        prnkitchentm: now.hour.toString() +
-                            ":" +
-                            now.minute.toString() +
-                            ":" +
-                            now.second.toString(),
-                        confirmed: '1',
-                        description: widget.controller.text,
-                        taxpct: 0,
-                        servicepct: 0,
-                      );
-                      // ClassRetailMainMobile.of(context)!.string = hasil;
-                    });
-              
-                    await getDataSlide();
-                    setState(() {
-                      counter++;
-                    });
-                    Navigator.of(context).pop(IafjrndtClass(
-                      trdt: hasil.trdt,
-                      pscd: hasil.pscd,
-                      transno: hasil.transno,
-                      split: hasil.split,
-                      transno1: hasil.transno,
-                      itemcode: hasil.itemcode,
-                      trno1: hasil.trno1,
-                      itemseq: hasil.itemseq,
-                      cono: hasil.cono,
-                      waitercd: hasil.waitercd,
-                      discpct: hasil.discpct,
-                      discamt: hasil.discamt,
-                      qty: hasil.qty,
-                      ratecurcd: hasil.ratecurcd,
-                      ratebs1: hasil.ratebs1,
-                      ratebs2: hasil.ratebs2,
-                      rateamtcost: hasil.rateamtcost,
-                      rateamtitem: hasil.rateamtitem,
-                      rateamtservice: hasil.rateamtservice,
-                      rateamttax: hasil.rateamttax,
-                      rateamttotal: hasil.rateamttotal,
-                      revenueamt: hasil.revenueamt,
-                      taxamt: hasil.taxamt,
-                      serviceamt: hasil.serviceamt,
-                      totalaftdisc: hasil.totalaftdisc,
-                      rebateamt: hasil.rebateamt,
-                      rvncoa: hasil.rvncoa,
-                      taxcoa: hasil.taxcoa,
-                      servicecoa: hasil.servicecoa,
-                      costcoa: hasil.costcoa,
-                      active: hasil.active,
-                      usercrt: hasil.usercrt,
-                      userupd: hasil.userupd,
-                      userdel: hasil.userdel,
-                      prnkitchen: hasil.prnkitchen,
-                      prnkitchentm: hasil.prnkitchentm,
-                      confirmed: hasil.confirmed,
-                      description: hasil.description,
-                    ));
-          
-                  widget.cleartext();
-              
+              onPressed: () async {
+                await insertIafjrndt(formattedDate);
+                setState(() {
+                  hasil = IafjrndtClass(
+                    trdt: formattedDate,
+                    pscd: widget.outletinfo.outletcd,
+                    transno: widget.trno,
+                    split: 'A',
+                    transno1: 'trnobill',
+                    itemcode: widget.controller.text,
+                    trno1: widget.trno,
+                    itemseq: widget.itemlenght,
+                    cono: 'cono',
+                    waitercd: 'waitercd',
+                    discpct: 0,
+                    discamt: 0,
+                    qty: 1,
+                    ratecurcd: 'Rupiah',
+                    ratebs1: 1,
+                    ratebs2: 1,
+                    rateamtcost: widget.result!.toDouble(),
+                    rateamtitem: widget.result!.toDouble(),
+                    rateamtservice: 0,
+                    rateamttax: 0,
+                    rateamttotal: widget.result!.toDouble(),
+                    revenueamt: widget.result!.toDouble(),
+                    taxamt: 0,
+                    serviceamt: 0,
+                    totalaftdisc: widget.result!.toDouble(),
+                    rebateamt: 0,
+                    rvncoa: 'REVENUE',
+                    taxcoa: 'TAX',
+                    servicecoa: 'SERVICE',
+                    costcoa: 'COST',
+                    active: 1,
+                    usercrt: 'Admin',
+                    userupd: 'Admin',
+                    userdel: 'Admin',
+                    prnkitchen: 0,
+                    prnkitchentm: now.hour.toString() +
+                        ":" +
+                        now.minute.toString() +
+                        ":" +
+                        now.second.toString(),
+                    confirmed: '1',
+                    description: widget.controller.text,
+                    taxpct: 0,
+                    servicepct: 0,
+                  );
+                  // ClassRetailMainMobile.of(context)!.string = hasil;
+                });
+
+                await getDataSlide();
+                setState(() {
+                  counter++;
+                });
+                Navigator.of(context).pop(IafjrndtClass(
+                  trdt: hasil.trdt,
+                  pscd: hasil.pscd,
+                  transno: hasil.transno,
+                  split: hasil.split,
+                  transno1: hasil.transno,
+                  itemcode: hasil.itemcode,
+                  trno1: hasil.trno1,
+                  itemseq: hasil.itemseq,
+                  cono: hasil.cono,
+                  waitercd: hasil.waitercd,
+                  discpct: hasil.discpct,
+                  discamt: hasil.discamt,
+                  qty: hasil.qty,
+                  ratecurcd: hasil.ratecurcd,
+                  ratebs1: hasil.ratebs1,
+                  ratebs2: hasil.ratebs2,
+                  rateamtcost: hasil.rateamtcost,
+                  rateamtitem: hasil.rateamtitem,
+                  rateamtservice: hasil.rateamtservice,
+                  rateamttax: hasil.rateamttax,
+                  rateamttotal: hasil.rateamttotal,
+                  revenueamt: hasil.revenueamt,
+                  taxamt: hasil.taxamt,
+                  serviceamt: hasil.serviceamt,
+                  totalaftdisc: hasil.totalaftdisc,
+                  rebateamt: hasil.rebateamt,
+                  rvncoa: hasil.rvncoa,
+                  taxcoa: hasil.taxcoa,
+                  servicecoa: hasil.servicecoa,
+                  costcoa: hasil.costcoa,
+                  active: hasil.active,
+                  usercrt: hasil.usercrt,
+                  userupd: hasil.userupd,
+                  userdel: hasil.userdel,
+                  prnkitchen: hasil.prnkitchen,
+                  prnkitchentm: hasil.prnkitchentm,
+                  confirmed: hasil.confirmed,
+                  description: hasil.description,
+                ));
+
+                widget.cleartext();
               },
               child: Text(
                 'Ok!',
@@ -918,39 +918,15 @@ class DialogClassCancelorder extends StatefulWidget {
 }
 
 class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
-  late DatabaseHandler handler;
   int? trno;
   String? trnolanjut;
 
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
-  }
-
-  Future<dynamic> checkTrno() async {
-    await handler.getTrno(widget.outletcd.toString()).then((value) {
-      setState(() {
-        trno = value.first.trnonext;
-      });
-    });
-    await updateTrnonext();
-  }
-
-  updateTrnonext() async {
-    await handler.updateTrnoNext(
-        Outlet(outletcd: widget.outletcd.toString(), trnonext: trno! + 1));
-  }
-
-  getTrno() async {
-    handler = DatabaseHandler();
-    await handler.initializeDB(databasename);
-    await handler.getTrno(widget.outletcd).then((value) {
-      setState(() {
-        trnolanjut = '${widget.outletcd}${value.first.trnonext}';
-      });
-    });
+    var uuid = Uuid();
+    var random = uuid.v4();
+    trnolanjut = random;
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -978,34 +954,25 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
             )),
         title: Text('Cancel Transaksi'),
         actions: <Widget>[
+          TextButton(onPressed: ()  {
+            Navigator.of(context).pop();
+          }, child: Text('Batal')),
           TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(false);
-              },
-              child: Text('Batal')),
-          TextButton(
-              onPressed: () async {
-                await handler.activeZeroiafjrndttrno(
-                    IafjrndtClass(active: 0, transno: widget.trno));
-                await handler.activeZeroiafjrnhdtrno(
-                    IafjrnhdClass(active: '1', trno: widget.trno));
-
-                // Navigator.of(context).pushNamedAndRemoveUntil(
-                //     '/', (Route<dynamic> route) => false);
-                await checkTrno().whenComplete(() async {
-                  await getTrno();
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.remove('savecostmrs');
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => ClassRetailMainMobile(
-                                pscd: widget.outletcd,
-                                trno: trnolanjut,
-                                outletinfo: widget.outletinfo,
-                                qty: 0,
-                              )),
-                      (Route<dynamic> route) => false);
-                });
+                await ClassApi.deactivePosdetailtrans(widget.trno, dbname);
+                await ClassApi.deactivePosPaymenttrans(widget.trno, dbname);
+                await ClassApi.deactivePromoTrno(widget.trno, dbname);
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('savecostmrs');
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => ClassRetailMainMobile(
+                              pscd: widget.outletcd,
+                              trno: trnolanjut,
+                              outletinfo: widget.outletinfo,
+                              qty: 0,
+                            )),
+                    (Route<dynamic> route) => false);
               },
               child: Text('OK!'))
         ],
@@ -1322,7 +1289,8 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
   Future<int> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
-        trno: widget.trno,
+        transno: widget.trno,
+        transno1: widget.trno,
         split: 'A',
         pscd: widget.pscd,
         trtm: now.hour.toString() +
@@ -1339,12 +1307,13 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
         amtrmn: double.parse(widget.result.toString()),
         compcd: widget.compcd.toString(),
         compdesc: widget.compdesc.toString(),
-        active: '1',
+        active: 1,
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');
-    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
-    return await handler.insertIafjrnhd(listiafjrnhd);
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
   }
 
   @override
@@ -1491,7 +1460,8 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
   Future<int> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
       trdt: formattedDate,
-      trno: widget.trno,
+      transno: widget.trno,
+      transno1: widget.trno,
       split: 'A',
       pscd: widget.pscd,
       trtm: now.hour.toString() +
@@ -1508,14 +1478,15 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
       amtrmn: double.parse(widget.result.toString()),
       compcd: widget.compcd.toString(),
       compdesc: widget.compdesc.toString(),
-      active: '1',
+      active: 1,
       usercrt: 'Admin',
       slstp: '1',
       currcd: 'IDR',
       virtualaccount: widget.virtualaccount,
     );
-    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
-    return await handler.insertIafjrnhd(listiafjrnhd);
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
   }
 
   @override
@@ -1671,7 +1642,8 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
   Future<int> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
-        trno: widget.trno,
+        transno: widget.trno,
+        transno1: widget.trno,
         split: 'A',
         pscd: widget.pscd,
         trtm: now.hour.toString() +
@@ -1688,12 +1660,13 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
         amtrmn: double.parse(widget.result.toString()),
         compcd: widget.compcd.toString(),
         compdesc: widget.compdesc.toString(),
-        active: '1',
+        active: 1,
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');
-    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
-    return await handler.insertIafjrnhd(listiafjrnhd);
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
   }
 
   @override

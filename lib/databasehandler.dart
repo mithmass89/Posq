@@ -207,7 +207,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var item in items) {
-      result = await db.insert('promo', item.toMap());
+      result = await db.insert('promo', item.toJson());
       print(item.promodesc);
     }
     return result;
@@ -227,7 +227,7 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB(databasename);
     for (var item in items) {
-      result = await db.insert('iafjrnhd', item.toMap());
+      result = await db.insert('iafjrnhd', item.toJson());
     }
     print(items.first.trdesc);
     return result;
@@ -351,7 +351,7 @@ class DatabaseHandler {
     final Database db = await initializeDB(databasename);
     final List<Map<String, Object?>> queryResult = await db
         .rawQuery('select * from promo where promodesc like "%$query%"');
-    return queryResult.map((e) => Promo.fromMap(e)).toList();
+    return queryResult.map((e) => Promo.fromJson(e)).toList();
   }
 
   Future<List<Costumers>> retrieveListCustomers(String query) async {
@@ -385,7 +385,7 @@ select trno,sum(x.rvnamt) as rvnamt,sum(x.discamt) as discamt,sum(x.taxamt) as t
     }
 
     print(queryResult);
-    return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrnhdClass.fromJson(e)).toList();
   }
 
   // Future<List<Ctg>> retrieveCTG() async {
@@ -554,7 +554,7 @@ select sum(x.nettamt) as nettamt from
         ''');
     print(queryResult);
 
-    return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrnhdClass.fromJson(e)).toList();
   }
 
   //////////cashier summry//////////////////////
@@ -573,7 +573,7 @@ select sum(x.nettamt) as nettamt from
         ''');
     print(queryResult);
 
-    return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrnhdClass.fromJson(e)).toList();
   }
 
   //////////cashier summry Detail//////////////////////
@@ -592,7 +592,7 @@ select sum(x.nettamt) as nettamt from
         ''');
     print(queryResult);
 
-    return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrnhdClass.fromJson(e)).toList();
   }
 
   Future<List<Ringkasan>> ringkasanPenjualan(
@@ -670,7 +670,7 @@ where x.nettamt<>0
         "select * from iafjrnhd where trno='${trno}' and active='1' and pymtmthd<>'Discount'");
     print(queryResult);
 
-    return queryResult.map((e) => IafjrnhdClass.fromMap(e)).toList();
+    return queryResult.map((e) => IafjrnhdClass.fromJson(e)).toList();
   }
 
   Future<void> deleteUser(int id) async {
@@ -770,7 +770,7 @@ where x.nettamt<>0
     SET active=? WHERE trno = ?
     ''', [
       iafjrnhd.active,
-      iafjrnhd.trno,
+      iafjrnhd.transno,
     ]);
   }
 

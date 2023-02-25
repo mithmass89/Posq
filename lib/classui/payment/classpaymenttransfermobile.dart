@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/dialogclass.dart';
-import 'package:posq/classui/midtrans.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,7 +96,8 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
   Future<int> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
-        trno: widget.trno,
+        transno: widget.trno,
+          transno1: widget.trno,
         split: 'A',
         pscd: widget.pscd,
         trtm: '00:00',
@@ -109,7 +110,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
         amtrmn: double.parse(widget.balance.toString()),
         compcd: compcd,
         compdesc: compdesc,
-        active: '1',
+        active: 1,
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');

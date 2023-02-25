@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class SlideupPayment extends StatefulWidget {
   final String trno;
@@ -19,12 +21,16 @@ class SlideupPayment extends StatefulWidget {
 }
 
 class _SlideupPaymentState extends State<SlideupPayment> {
-  late DatabaseHandler handler;
+  List<IafjrnhdClass> data = [];
 
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
+    getPaymentList();
+  }
+
+  getPaymentList() async {
+    data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
   }
 
   @override
@@ -44,22 +50,21 @@ class _SlideupPaymentState extends State<SlideupPayment> {
           width: MediaQuery.of(context).size.width * 0.8,
           height: MediaQuery.of(context).size.height * 0.2,
           child: FutureBuilder(
-              future: handler.retriveListDetailPayment(widget.trno),
+              future: ClassApi.getDetailPayment(widget.trno, dbname, ''),
               builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
                 var x = snapshot.data ?? [];
-                // print(x.first.trno);
-                if (x.isNotEmpty) {
+                print('ini x: $data');
+                if (data.isNotEmpty) {
                   return ListView.builder(
                       controller: widget.controllers,
-                      itemCount: x.length,
+                      itemCount: data.length,
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
                             ListTile(
-                                 visualDensity: VisualDensity(
-                                            vertical: -2), // t
+                              visualDensity: VisualDensity(vertical: -2), // t
                               dense: true,
-                              title: Text(x[index].trno.toString()),
+                              title: Text(data[index].transno.toString()),
                               trailing: Container(
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 height:
@@ -70,18 +75,17 @@ class _SlideupPaymentState extends State<SlideupPayment> {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.15,
-                                        child:
-                                            Text(x[index].amtrmn.toString())),
+                                        child: Text(data[index].totalamt.toString())),
                                     IconButton(
                                         icon: Icon(
-                                          Icons.delete,
+                                          Icons.close,
                                         ),
                                         iconSize: 30,
                                         color: Colors.blue,
                                         splashColor: Colors.transparent,
                                         onPressed: () async {
-                                          await handler
-                                              .deletepayment(x[index].id!)
+                                          await ClassApi.deletePayment(
+                                                  dbname, x[index].id!)
                                               .whenComplete(() async {
                                             await widget.callback();
                                           });

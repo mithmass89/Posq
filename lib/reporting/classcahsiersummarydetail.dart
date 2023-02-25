@@ -45,7 +45,7 @@ class _ClassCashierSummaryDetailState extends State<ClassCashierSummaryDetail> {
                           ListTile(
                               dense: true,
                               leading: Text(x[index].trdt!),
-                              title: Text(x[index].trno!),
+                              title: Text(x[index].transno!),
                               subtitle: Text(x[index].pymtmthd!),
                               trailing: Text(CurrencyFormat.convertToIdr(
                                   x[index].ftotamt, 0))),

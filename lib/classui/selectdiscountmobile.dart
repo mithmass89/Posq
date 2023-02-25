@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/classcreatepromomobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class SelectPromoMobile extends StatefulWidget {
   final String? trno;
@@ -13,14 +15,15 @@ class SelectPromoMobile extends StatefulWidget {
   final IafjrndtClass? databill;
   final Function? updatedata;
   final VoidCallback? refreshdata;
+  late num sum;
 
-  const SelectPromoMobile(
+   SelectPromoMobile(
       {Key? key,
       required this.trno,
       required this.pscd,
       required this.databill,
       required this.updatedata,
-      required this.refreshdata})
+      required this.refreshdata, required this.sum})
       : super(key: key);
 
   @override
@@ -42,10 +45,11 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
     formattedDate = formatter.format(now);
   }
 
-  Future<int> insertIafjrnhdPromo(Promo data) async {
+  Future<dynamic> insertIafjrnhdPromo(Promo data) async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
-        trno: '${widget.trno}',
+        transno: '${widget.trno}',
+        transno1: widget.trno!,
         split: 'A',
         pscd: '${widget.pscd}',
         trtm: '00:00',
@@ -68,14 +72,13 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
         trdesc2: 'Discount ${data.promodesc}',
         compcd: 'Discount',
         compdesc: 'Discount',
-        active: '1',
+        active: 1,
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');
-
-    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
-
-    return await handler.insertIafjrnhd(listiafjrnhd);
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
   }
 
   @override
@@ -104,7 +107,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
             ),
           ),
           FutureBuilder(
-              future: handler.retrievePromo(query),
+              future: ClassApi.getPromoList(dbname, query),
               builder:
                   (BuildContext context, AsyncSnapshot<List<Promo>> snapshot) {
                 var x = snapshot.data ?? [];
@@ -125,7 +128,8 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                                 await insertIafjrnhdPromo(snapshot.data![index])
                                     .then((_) async {
                                   await handler
-                                      .checktotalAmountNett(widget.trno.toString())
+                                      .checktotalAmountNett(
+                                          widget.trno.toString())
                                       .then((value) async {
                                     setState(() {
                                       // widget.sum = value.first.nettamt!;
@@ -135,11 +139,10 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                                     print('ini ${value}');
                                   });
                                 });
-                                await handler
-                                    .checktotalAmountNett(widget.trno.toString())
+                                await ClassApi.getSumTrans(widget.trno!,pscd,'')
                                     .then((value) async {
                                   setState(() {
-                                    // widget.sum = value.first.nettamt!;
+                                    widget.sum = value.first.totalaftdisc!;
                                   });
                                   print('ini ${value}');
                                   await widget.refreshdata;

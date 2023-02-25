@@ -37,16 +37,24 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   bool isLoading = true;
+  Future? getOutletItem;
 
   @override
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
+    getOutletItem = getItems(widget.controller.text);
+  }
+
+  getItems(query) {
+    getitemOutlet(query);
   }
 
   Future<List<Item>> getitemOutlet(query) async {
+    isLoading = true;
     List<Item> data =
         await ClassApi.getItemList(widget.pscd!, widget.pscd!, query);
+    isLoading = false;
     return data;
   }
 
@@ -61,31 +69,30 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
           builder: (context, AsyncSnapshot<List<Item>> snapshot) {
             var x = snapshot.data ?? [];
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return ShimmerLoading(
-                isLoading: isLoading,
-                child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return ShimmerLoading(
-                          isLoading: isLoading,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.06,
-                            child: Text(''),
-                          ));
-                    }),
-              );
-            }
-            if (x.isNotEmpty) {
+              return ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return ShimmerLoading(
+                        isLoading: !isLoading,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          child: Text(''),
+                        ));
+                  });
+            } else if (snapshot.hasError) {
+            } else if (snapshot.hasData) {
               return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    var _image =
-                        File(snapshot.data![index].pathimage.toString());
-                    return ClassitemRetailMobile(
-                      trno: widget.trno,
-                      trdt: formattedDate,
-                      item: snapshot.data![index],
-                      image: _image,
+                    var _image = File(x[index].pathimage.toString());
+                    return ShimmerLoading(
+                      isLoading: isLoading,
+                      child: ClassitemRetailMobile(
+                        trno: widget.trno,
+                        trdt: formattedDate,
+                        item: snapshot.data![index],
+                        image: _image,
+                      ),
                     );
                   });
             } else if (snapshot.hasError) {
@@ -94,7 +101,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('tidak produk tersedia'),
+                    Text(snapshot.hasError.toString()),
                     TextButton(onPressed: () {}, child: Text('Buat Produk'))
                   ],
                 ),

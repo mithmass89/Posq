@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/dialogclass.dart';
-import 'package:posq/classui/midtrans.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/integrasipayment/classpaymentmidtrans.dart';
 import 'package:posq/model.dart';
@@ -68,7 +68,6 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
   void initState() {
     super.initState();
     handler = DatabaseHandler();
-
     handler.initializeDB(databasename);
     paymentapi = PaymentGate();
     formattedDate = formatter.format(now);

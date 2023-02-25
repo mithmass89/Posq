@@ -29,7 +29,7 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
   void initState() {
     super.initState();
     this.handler = DatabaseHandler();
-    print(widget.datatransaksi!.statustrans!);
+
   }
 
   @override
@@ -55,29 +55,15 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
           semanticLabel: 'Text to announce in accessibility modes',
         ),
       ),
-      title: Text(widget.datatransaksi!.transno.toString()),
-      subtitle: Text(widget.datatransaksi!.time!),
+      title: Text('No guest'),
+      subtitle: Text(widget.datatransaksi!.transno!.substring(1,8)),
+      // subtitle: Text(widget.datatransaksi!.time!),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
               '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
-          Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.28,
-              height: MediaQuery.of(context).size.height * 0.03,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                widget.datatransaksi!.statustrans!,
-                style: TextStyle(color: Colors.white),
-              ))
+
         ],
       ),
     );

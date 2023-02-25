@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/payment/nontunaimobile.dart';
 import 'package:posq/classui/payment/paymentcashv2.dart';
-import 'package:posq/classui/slideuppanelpaymentmobile.dart';
+import 'package:posq/classui/payment/slideuppanelpaymentmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -52,7 +54,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   var formattedDate;
   bool zerobill = false;
   List<IafjrndtClass> listdata = [];
-    List<IafjrndtClass> listdatabill = [];
+  List<IafjrndtClass> listdatabill = [];
   String serverkeymidtrans = '';
   bool midtransonline = false;
   String pymtmthd = '';
@@ -84,16 +86,13 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
       print(List.generate(isi.length, (index) => isi[index].id));
       setState(() {
         listdata = isi;
-     
       });
-      
     });
   }
 
   Future<dynamic> checkbalance() async {
-    await handler.summaryPayment(widget.trno).then((value) {
+    await ClassApi.getSumPyTrno(widget.trno).then((value) {
       print('ini value check ${value.first.totalamt}');
-
       if (value.first.totalamt != null) {
         setState(() {
           result = widget.balance - value.first.totalamt!;
@@ -114,7 +113,8 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   Future<int> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
-        trno: '${widget.trno}',
+        transno: '${widget.trno}',
+        transno1: '${widget.trno}',
         split: 'A',
         pscd: '${widget.pscd}',
         trtm: now.hour.toString() +
@@ -133,13 +133,13 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
         trdesc2: '$pymtmthd ${widget.trno}',
         compcd: compcode,
         compdesc: compdescription,
-        active: '1',
+        active: 1,
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');
-    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
     print(iafjrnhd);
-    return await handler.insertIafjrnhd(listiafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
   }
 
   loadKey() async {
@@ -220,7 +220,8 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
             },
             controller: _pc,
             body: Stack(
-              clipBehavior: Clip.none, fit: StackFit.loose,
+              clipBehavior: Clip.none,
+              fit: StackFit.loose,
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height * 0.16,
@@ -341,52 +342,52 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                 child: ElevatedButton(
                   onPressed: zerobill == true
                       ? () async {
-                        print('ini compcode $compcode');
+                          print('ini compcode $compcode');
                           if (compcode != '' || compcode.isNotEmpty) {
                             await insertIafjrnhd().whenComplete(() {
-                               Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClassPaymetSucsessMobile(
-                                      datatrans: listdata,
-                                      frombanktransfer: false,
-                                      cash: true,
-                                      outletinfo: widget.outletinfo,
-                                      outletname: widget.outletname,
-                                      outletcd: widget.pscd,
-                                      amount: amountcash.text == '' ||
-                                              amountcash.text.isEmpty
-                                          ? widget.balance
-                                          : double.parse(amountcash.text),
-                                      paymenttype: pymtmthd,
-                                      trno: widget.trno.toString(),
-                                      trdt: formattedDate,
-                                    )));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClassPaymetSucsessMobile(
+                                            datatrans: listdata,
+                                            frombanktransfer: false,
+                                            cash: true,
+                                            outletinfo: widget.outletinfo,
+                                            outletname: widget.outletname,
+                                            outletcd: widget.pscd,
+                                            amount: amountcash.text == '' ||
+                                                    amountcash.text.isEmpty
+                                                ? widget.balance
+                                                : double.parse(amountcash.text),
+                                            paymenttype: pymtmthd,
+                                            trno: widget.trno.toString(),
+                                            trdt: formattedDate,
+                                          )));
                             });
                           } else {
                             print('dari  cash');
-                                Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClassPaymetSucsessMobile(
-                                      datatrans: listdata,
-                                      frombanktransfer: false,
-                                      cash: true,
-                                      outletinfo: widget.outletinfo,
-                                      outletname: widget.outletname,
-                                      outletcd: widget.pscd,
-                                      amount: amountcash.text == '' ||
-                                              amountcash.text.isEmpty
-                                          ? widget.balance
-                                          : double.parse(amountcash.text),
-                                      paymenttype: pymtmthd,
-                                      trno: widget.trno.toString(),
-                                      trdt: formattedDate,
-                                    )),
-                          );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ClassPaymetSucsessMobile(
+                                        datatrans: listdata,
+                                        frombanktransfer: false,
+                                        cash: true,
+                                        outletinfo: widget.outletinfo,
+                                        outletname: widget.outletname,
+                                        outletcd: widget.pscd,
+                                        amount: amountcash.text == '' ||
+                                                amountcash.text.isEmpty
+                                            ? widget.balance
+                                            : double.parse(amountcash.text),
+                                        paymenttype: pymtmthd,
+                                        trno: widget.trno.toString(),
+                                        trdt: formattedDate,
+                                      )),
+                            );
                           }
-
-                      
                         }
                       : null,
                   child: Text('Selesaikan'),

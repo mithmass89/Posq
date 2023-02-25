@@ -2,11 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/classui/classpaymentsuccessmobile.dart';
+import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
 class PaymentCashV2Mobile extends StatefulWidget {
@@ -62,25 +64,6 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
     }
   }
 
-  // checkbalance() async {
-  //   await handler.summaryPayment(widget.trno.toString()).then((value) {
-  //     if (value.first.totalamt==null) {
-  //       setState(() {
-  //         widget.result = widget.balance - value.first.totalamt!;
-  //       });
-  //     }
-  //     if (widget.result == 0 || widget.result < 0) {
-  //       setState(() {
-  //         widget.zerobill = true;
-  //       });
-  //     } else {
-  //       setState(() {
-  //         widget.zerobill = false;
-  //       });
-  //     }
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -130,10 +113,11 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         duration: Toast.lengthShort, gravity: Toast.bottom);
   }
 
-  Future<int> insertIafjrnhd() async {
+  Future<dynamic> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
-        trno: '${widget.trno}',
+        transno: '${widget.trno}',
+        transno1: widget.trno!,
         split: 'A',
         pscd: '${widget.pscd}',
         trtm: '00:00',
@@ -148,19 +132,20 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         trdesc2: 'Payment cash ${widget.trno}',
         compcd: 'CASH',
         compdesc: 'CASH',
-        active: '1',
+        active: 1,
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');
-    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
     print(iafjrnhd);
-    return await handler.insertIafjrnhd(listiafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
   }
 
-  Future<int> insertIafjrnhdRefund() async {
+  Future<dynamic> insertIafjrnhdRefund() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
-        trno: '${widget.trno}',
+        transno: '${widget.trno}',
+        transno1: widget.trno!,
         split: 'A',
         pscd: '${widget.pscd}',
         trtm: '00:00',
@@ -175,12 +160,13 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         compdesc: 'REFUND',
         trdesc: 'Refund cash ${widget.trno}',
         trdesc2: 'Refund cash ${widget.trno}',
-        active: '1',
+        active: 1,
         usercrt: 'Admin',
         slstp: '1',
         currcd: 'IDR');
-    List<IafjrnhdClass> listiafjrnhd = [iafjrnhd];
-    return await handler.insertIafjrnhd(listiafjrnhd);
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
   }
 
   @override
@@ -268,9 +254,11 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                         if (widget.result < 0) {
                           //// jika amount lebih kecil dari amount akan otomatsi refund
                           await insertIafjrnhd().whenComplete(() async {
-                            await insertIafjrnhdRefund().then((_) {}).then((_) {
-                              handler
-                                  .summaryPayment(widget.trno.toString())
+                            await insertIafjrnhdRefund()
+                                .then((_) {})
+                                .then((_) async {
+                              await ClassApi.getSumPyTrno(
+                                      widget.trno.toString())
                                   .then((value) {
                                 setState(() {
                                   widget.result = value.first.totalamt!;

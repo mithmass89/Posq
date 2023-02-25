@@ -465,10 +465,12 @@ class IafjrndtClass {
 class IafjrnhdClass {
   final int? id;
   final String? trdt;
-  final String? trno;
+  final String? transno;
+  final String transno1;
   final String? split;
   final String? pscd;
   final String? docno;
+  final String? email;
   final String? trtm;
   final String? disccd;
   final String? pax;
@@ -489,7 +491,7 @@ class IafjrnhdClass {
   final String? dpno;
   final String? compcd;
   final String? compdesc;
-  final String? active;
+  final int? active;
   final String? usercrt;
   final String? slstp;
   final String? guestname;
@@ -503,10 +505,12 @@ class IafjrnhdClass {
   IafjrnhdClass({
     this.id,
     this.trdt,
-    this.trno,
+    this.transno,
+    required this.transno1,
     this.split,
     this.pscd,
     this.docno,
+    this.email,
     this.trtm,
     this.disccd,
     this.pax,
@@ -539,14 +543,16 @@ class IafjrnhdClass {
     this.statustrans,
   });
 
-  IafjrnhdClass.fromMap(
+  IafjrnhdClass.fromJson(
     Map<String, dynamic> res,
   )   : id = res["id"],
         trdt = res["trdt"],
-        trno = res["trno"],
+        transno = res["transno"],
+        transno1 = res["transno1"],
         split = res["split"],
         pscd = res["pscd"],
         docno = res["docno"],
+        email = res["email"],
         trtm = res["trtm"],
         disccd = res["disccd"],
         pax = res["pax"],
@@ -580,17 +586,19 @@ class IafjrnhdClass {
 
   @override
   String toString() {
-    return '{ "trno": $trno,"pymtmthd": $pymtmthd,"ftotamt":"$ftotamt"}';
+    return '{ "transno": $transno,"transno1": $transno1,"pymtmthd": $pymtmthd,"ftotamt":"$ftotamt"}';
   }
 
-  Map<String, Object?> toMap() {
+  Map<String, Object?> toJson() {
     return {
       'id': id,
       'trdt': trdt,
-      'trno': trno,
+      'transno': transno,
+      'transno1': transno1,
       'split': split,
       'pscd': pscd,
       'docno': docno,
+      'email': email,
       'trtm': trtm,
       'disccd': disccd,
       'pax': pax,
@@ -626,7 +634,7 @@ class IafjrnhdClass {
   getIndex(int index) {
     switch (index) {
       case 0:
-        return trno;
+        return transno;
       case 1:
         return pymtmthd.toString();
       case 2:
@@ -844,7 +852,7 @@ class Promo {
     this.maxdisc,
   });
 
-  Promo.fromMap(Map<String, dynamic> res)
+  Promo.fromJson(Map<String, dynamic> res)
       : id = res["id"],
         promocd = res["promocd"],
         promodesc = res["promodesc"],
@@ -854,7 +862,7 @@ class Promo {
         mindisc = res["mindisc"],
         maxdisc = res["maxdisc"];
 
-  Map<String, Object?> toMap() {
+  Map<String, Object?> toJson() {
     return {
       'id': id,
       'promocd': promocd,

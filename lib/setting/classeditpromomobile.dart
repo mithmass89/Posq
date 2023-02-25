@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class ClassEditPromoMobile extends StatefulWidget {
   final Promo data;
@@ -66,7 +68,8 @@ class _ClassEditPromoMobileState extends State<ClassEditPromoMobile> {
         title: Text('Buat diskon baru'),
       ),
       body: Stack(
-        clipBehavior: Clip.none, children: [
+        clipBehavior: Clip.none,
+        children: [
           Container(
             padding: EdgeInsets.all(10),
             child: Column(
@@ -204,17 +207,22 @@ class _ClassEditPromoMobileState extends State<ClassEditPromoMobile> {
                 onpressed: nilaidiskonpct.text.isNotEmpty ||
                         nilaidiskonamount.text.isNotEmpty
                     ? () async {
-                        await handler
-                            .updatePromo(Promo(
-                          promocd: widget.data.promocd,
-                          promodesc: namadiskon.text,
-                          amount: num.parse(nilaidiskonamount.text==''?'0':nilaidiskonamount.text),
-                          pct: num.parse(nilaidiskonpct.text==''?'0':nilaidiskonpct.text),
-                          type: disctype,
-                          maxdisc: num.parse(maxdisc.text),
-                          mindisc: mindisc,
-                          id: widget.data.id,
-                        ))
+                        await ClassApi.updatePromo(
+                                Promo(
+                                  promocd: widget.data.promocd,
+                                  promodesc: namadiskon.text,
+                                  amount: num.parse(nilaidiskonamount.text == ''
+                                      ? '0'
+                                      : nilaidiskonamount.text),
+                                  pct: num.parse(nilaidiskonpct.text == ''
+                                      ? '0'
+                                      : nilaidiskonpct.text),
+                                  type: disctype,
+                                  maxdisc: num.parse(maxdisc.text),
+                                  mindisc: mindisc,
+                                  id: widget.data.id,
+                                ),
+                                pscd)
                             .whenComplete(() {
                           Navigator.of(context).pop();
                         });

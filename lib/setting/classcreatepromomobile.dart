@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class ClassCreatePromoMobile extends StatefulWidget {
   const ClassCreatePromoMobile({Key? key}) : super(key: key);
@@ -34,7 +36,7 @@ class _ClassCreatePromoMobileState extends State<ClassCreatePromoMobile> {
     handler = DatabaseHandler();
   }
 
-  Future<int> addPromo() async {
+  Future<dynamic> addPromo() async {
     Promo promo = Promo(
       promocd: promocd,
       promodesc: namadiskon.text,
@@ -45,8 +47,7 @@ class _ClassCreatePromoMobileState extends State<ClassCreatePromoMobile> {
       mindisc: mindisc,
       maxdisc: num.parse(maxdisc.text.isEmpty ? '0' : maxdisc.text),
     );
-    List<Promo> listctg = [promo];
-    return await handler.insertPromo(listctg);
+    return await ClassApi.insertPromo(promo, dbname);
   }
 
   @override
@@ -56,7 +57,8 @@ class _ClassCreatePromoMobileState extends State<ClassCreatePromoMobile> {
         title: Text('Buat diskon baru'),
       ),
       body: Stack(
-        clipBehavior: Clip.none, children: [
+        clipBehavior: Clip.none,
+        children: [
           Container(
             padding: EdgeInsets.all(10),
             child: Column(

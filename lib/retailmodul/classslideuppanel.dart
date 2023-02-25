@@ -156,10 +156,6 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ],
             ),
           ),
-          // SizedBox(
-          //   height: MediaQuery.of(context).size.height * 0.05,
-          // ),
-          // Divider(),
           Container(
               height: widget.qty! <= 4
                   ? MediaQuery.of(context).size.height *

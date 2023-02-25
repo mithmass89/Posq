@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/setting/classcreatepromomobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/classeditpromomobile.dart';
+import 'package:posq/userinfo.dart';
 
 class ClassPromoMobile extends StatefulWidget {
   const ClassPromoMobile({Key? key}) : super(key: key);
@@ -16,12 +18,11 @@ class ClassPromoMobile extends StatefulWidget {
 class _ClassPromoMobileState extends State<ClassPromoMobile> {
   final search = TextEditingController();
   late DatabaseHandler handler;
-  String query='';
+  String query = '';
 
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHandler();
   }
 
   @override
@@ -36,12 +37,12 @@ class _ClassPromoMobileState extends State<ClassPromoMobile> {
               controller: search,
               onChanged: (value) {
                 setState(() {
-                  query=value;
+                  query = value;
                 });
               },
               typekeyboard: TextInputType.text),
           FutureBuilder(
-              future: handler.retrievePromo(query),
+              future: ClassApi.getPromoList(dbname, query),
               builder:
                   (BuildContext context, AsyncSnapshot<List<Promo>> snapshot) {
                 var x = snapshot.data ?? [];
@@ -56,34 +57,31 @@ class _ClassPromoMobileState extends State<ClassPromoMobile> {
                         return Dismissible(
                           direction: DismissDirection.endToStart,
                           background: Container(
-                            color: Colors.red,
+                            color: Colors.grey[100],
                             alignment: Alignment.centerRight,
                             padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Icon(Icons.delete_forever),
+                            child: Icon(Icons.close),
                           ),
                           key: ValueKey<int>(snapshot.data![index].id!),
                           onDismissed: (DismissDirection direction) async {
-                            await this
-                                .handler
-                                .deletePromo(snapshot.data![index].id!);
+                            await ClassApi.deletePromo(
+                                pscd, snapshot.data![index].id!);
                             setState(() {
                               snapshot.data!.remove(snapshot.data![index]);
                             });
                           },
                           child: Card(
                               child: ListTile(
-                            onTap: ()  {
-                               Navigator.push(
+                            onTap: () {
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           ClassEditPromoMobile(
                                             data: snapshot.data![index],
                                           ))).then((_) {
-                                            setState(() {
-                                              
-                                            });
-                                          });
+                                setState(() {});
+                              });
                             },
                             contentPadding: EdgeInsets.all(8.0),
                             title: Text(snapshot.data![index].promodesc!),

@@ -47,7 +47,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
       appBar: AppBar(
         title: Column(
           children: [
-            Text(widget.trno),
+            Text(widget.trno.substring(1, 8)),
           ],
         ),
       ),
@@ -98,7 +98,6 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
                       context,
                       MaterialPageRoute(
                           builder: (context) => ClassRetailMainMobile(
-                  
                                 outletinfo: widget.outletinfo,
                                 pscd: widget.pscd,
                                 qty: 0,

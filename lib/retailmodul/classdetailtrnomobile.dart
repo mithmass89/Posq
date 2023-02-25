@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:posq/classui/midtrans.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classdetailtransactionmobile.dart';
 

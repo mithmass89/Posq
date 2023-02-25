@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class TabDetailTrno extends StatefulWidget {
   final String trno;
@@ -13,7 +15,8 @@ class TabDetailTrno extends StatefulWidget {
     Key? key,
     required this.trno,
     required this.outletinfo,
-    required this.pscd,required this.status,
+    required this.pscd,
+    required this.status,
   }) : super(key: key);
 
   @override
@@ -52,7 +55,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.85,
       child: FutureBuilder(
-          future: handler.retrieveDetailIafjrndt(widget.trno),
+          future: ClassApi.getTrnoDetail(widget.trno, pscd, ''),
           builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
             var x = snapshot.data ?? [];
             if (x.isNotEmpty) {
@@ -78,7 +81,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                 title: Text(x[index].description.toString(),
                                     style: TextStyle(fontSize: 14)),
                                 trailing: Text(
-                                    '${CurrencyFormat.convertToIdr(x[index].rateamttotal, 0)}'),
+                                    '${CurrencyFormat.convertToIdr(x[index].totalaftdisc, 0)}'),
                               ),
                               Divider(
                                 height: 2,
@@ -92,7 +95,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                   Container(
                       height: MediaQuery.of(context).size.height * 0.22,
                       child: FutureBuilder(
-                          future: handler.summarybill(widget.trno),
+                          future: ClassApi.getSumTrans(widget.trno, pscd, ''),
                           builder: (context,
                               AsyncSnapshot<List<IafjrndtClass>> snapshot) {
                             var x = snapshot.data ?? [];
@@ -162,7 +165,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                             alignment: Alignment.center,
+                          alignment: Alignment.center,
                           height: MediaQuery.of(context).size.height * 0.03,
                           width: MediaQuery.of(context).size.width * 0.20,
                           child: Text(
@@ -170,7 +173,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )),
                       Container(
-                        alignment: Alignment.center,
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.blue,
                             border: Border.all(
@@ -183,7 +186,9 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                           width: MediaQuery.of(context).size.width * 0.25,
                           child: Text(
                             widget.status,
-                            style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           )),
                     ],
                   ),
@@ -196,7 +201,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                     width: MediaQuery.of(context).size.width * 0.90,
                     child: FutureBuilder(
                         future:
-                            this.handler.retriveListDetailPayment(widget.trno),
+                            ClassApi.getDetailPayment(widget.trno, pscd, ''),
                         builder: (context,
                             AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
                           data = snapshot.data ?? [];
@@ -210,8 +215,8 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                     dense: true,
                                     title:
                                         Text(data[index].pymtmthd.toString()),
-                                    trailing:
-                                        Text( '${CurrencyFormat.convertToIdr(data[index].ftotamt, 0)}'),
+                                    trailing: Text(
+                                        '${CurrencyFormat.convertToIdr(data[index].totalamt, 0)}'),
                                   );
                                 });
                           } else {

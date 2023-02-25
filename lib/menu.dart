@@ -49,7 +49,7 @@ class _MenuMainState extends State<MenuMain> {
     print(widget.pscd);
     var uuid = Uuid();
     var random = uuid.v4();
-     trno = random;
+    trno = random;
   }
 
   @override

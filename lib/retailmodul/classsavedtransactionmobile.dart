@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classlisttrnosavedmob.dart';
+import 'package:posq/userinfo.dart';
 
 class ClassSavedTransactionMobile extends StatefulWidget {
   final String? pscd;
@@ -79,7 +81,7 @@ class _ClassSavedTransactionMobileState
                 typekeyboard: TextInputType.text),
           ),
           FutureBuilder(
-              future: this.handler.retriveSavedTransaction2(query),
+              future: ClassApi.getOutstandingBill(query, dbname, ''),
               builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
                 var x = snapshot.data ?? [];
                 if (x.isNotEmpty) {
@@ -112,9 +114,10 @@ class _ClassSavedTransactionMobileState
                   );
                 }
                 return Container(
-                     height: MediaQuery.of(context).size.height * 0.8,
-                      width: MediaQuery.of(context).size.width * 1,
-                  child: Center(child: Text('Tidak ada transaksi tersimpan')));
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    width: MediaQuery.of(context).size.width * 1,
+                    child:
+                        Center(child: Text('Tidak ada transaksi tersimpan')));
               }),
         ],
       ),

@@ -49,6 +49,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
   @override
   void initState() {
     super.initState();
+    
     productcd.text = widget.productcode!.itemcode!;
     productname.text = widget.productcode!.itemdesc!;
     description.text = widget.productcode!.description.toString();

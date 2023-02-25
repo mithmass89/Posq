@@ -40,7 +40,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+
       return status;
     } else {
       throw Exception();
@@ -69,7 +69,36 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertPromo(Promo data, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "promocd": data.promocd,
+      "promodesc": data.promodesc,
+      "type": data.type,
+      "pct": data.pct,
+      "amount": data.amount,
+      "mindisc": data.mindisc,
+      "maxdisc": data.maxdisc,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertpromo');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      
       return status;
     } else {
       throw Exception();
@@ -89,7 +118,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
       return status;
     } else {
       throw Exception();
@@ -113,7 +142,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
       return status;
     } else {
       throw Exception();
@@ -136,7 +165,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
       return status;
     } else {
       throw Exception();
@@ -159,7 +188,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
       return status;
     } else {
       throw Exception();
@@ -196,7 +225,8 @@ class ClassApi {
           data.discamt,
           data.totalaftdisc,
           data.transno,
-          data.active
+          data.active,
+          data.usercrt
         ]
       ]
     };
@@ -212,7 +242,61 @@ class ClassApi {
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
       // IafjrndtClass data = status;
-      print(status);
+      
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertPosPayment(
+      IafjrnhdClass data, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "data": [
+        [
+          data.trdt,
+          data.pscd,
+          data.transno,
+          data.transno,
+          data.split,
+          data.docno,
+          data.trdesc,
+          data.guestname,
+          data.guestphone,
+          data.email,
+          data.cardno,
+          data.compcd,
+          data.compdesc,
+          data.pymtmthd,
+          'vchno',
+          '1',
+          data.totalamt,
+          data.amtrmn,
+          'docdt',
+          'notes',
+          data.slstp,
+          data.virtualaccount,
+          data.billerkey,
+          data.billercode,
+          data.qrcode,
+          data.usercrt
+        ]
+      ]
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertpayment');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      // IafjrndtClass data = status;
+      
       return status;
     } else {
       throw Exception();
@@ -235,7 +319,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
       return status;
     } else {
       throw Exception();
@@ -257,7 +341,28 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updatePromo(Promo data, String dbname) async {
+    var body = {"dbname": dbname, "data": data};
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updatePromo');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      
       return status;
     } else {
       throw Exception();
@@ -278,7 +383,73 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> deactivePosdetailtrans(
+      String trno, String dbname) async {
+    var body = {"dbname": dbname, "data": trno};
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deactiveposdetailTrans');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> deactivePosPaymenttrans(
+      String trno, String dbname) async {
+    var body = {"dbname": dbname, "data": trno};
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deactivepospaymentTrans');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+   static Future<dynamic> deactivePromoTrno(
+      String transno, String dbname) async {
+    var body = {"dbname": dbname, "transno": transno};
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deactivepromoTrno');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      
       return status;
     } else {
       throw Exception();
@@ -301,7 +472,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
       return status;
     } else {
       throw Exception();
@@ -324,7 +495,53 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-      print(status);
+      
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> deletePayment(String dbname, int id) async {
+    var body = {
+      "dbname": dbname,
+      "id": id,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/delpayment');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> deletePromo(String dbname, int id) async {
+    var body = {
+      "dbname": dbname,
+      "id": id,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/delpromo');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      
       return status;
     } else {
       throw Exception();
@@ -346,6 +563,56 @@ class ClassApi {
       var body = json.decode(response.body);
       print(body);
       return body;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getSumPyTrno(String transno) async {
+    // print(json.encode(pembayaran));
+    var data = {"transno": transno, "dbname": dbname};
+    final url = Uri.parse('$api/getsumtrnopy');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      print(body);
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<Promo>> getPromoList(String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/promolist');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => Promo.fromJson(json)).where((items) {
+        final itemdescLower = items.promodesc!.toLowerCase();
+        final itemcodes = items.promocd.toLowerCase();
+        final searchLower = query.toLowerCase();
+
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+
     } else {
       throw Exception();
     }
@@ -454,6 +721,54 @@ class ClassApi {
 
         final searchLower = query.toLowerCase();
 
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrnhdClass>> getDetailPayment(
+      String transno1, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "transno1": transno1};
+    final url = Uri.parse('$api/detailpayment');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print('punya body ${bodyJson}');
+      return bodyJson.map((json) => IafjrnhdClass.fromJson(json)).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrndtClass>> getOutstandingBill(
+      String trno, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "data": trno};
+    final url = Uri.parse('$api/outstandingBill');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson
+          .map((json) => IafjrndtClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final searchLower = query.toLowerCase();
         return itemdescLower.contains(searchLower);
       }).toList();
     } else {

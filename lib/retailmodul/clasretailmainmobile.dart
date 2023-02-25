@@ -7,11 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/draweretailmobile.dart';
-import 'package:posq/classui/paymentmainmobilev2.dart';
+import 'package:posq/classui/payment/paymentmainmobilev2.dart';
 import 'package:posq/classui/registerproductmobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
-import 'package:posq/classui/paymentmobile.dart';
+import 'package:posq/classui/payment/paymentmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/retailmodul/classlisttransactionmobile.dart';
 import 'package:posq/retailmodul/classretailproductmobile.dart';
@@ -29,17 +29,6 @@ import 'package:collection/collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
-
-// Future<void> main() async {
-//   runApp(ClassRetailMainMobile(
-//     outletinfo: Outlet(
-//       outletcd: 'Mitrt1',
-//       outletname: 'Mitro tech',
-//     ),
-//     pscd: 'Mitrt1',
-//     qty: 0,
-//   ));
-// }
 
 class ClassRetailMainMobile extends StatefulWidget {
   final String pscd;
@@ -86,6 +75,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   String? guestname = '';
   String? email = '';
   String? telp = '';
+  num discount = 0;
+
+  set discounts(num value) {
+    setState(() {
+      discount = value;
+    });
+  }
 
   set string(IafjrndtClass value) {
     setState(() {
@@ -147,7 +143,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
 //terakir sampai sini / pengen refresh
   getDataSlide() async {
-    ClassApi.getTrnoDetail(trno!, dbname, query!).then((value) {
+    ClassApi.getTrnoDetail(widget.trno!, dbname, query!).then((value) {
       if (value.isNotEmpty) {
         setState(() {
           listdata = value;
@@ -161,14 +157,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   }
 
   getDetailData() async {
-    await ClassApi.getTrnoDetail(trno!, dbname, query!).then((isi) {
+    await ClassApi.getTrnoDetail(widget.trno!, dbname, query!).then((isi) {
       if (isi.isNotEmpty) {
- 
         num totalSlsNett = isi.fold(
             0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
         setState(() {
           item = isi.length;
-          sum = totalSlsNett;
+          sum = totalSlsNett + discount;
         });
       } else {
         setState(() {
@@ -193,9 +188,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   }
 
   checkPending() {
-    handler.checkPendingTransaction('').then((value) {
+    ClassApi.getOutstandingBill(query!, dbname, '').then((value) {
       setState(() {
-        pending = value;
+        pending = value.length;
       });
     });
   }
@@ -208,6 +203,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _scrollisanimated = false;
     ToastContext().init(context);
+    print('print ini trno : ${widget.trno}');
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
@@ -253,20 +249,14 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       confirmed: '',
       description: '',
     );
-    getDetailData();
+    if (widget.trno != null) {
+      getDetailData();
+    }
   }
 
   getSavedCustomers() async {
     final savecostmrs = await SharedPreferences.getInstance();
     await savecostmrs.setString('savecostmrs', selectedcostumer.toString());
-  }
-
-  Future<dynamic> checkTrno() async {
-    await handler.getTrno(widget.pscd.toString()).then((value) {
-      setState(() {
-        trnolanjut = value.first.trnonext;
-      });
-    });
   }
 
   Future<void> startBarcodeScanStream() async {
@@ -641,7 +631,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           flex: 1,
                                           child: IconButton(
                                             icon: Icon(
-                                              Icons.people_alt,
+                                              Icons.table_bar,
                                             ),
                                             iconSize: 25,
                                             color: Colors.black,
@@ -683,19 +673,17 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       onpressed: () async {
                         _pc.open();
                         if (_scrollisanimated == true) {
-                          await checkTrno().whenComplete(() async {
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.remove('savecostmrs');
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => ClassRetailMainMobile(
-                                          pscd: widget.outletinfo.outletcd,
-                                          trno: trno,
-                                          outletinfo: widget.outletinfo,
-                                          qty: 0,
-                                        )),
-                                (Route<dynamic> route) => false);
-                          });
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.remove('savecostmrs');
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => ClassRetailMainMobile(
+                                        pscd: widget.outletinfo.outletcd,
+                                        trno: trno,
+                                        outletinfo: widget.outletinfo,
+                                        qty: 0,
+                                      )),
+                              (Route<dynamic> route) => false);
                         }
                       },
                       name: _scrollisanimated == false

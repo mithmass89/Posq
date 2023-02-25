@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/classui/midtrans.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/appsmobile.dart';
@@ -96,23 +96,25 @@ class _MainappsState extends State<Mainapps> {
             BoxConstraints constraints,
           ) {
             if (constraints.maxWidth <= 480) {
-              if (hasoutlet == false) {
-                return ClassSetupProfileMobile();
-              } else if (hasoutlet == true) {
-                return AppsMobile(
-                  profileusaha: Outlet(
-                    outletcd: outletinfo!.outletcd,
-                    outletname: outletinfo!.outletname,
-                    telp: outletinfo!.telp,
-                    alamat: outletinfo!.alamat,
-                    kodepos: outletinfo!.kodepos,
-                  ),
-                );
-              } else {
-                return Container();
+              switch (hasoutlet) {
+                case false:
+                  return ClassSetupProfileMobile();
+                case true:
+                  // do something else
+                  return AppsMobile(
+                    profileusaha: Outlet(
+                      outletcd: outletinfo!.outletcd,
+                      outletname: outletinfo!.outletname,
+                      telp: outletinfo!.telp,
+                      alamat: outletinfo!.alamat,
+                      kodepos: outletinfo!.kodepos,
+                    ),
+                  );
               }
             }
-            return Container();
+            return Container(
+              child: Text('Something wrong'),
+            );
           },
         ));
   }

@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:posq/classui/midtrans.dart';
-import 'package:posq/classui/nontunaicreditcardmobile.dart';
-import 'package:posq/classui/nontunaidebitcardmobile.dart';
-import 'package:posq/classui/nontunaimobileewallet.dart';
-import 'package:posq/classui/nontunaimobiletransfer.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
+import 'package:posq/classui/payment/nontunaicreditcardmobile.dart';
+import 'package:posq/classui/payment/nontunaidebitcardmobile.dart';
+import 'package:posq/classui/payment/nontunaimobileewallet.dart';
+import 'package:posq/classui/payment/nontunaimobiletransfer.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:toast/toast.dart';

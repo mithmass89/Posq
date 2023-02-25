@@ -61,8 +61,8 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                     visualDensity: VisualDensity(vertical: -4), // to compact
                     dense: true,
                     title: Text('Total'),
-                    trailing:
-                        Text(CurrencyFormat.convertToIdr(x.first.revenueamt, 0)),
+                    trailing: Text(
+                        CurrencyFormat.convertToIdr(x.first.revenueamt, 0)),
                   ),
                   ListTile(
                       onTap: x.first.discamt == 0
@@ -71,17 +71,20 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SelectPromoMobile(
+                                            sum: widget.sum!,
                                             refreshdata: widget.refreshdata,
                                             updatedata: widget.updatedata,
                                             databill: x.first,
                                             pscd: widget.pscd,
                                             trno: widget.trno,
                                           ))).then((_) async {
-                                await handler
-                                    .checktotalAmountNett(widget.trno)
+                                await ClassApi.getSumTrans(
+                                        widget.trno, pscd, '')
                                     .then((hasil) {
                                   ClassRetailMainMobile.of(context)!.string =
                                       hasil.first;
+                                  ClassRetailMainMobile.of(context)!.discount =
+                                      hasil.first.discamt!;
                                 });
                                 await widget.refreshdata;
                                 await widget.updatedata;
@@ -99,30 +102,28 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                               width: MediaQuery.of(context).size.width * 0.06,
                               child: TextButton(
                                   onPressed: () async {
-                                    var hasil = await Navigator.push(
+                                    Promo hasil = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 SelectPromoMobile(
+                                                  sum: widget.sum!,
                                                   refreshdata:
                                                       widget.refreshdata,
                                                   updatedata: widget.updatedata,
                                                   databill: x.first,
                                                   pscd: widget.pscd,
                                                   trno: widget.trno,
-                                                ))).then((_) async {
+                                                ))).then((value) async {
                                       await widget.refreshdata;
                                       await widget.updatedata;
-                                      await handler
-                                          .checktotalAmountNett(widget.trno)
-                                          .then((hasil) {
-                                        ClassRetailMainMobile.of(context)!
-                                            .string = hasil.first;
-                                      });
+                                      return value;
                                     });
                                     setState(() {
-                                      widget.sum = hasil;
+                                      widget.sum = hasil.amount;
                                     });
+                                    ClassRetailMainMobile.of(context)!
+                                        .discount = hasil.amount!;
                                   },
                                   child: Text('>')))
                           : Container(
@@ -139,15 +140,15 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                           0.065,
                                       child: TextButton(
                                           onPressed: () async {
-                                            await handler
-                                                .deletePromoActive(
-                                                    x.first.transno!)
+                                            await ClassApi.deactivePromoTrno(
+                                                    widget.trno, dbname)
                                                 .whenComplete(() {
                                               setState(() {});
                                             });
-                                            await handler
-                                                .checktotalAmountNett(
-                                                    widget.trno.toString())
+                                            await ClassApi.getSumTrans(
+                                                    widget.trno.toString(),
+                                                    pscd,
+                                                    '')
                                                 .then((value) async {
                                               setState(() {
                                                 widget.sum =
@@ -157,7 +158,10 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                               await widget.refreshdata!;
                                               ClassRetailMainMobile.of(context)!
                                                   .string = value.first;
+                                                        ClassRetailMainMobile.of(context)!
+                                                  .discount = value.first.discamt!;
                                             });
+                                            
                                           },
                                           child: Text('X')))
                                 ],

@@ -5,12 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/classui/midtrans.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 PaymentGate? paymentapi;
 ClassApi? api;
@@ -75,7 +76,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   bool loading = false;
-   bool emailValid=false;
+  bool emailValid = false;
 
   @override
   void initState() {
@@ -88,7 +89,6 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     handler.initializeDB(databasename);
     getSummary();
     getListPayament();
-    checkTrno();
     if (widget.cash == false) {
       PaymentGate.getStatusTransaction(widget.trno).then((value) {
         setState(() {
@@ -114,34 +114,11 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     // This loop will run forever because _running is always true
   }
 
-  checkTrno() async {
-    await handler.getTrno(widget.outletcd.toString()).then((value) {
-      setState(() {
-        trno = value.first.trnonext;
-      });
-    });
-    await updateTrnonext();
-  }
-
-  updateTrnonext() async {
-    await handler.updateTrnoNext(
-        Outlet(outletcd: widget.outletcd.toString(), trnonext: trno! + 1));
-  }
-
-  // Color _getColorByEventtext(String event) {
-  //   if (statustransaction == "settlement") return Colors.green;
-  //   if (statustransaction == "pending") return Colors.red;
-
-  //   return Colors.black;
-  // }
-
   getTrno() async {
-    handler = DatabaseHandler();
-    await handler.initializeDB(databasename);
-    await handler.getTrno(widget.outletcd!).then((value) {
-      setState(() {
-        nexttrno = '${widget.outletcd}${value.first.trnonext}';
-      });
+    var uuid = Uuid();
+    var random = uuid.v4();
+    setState(() {
+      nexttrno = random;
     });
   }
 
