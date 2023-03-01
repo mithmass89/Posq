@@ -106,4 +106,8 @@
     <string name="password_toggle_content_description">Afișați parola</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Căutați"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="zxing_app_name">Barcode Scanner</string>
+    <string name="zxing_button_ok">Acceptă</string>
+    <string name="zxing_msg_camera_framework_bug">Probleme cu camera foto. Repornește dispozitivul.</string>
+    <string name="zxing_msg_default_status">Plasează codul de bare în interiorul vizorului pentru a-l scana</string>
 </resources>

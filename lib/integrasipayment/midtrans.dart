@@ -65,6 +65,7 @@ class PaymentGate {
     final url = Uri.parse(
       api,
     );
+    print(json.encode(body));
     final response = await http
         .post(url,
             headers: <String, String>{
@@ -78,7 +79,7 @@ class PaymentGate {
 
     if (response.statusCode == 200) {
       final _responsemidtrans = json.decode(response.body);
-
+      print(response);
       return _responsemidtrans;
     } else {
       return response;

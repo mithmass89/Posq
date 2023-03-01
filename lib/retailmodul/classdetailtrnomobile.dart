@@ -38,6 +38,7 @@ class _DetailTrnoState extends State<DetailTrno> {
   Stream<String> _statustransaksi() async* {
     if (widget.datatransaksi!.pymtmthd != 'CASH') {
       PaymentGate.getStatusTransaction(widget.trno.toString()).then((value) {
+        // print(value);
         setState(() {
           statustransaction = value;
         });
@@ -64,45 +65,45 @@ class _DetailTrnoState extends State<DetailTrno> {
         builder: (context, AsyncSnapshot<String> snapshot) {
           return Column(
             children: [
-              ListTile(
-                leading: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.17,
-                    child: Text(widget.datatransaksi!.pymtmthd == null
-                        ? ' NT'
-                        : widget.datatransaksi!.pymtmthd.toString())),
-                title: Text(widget.trno.toString()),
-                subtitle: Text(widget.datatransaksi!.totalamt == null
-                    ? '0'
-                    : widget.datatransaksi!.totalamt.toString()),
-                trailing: Text(
-                  statustransaction == null
-                      ? 'No Settle yet'
-                      : statustransaction.toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color:
-                          _getColorByEventtext(statustransaction.toString())),
+              Card(
+                child: ListTile(
+                  dense: true,
+                  leading: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.17,
+                      child: Text(widget.datatransaksi!.pymtmthd == null
+                          ? ' NT'
+                          : widget.datatransaksi!.pymtmthd.toString())),
+                  title: Text(widget.trno!.substring(1,8).toString()),
+                  subtitle: Text(widget.datatransaksi!.totalamt == null
+                      ? '0'
+                      : widget.datatransaksi!.totalamt.toString()),
+                  trailing: Text(
+                    statustransaction == null
+                        ? 'No Settle yet'
+                        : statustransaction.toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color:
+                            _getColorByEventtext(statustransaction.toString())),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ClassDetailTransMobile(
+                                status: statustransaction == null
+                                    ? 'Belum Lunas'
+                                    : statustransaction!,
+                                datatransaksi: widget.datatransaksi,
+                                trno: widget.trno.toString(),
+                                outletinfo: widget.outletinfo,
+                                pscd: widget.pscd,
+                              )),
+                    );
+                  },
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClassDetailTransMobile(
-                              status: statustransaction == null
-                                  ? 'Belum Lunas'
-                                  : statustransaction!,
-                              datatransaksi: widget.datatransaksi,
-                              trno: widget.trno.toString(),
-                              outletinfo: widget.outletinfo,
-                              pscd: widget.pscd,
-                            )),
-                  );
-                },
               ),
-              const Divider(
-                indent: 20,
-                endIndent: 20,
-              )
+             
             ],
           );
         });

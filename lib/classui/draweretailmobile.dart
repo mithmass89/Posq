@@ -4,7 +4,9 @@ import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
 import 'package:posq/retailmodul/classlisttransactionmobile.dart';
-import 'package:posq/setting/classcustomersmobile.dart';
+import 'package:posq/setting/customer/classcustomersmobile.dart';
+import 'package:posq/setting/printer/classmainprinter.dart';
+import 'package:posq/setting/printer/classprinterBluetooth.dart';
 import 'package:posq/setting/classpromomobile.dart';
 import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
 
@@ -182,7 +184,15 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         },
                       ),
                       ListTile(
-                          leading: Icon(Icons.help), title: Text('Instagram'))
+                        leading: Icon(Icons.help),
+                        title: Text('Printer'),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return ClassMainPrinter();
+                          }));
+                        },
+                      )
                     ],
                   ))),
         ],

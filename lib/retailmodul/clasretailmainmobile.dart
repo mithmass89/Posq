@@ -143,7 +143,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
 //terakir sampai sini / pengen refresh
   getDataSlide() async {
-    ClassApi.getTrnoDetail(widget.trno!, dbname, query!).then((value) {
+    await ClassApi.getTrnoDetail(widget.trno!, dbname, query!).then((value) {
       if (value.isNotEmpty) {
         setState(() {
           listdata = value;
@@ -271,15 +271,15 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      print(barcodeScanRes);
-
-      await handler.queryCheckRegister(barcodeScanRes).then((value) async {
+      print('result scaning $barcodeScanRes');
+// barcodeScanRes='8998009010231';
+      await ClassApi.getItemByBarCode(pscd,dbname,barcodeScanRes,'').then((value) async {
         print(value);
-        if (value == 'Oke item masih kosong') {
+        if (value == []|| value =='') {
           Toast.show("Produk tidak Terdaftar",
               duration: Toast.lengthLong, gravity: Toast.center);
         } else {
-          await handler.getItemFromBarcode(value).then((value) async {
+          await ClassApi.getItemByCode(pscd,dbname,value.first.itemcode!,'').then((value) async {
             Toast.show("Produk Terdaftar ${value.first.itemdesc}",
                 duration: Toast.lengthLong, gravity: Toast.center);
 
@@ -631,7 +631,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           flex: 1,
                                           child: IconButton(
                                             icon: Icon(
-                                              Icons.table_bar,
+                                              Icons.table_restaurant_outlined,
                                             ),
                                             iconSize: 25,
                                             color: Colors.black,

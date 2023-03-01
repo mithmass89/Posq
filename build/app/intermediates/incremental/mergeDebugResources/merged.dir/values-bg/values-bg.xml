@@ -105,4 +105,8 @@
     <string name="password_toggle_content_description">Показване на паролата</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Търсене"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="zxing_app_name">Баркод Скенер</string>
+    <string name="zxing_button_ok">ОК</string>
+    <string name="zxing_msg_camera_framework_bug">Съжаляваме, срещнахме проблем с камерата. Може да се наложи да рестартирате устройството си.</string>
+    <string name="zxing_msg_default_status">Сложете баркода вътре в правоъгълника за да го сканирате.</string>
 </resources>

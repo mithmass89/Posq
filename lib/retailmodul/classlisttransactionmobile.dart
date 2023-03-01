@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classdetailtrnomobile.dart';
+import 'package:posq/userinfo.dart';
 
 class Listtransaction extends StatefulWidget {
   final String? pscd;
@@ -69,7 +71,8 @@ class _ListtransactionState extends State<Listtransaction> {
             typekeyboard: TextInputType.text,
           ),
           FutureBuilder(
-              future: this.handler.retriveListHeader(query!),
+              future: ClassApi.getCashierSummary(
+                  formattedDate, pscd, dbname, search.text),
               builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
                 var x = snapshot.data ?? [];
                 if (x.isNotEmpty) {
@@ -86,7 +89,7 @@ class _ListtransactionState extends State<Listtransaction> {
                                 child: DetailTrno(
                                   datatransaksi: IafjrnhdClass(
                                     pymtmthd: x[index].pymtmthd,
-                                    totalamt: x[index].ftotamt,
+                                    totalamt: x[index].totalamt,
                                     trdt: x[index].trdt,
                                     transno1: x[index].transno1,
                                   ),

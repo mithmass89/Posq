@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
-import 'package:posq/setting/classcreatepromomobile.dart';
+import 'package:posq/setting/promo/classcreatepromomobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
@@ -60,8 +60,8 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
             ? 0 - data.amount!
             : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
         totalamt: data.amount != 0
-            ? 0 - data.amount!
-            : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
+            ?  data.amount!
+            :  ((widget.databill!.revenueamt! * data.pct!) / 100),
         framtrmn: data.amount != 0
             ? 0 - data.amount!
             : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),

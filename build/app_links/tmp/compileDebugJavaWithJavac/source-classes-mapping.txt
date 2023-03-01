@@ -1,6 +1,0 @@
-com/llfbandit/app_links/BuildConfig.java
- com.llfbandit.app_links.BuildConfig
-com/llfbandit/app_links/AppLinksHelper.java
- com.llfbandit.app_links.AppLinksHelper
-com/llfbandit/app_links/AppLinksPlugin.java
- com.llfbandit.app_links.AppLinksPlugin

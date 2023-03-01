@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
-import 'package:posq/setting/classcustomersmobile.dart';
+import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/classselectoutletmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/productmain.dart';
+import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
 import 'package:uuid/uuid.dart';
 

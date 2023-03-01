@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
-import 'package:posq/setting/classcreatepromomobile.dart';
+import 'package:posq/setting/promo/classcreatepromomobile.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/selectdiscountmobile.dart';
 import 'package:posq/databasehandler.dart';

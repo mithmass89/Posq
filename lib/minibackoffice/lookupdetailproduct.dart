@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/classcreateproduct.dart';
+import 'package:posq/setting/product_master/classcreateproduct.dart';
 
 class LookUpDetailTrno extends StatefulWidget {
   final String trno;

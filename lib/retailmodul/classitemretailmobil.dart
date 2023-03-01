@@ -181,13 +181,14 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
           },
           leading: Container(
             decoration: BoxDecoration(
+              borderRadius:  BorderRadius.all(Radius.circular(10)),
               border: Border.all(
                 color: Colors.grey,
                 width: 0.5,
               ),
             ),
             // color: Colors.blue,
-            height: MediaQuery.of(context).size.height * 0.13,
+            height: MediaQuery.of(context).size.height * 0.20,
             width: MediaQuery.of(context).size.width * 0.19,
             child: Image.file(
               widget.image,

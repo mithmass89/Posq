@@ -81,8 +81,8 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
     checkbalance();
   }
 
-  getDataTransaksi() {
-    handler.retrieveDetailIafjrndt2(widget.trno.toString()).then((isi) {
+  getDataTransaksi() async {
+    await ClassApi.getTrnoDetail(widget.trno, dbname, '').then((isi) {
       print(List.generate(isi.length, (index) => isi[index].id));
       setState(() {
         listdata = isi;
@@ -92,7 +92,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
 
   Future<dynamic> checkbalance() async {
     await ClassApi.getSumPyTrno(widget.trno).then((value) {
-      print('ini value check ${value.first.totalamt}');
+      print('ini value check ${value[0].totalamt}');
       if (value.first.totalamt != null) {
         setState(() {
           result = widget.balance - value.first.totalamt!;

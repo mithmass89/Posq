@@ -3,7 +3,7 @@
   "packages": [
     {
       "name": "archive",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/archive-3.3.2",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/archive-3.3.6",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -16,6 +16,12 @@
     {
       "name": "barcode",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/barcode-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "blue_thermal_printer",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/blue_thermal_printer-1.2.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -56,10 +62,16 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "cross_file",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/cross_file-0.3.3+2",
+      "name": "convert",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/convert-3.1.1",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "cross_file",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/cross_file-0.3.3+4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "crypto",
@@ -129,7 +141,7 @@
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.8",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -171,31 +183,31 @@
     },
     {
       "name": "image_picker",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker-0.8.6",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker-0.8.6+3",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "image_picker_android",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+3",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+7",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "image_picker_for_web",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_for_web-2.1.10",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_for_web-2.1.11",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "image_picker_ios",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_ios-0.8.6+1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_ios-0.8.6+9",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "image_picker_platform_interface",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_platform_interface-2.6.2",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_platform_interface-2.6.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -219,9 +231,9 @@
     },
     {
       "name": "logging",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/logging-1.1.0",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/logging-1.1.1",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.18"
     },
     {
       "name": "matcher",
@@ -267,37 +279,31 @@
     },
     {
       "name": "path_provider",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider-2.0.11",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider-2.0.13",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "path_provider_android",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_android-2.0.20",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_android-2.0.23",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
-      "name": "path_provider_ios",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_ios-2.0.11",
-      "packageUri": "lib/",
-      "languageVersion": "2.14"
-    },
-    {
-      "name": "path_provider_linux",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_linux-2.1.7",
+      "name": "path_provider_foundation",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_foundation-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
-      "name": "path_provider_macos",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_macos-2.0.6",
+      "name": "path_provider_linux",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_linux-2.1.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "path_provider_platform_interface",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.5",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.6",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -321,9 +327,9 @@
     },
     {
       "name": "petitparser",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/petitparser-5.0.0",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/petitparser-5.1.0",
       "packageUri": "lib/",
-      "languageVersion": "2.16"
+      "languageVersion": "2.18"
     },
     {
       "name": "platform",
@@ -333,7 +339,13 @@
     },
     {
       "name": "plugin_platform_interface",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.3",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "pointycastle",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/pointycastle-3.6.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -363,49 +375,43 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences-2.0.15",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences-2.0.18",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "shared_preferences_android",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.14",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.16",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
-      "name": "shared_preferences_ios",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_ios-2.1.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.14"
-    },
-    {
-      "name": "shared_preferences_linux",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_linux-2.1.1",
+      "name": "shared_preferences_foundation",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_foundation-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
-      "name": "shared_preferences_macos",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.4",
+      "name": "shared_preferences_linux",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_linux-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "shared_preferences_platform_interface",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-2.1.0",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "shared_preferences_web",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.4",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "shared_preferences_windows",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_windows-2.1.1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_windows-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -429,15 +435,15 @@
     },
     {
       "name": "sqflite",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/sqflite-2.1.0+1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/sqflite-2.2.5",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "sqflite_common",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/sqflite_common-2.3.0",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/sqflite_common-2.4.2+2",
       "packageUri": "lib/",
-      "languageVersion": "2.16"
+      "languageVersion": "2.18"
     },
     {
       "name": "stack_trace",
@@ -459,9 +465,9 @@
     },
     {
       "name": "synchronized",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/synchronized-3.0.0+3",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/synchronized-3.0.1",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "2.18"
     },
     {
       "name": "term_glyph",
@@ -489,49 +495,49 @@
     },
     {
       "name": "url_launcher",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher-6.1.6",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher-6.1.10",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "url_launcher_android",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_android-6.0.19",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_android-6.0.24",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "url_launcher_ios",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_ios-6.0.17",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_ios-6.1.1",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "2.18"
     },
     {
       "name": "url_launcher_linux",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_linux-3.0.1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_linux-3.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "url_launcher_macos",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_macos-3.0.1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_macos-3.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "url_launcher_platform_interface",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_platform_interface-2.1.1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_platform_interface-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "url_launcher_web",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_web-2.0.13",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_web-2.0.15",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "url_launcher_windows",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_windows-3.0.1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/url_launcher_windows-3.0.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -555,9 +561,9 @@
     },
     {
       "name": "xdg_directories",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+2",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/xdg_directories-1.0.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.17"
     },
     {
       "name": "xml",
@@ -569,10 +575,10 @@
       "name": "posq",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.15"
+      "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-02-17T07:40:27.042004Z",
+  "generated": "2023-03-01T01:12:05.383178Z",
   "generator": "pub",
   "generatorVersion": "2.18.0"
 }

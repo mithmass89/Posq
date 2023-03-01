@@ -11,6 +11,7 @@ import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/classsumamryorderslidemobile.dart';
 import 'package:posq/userinfo.dart';
+import 'package:toast/toast.dart';
 
 typedef void StringCallback(IafjrndtClass val);
 
@@ -67,6 +68,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   @override
   void initState() {
     super.initState();
+    ToastContext().init(context);
     trno = widget.trno;
     formattedDate = formatter.format(now);
     getDataSlide();
@@ -116,7 +118,6 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                 Icons.menu_sharp,
                 size: 25,
               )),
-
           Container(
             decoration: BoxDecoration(
                 // color: Colors.blue,
@@ -135,6 +136,20 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 17),
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.print,
+                      ),
+                      iconSize: 25,
+                      color: Colors.black,
+                      splashColor: Colors.purple,
+                      onPressed: () async {
+                        Toast.show("on development",
+                            duration: Toast.lengthLong, gravity: Toast.center);
+                      },
                     )),
                 Expanded(
                     flex: 1,

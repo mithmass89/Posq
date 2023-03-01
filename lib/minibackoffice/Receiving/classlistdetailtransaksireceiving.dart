@@ -3,7 +3,7 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/minibackoffice/Receiving/classedittransaksireceiving.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/classcreateproduct.dart';
+import 'package:posq/setting/product_master/classcreateproduct.dart';
 
 class ClassListDetailReceving extends StatefulWidget {
   final String? trno;

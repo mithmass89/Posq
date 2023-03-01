@@ -105,4 +105,8 @@
     <string name="password_toggle_content_description">Näytä salasana</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Haku"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="zxing_app_name">Barcode Scanner</string>
+    <string name="zxing_button_ok">OK</string>
+    <string name="zxing_msg_camera_framework_bug">Valitettavasti Androidin kameran toimiinta häiriintyi. Joudut ehkä käynnistämään laitteen uudelleen.</string>
+    <string name="zxing_msg_default_status">Aseta viivakoodi neliön sisälle skannataksesi sen.</string>
 </resources>

@@ -9,8 +9,8 @@ import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/classitemretailmobil.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/classcreateproduct.dart';
-
+import 'package:posq/setting/product_master/classcreateproduct.dart';
+import 'package:collection/collection.dart';
 import '../userinfo.dart';
 
 class ClassRetailProductMobile extends StatefulWidget {
@@ -38,6 +38,8 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   var formattedDate;
   bool isLoading = true;
   Future? getOutletItem;
+  Map<String, List<Map<String, dynamic>>> groupdata = {};
+  List<String> keys = [];
 
   @override
   void initState() {
@@ -46,8 +48,8 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
     getOutletItem = getItems(widget.controller.text);
   }
 
-  getItems(query) {
-    getitemOutlet(query);
+  getItems(query) async {
+    await getitemOutlet(widget.controller.text);
   }
 
   Future<List<Item>> getitemOutlet(query) async {
@@ -65,15 +67,15 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
       height: MediaQuery.of(context).size.height * 0.60,
       width: MediaQuery.of(context).size.width * 1,
       child: FutureBuilder(
-          future: getitemOutlet(widget.controller.text),
+          future: ClassApi.getItemList(pscd,dbname,widget.controller.text),
           builder: (context, AsyncSnapshot<List<Item>> snapshot) {
             var x = snapshot.data ?? [];
-            if (snapshot.connectionState == ConnectionState.waiting) {
+            if (snapshot.data==[]) {
               return ListView.builder(
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return ShimmerLoading(
-                        isLoading: !isLoading,
+                        isLoading: isLoading,
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.06,
                           child: Text(''),

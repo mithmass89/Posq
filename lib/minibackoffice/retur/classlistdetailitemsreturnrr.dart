@@ -4,7 +4,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/minibackoffice/retur/classeditretur.dart';
 import 'package:posq/minibackoffice/Receiving/classedittransaksireceiving.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/classcreateproduct.dart';
+import 'package:posq/setting/product_master/classcreateproduct.dart';
 
 class ClassListDetailReturnReceving extends StatefulWidget {
   final String? trno;

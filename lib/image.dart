@@ -2,7 +2,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:posq/setting/classcreateproduct.dart';
+import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/menu.dart';
 
 class ImageFromGalleryEx extends StatefulWidget {
@@ -65,8 +65,9 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                         width: widget.width,
                         height: widget.height,
                         child: Icon(
-                          Icons.picture_in_picture,
+                          Icons.image,
                           // color: Colors.grey[800],
+                          size: 50,
                         ),
                       ),
               ),
@@ -81,9 +82,8 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                         preferredCameraDevice: CameraDevice.front);
                     setState(() {
                       _image = File(image.path);
-
-                      Createproduct.of(context)!.string =
-                          image.path.toString();
+                      print(image.path);
+                      Createproduct.of(context)!.string = image.path.toString();
                     });
                   },
                   child: Text('Pilih Foto'))

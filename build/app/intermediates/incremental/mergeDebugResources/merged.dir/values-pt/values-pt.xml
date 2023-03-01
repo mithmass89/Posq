@@ -29,4 +29,8 @@
     <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Recolher"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Pesquisar"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="zxing_app_name">Barcode Scanner</string>
+    <string name="zxing_button_ok">OK</string>
+    <string name="zxing_msg_camera_framework_bug">Desculpe, a câmera do Android encontrou um problema. Poderá precisar de reiniciar o dispositivo.</string>
+    <string name="zxing_msg_default_status">Alinhar código de barras com o exemplo para ser lido.</string>
 </resources>

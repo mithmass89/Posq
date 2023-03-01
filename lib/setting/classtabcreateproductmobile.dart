@@ -25,6 +25,7 @@ class ClassTabCreateProducr extends StatefulWidget {
   late TextEditingController sku;
   late String? selectedctg;
   final Function? callbackctg;
+  final String? imagepath;
 
   ClassTabCreateProducr({
     Key? key,
@@ -40,7 +41,7 @@ class ClassTabCreateProducr extends StatefulWidget {
     this.selectedctg,
     this.callbackctg,
     required this.barcode,
-    required this.sku,
+    required this.sku,  this.imagepath,
   }) : super(key: key);
 
   @override
@@ -183,7 +184,9 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                           height: MediaQuery.of(context).size.height * 0.1,
                           width: MediaQuery.of(context).size.width * 0.9,
                           child: ImageFromGalleryEx(
+                            
                             ImageSourceType.gallery,
+                            savingimage: widget.imagepath,
                             height: MediaQuery.of(context).size.height * 0.1,
                             width: MediaQuery.of(context).size.width * 0.3,
                           ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/setting/classcreatepromomobile.dart';
+import 'package:posq/setting/promo/classcreatepromomobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/classeditpromomobile.dart';
+import 'package:posq/setting/promo/classeditpromomobile.dart';
 import 'package:posq/userinfo.dart';
 
 class ClassPromoMobile extends StatefulWidget {

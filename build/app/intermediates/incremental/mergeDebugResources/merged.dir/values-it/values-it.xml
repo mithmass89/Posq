@@ -105,4 +105,8 @@
     <string name="password_toggle_content_description">Mostra password</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Cerca"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="zxing_app_name">Barcode Scanner</string>
+    <string name="zxing_button_ok">OK</string>
+    <string name="zxing_msg_camera_framework_bug">Spiacenti, la fotocamera Android ha riscontrato un problema. Potrebbe essere necessario riavviare il dispositivo.</string>
+    <string name="zxing_msg_default_status">Posiziona un codice a barre dentro il mirino rettangolare per la scansione.</string>
 </resources>
