@@ -10,7 +10,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/image.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/classkelolastockmobile.dart';
+import 'package:posq/setting/product_master/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
 import 'package:posq/userinfo.dart';
 

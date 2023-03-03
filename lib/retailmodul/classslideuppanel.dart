@@ -10,10 +10,14 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/classsumamryorderslidemobile.dart';
+import 'package:posq/setting/printer/classmainprinter.dart';
+import 'package:posq/setting/printer/classtextprint.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 
 typedef void StringCallback(IafjrndtClass val);
+PrintSmall? printing;
 
 class SlideUpPanel extends StatefulWidget {
   final ScrollController controllers;
@@ -22,11 +26,12 @@ class SlideUpPanel extends StatefulWidget {
   final Outlet outletinfo;
   late int? qty;
   final num? amount;
-  final List<IafjrndtClass> listdata;
+  late List<IafjrndtClass> listdata;
   final Function? updatedata;
   final VoidCallback? refreshdata;
   final String trno;
   final bool animated;
+  final bool? fromsaved;
   late num? sum;
 
   SlideUpPanel(
@@ -42,7 +47,8 @@ class SlideUpPanel extends StatefulWidget {
       required this.trno,
       required this.outletinfo,
       required this.animated,
-      required this.sum})
+      required this.sum,
+      this.fromsaved})
       : super(key: key);
 
   @override
@@ -64,6 +70,9 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   num? amountidisc;
+  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  bool connected = false;
+  PrintSmall printing = PrintSmall();
 
   @override
   void initState() {
@@ -73,6 +82,14 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     formattedDate = formatter.format(now);
     getDataSlide();
     print(widget.trnoinfo!.trdt);
+    checkPrinter();
+  }
+
+  checkPrinter() async {
+    connected = await bluetooth.isConnected.then((value) => value!);
+
+    setState(() {});
+    print(connected);
   }
 
   getDataSlide() async {
@@ -141,14 +158,21 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                     flex: 1,
                     child: IconButton(
                       icon: Icon(
-                        Icons.print,
+                        connected == true ? Icons.print : Icons.print_disabled,
                       ),
                       iconSize: 25,
-                      color: Colors.black,
+                      color: connected == true ? Colors.green : Colors.red,
                       splashColor: Colors.purple,
                       onPressed: () async {
-                        Toast.show("on development",
-                            duration: Toast.lengthLong, gravity: Toast.center);
+                        if (connected == true) {
+                          await printing.prints(
+                              widget.listdata, widget.outletinfo.outletname!);
+                        } else {
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ClassMainPrinter()));
+                        }
                       },
                     )),
                 Expanded(
@@ -188,6 +212,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                             controller: widget.controllers,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
+                              widget.listdata = snapshot.data!;
                               return Dismissible(
                                 key: ValueKey<int>(snapshot.data![index].id!),
                                 direction: DismissDirection.endToStart,
@@ -357,6 +382,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
+                    fromsaved: widget.fromsaved,
                     outletinfo: widget.outletinfo,
                     refreshdata: widget.refreshdata,
                     updatedata: () {

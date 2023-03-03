@@ -9,6 +9,7 @@ import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
@@ -29,6 +30,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
   final Outlet? outletinfo;
   final bool? cash;
   final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
 
   const ClassPaymetSucsessMobile({
     Key? key,
@@ -44,6 +46,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
     this.virtualaccount,
     required this.frombanktransfer,
     required this.datatrans,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -114,12 +117,15 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     // This loop will run forever because _running is always true
   }
 
-  getTrno() async {
-    var uuid = Uuid();
-    var random = uuid.v4();
-    setState(() {
-      nexttrno = random;
-    });
+  checkTrno() async {
+    var transno = await ClassApi.checkTrno();
+    nexttrno = widget.outletcd! + '-' + transno[0]['transnonext'].toString();
+    print(trno);
+  }
+
+  updateTrno() async {
+    await ClassApi.updateTrno(dbname);
+    await checkTrno();
   }
 
   generateDataWA() {
@@ -342,12 +348,17 @@ ${payment.reduce((value, element) => value + element)}
                               height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.18,
                               onpressed: () async {
-                                await getTrno();
+                                if (widget.fromsaved == true) {
+                                  await checkTrno();
+                                } else {
+                                  await updateTrno();
+                                }
 
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             ClassRetailMainMobile(
+                                              fromsaved: widget.fromsaved,
                                               pscd: widget.outletcd!,
                                               trno: nexttrno,
                                               outletinfo: widget.outletinfo!,

@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
-// var api = 'http://192.168.88.24:3000';
-// var api = 'http://192.168.1.6:3000';
-var api = 'http://147.139.163.18:3000';
+var api = 'http://192.168.88.24:3000';
+// var api = 'http://192.168.1.8:3000';
+// var api = 'http://147.139.163.18:3000';
 var serverkey = '';
 String username = 'massmith';
 String password = 'massmith';
@@ -126,6 +126,53 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> insertCondiment_Master(
+      String code, String condimentdesc, num amount, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "itemcode": code,
+      "condimentdesc": condimentdesc,
+      "amount": amount
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertCondimentMaster');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertMapCondiment(
+      String ctgcd, String itemcode, String dbname) async {
+    var body = {"dbname": dbname, "ctgcd": ctgcd, "itemcode": itemcode};
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertMapping');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> insertOutletUser(String data) async {
     var body = {
       "dbname": data,
@@ -227,7 +274,8 @@ class ClassApi {
           data.totalaftdisc,
           data.transno,
           data.active,
-          data.usercrt
+          data.usercrt,
+          data.createdt
         ]
       ]
     };
@@ -364,6 +412,49 @@ class ClassApi {
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
 
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateTrno(String dbname) async {
+    var body = {"dbname": dbname};
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateTrno');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateTrnoGuest(
+      String dbname, String trno, String guest) async {
+    var body = {"dbname": dbname, "transno": trno, "guest": guest};
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateTrnoGuest');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      print(status);
       return status;
     } else {
       throw Exception();
@@ -554,7 +645,7 @@ class ClassApi {
     var data = {"usercd": usercd};
 
     final url = Uri.parse('$api/outlet_user');
-        print(url);
+    print(url);
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -591,6 +682,25 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> checkTrno() async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/checktransno');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      print(body);
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<Promo>> getPromoList(String dbname, String query) async {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname};
@@ -616,6 +726,33 @@ class ClassApi {
       // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
       // return data;
 
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<Condiment>> getCondimentList(
+      String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/condimentlist');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => Condiment.fromJson(json)).where((items) {
+        final itemdescLower = items.condimentdesc!.toLowerCase();
+        final itemcodes = items.itemcode!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
     } else {
       throw Exception();
     }

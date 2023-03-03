@@ -18,6 +18,7 @@ class SummaryOrderSlidemobile extends StatefulWidget {
   final Function? updatedata;
   final VoidCallback? refreshdata;
   final Outlet outletinfo;
+  final bool? fromsaved;
 
   SummaryOrderSlidemobile(
       {Key? key,
@@ -26,7 +27,8 @@ class SummaryOrderSlidemobile extends StatefulWidget {
       required this.sum,
       required this.updatedata,
       required this.refreshdata,
-      required this.outletinfo})
+      required this.outletinfo,
+      this.fromsaved})
       : super(key: key);
 
   @override
@@ -158,10 +160,10 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                               await widget.refreshdata!;
                                               ClassRetailMainMobile.of(context)!
                                                   .string = value.first;
-                                                        ClassRetailMainMobile.of(context)!
-                                                  .discount = value.first.discamt!;
+                                              ClassRetailMainMobile.of(context)!
+                                                      .discount =
+                                                  value.first.discamt!;
                                             });
-                                            
                                           },
                                           child: Text('X')))
                                 ],
@@ -189,9 +191,11 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                   ),
                   TextButton(
                       onPressed: () async {
+                
                         await showDialog(
                             context: context,
                             builder: (_) => DialogClassCancelorder(
+                              fromsaved: widget.fromsaved,
                                 outletinfo: widget.outletinfo,
                                 outletcd: widget.pscd!,
                                 trno: x.first.transno!)).then((_) {

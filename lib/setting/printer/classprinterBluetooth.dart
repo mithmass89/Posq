@@ -23,16 +23,19 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
   void initState() {
     super.initState();
     initPlatformState();
+    testprint = TestPrint();
   }
 
   Future<void> initPlatformState() async {
     bool? isConnected = await bluetooth.isConnected;
+    print(isConnected);
     List<BluetoothDevice> devices = [];
     try {
       devices = await bluetooth.getBondedDevices();
     } on PlatformException {}
 
     bluetooth.onStateChanged().listen((state) {
+      print(state);
       switch (state) {
         case BlueThermalPrinter.CONNECTED:
           setState(() {
@@ -105,7 +108,7 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Thermal Printer'),
+          title: Text('Bluetooth Printer'),
         ),
         body: Container(
           child: Padding(
@@ -131,8 +134,9 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
                     Expanded(
                       child: DropdownButton(
                         items: _getDeviceItems(),
-                        onChanged: (BluetoothDevice? value) =>
-                            setState(() => _device = value),
+                        onChanged: (BluetoothDevice? value) {
+                          setState(() => _device = value);
+                        },
                         value: _device,
                       ),
                     ),
@@ -147,7 +151,7 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
                   children: <Widget>[
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.brown),
+                          backgroundColor: Colors.blue),
                       onPressed: () {
                         initPlatformState();
                       },
@@ -171,6 +175,41 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
                     ),
                   ],
                 ),
+                       SizedBox(height: MediaQuery.of(context).size.height*0.06,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [Text('Jika Printer tidak terdeteksi')],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text('1. anda bisa check koneksi bluetooth anda')
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                          '2. pastikan device anda sudah pair dengan device ini')
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                          '''3. check kembali printer anda,atau anda bisa coba untuk 
+    mencoba di perangkat lain ''')
+                    ],
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.35,),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 10.0, right: 10.0, top: 50),
@@ -212,8 +251,10 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
   void _connect() {
     if (_device != null) {
       bluetooth.isConnected.then((isConnected) {
-        if (isConnected == true) {
+        print(isConnected);
+        if (isConnected == false) {
           bluetooth.connect(_device!).catchError((error) {
+            print(error);
             setState(() => _connected = false);
           });
           setState(() => _connected = true);

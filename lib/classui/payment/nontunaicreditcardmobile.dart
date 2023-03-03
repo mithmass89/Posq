@@ -28,7 +28,9 @@ class PaymentMobileCreditCard extends StatefulWidget {
   final bool midtransonline;
   late String? compcode;
   late String? compdescription;
-  final void Function(String compcd, String compdesc,String methode) checkselected;
+  final void Function(String compcd, String compdesc, String methode)
+      checkselected;
+  final bool fromsaved;
 
   PaymentMobileCreditCard({
     Key? key,
@@ -46,6 +48,7 @@ class PaymentMobileCreditCard extends StatefulWidget {
     this.compcode,
     this.compdescription,
     required this.checkselected,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -178,6 +181,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
@@ -204,8 +208,10 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'CCBCA',
-                            widget.compdescription = 'Credit Card Bca','Credit Card');
+                        widget.checkselected(
+                            widget.compcode = 'CCBCA',
+                            widget.compdescription = 'Credit Card Bca',
+                            'Credit Card');
                       }
                     },
                   ),
@@ -254,7 +260,8 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                          datatrans: widget.datatrans,
+                                    fromsaved: widget.fromsaved,
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -276,8 +283,10 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'CCBNI',
-                            widget.compdescription = 'Credit Card BNI','Credit Card');
+                        widget.checkselected(
+                            widget.compcode = 'CCBNI',
+                            widget.compdescription = 'Credit Card BNI',
+                            'Credit Card');
                       }
                     },
                   ),
@@ -320,7 +329,8 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                          datatrans: widget.datatrans,
+                                    fromsaved: widget.fromsaved,
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -346,8 +356,10 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'CCBRI',
-                            widget.compdescription = 'Credit Card BRI','Credit Card');
+                        widget.checkselected(
+                            widget.compcode = 'CCBRI',
+                            widget.compdescription = 'Credit Card BRI',
+                            'Credit Card');
                       }
                     },
                   ),
@@ -392,7 +404,8 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
-                                          datatrans: widget.datatrans,
+                                    fromsaved: widget.fromsaved,
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     bill_key: bill_key,
                                     biller_code: biller_code,
@@ -414,8 +427,10 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'CCMANDIRI',
-                            widget.compdescription = 'Credit Card MANDIRI','Credit Card');
+                        widget.checkselected(
+                            widget.compcode = 'CCMANDIRI',
+                            widget.compdescription = 'Credit Card MANDIRI',
+                            'Credit Card');
                       }
                     },
                   ),
@@ -456,7 +471,8 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                          datatrans: widget.datatrans,
+                                    fromsaved: widget.fromsaved,
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -482,8 +498,10 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'CCPERMATAVA',
-                            widget.compdescription = 'Credit Card PERMATA','Credit Card');
+                        widget.checkselected(
+                            widget.compcode = 'CCPERMATAVA',
+                            widget.compdescription = 'Credit Card PERMATA',
+                            'Credit Card');
                       }
                     },
                   ),
@@ -523,7 +541,8 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                          datatrans: widget.datatrans,
+                                    fromsaved: widget.fromsaved,
+                                    datatrans: widget.datatrans,
                                     paymenttype: 'Credit Card',
                                     virtualaccount: virtualaccount,
                                     bank: bank,
@@ -549,8 +568,10 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'CCOTHERS',
-                            widget.compdescription = 'Credit Card OTHERS','Credit Card');
+                        widget.checkselected(
+                            widget.compcode = 'CCOTHERS',
+                            widget.compdescription = 'Credit Card OTHERS',
+                            'Credit Card');
                       }
                     },
                   ),

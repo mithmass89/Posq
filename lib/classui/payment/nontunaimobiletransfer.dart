@@ -28,6 +28,7 @@ class NonTunaiMobileTransfer extends StatefulWidget {
   final bool midtransonline;
   late String? compcode;
   late String? compdescription;
+  final bool fromsaved;
   final void Function(String compcd, String compdesc, String methode)
       checkselected;
 
@@ -46,7 +47,8 @@ class NonTunaiMobileTransfer extends StatefulWidget {
       required this.callback,
       this.compcode,
       this.compdescription,
-      required this.checkselected})
+      required this.checkselected,
+      required this.fromsaved})
       : super(key: key);
 
   @override
@@ -84,8 +86,8 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
       print('ini nett ${widget.datatrans[index].totalaftdisc!}');
       listitem.add(Midtransitem(
           id: '${widget.datatrans[index].itemcode}'.replaceAll(' ', ''),
-          price:
-              widget.datatrans[index].totalaftdisc! / widget.datatrans[index].qty!,
+          price: widget.datatrans[index].totalaftdisc! /
+              widget.datatrans[index].qty!,
           quantity: int.parse('${widget.datatrans[index].qty}'),
           name: '${widget.datatrans[index].description}'));
     });
@@ -179,6 +181,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -259,6 +262,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -329,6 +333,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -405,6 +410,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     bill_key: bill_key,
@@ -473,6 +479,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -544,6 +551,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,

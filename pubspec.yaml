@@ -120,7 +120,10 @@ flutter:
     - resto.png
     - retail.png
     - qris.png
-    - barcode.png
+    - barcode-scanner.png
+    - list.png
+    - icons8-barcode-100.png
+    - icons8-checklist-100.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

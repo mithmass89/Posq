@@ -28,6 +28,7 @@ class PaymentDebitCardMobile extends StatefulWidget {
   final bool midtransonline;
   late String? compcode;
   late String? compdescription;
+  final bool fromsaved;
   final void Function(String compcd, String compdesc, String methode)
       checkselected;
 
@@ -46,7 +47,7 @@ class PaymentDebitCardMobile extends StatefulWidget {
     required this.callback,
     this.compcode,
     this.compdescription,
-    required this.checkselected,
+    required this.checkselected, required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -178,6 +179,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Debit Card',
                                     virtualaccount: virtualaccount,
@@ -254,6 +256,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                      fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -320,6 +323,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                      fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -392,6 +396,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
+                                      fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Debit Card',
                                     bill_key: bill_key,
@@ -458,6 +463,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                      fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Debit Card',
                                     virtualaccount: virtualaccount,
@@ -527,6 +533,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                      fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,

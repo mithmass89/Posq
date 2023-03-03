@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/setting/condiment/maincondimenr.dart';
 import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/classselectoutletmobile.dart';
 import 'package:posq/databasehandler.dart';
@@ -15,6 +16,7 @@ import 'package:posq/model.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
 import 'package:uuid/uuid.dart';
+import 'package:posq/classui/api.dart';
 
 typedef void StringCallback(Outlet val);
 
@@ -39,6 +41,7 @@ class MenuMain extends StatefulWidget {
 class _MenuMainState extends State<MenuMain> {
   String? trno = '';
 
+  
   deleteDatabase() async {
     print('oke');
   }
@@ -47,9 +50,15 @@ class _MenuMainState extends State<MenuMain> {
   void initState() {
     super.initState();
     print(widget.pscd);
-    var uuid = Uuid();
-    var random = uuid.v4();
-    trno = random;
+    checkTrno();
+  }
+
+  checkTrno() async {
+    var transno = await ClassApi.checkTrno();
+    trno = widget.outletinfo!.outletcd +
+        '-' +
+        transno[0]['transnonext'].toString();
+    print(trno);
   }
 
   @override
@@ -71,6 +80,7 @@ class _MenuMainState extends State<MenuMain> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ClassRetailMainMobile(
+                          fromsaved: false,
                           trno: trno,
                           qty: 0,
                           pscd: widget.pscd.toString(),
@@ -130,6 +140,21 @@ class _MenuMainState extends State<MenuMain> {
               );
             },
             name: 'Product',
+          ),
+          ButtonClassAction(
+            iconasset: 'products.png',
+            height: MediaQuery.of(context).size.height * 0.03,
+            widht: MediaQuery.of(context).size.width * 0.42,
+            onpressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MainCondiment(
+                          pscd: widget.outletinfo!.outletcd,
+                        )),
+              );
+            },
+            name: 'Condiment',
           ),
           ButtonClassAction(
             iconasset: 'pegawai.png',

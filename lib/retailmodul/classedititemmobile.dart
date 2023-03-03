@@ -202,7 +202,9 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                   maxline: 1,
                   label: 'Qty',
                   controller: widget.editqty,
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    qty = num.parse(widget.editqty.text);
+                  },
                   typekeyboard: TextInputType.number,
                 ),
               ),

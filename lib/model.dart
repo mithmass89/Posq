@@ -63,6 +63,7 @@ class Item {
   final int? id;
   final String? outletcode;
   final String? itemcode;
+  final String? subitemcode;
   final String? itemdesc;
   final num? slsamt;
   final num? costamt;
@@ -81,11 +82,15 @@ class Item {
   final int? trackstock;
   final String? barcode;
   final String? sku;
+  final num? slsamt2;
+  final num? slsnett2;
+  final int? custome;
 
   Item({
     this.id,
     this.outletcode,
     this.itemcode,
+    this.subitemcode,
     this.itemdesc,
     this.slsamt,
     this.costamt,
@@ -104,6 +109,9 @@ class Item {
     this.trackstock,
     this.barcode,
     this.sku,
+    this.slsamt2,
+    this.slsnett2,
+    this.custome,
   });
 
   Item.fromJson(
@@ -111,6 +119,7 @@ class Item {
   )   : id = res["id"],
         outletcode = res["outletcode"],
         itemcode = res["itemcode"],
+        subitemcode = res["subitemcode"],
         itemdesc = res["itemdesc"],
         slsamt = res["slsamt"],
         costamt = res["costamt"],
@@ -128,11 +137,14 @@ class Item {
         description = res["description"],
         trackstock = res["trackstock"],
         barcode = res["barcode"],
+        slsamt2 = res["slsamt2"],
+        slsnett2 = res["slsnett2"],
+        custome = res["custome"],
         sku = res["sku"];
 
   @override
   String toString() {
-    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku}';
+    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"custome": $custome}';
   }
 
   Map<String, Object?> toJson() {
@@ -140,6 +152,7 @@ class Item {
       'id': id,
       'outletcode': outletcode,
       'itemcode': itemcode,
+      'subitemcode': subitemcode,
       'itemdesc': itemdesc,
       'slsamt': slsamt,
       'costamt': costamt,
@@ -158,6 +171,9 @@ class Item {
       'trackstock': trackstock,
       'barcode': barcode,
       'sku': sku,
+      'slsnett2': slsnett2,
+      'slsamt2': slsamt2,
+      'custome': custome,
     };
   }
 }
@@ -253,6 +269,37 @@ class Ctg {
   }
 }
 
+class Condiment {
+  final String? itemcode;
+  final String? condimentdesc;
+  final String? amount;
+
+  Condiment({
+    this.itemcode,
+    this.condimentdesc,
+    this.amount,
+  });
+
+  Condiment.fromJson(
+    Map<String, dynamic> res,
+  )   : itemcode = res["itemcode"],
+        condimentdesc = res["condimentdesc"],
+        amount = res["amount"];
+
+  @override
+  String toString() {
+    return '{"itemcode": $itemcode, "condimentdesc": $condimentdesc,"amount": $amount}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'itemcode': itemcode,
+      'condimentdesc': condimentdesc,
+      'amount': amount,
+    };
+  }
+}
+
 class IafjrndtClass {
   final int? id;
   final String? trdt;
@@ -297,10 +344,9 @@ class IafjrndtClass {
   final num? taxpct;
   final num? servicepct;
   final String? statustrans;
-  final String? time;
-  // final String? guestname;
-  // final String? email;
-  // final String? phone;
+  final String? createdt;
+  final String? guestname;
+  final List<Condiment>? condimentlist;
 
   IafjrndtClass({
     this.id,
@@ -346,10 +392,9 @@ class IafjrndtClass {
     this.taxpct,
     this.servicepct,
     this.statustrans,
-    this.time,
-    // this.guestname,
-    // this.email,
-    // this.phone,
+    this.createdt,
+    this.guestname,
+    this.condimentlist,
   });
 
   IafjrndtClass.fromJson(
@@ -397,12 +442,9 @@ class IafjrndtClass {
         taxpct = res["taxpct"],
         servicepct = res["servicepct"],
         statustrans = res["statustrans"],
-        time = res["time"]
-  // guestname = res['guestname'],
-  // email = res['email'],
-  // phone = res['phone']
-
-  ;
+        createdt = res["createdt"],
+        guestname = res['guestname'],
+        condimentlist = res['condimentlist'];
 
   Map<String, Object?> toJson() {
     return {
@@ -449,16 +491,15 @@ class IafjrndtClass {
       'taxpct': taxpct,
       'servicepct': servicepct,
       'statustrans': statustrans,
-      'time': time,
-      // 'guestname': guestname,
-      // 'email': email,
-      // 'phone': phone,
+      'createdt': createdt,
+      'guestname': guestname,
+      'condimentlist': condimentlist,
     };
   }
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc"}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt}';
   }
 }
 

@@ -13,8 +13,9 @@ import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
 class DrawerRetailMain extends StatefulWidget {
   final String? outletname;
   final Outlet outletinfo;
+  final bool fromsaved;
   const DrawerRetailMain(
-      {Key? key, required this.outletname, required this.outletinfo})
+      {Key? key, required this.outletname, required this.outletinfo, required this.fromsaved})
       : super(key: key);
 
   @override
@@ -83,7 +84,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
           ),
           ListTile(
             leading: Icon(
-              Icons.shop_outlined,
+              Icons.attach_money,
             ),
             title: Text('Kelola Promo'),
             onTap: () {
@@ -102,6 +103,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
                 return Listtransaction(
+                  fromsaved: widget.fromsaved,
                   pscd: widget.outletinfo.outletcd,
                   outletinfo: widget.outletinfo,
                 );
@@ -122,7 +124,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
           ),
           ListTile(
             leading: Icon(
-              Icons.add_box_outlined,
+              Icons.add_box,
             ),
             title: const Text('Kelola Produk'),
             onTap: () {
@@ -148,7 +150,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
           ),
           ListTile(
             leading: Icon(
-              Icons.shop_two_outlined,
+              Icons.shopify_sharp,
             ),
             title: const Text('Toko Online'),
             onTap: () {
@@ -184,7 +186,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.help),
+                        leading: Icon(Icons.print),
                         title: Text('Printer'),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(

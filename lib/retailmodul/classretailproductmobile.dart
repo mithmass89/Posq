@@ -67,22 +67,34 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
       height: MediaQuery.of(context).size.height * 0.60,
       width: MediaQuery.of(context).size.width * 1,
       child: FutureBuilder(
-          future: ClassApi.getItemList(pscd,dbname,widget.controller.text),
+          future: ClassApi.getItemList(pscd, dbname, widget.controller.text),
           builder: (context, AsyncSnapshot<List<Item>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              isLoading == false;
+            }
             var x = snapshot.data ?? [];
-            if (snapshot.data==[]) {
-              return ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return ShimmerLoading(
-                        isLoading: isLoading,
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          child: Text(''),
-                        ));
-                  });
-            } else if (snapshot.hasError) {
-            } else if (snapshot.hasData) {
+            if (x.isEmpty) {
+              return Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('tidak ada produk tersedia'),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Createproduct(
+                                      pscd: widget.pscd,
+                                    )),
+                          );
+                        },
+                        child: Text('Buat Produk'))
+                  ],
+                ),
+              );
+            } else {
               return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
@@ -97,38 +109,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
                       ),
                     );
                   });
-            } else if (snapshot.hasError) {
-              return Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(snapshot.hasError.toString()),
-                    TextButton(onPressed: () {}, child: Text('Buat Produk'))
-                  ],
-                ),
-              );
             }
-            return Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('tidak ada produk tersedia'),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Createproduct(
-                                    pscd: widget.pscd,
-                                  )),
-                        );
-                      },
-                      child: Text('Buat Produk'))
-                ],
-              ),
-            );
           }),
     );
   }

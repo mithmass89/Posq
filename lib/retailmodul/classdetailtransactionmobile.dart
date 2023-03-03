@@ -11,13 +11,14 @@ class ClassDetailTransMobile extends StatefulWidget {
   final String pscd;
   final IafjrnhdClass? datatransaksi;
   final String status;
+  final bool fromsaved;
   const ClassDetailTransMobile(
       {Key? key,
       required this.trno,
       required this.outletinfo,
       required this.pscd,
       required this.datatransaksi,
-      required this.status})
+      required this.status, required this.fromsaved})
       : super(key: key);
 
   @override
@@ -126,7 +127,7 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
                       context,
                       MaterialPageRoute(
                           builder: (context) => ClassRetailMainMobile(
-                                
+                                fromsaved: widget.fromsaved,
                                 outletinfo: widget.outletinfo,
                                 pscd: widget.pscd,
                                 qty: 0,

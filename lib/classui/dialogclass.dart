@@ -674,11 +674,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
           taxpct: 0,
           servicepct: 0,
           statustrans: 'prosess',
-          time: now.hour.toString() +
-              ":" +
-              now.minute.toString() +
-              ":" +
-              now.second.toString(),
+          createdt: now.toString()
         ),
         pscd);
   }
@@ -905,12 +901,14 @@ class DialogClassCancelorder extends StatefulWidget {
   final String trno;
   final String outletcd;
   final Outlet outletinfo;
+  final bool? fromsaved;
 
   const DialogClassCancelorder({
     Key? key,
     required this.trno,
     required this.outletcd,
     required this.outletinfo,
+    this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -924,9 +922,22 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
   @override
   void initState() {
     super.initState();
-    var uuid = Uuid();
-    var random = uuid.v4();
-    trnolanjut = random;
+  }
+
+  checkTrno() async {
+    var transno = await ClassApi.checkTrno();
+    trnolanjut = widget.outletcd + '-' + transno[0]['transnonext'].toString();
+    print(trno);
+  }
+
+  updateTrno() async {
+    if (widget.fromsaved == true) {
+      print('trno not update');
+      await checkTrno();
+    } else {
+      await ClassApi.updateTrno(dbname);
+      await checkTrno();
+    }
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -954,9 +965,11 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
             )),
         title: Text('Cancel Transaksi'),
         actions: <Widget>[
-          TextButton(onPressed: ()  {
-            Navigator.of(context).pop();
-          }, child: Text('Batal')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Batal')),
           TextButton(
               onPressed: () async {
                 await ClassApi.deactivePosdetailtrans(widget.trno, dbname);
@@ -964,10 +977,12 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
                 await ClassApi.deactivePromoTrno(widget.trno, dbname);
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.remove('savecostmrs');
+                await updateTrno();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                         builder: (context) => ClassRetailMainMobile(
                               pscd: widget.outletcd,
+                              fromsaved: widget.fromsaved,
                               trno: trnolanjut,
                               outletinfo: widget.outletinfo,
                               qty: 0,
@@ -986,6 +1001,7 @@ class DialogClassReopen extends StatefulWidget {
   final Outlet outletinfo;
   final String pscd;
   final bool fromreopen;
+  final bool fromsaved;
 
   const DialogClassReopen({
     Key? key,
@@ -993,6 +1009,7 @@ class DialogClassReopen extends StatefulWidget {
     required this.outletinfo,
     required this.pscd,
     required this.fromreopen,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -1210,6 +1227,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ClassRetailMainMobile(
+                        fromsaved: widget.fromsaved,
                             outletinfo: widget.outletinfo,
                             pscd: widget.pscd,
                             qty: 0,
@@ -1249,6 +1267,7 @@ class DialogClassEwallet extends StatefulWidget {
   final String? url;
   final bool? fromtrfbank;
   final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
 
   DialogClassEwallet({
     Key? key,
@@ -1264,6 +1283,7 @@ class DialogClassEwallet extends StatefulWidget {
     this.url,
     this.fromtrfbank,
     required this.datatrans,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -1379,6 +1399,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                              fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: false,
                               cash: false,
@@ -1416,6 +1437,7 @@ class DialogClassBankTransfer extends StatefulWidget {
   final num? grossmaount;
   final String? paymenttype;
   final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
 
   DialogClassBankTransfer({
     Key? key,
@@ -1434,6 +1456,7 @@ class DialogClassBankTransfer extends StatefulWidget {
     this.grossmaount,
     required this.paymenttype,
     required this.datatrans,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -1560,6 +1583,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                              fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: true,
                               virtualaccount: widget.virtualaccount,
@@ -1598,6 +1622,7 @@ class DialogClassMandiribiller extends StatefulWidget {
   final num? grossmaount;
   final String? paymenttype;
   final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
 
   DialogClassMandiribiller({
     Key? key,
@@ -1616,6 +1641,7 @@ class DialogClassMandiribiller extends StatefulWidget {
     this.grossmaount,
     required this.paymenttype,
     required this.datatrans,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -1768,6 +1794,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                              fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: true,
                               cash: false,
@@ -1781,6 +1808,106 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                             )),
                   );
                 });
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
+class DialogClassSimpan extends StatefulWidget {
+  final String trno;
+  final String pscd;
+  final Outlet outletinfo;
+  final bool? fromsaved;
+
+  DialogClassSimpan({
+    Key? key,
+    required this.trno,
+    required this.pscd,
+    required this.outletinfo,
+    this.fromsaved,
+  }) : super(key: key);
+
+  @override
+  State<DialogClassSimpan> createState() => _DialogClassSimpanState();
+}
+
+class _DialogClassSimpanState extends State<DialogClassSimpan> {
+  TextEditingController guestname = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var formattedDate;
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  String trno = '';
+
+  @override
+  void initState() {
+    super.initState();
+    formattedDate = formatter.format(now);
+  }
+
+  updateGuest(String guestname) async {
+    await ClassApi.updateTrnoGuest(dbname, widget.trno, guestname);
+  }
+
+  checkTrno() async {
+    var transno = await ClassApi.checkTrno();
+    trno = widget.pscd + '-' + transno[0]['transnonext'].toString();
+    print(trno);
+  }
+
+  updateTrno() async {
+    await ClassApi.updateTrno(dbname);
+    await checkTrno();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: TextFieldMobile2(
+                    label: 'Guest Name',
+                    controller: guestname,
+                    onChanged: (String value) {},
+                    typekeyboard: TextInputType.text,
+                  ),
+                ),
+              ],
+            )),
+        title: Text('Simpan Sebagai '),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () async {
+                await updateGuest(guestname.text);
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('savecostmrs');
+                if (widget.fromsaved == false) {
+                  await updateTrno();
+                } else {
+                  await checkTrno();
+                }
+
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => ClassRetailMainMobile(
+                              fromsaved: widget.fromsaved,
+                              pscd: widget.pscd,
+                              trno: trno,
+                              outletinfo: widget.outletinfo,
+                              qty: 0,
+                            )),
+                    (Route<dynamic> route) => false);
               },
               child: Text('OK!'))
         ],

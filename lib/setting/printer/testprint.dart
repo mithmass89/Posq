@@ -14,14 +14,14 @@ class TestPrint {
     //image max 300px X 300px
 
     ///image from File path
-    String filename = 'yourlogo.png';
-    ByteData bytesData = await rootBundle.load("assets/images/yourlogo.png");
+    String filename = 'cutlery.png';
+    ByteData bytesData = await rootBundle.load("assets/cutlery.png");
     String dir = (await getApplicationDocumentsDirectory()).path;
     File file = await File('$dir/$filename').writeAsBytes(bytesData.buffer
         .asUint8List(bytesData.offsetInBytes, bytesData.lengthInBytes));
 
     ///image from Asset
-    ByteData bytesAsset = await rootBundle.load("assets/images/yourlogo.png");
+    ByteData bytesAsset = await rootBundle.load("assets/cutlery.png");
     Uint8List imageBytesFromAsset = bytesAsset.buffer
         .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
 
@@ -37,10 +37,10 @@ class TestPrint {
         bluetooth.printNewLine();
         bluetooth.printCustom("HEADER", Size.boldMedium.val, Align.center.val);
         bluetooth.printNewLine();
-        bluetooth.printImage(file.path); //path of your image/logo
-        bluetooth.printNewLine();
-        bluetooth.printImageBytes(imageBytesFromAsset); //image from Asset
-        bluetooth.printNewLine();
+        // bluetooth.printImage(file.path); //path of your image/logo
+        // bluetooth.printNewLine();
+        // bluetooth.printImageBytes(imageBytesFromAsset); //image from Asset
+        // bluetooth.printNewLine();
         bluetooth.printImageBytes(imageBytesFromNetwork); //image from Network
         bluetooth.printNewLine();
         bluetooth.printLeftRight("LEFT", "RIGHT", Size.medium.val);

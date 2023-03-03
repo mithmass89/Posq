@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classlisttrnosavedmob.dart';
 import 'package:posq/userinfo.dart';
@@ -24,7 +23,6 @@ class ClassSavedTransactionMobile extends StatefulWidget {
 
 class _ClassSavedTransactionMobileState
     extends State<ClassSavedTransactionMobile> {
-  late DatabaseHandler handler;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
@@ -35,7 +33,6 @@ class _ClassSavedTransactionMobileState
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHandler();
     formattedDate = formatter.format(now);
   }
 

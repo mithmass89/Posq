@@ -27,7 +27,9 @@ class NonTunaiMobile extends StatefulWidget {
   late String? compcode;
   late String? compdescription;
   late String? pymtmthd;
-  final void Function(String compcd, String compdesc,String methode) checkselected;
+  final void Function(String compcd, String compdesc, String methode)
+      checkselected;
+  final bool fromsaved;
 
   NonTunaiMobile({
     Key? key,
@@ -45,6 +47,7 @@ class NonTunaiMobile extends StatefulWidget {
     this.compdescription,
     required this.checkselected,
     required this.pymtmthd,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -71,6 +74,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
       shrinkWrap: true,
       children: [
         EWalletClassNonTunai(
+          fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
           compdescription: widget.compdescription,
@@ -86,6 +90,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           amountcash: widget.amountcash,
         ),
         NonTunaiMobileTransfer(
+          fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
           compdescription: widget.compdescription,
@@ -100,7 +105,8 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentMobileCreditCard(
-         checkselected: widget.checkselected,
+          fromsaved: widget.fromsaved,
+          checkselected: widget.checkselected,
           compcode: widget.compcode,
           compdescription: widget.compdescription,
           midtransonline: widget.midtransonline,
@@ -114,7 +120,8 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentDebitCardMobile(
-        checkselected: widget.checkselected,
+               fromsaved: widget.fromsaved,
+          checkselected: widget.checkselected,
           compcode: widget.compcode,
           compdescription: widget.compdescription,
           midtransonline: widget.midtransonline,

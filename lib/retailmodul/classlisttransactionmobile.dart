@@ -12,11 +12,12 @@ import 'package:posq/userinfo.dart';
 class Listtransaction extends StatefulWidget {
   final String? pscd;
   final Outlet outletinfo;
+  final bool fromsaved;
 
   const Listtransaction({
     Key? key,
     this.pscd,
-    required this.outletinfo,
+    required this.outletinfo, required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -39,13 +40,6 @@ class _ListtransactionState extends State<Listtransaction> {
     // checkPending();
   }
 
-  // checkPending() {
-  //   handler.checkPendingTransaction().then((value) {
-  //     setState(() {
-  //       pending = value;
-  //     });
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +81,7 @@ class _ListtransactionState extends State<Listtransaction> {
                               return GestureDetector(
                                 onTap: () {},
                                 child: DetailTrno(
+                                  fromsaved: widget.fromsaved,
                                   datatransaksi: IafjrnhdClass(
                                     pymtmthd: x[index].pymtmthd,
                                     totalamt: x[index].totalamt,

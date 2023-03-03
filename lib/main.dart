@@ -8,7 +8,6 @@ import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
-
   runApp(MyApp(
     onGenerateRoute: RouteGenerator.generateRoute,
   ));
@@ -28,7 +27,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      
       title: 'POS Demo',
       theme: ThemeData(
         useMaterial3: true,
@@ -40,7 +38,8 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (context) => Mainapps(),
         '/RetailMain': (context) => ClassRetailMainMobile(
-              outletinfo: Outlet(outletcd: ''),
+                        fromsaved: false,
+              outletinfo: Outlet(outletcd: '', outletname: ''),
               pscd: '',
               qty: 0,
             )
@@ -62,14 +61,16 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
             builder: (_) => ClassRetailMainMobile(
-                  outletinfo: Outlet(outletcd: ''),
+                  fromsaved: false,
+                  outletinfo: Outlet(outletcd: '', outletname: ''),
                   pscd: '',
                   qty: 0,
                 ));
       case '/RetailMain':
         return MaterialPageRoute(
             builder: (_) => ClassRetailMainMobile(
-                  outletinfo: Outlet(outletcd: ''),
+                  fromsaved: false,
+                  outletinfo: Outlet(outletcd: '', outletname: ''),
                   pscd: '',
                   qty: 0,
                 ));

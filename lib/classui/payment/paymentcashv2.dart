@@ -21,6 +21,7 @@ class PaymentCashV2Mobile extends StatefulWidget {
   late bool zerobill;
   final Function callback;
   final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
 
   PaymentCashV2Mobile(
       {Key? key,
@@ -32,7 +33,7 @@ class PaymentCashV2Mobile extends StatefulWidget {
       required this.zerobill,
       required this.outletinfo,
       required this.callback,
-      required this.datatrans})
+      required this.datatrans, required this.fromsaved})
       : super(key: key);
 
   @override
@@ -235,6 +236,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ClassPaymetSucsessMobile(
+                                  fromsaved: widget.fromsaved,
                                       datatrans: widget.datatrans,
                                       frombanktransfer: false,
                                       cash: true,

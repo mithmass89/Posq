@@ -23,6 +23,7 @@ class PaymentTransferMobile extends StatefulWidget {
   final Outlet? outletinfo;
   final bool? discbyamount;
   final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
 
   PaymentTransferMobile(
       {Key? key,
@@ -33,7 +34,8 @@ class PaymentTransferMobile extends StatefulWidget {
       this.outletname,
       this.outletinfo,
       this.discbyamount,
-      required this.datatrans})
+      required this.datatrans,
+      required this.fromsaved})
       : super(key: key);
 
   @override
@@ -71,7 +73,8 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
         widget.datatrans.length,
         (index) => listitem.add(Midtransitem(
             id: '${widget.datatrans[index].itemcode}'.replaceAll(' ', ''),
-            price: num.parse('${widget.datatrans[index].totalaftdisc!/widget.datatrans[index].qty!}'),
+            price: num.parse(
+                '${widget.datatrans[index].totalaftdisc! / widget.datatrans[index].qty!}'),
             quantity: int.parse('${widget.datatrans[index].qty}'),
             name: '${widget.datatrans[index].description}')));
     print(listitem);
@@ -97,7 +100,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
         transno: widget.trno,
-          transno1: widget.trno,
+        transno1: widget.trno,
         split: 'A',
         pscd: widget.pscd,
         trtm: '00:00',
@@ -163,7 +166,8 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
-                              datatrans:widget.datatrans,
+                                fromsaved: widget.fromsaved,
+                                datatrans: widget.datatrans,
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -229,7 +233,8 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
-                                 datatrans:widget.datatrans,
+                                fromsaved: widget.fromsaved,
+                                datatrans: widget.datatrans,
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -284,7 +289,8 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
-                  datatrans:widget.datatrans,
+                                fromsaved: widget.fromsaved,
+                                datatrans: widget.datatrans,
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,
@@ -345,7 +351,8 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassMandiribiller(
-                             datatrans:widget.datatrans,
+                                fromsaved: widget.fromsaved,
+                                datatrans: widget.datatrans,
                                 paymenttype: 'Account',
                                 bill_key: bill_key,
                                 biller_code: biller_code,
@@ -398,7 +405,8 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
-                            datatrans:widget.datatrans,
+                                fromsaved: widget.fromsaved,
+                                datatrans: widget.datatrans,
                                 paymenttype: 'Account',
                                 virtualaccount: virtualaccount,
                                 bank: bank,

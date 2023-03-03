@@ -23,13 +23,37 @@ class ClassListSavedMobile extends StatefulWidget {
 }
 
 class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
-  late DatabaseHandler handler;
+  DateTime? timestamp;
+  String? times;
 
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHandler();
+    timestamp = DateTime.parse(widget.datatransaksi!.createdt!);
+    times = timeAgo(
+        timestamp!); // 'just now' (or a different value depending on the actual time difference)
+  }
 
+  String timeAgo(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+    print(difference.inMinutes);
+
+    if (difference.inDays >= 365) {
+      return '${(difference.inDays / 365).floor()} years ago';
+    } else if (difference.inDays >= 30) {
+      return '${(difference.inDays / 30).floor()} months ago';
+    } else if (difference.inDays >= 7) {
+      return '${(difference.inDays / 7).floor()} weeks ago';
+    } else if (difference.inDays >= 1) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inHours >= 1) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inMinutes >= 1) {
+      return '${difference.inMinutes} minutes ago';
+    } else {
+      return 'just now';
+    }
   }
 
   @override
@@ -48,22 +72,19 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
         );
       },
       leading: CircleAvatar(
-        child: Icon(
-          Icons.shopping_cart_outlined,
-          color: Colors.white,
-          size: 26.0,
-          semanticLabel: 'Text to announce in accessibility modes',
-        ),
+        child: Text(widget.datatransaksi!.guestname!.substring(0, 1)),
       ),
-      title: Text('No guest'),
-      subtitle: Text(widget.datatransaksi!.transno!.substring(1,8)),
+      title: Text(widget.datatransaksi!.guestname == null
+          ? 'No Guest'
+          : widget.datatransaksi!.guestname!),
+      subtitle: Text(widget.datatransaksi!.transno!),
       // subtitle: Text(widget.datatransaksi!.time!),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
               '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
-
+          Text(times!),
         ],
       ),
     );

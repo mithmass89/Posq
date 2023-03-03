@@ -35,13 +35,15 @@ class ClassRetailMainMobile extends StatefulWidget {
   final Outlet outletinfo;
   final int qty;
   late String? trno;
+  final bool? fromsaved;
 
   ClassRetailMainMobile(
       {Key? key,
       required this.pscd,
       required this.outletinfo,
       required this.qty,
-      this.trno})
+      this.trno,
+      required this.fromsaved})
       : super(key: key);
 
   @override
@@ -156,6 +158,18 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     });
   }
 
+  checkTrno() async {
+    var transno = await ClassApi.checkTrno();
+    trno =
+        widget.outletinfo.outletcd + '-' + transno[0]['transnonext'].toString();
+    print(trno);
+  }
+
+  updateTrno() async {
+    await ClassApi.updateTrno(dbname);
+    await checkTrno();
+  }
+
   getDetailData() async {
     await ClassApi.getTrnoDetail(widget.trno!, dbname, query!).then((isi) {
       if (isi.isNotEmpty) {
@@ -204,8 +218,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     _scrollisanimated = false;
     ToastContext().init(context);
     print('print ini trno : ${widget.trno}');
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
     formattedDate = formatter.format(now);
     checkPending();
     _pc.isAttached;
@@ -252,6 +264,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     if (widget.trno != null) {
       getDetailData();
     }
+
+      print(now);
   }
 
   getSavedCustomers() async {
@@ -273,13 +287,15 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       print('result scaning $barcodeScanRes');
 // barcodeScanRes='8998009010231';
-      await ClassApi.getItemByBarCode(pscd,dbname,barcodeScanRes,'').then((value) async {
+      await ClassApi.getItemByBarCode(pscd, dbname, barcodeScanRes, '')
+          .then((value) async {
         print(value);
-        if (value == []|| value =='') {
+        if (value == [] || value == '') {
           Toast.show("Produk tidak Terdaftar",
               duration: Toast.lengthLong, gravity: Toast.center);
         } else {
-          await ClassApi.getItemByCode(pscd,dbname,value.first.itemcode!,'').then((value) async {
+          await ClassApi.getItemByCode(pscd, dbname, value.first.itemcode!, '')
+              .then((value) async {
             Toast.show("Produk Terdaftar ${value.first.itemdesc}",
                 duration: Toast.lengthLong, gravity: Toast.center);
 
@@ -346,11 +362,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           description: items.itemdesc,
           taxpct: items.taxpct,
           servicepct: items.svchgpct,
-          time: now.hour.toString() +
-              ":" +
-              now.minute.toString() +
-              ":" +
-              now.second.toString(),
+          createdt: now.toString()
         ),
         pscd);
   }
@@ -368,6 +380,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         drawer: DrawerRetailMain(
+          fromsaved: widget.fromsaved!,
           outletinfo: widget.outletinfo,
           outletname: widget.outletinfo.outletname,
         ),
@@ -442,7 +455,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     typekeyboard: TextInputType.text,
                                   )),
                               IconButton(
-                                icon: Icon(Icons.qr_code_scanner_outlined),
+                                icon: Image.asset(
+                                  'icons8-barcode-100.png',
+                                  height: 30,
+                                  width: 30,
+                                ),
                                 iconSize: 30,
                                 color: Colors.white,
                                 splashColor: Colors.transparent,
@@ -453,15 +470,16 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               Stack(
                                 children: [
                                   IconButton(
-                                    icon: Icon(
-                                      Icons.list_alt,
-                                    ),
+                                    icon: Image.asset(
+                                        'icons8-checklist-100.png',
+                                        height: 20,
+                                        width: 20),
                                     iconSize: 30,
                                     color: Colors.white,
                                     splashColor: Colors.transparent,
                                     onPressed: () async {
                                       await checkSF();
-                                      Navigator.push(
+                                      await Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -563,6 +581,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       switch (_scrollisanimated) {
                         case true:
                           return SlideUpPanel(
+                            fromsaved: widget.fromsaved,
                             sum: sum,
                             animated: _scrollisanimated,
                             outletinfo: Outlet(
@@ -673,17 +692,18 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       onpressed: () async {
                         _pc.open();
                         if (_scrollisanimated == true) {
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.remove('savecostmrs');
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => ClassRetailMainMobile(
-                                        pscd: widget.outletinfo.outletcd,
-                                        trno: trno,
-                                        outletinfo: widget.outletinfo,
-                                        qty: 0,
-                                      )),
-                              (Route<dynamic> route) => false);
+                          return await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DialogClassSimpan(
+                                  fromsaved: widget.fromsaved!,
+                                  outletinfo: widget.outletinfo,
+                                  pscd: widget.outletinfo.outletcd,
+                                  trno: trno == ''
+                                      ? widget.trno!
+                                      : trno.toString(),
+                                );
+                              });
                         }
                       },
                       name: _scrollisanimated == false
@@ -711,6 +731,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           context,
                           MaterialPageRoute(
                               builder: (context) => PaymentV2MobileClass(
+                                    fromsaved: widget.fromsaved!,
                                     datatrans: listdata!,
                                     outletinfo: widget.outletinfo,
                                     balance: sum.toInt(),

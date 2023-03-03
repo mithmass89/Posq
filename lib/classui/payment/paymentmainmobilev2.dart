@@ -20,6 +20,7 @@ class PaymentV2MobileClass extends StatefulWidget {
   final String? outletname;
   final Outlet? outletinfo;
   final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
 
   const PaymentV2MobileClass({
     Key? key,
@@ -30,6 +31,7 @@ class PaymentV2MobileClass extends StatefulWidget {
     this.outletname,
     this.outletinfo,
     required this.datatrans,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -300,6 +302,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                       controller: _controller,
                       children: [
                         PaymentCashV2Mobile(
+                          fromsaved: widget.fromsaved,
                           datatrans: listdata,
                           callback: checkbalance,
                           zerobill: zerobill,
@@ -311,6 +314,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           amountcash: amountcash,
                         ),
                         NonTunaiMobile(
+                          fromsaved: widget.fromsaved,
                           pymtmthd: pymtmthd,
                           compcode: compcode,
                           compdescription: compdescription,
@@ -350,6 +354,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           ClassPaymetSucsessMobile(
+                                            fromsaved: widget.fromsaved,
                                             datatrans: listdata,
                                             frombanktransfer: false,
                                             cash: true,
@@ -372,6 +377,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                               MaterialPageRoute(
                                   builder: (context) =>
                                       ClassPaymetSucsessMobile(
+                                        fromsaved: widget.fromsaved,
                                         datatrans: listdata,
                                         frombanktransfer: false,
                                         cash: true,

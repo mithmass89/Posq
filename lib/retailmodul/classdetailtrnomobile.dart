@@ -12,13 +12,14 @@ class DetailTrno extends StatefulWidget {
   final String pscd;
   final String? trno;
   final IafjrnhdClass? datatransaksi;
+  final bool fromsaved;
 
   const DetailTrno({
     Key? key,
     this.trno,
     this.datatransaksi,
     required this.outletinfo,
-    required this.pscd,
+    required this.pscd, required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -91,6 +92,7 @@ class _DetailTrnoState extends State<DetailTrno> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ClassDetailTransMobile(
+                            fromsaved: widget.fromsaved,
                                 status: statustransaction == null
                                     ? 'Belum Lunas'
                                     : statustransaction!,
