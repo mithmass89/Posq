@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
+import 'package:posq/setting/printer/templateprinter.dart';
 
 class ClassMainPrinter extends StatefulWidget {
   const ClassMainPrinter({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class ClassMainPrinter extends StatefulWidget {
 }
 
 class _ClassMainPrinterState extends State<ClassMainPrinter> {
-  List<String> printer = ['bluetooth', 'WAN', 'Wifi'];
+  List<String> printer = ['Bluetooth', 'Wi-fi', 'Setelan'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +28,11 @@ class _ClassMainPrinterState extends State<ClassMainPrinter> {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
                         return ClassBluetoothPrinter();
+                      }));
+                    } else if (printer[index] == 'Setelan') {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return TemplatePrinter();
                       }));
                     }
                   },

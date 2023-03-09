@@ -63,6 +63,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   String query = 'trno';
   int? totalbarang = 0;
   List? initial = [];
+  List<IafjrndtClass> summary = [];
   String trno = '';
   num? amounttotal = 0;
   String trdt = '';
@@ -83,11 +84,11 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     getDataSlide();
     print(widget.trnoinfo!.trdt);
     checkPrinter();
+    getSumm();
   }
 
   checkPrinter() async {
     connected = await bluetooth.isConnected.then((value) => value!);
-
     setState(() {});
     print(connected);
   }
@@ -113,8 +114,25 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     await ClassApi.getSumTrans(trno, dbname, query).then((value) {
       if (value.isNotEmpty) {
         setState(() {
+          summary = value;
           amounttotal = value.first.totalaftdisc;
         });
+        print('ini summary : $summary');
+      } else {
+        amounttotal = 0;
+      }
+    });
+  }
+
+  getSumm() async {
+    await ClassApi.getSumTrans(widget.trno, dbname, '').then((value) {
+        print('ini summary : $value');
+      if (value.isNotEmpty) {
+        setState(() {
+          summary = value;
+          amounttotal = value.first.totalaftdisc;
+        });
+
       } else {
         amounttotal = 0;
       }
@@ -164,9 +182,10 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       color: connected == true ? Colors.green : Colors.red,
                       splashColor: Colors.purple,
                       onPressed: () async {
+                        await getSumm();
                         if (connected == true) {
-                          await printing.prints(
-                              widget.listdata, widget.outletinfo.outletname!);
+                          await printing.prints(widget.listdata, summary,
+                              widget.outletinfo.outletname!,widget.outletinfo);
                         } else {
                           await Navigator.push(
                               context,
@@ -382,6 +401,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
+                    summary: summary,
                     fromsaved: widget.fromsaved,
                     outletinfo: widget.outletinfo,
                     refreshdata: widget.refreshdata,

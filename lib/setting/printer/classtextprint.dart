@@ -11,8 +11,9 @@ import 'package:intl/intl.dart';
 
 class PrintSmall {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
-  prints(List<IafjrndtClass> detail, String outletname) async {
-    print(detail);
+  prints(List<IafjrndtClass> detail, List<IafjrndtClass> summary,
+      String outletname, Outlet outletinfo) async {
+    print(summary);
     var formatter = NumberFormat('#,##,000');
     //image max 300px X 300px
 
@@ -40,15 +41,59 @@ class PrintSmall {
         bluetooth.printNewLine();
         bluetooth.printCustom(
             outletname, Size.boldMedium.val, Align.center.val);
+        bluetooth.printCustom(
+            outletinfo.alamat!, Size.medium.val, Align.center.val);
+
+        bluetooth.printCustom(
+            '-------------------------------', Size.bold.val, Align.left.val);
         bluetooth.printNewLine();
         List.generate(
             detail.length,
             (index) => bluetooth.printCustom(
                 '${detail[index].description!.padRight(15)}\n' +
                     '${detail[index].qty.toString().padLeft(3)} X ' +
-                    '${CurrencyFormat.convertToIdr(detail[index].rateamtitem, 0).toString().padLeft(10)}',
+                    '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
+                        '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}',
                 Size.bold.val,
                 Align.left.val));
+        bluetooth.printNewLine();
+        bluetooth.printCustom(
+            '-------------------------------', Size.bold.val, Align.left.val);
+        bluetooth.printCustom(
+            'Subtotal'.padRight(20) +
+                CurrencyFormat.convertToIdr(summary[0].revenueamt, 0)
+                    .toString(),
+            Size.bold.val,
+            Align.left.val);
+        bluetooth.printCustom(
+            'Discount'.padRight(20) +
+                CurrencyFormat.convertToIdr(summary[0].discamt, 0).toString(),
+            Size.bold.val,
+            Align.left.val);
+        bluetooth.printCustom(
+            'Tax'.padRight(20) +
+                CurrencyFormat.convertToIdr(summary[0].taxamt, 0).toString(),
+            Size.bold.val,
+            Align.left.val);
+        bluetooth.printCustom(
+            'Service'.padRight(20) +
+                CurrencyFormat.convertToIdr(summary[0].serviceamt, 0)
+                    .toString(),
+            Size.bold.val,
+            Align.left.val);
+        bluetooth.printCustom(
+            'Total'.padRight(20) +
+                CurrencyFormat.convertToIdr(summary[0].totalaftdisc, 0)
+                    .toString(),
+            Size.bold.val,
+            Align.left.val);
+        bluetooth.printNewLine();
+        bluetooth.printCustom(
+            '-------------------------------', Size.bold.val, Align.left.val);
+        bluetooth.printNewLine();
+              bluetooth.printCustom(
+            'AOVI POS', Size.medium.val, Align.center.val);
+             bluetooth.printNewLine();
         bluetooth
             .paperCut(); //some printer not supported (sometime making image not centered)
         //bluetooth.drawerPin2(); // or you can use bluetooth.drawerPin5();

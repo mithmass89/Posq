@@ -84,7 +84,7 @@ class Item {
   final String? sku;
   final num? slsamt2;
   final num? slsnett2;
-  final int? custome;
+  final int? modifiers;
 
   Item({
     this.id,
@@ -111,7 +111,7 @@ class Item {
     this.sku,
     this.slsamt2,
     this.slsnett2,
-    this.custome,
+    this.modifiers,
   });
 
   Item.fromJson(
@@ -139,12 +139,12 @@ class Item {
         barcode = res["barcode"],
         slsamt2 = res["slsamt2"],
         slsnett2 = res["slsnett2"],
-        custome = res["custome"],
+        modifiers = res["modifiers"],
         sku = res["sku"];
 
   @override
   String toString() {
-    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"custome": $custome}';
+    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers}';
   }
 
   Map<String, Object?> toJson() {
@@ -173,7 +173,7 @@ class Item {
       'sku': sku,
       'slsnett2': slsnett2,
       'slsamt2': slsamt2,
-      'custome': custome,
+      'modifiers': modifiers,
     };
   }
 }
@@ -269,33 +269,206 @@ class Ctg {
   }
 }
 
-class Condiment {
+class Condiment_Map {
   final String? itemcode;
+  final String condimentcode;
+
+  Condiment_Map({
+    this.itemcode,
+    required this.condimentcode,
+  });
+
+  Condiment_Map.fromJson(
+    Map<String, dynamic> res,
+  )   : itemcode = res["itemcode"],
+        condimentcode = res["condimentcode"];
+
+  @override
+  String toString() {
+    return '{"itemcode": $itemcode, "condimentcode": $condimentcode,}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'itemcode': itemcode,
+      'condimentcode': condimentcode,
+    };
+  }
+}
+
+class Condiment {
+  late String? itemcode;
   final String? condimentdesc;
-  final String? amount;
+  final String? optioncode;
+  final String? optiondesc;
+  final num? amount;
+  final num? qty;
+  final num? totalcond;
+  late String condimenttype;
 
   Condiment({
     this.itemcode,
     this.condimentdesc,
+    this.optioncode,
+    this.optiondesc,
     this.amount,
+    this.qty,
+    this.totalcond,
+    required this.condimenttype,
   });
 
   Condiment.fromJson(
     Map<String, dynamic> res,
   )   : itemcode = res["itemcode"],
         condimentdesc = res["condimentdesc"],
-        amount = res["amount"];
+        optioncode = res["optioncode"],
+        optiondesc = res["optiondesc"],
+        qty = res["qty"],
+        totalcond = res["totalcond"],
+        amount = res["amount"],
+        condimenttype = res["condimenttype"];
 
   @override
   String toString() {
-    return '{"itemcode": $itemcode, "condimentdesc": $condimentdesc,"amount": $amount}';
+    return '{"itemcode": $itemcode, "condimentdesc": $condimentdesc,"optioncode": $optioncode,"qty": $qty,"amount": $amount,"optiondesc": $optiondesc,"totalcond": $totalcond,"condimenttype": $condimenttype}';
   }
 
   Map<String, Object?> toJson() {
     return {
       'itemcode': itemcode,
       'condimentdesc': condimentdesc,
+      'optioncode': optioncode,
+      'qty': qty,
       'amount': amount,
+      'optiondesc': optiondesc,
+      'totalcond': totalcond,
+      'condimenttype': condimenttype,
+    };
+  }
+}
+
+class PosCondiment {
+  late String? trdt;
+  final String? transno;
+  final String? outletcode;
+  final String? itemcode;
+  final String? condimentcode;
+  final String? condimentdesc;
+  final String? condimenttype;
+  final num? qty;
+  final num? rateamt;
+  final num? rateamttax;
+  final num? rateamtservice;
+  final num? totalamt;
+  final num? totaltaxamt;
+  final num? totalserviceamt;
+  final String? createdt;
+  final num? totalnett;
+  final String? optioncode;
+  final String? optiondesc;
+
+  PosCondiment({
+    this.trdt,
+    this.transno,
+    this.outletcode,
+    this.itemcode,
+    this.condimentcode,
+    this.condimentdesc,
+    this.condimenttype,
+    this.qty,
+    this.rateamt,
+    this.rateamttax,
+    this.rateamtservice,
+    this.totalamt,
+    this.totaltaxamt,
+    this.totalserviceamt,
+    this.createdt,
+    this.totalnett,
+    this.optioncode,
+    this.optiondesc,
+  });
+
+  PosCondiment.fromJson(
+    Map<String, dynamic> res,
+  )   : trdt = res["trdt"],
+        transno = res["transno"],
+        outletcode = res["outletcode"],
+        itemcode = res["itemcode"],
+        condimentdesc = res["condimentdesc"],
+        condimentcode = res["condimentcode"],
+        condimenttype = res["condimenttype"],
+        qty = res["qty"],
+        rateamt = res["rateamt"],
+        rateamttax = res["rateamttax"],
+        rateamtservice = res["rateamtservice"],
+        totalamt = res["totalamt"],
+        totaltaxamt = res["totaltaxamt"],
+        totalserviceamt = res["totalserviceamt"],
+        createdt = res["createdt"],
+        totalnett = res["totalnett"],
+        optioncode = res["optioncode"],
+        optiondesc = res["optiondesc"];
+
+  @override
+  String toString() {
+    return '{"trdt": $trdt, "transno": $transno,"outletcode": $outletcode,"itemcode": $itemcode,"condimentcode": $condimentcode,condimentdesc:$condimentdesc,condimenttype:$condimenttype,qty:$qty,rateamt:$rateamt,rateamttax:$rateamttax,rateamtservice:$rateamtservice,totalamt:$totalamt,totaltaxamt:$totaltaxamt,totalserviceamt:$totalserviceamt,createdt:$createdt,totalnett:$totalnett,optioncode:$optioncode,optiondesc:$optiondesc},}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'trdt': trdt,
+      'transno': transno,
+      'outletcode': outletcode,
+      'itemcode': itemcode,
+      'condimentcode': condimentcode,
+      'condimentdesc': condimentdesc,
+      'condimenttype': condimenttype,
+      'qty': qty,
+      'rateamt': rateamt,
+      'rateamttax': rateamttax,
+      'rateamtservice': rateamtservice,
+      'totalamt': totalamt,
+      'totaltaxamt': totaltaxamt,
+      'totalserviceamt': totalserviceamt,
+              "createdt" : createdt,
+        "totalnett" : totalnett,
+        "optioncode" : optioncode,
+        "optiondesc" : optiondesc
+    };
+  }
+}
+
+class OptionsCond {
+  final String? code;
+  final String? description;
+  final num? amount;
+  final num? qty;
+
+  OptionsCond({
+    this.code,
+    this.description,
+    this.amount,
+    this.qty,
+  });
+
+  OptionsCond.fromJson(
+    Map<String, dynamic> res,
+  )   : code = res["code"],
+        description = res["description"],
+        amount = res["amount"],
+        qty = res["qty"];
+
+  @override
+  String toString() {
+    return '{"code": $code, "description": $description,"amount": $amount,"qty": $qty}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'code': code,
+      'description': description,
+      'amount': amount,
+      'qty': qty,
     };
   }
 }
@@ -1188,4 +1361,34 @@ class Ringkasan {
         'qtyterjual': qtyterjual,
         'totaltransaksi': totaltransaksi,
       };
+}
+
+class TypeCondiment {
+  final String opsidesc;
+  final String opsitype;
+  TypeCondiment({
+    required this.opsidesc,
+    required this.opsitype,
+  });
+
+  TypeCondiment.fromMap(Map<String, dynamic> res)
+      : opsidesc = res["opsidesc"],
+        opsitype = res["opsitype"];
+
+  @override
+  String toString() {
+    return '{"opsidesc": $opsidesc,"opsitype": $opsitype}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'opsidesc': opsidesc,
+        'opsitype': opsitype,
+      };
+}
+
+class SelectedItems {
+  final String name;
+  bool isSelected;
+
+  SelectedItems({required this.name, this.isSelected = false});
 }

@@ -3,7 +3,7 @@ import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
-import 'package:posq/retailmodul/classlisttransactionmobile.dart';
+import 'package:posq/retailmodul/savedtransaction/classlisttransactionmobile.dart';
 import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';

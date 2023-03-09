@@ -1,0 +1,42 @@
+public class MainActivity extends FlutterActivity {
+    private static final String CHANNEL = "bluetooth_scanner";
+
+    private BluetoothAdapter bluetoothAdapter;
+    private ScanCallback scanCallback;
+    private Handler handler = new Handler();
+
+    @Override
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine);
+
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
+                .setMethodCallHandler(
+                        (call, result) -> {
+                            if (call.method.equals("scan")) {
+                                List<ScanResult> devices = new ArrayList<>();
+                                scanCallback = new ScanCallback() {
+                                    @Override
+                                    public void onScanResult(int callbackType, ScanResult result) {
+                                        super.onScanResult(callbackType, result);
+                                        devices.add(result);
+                                    }
+                                };
+                                bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                                bluetoothAdapter.getBluetoothLeScanner().startScan(scanCallback);
+
+                                handler.postDelayed(() -> {
+                                    bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
+                                    List<Map<String, Object>> deviceList = new ArrayList<>();
+                                    for (ScanResult device : devices) {
+                                        Map<String, Object> deviceMap = new HashMap<>();
+                                        deviceMap.put("name", device.getDevice().getName());
+                                        deviceMap.put("address", device.getDevice().getAddress());
+                                        deviceList.add(deviceMap);
+                                    }
+                                    result.success(deviceList);
+                                }, 10000);
+                            }
+                        }
+                );
+    }
+}

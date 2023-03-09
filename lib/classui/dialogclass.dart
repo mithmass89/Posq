@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sized_box_for_whitespace, prefer_typing_uninitialized_variables, avoid_unnecessary_containers, prefer_generic_function_type_aliases, avoid_print, must_be_immutable, non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/searchwidget.dart';
+import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/category/classcategorylist.dart';
 import 'package:posq/setting/category/classcreatecategorymobile.dart';
@@ -15,6 +17,7 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:flutter/services.dart';
+import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/userinfo.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -432,6 +435,209 @@ class _DialogTabClassState extends State<DialogTabClass>
   }
 }
 
+class DialogSetMenu extends StatefulWidget {
+  const DialogSetMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<DialogSetMenu> createState() => _DialogSetMenuState();
+}
+
+class _DialogSetMenuState extends State<DialogSetMenu>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController search = TextEditingController();
+  TabController? controller;
+  int? index = 0;
+  String query = '';
+  List<String> selecteditem = [];
+  var selectedindex;
+  List<bool> _value = [];
+  bool selected = false;
+  List<Item> data = [];
+  Future<List<Item>> getitemOutlet(query) async {
+    data = await ClassApi.getItemList(pscd, dbname, search.text);
+    setState(() {});
+    return data;
+  }
+
+  searching() {
+    data = data
+        .where(
+            (element) => element.itemdesc!.toLowerCase().contains(search.text))
+        .toList();
+    setState(() {});
+    print(data.length);
+  }
+
+  bool isloading = true;
+
+  @override
+  void initState() {
+    controller =
+        TabController(vsync: this, length: 2, initialIndex: index!.toInt());
+    super.initState();
+    getitemOutlet(query);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          title: Text('Pilih Set Menu'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(selecteditem);
+                },
+                child: Text('Oke'))
+          ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFieldMobile2(
+                    controller: search,
+                    onChanged: (value) {
+                      searching();
+                      setState(() {});
+                      if (value == '' || value.isEmpty) {
+                        getitemOutlet(value);
+                        setState(() {});
+                      }
+                    },
+                    typekeyboard: TextInputType.text),
+                Container(
+                    height: 300,
+                    width: 300,
+                    child: ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              onTap: () {
+                                if (selecteditem
+                                        .contains(data[index].itemcode) ==
+                                    true) {
+                                  selecteditem.remove(data[index].itemcode);
+                                  setState(() {});
+                                } else {
+                                  selecteditem.add(data[index].itemcode!);
+                                  setState(() {});
+                                }
+
+                                print(selecteditem);
+                              },
+                              dense: true,
+                              title: Text(
+                                data[index].itemdesc!,
+                                style: TextStyle(
+                                  color: selecteditem
+                                          .contains(data[index].itemcode)
+                                      ? Colors.blue
+                                      : Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+                        })),
+              ],
+            ),
+          ));
+    });
+  }
+}
+
+class DialogTipeCondiment extends StatefulWidget {
+  const DialogTipeCondiment({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<DialogTipeCondiment> createState() => _DialogTipeCondimentState();
+}
+
+class _DialogTipeCondimentState extends State<DialogTipeCondiment>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController search = TextEditingController();
+  TabController? controller;
+  int? index = 0;
+  String query = '';
+  bool selectedtype = false;
+  String choice = '';
+  String choicedesc = '';
+
+  @override
+  void initState() {
+    controller =
+        TabController(vsync: this, length: 2, initialIndex: index!.toInt());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          title: Text('Pilih Tipe Modifier'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+          ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Card(
+                  child: ListTile(
+                    onTap: () {
+                      setState(() {
+                        choice = 'menuchoice';
+                        choicedesc = 'Pilihan Menu';
+                      });
+                      Navigator.of(context).pop(TypeCondiment(
+                          opsidesc: choicedesc, opsitype: choice));
+                    },
+                    title: Text('Pilihan Menu'),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    onTap: () {
+                      setState(() {
+                        choice = 'topping';
+                        choicedesc = 'Additional/Topping';
+                      });
+                      Navigator.of(context).pop(TypeCondiment(
+                          opsidesc: choicedesc, opsitype: choice));
+                    },
+                    title: Text('Additional/Topping'),
+                  ),
+                ),
+              ],
+            ),
+          ));
+    });
+  }
+}
+
 class DialogTabArscompClass extends StatefulWidget {
   const DialogTabArscompClass({Key? key}) : super(key: key);
 
@@ -625,57 +831,56 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
   insertIafjrndt(day) async {
     await ClassApi.insertPosDetail(
         IafjrndtClass(
-          trdt: formattedDate,
-          pscd: widget.outletinfo.outletcd,
-          transno: widget.trno,
-          split: 'A',
-          transno1: 'trnobill',
-          itemcode: widget.controller.text,
-          trno1: widget.trno,
-          itemseq: widget.itemlenght,
-          cono: 'cono',
-          waitercd: 'waitercd',
-          discpct: 0,
-          discamt: 0,
-          qty: 1,
-          ratecurcd: 'Rupiah',
-          ratebs1: 1,
-          ratebs2: 1,
-          rateamtcost: widget.result!.toDouble(),
-          rateamtitem: widget.result!.toDouble(),
-          rateamtservice: pctservice.text != ''
-              ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
-              : num.parse('0'),
-          rateamttax: pcttax.text != ''
-              ? widget.result!.toDouble() * num.parse(pcttax.text) / 100
-              : num.parse('0'),
-          rateamttotal: widget.result!.toDouble(),
-          revenueamt: 1 * widget.result!.toDouble(),
-          taxamt: pcttax.text != ''
-              ? 1 * widget.result!.toDouble() * num.parse(pcttax.text) / 100
-              : num.parse('0'),
-          serviceamt: pctservice.text != ''
-              ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
-              : num.parse('0'),
-          totalaftdisc: widget.result!.toDouble(),
-          rebateamt: 0,
-          rvncoa: 'REVENUE',
-          taxcoa: 'TAX',
-          servicecoa: 'SERVICE',
-          costcoa: 'COST',
-          active: 1,
-          usercrt: 'Admin',
-          userupd: 'Admin',
-          userdel: 'Admin',
-          prnkitchen: 0,
-          prnkitchentm: '10:10',
-          confirmed: '1',
-          description: widget.controller.text,
-          taxpct: 0,
-          servicepct: 0,
-          statustrans: 'prosess',
-          createdt: now.toString()
-        ),
+            trdt: formattedDate,
+            pscd: widget.outletinfo.outletcd,
+            transno: widget.trno,
+            split: 'A',
+            transno1: 'trnobill',
+            itemcode: widget.controller.text,
+            trno1: widget.trno,
+            itemseq: widget.itemlenght,
+            cono: 'cono',
+            waitercd: 'waitercd',
+            discpct: 0,
+            discamt: 0,
+            qty: 1,
+            ratecurcd: 'Rupiah',
+            ratebs1: 1,
+            ratebs2: 1,
+            rateamtcost: widget.result!.toDouble(),
+            rateamtitem: widget.result!.toDouble(),
+            rateamtservice: pctservice.text != ''
+                ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
+                : num.parse('0'),
+            rateamttax: pcttax.text != ''
+                ? widget.result!.toDouble() * num.parse(pcttax.text) / 100
+                : num.parse('0'),
+            rateamttotal: widget.result!.toDouble(),
+            revenueamt: 1 * widget.result!.toDouble(),
+            taxamt: pcttax.text != ''
+                ? 1 * widget.result!.toDouble() * num.parse(pcttax.text) / 100
+                : num.parse('0'),
+            serviceamt: pctservice.text != ''
+                ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
+                : num.parse('0'),
+            totalaftdisc: widget.result!.toDouble(),
+            rebateamt: 0,
+            rvncoa: 'REVENUE',
+            taxcoa: 'TAX',
+            servicecoa: 'SERVICE',
+            costcoa: 'COST',
+            active: 1,
+            usercrt: 'Admin',
+            userupd: 'Admin',
+            userdel: 'Admin',
+            prnkitchen: 0,
+            prnkitchentm: '10:10',
+            confirmed: '1',
+            description: widget.controller.text,
+            taxpct: 0,
+            servicepct: 0,
+            statustrans: 'prosess',
+            createdt: now.toString()),
         pscd);
   }
 
@@ -1227,7 +1432,7 @@ class _DialogClassReopenState extends State<DialogClassReopen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ClassRetailMainMobile(
-                        fromsaved: widget.fromsaved,
+                            fromsaved: widget.fromsaved,
                             outletinfo: widget.outletinfo,
                             pscd: widget.pscd,
                             qty: 0,

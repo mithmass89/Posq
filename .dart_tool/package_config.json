@@ -141,7 +141,7 @@
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.8",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -183,13 +183,13 @@
     },
     {
       "name": "image_picker",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker-0.8.6+3",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker-0.8.6+4",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "image_picker_android",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+7",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+9",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -201,9 +201,9 @@
     },
     {
       "name": "image_picker_ios",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_ios-0.8.6+9",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_ios-0.8.7",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "2.18"
     },
     {
       "name": "image_picker_platform_interface",
@@ -578,7 +578,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-03-02T07:04:32.372003Z",
+  "generated": "2023-03-05T08:22:05.907546Z",
   "generator": "pub",
   "generatorVersion": "2.18.0"
 }

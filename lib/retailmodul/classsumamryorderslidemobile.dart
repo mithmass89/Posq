@@ -19,6 +19,7 @@ class SummaryOrderSlidemobile extends StatefulWidget {
   final VoidCallback? refreshdata;
   final Outlet outletinfo;
   final bool? fromsaved;
+  late List<IafjrndtClass> summary;
 
   SummaryOrderSlidemobile(
       {Key? key,
@@ -28,6 +29,7 @@ class SummaryOrderSlidemobile extends StatefulWidget {
       required this.updatedata,
       required this.refreshdata,
       required this.outletinfo,
+      required this.summary,
       this.fromsaved})
       : super(key: key);
 
@@ -51,6 +53,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
         future: ClassApi.getSumTrans(widget.trno, dbname, ''),
         builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
           var x = snapshot.data ?? [];
+          widget.summary = x;
           if (x.isNotEmpty) {
             return SizedBox(
               width: MediaQuery.of(context).size.width * 1,
@@ -191,11 +194,10 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                   ),
                   TextButton(
                       onPressed: () async {
-                
                         await showDialog(
                             context: context,
                             builder: (_) => DialogClassCancelorder(
-                              fromsaved: widget.fromsaved,
+                                fromsaved: widget.fromsaved,
                                 outletinfo: widget.outletinfo,
                                 outletcd: widget.pscd!,
                                 trno: x.first.transno!)).then((_) {

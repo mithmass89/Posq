@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
-import 'package:posq/setting/condiment/maincondimenr.dart';
+import 'package:posq/setting/condiment/maincondiment.dart';
 import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/classselectoutletmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
 import 'package:uuid/uuid.dart';
@@ -41,7 +42,6 @@ class MenuMain extends StatefulWidget {
 class _MenuMainState extends State<MenuMain> {
   String? trno = '';
 
-  
   deleteDatabase() async {
     print('oke');
   }
@@ -88,14 +88,7 @@ class _MenuMainState extends State<MenuMain> {
                         )),
               );
             },
-            name: 'Retail ',
-          ),
-          ButtonClassAction(
-            iconasset: 'resto.png',
-            height: MediaQuery.of(context).size.height * 0.02,
-            widht: MediaQuery.of(context).size.width * 0.40,
-            onpressed: () {},
-            name: 'Restaurant ',
+            name: 'Transaksi ',
           ),
           ButtonClassAction(
             iconasset: 'outlet.png',
@@ -134,27 +127,13 @@ class _MenuMainState extends State<MenuMain> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Productmain(
+                    builder: (context) => MainMenuProduct(
                           pscd: widget.outletinfo!.outletcd,
+                          outletinfo: widget.outletinfo!,
                         )),
               );
             },
             name: 'Product',
-          ),
-          ButtonClassAction(
-            iconasset: 'products.png',
-            height: MediaQuery.of(context).size.height * 0.03,
-            widht: MediaQuery.of(context).size.width * 0.42,
-            onpressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MainCondiment(
-                          pscd: widget.outletinfo!.outletcd,
-                        )),
-              );
-            },
-            name: 'Condiment',
           ),
           ButtonClassAction(
             iconasset: 'pegawai.png',

@@ -311,10 +311,10 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            // height: MediaQuery.of(context).size.height * 0.65,
-                          ),
+                              // height: MediaQuery.of(context).size.height * 0.65,
+                              ),
                           Container(
-                            alignment: Alignment.center,
+                              alignment: Alignment.center,
                               height: MediaQuery.of(context).size.height * 0.65,
                               child: Text('Tidak ada produk')),
                           Container(
