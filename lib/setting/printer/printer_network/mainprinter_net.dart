@@ -12,8 +12,6 @@ class PrinterMain extends StatefulWidget {
 }
 
 class _PrinterMainState extends State<PrinterMain> {
-
-  
   void connectToWifi(String ssid, String password) async {
     if (Platform.isAndroid) {
       // On Android, use the 'wifi_configuration' method to connect to a Wi-Fi network.
@@ -45,6 +43,7 @@ class _PrinterMainState extends State<PrinterMain> {
       appBar: AppBar(
         title: Text('Printer Scanner'),
       ),
+      body: Container(),
     );
   }
 }

@@ -66,227 +66,235 @@
 35-->[:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:25:5-78
 35-->[:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:25:22-75
 36
-37    <uses-feature
-37-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:28:5-30:36
-38        android:name="android.hardware.camera.front"
-38-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:29:9-53
-39        android:required="false" /> <!-- TODO replace above two with next line after Android 4.2 -->
-39-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:30:9-33
-40    <!-- <uses-feature android:name="android.hardware.camera.any"/> -->
-41    <uses-feature
-41-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:33:5-35:36
-42        android:name="android.hardware.camera.autofocus"
-42-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:34:9-57
-43        android:required="false" />
-43-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:35:9-33
-44    <uses-feature
-44-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:36:5-38:36
-45        android:name="android.hardware.camera.flash"
-45-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:37:9-53
-46        android:required="false" />
-46-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:38:9-33
+37    <uses-feature android:name="android.hardware.wifi" />
+37-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-58
+37-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:7:19-55
+38
+39    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+39-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-79
+39-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:11:22-76
+40    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+40-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-79
+40-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-76
+41    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+41-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:17:5-73
+41-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:17:22-70
+42
+43    <uses-feature
+43-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:28:5-30:36
+44        android:name="android.hardware.camera.front"
+44-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:29:9-53
+45        android:required="false" /> <!-- TODO replace above two with next line after Android 4.2 -->
+45-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:30:9-33
+46    <!-- <uses-feature android:name="android.hardware.camera.any"/> -->
 47    <uses-feature
-47-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:39:5-41:36
-48        android:name="android.hardware.screen.landscape"
-48-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:40:9-57
+47-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:33:5-35:36
+48        android:name="android.hardware.camera.autofocus"
+48-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:34:9-57
 49        android:required="false" />
-49-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:41:9-33
+49-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:35:9-33
 50    <uses-feature
-50-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:42:5-44:36
-51        android:name="android.hardware.wifi"
-51-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:43:9-45
-52        android:required="false" /> <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/> -->
-52-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:44:9-33
-53    <application
-53-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:3-43:17
-54        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-54-->[androidx.core:core:1.8.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8e86e615f21ac3758e97e94e18045107\core-1.8.0\AndroidManifest.xml:24:18-86
-55        android:debuggable="true"
-56        android:icon="@mipmap/ic_launcher"
-56-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:37-71
-57        android:label="posq"
-57-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:16-36
-58        android:largeHeap="true"
-58-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-33
-59        android:theme="@style/Theme.AppCompat.NoActionBar" >
-59-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:17:9-59
-60        <activity
-60-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:5-38:16
-61            android:name="com.example.posq.MainActivity"
-61-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:15-43
-62            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-62-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:19:7-157
-63            android:hardwareAccelerated="true"
-63-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:20:7-41
-64            android:launchMode="singleTop"
-64-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:44-74
-65            android:theme="@style/LaunchTheme"
-65-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:18:7-41
-66            android:windowSoftInputMode="adjustResize" >
-66-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:20:42-84
-67
-68            <!--
-69           Specifies an Android theme to apply to this Activity as soon as
-70                 the Android process has started. This theme is visible to the user
-71                 while the Flutter UI initializes. After that, this theme continues
-72                 to determine the Window background behind the Flutter UI.
-73            -->
-74            <meta-data
-74-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:25:7-26:49
-75                android:name="io.flutter.embedding.android.NormalTheme"
-75-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:25:18-73
-76                android:resource="@style/NormalTheme" />
-76-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:26:9-46
-77            <!--
-78           Displays an Android View that continues showing the launch screen
-79                 Drawable until Flutter paints its first frame, then this splash
-80                 screen fades out. A splash screen is useful to avoid any visual
-81                 gap between the end of Android's launch screen and the painting of
-82                 Flutter's first frame.
-83            -->
-84            <meta-data
-84-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:32:7-33:58
-85                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-85-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:32:18-82
-86                android:resource="@drawable/launch_background" />
-86-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:33:9-55
-87
-88            <intent-filter>
-88-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:34:7-37:23
-89                <action android:name="android.intent.action.MAIN" />
-89-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:35:9-61
-89-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:35:17-58
+50-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:36:5-38:36
+51        android:name="android.hardware.camera.flash"
+51-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:37:9-53
+52        android:required="false" />
+52-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:38:9-33
+53    <uses-feature
+53-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:39:5-41:36
+54        android:name="android.hardware.screen.landscape"
+54-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:40:9-57
+55        android:required="false" /> <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/> -->
+55-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:41:9-33
+56    <application
+56-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:3-43:17
+57        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+57-->[androidx.core:core:1.8.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8e86e615f21ac3758e97e94e18045107\core-1.8.0\AndroidManifest.xml:24:18-86
+58        android:debuggable="true"
+59        android:icon="@mipmap/ic_launcher"
+59-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:37-71
+60        android:label="posq"
+60-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:16-36
+61        android:largeHeap="true"
+61-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-33
+62        android:theme="@style/Theme.AppCompat.NoActionBar" >
+62-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:17:9-59
+63        <activity
+63-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:5-38:16
+64            android:name="com.example.posq.MainActivity"
+64-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:15-43
+65            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+65-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:19:7-157
+66            android:hardwareAccelerated="true"
+66-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:20:7-41
+67            android:launchMode="singleTop"
+67-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:44-74
+68            android:theme="@style/LaunchTheme"
+68-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:18:7-41
+69            android:windowSoftInputMode="adjustResize" >
+69-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:20:42-84
+70
+71            <!--
+72           Specifies an Android theme to apply to this Activity as soon as
+73                 the Android process has started. This theme is visible to the user
+74                 while the Flutter UI initializes. After that, this theme continues
+75                 to determine the Window background behind the Flutter UI.
+76            -->
+77            <meta-data
+77-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:25:7-26:49
+78                android:name="io.flutter.embedding.android.NormalTheme"
+78-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:25:18-73
+79                android:resource="@style/NormalTheme" />
+79-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:26:9-46
+80            <!--
+81           Displays an Android View that continues showing the launch screen
+82                 Drawable until Flutter paints its first frame, then this splash
+83                 screen fades out. A splash screen is useful to avoid any visual
+84                 gap between the end of Android's launch screen and the painting of
+85                 Flutter's first frame.
+86            -->
+87            <meta-data
+87-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:32:7-33:58
+88                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+88-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:32:18-82
+89                android:resource="@drawable/launch_background" />
+89-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:33:9-55
 90
-91                <category android:name="android.intent.category.LAUNCHER" />
-91-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:36:9-69
-91-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:36:19-66
-92            </intent-filter>
-93        </activity>
-94        <!--
-95         Don't delete the meta-data below.
-96             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-97        -->
-98        <meta-data
-98-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:41:5-68
-99            android:name="flutterEmbedding"
-99-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:41:16-47
-100            android:value="2" />
-100-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:41:48-65
-101
-102        <activity android:name="com.amolg.flutterbarcodescanner.BarcodeCaptureActivity" />
-102-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:18:9-91
-102-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:18:19-88
-103
-104        <provider
-104-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
-105            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-105-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-82
-106            android:authorities="com.example.posq.flutter.image_provider"
-106-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
-107            android:exported="false"
-107-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
-108            android:grantUriPermissions="true" >
-108-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
-109            <meta-data
-109-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
-110                android:name="android.support.FILE_PROVIDER_PATHS"
-110-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
-111                android:resource="@xml/flutter_image_picker_file_paths" />
-111-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
-112        </provider>
-113
-114        <activity
-114-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
-115            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-115-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
-116            android:exported="false"
-116-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
-117            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-117-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
-118
-119        <provider
-119-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
-120            android:name="net.nfet.flutter.printing.PrintFileProvider"
-120-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-71
-121            android:authorities="com.example.posq.flutter.printing"
-121-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-68
-122            android:exported="false"
-122-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
-123            android:grantUriPermissions="true" >
-123-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
-124            <meta-data
-124-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
-125                android:name="android.support.FILE_PROVIDER_PATHS"
-125-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
-126                android:resource="@xml/flutter_printing_file_paths" />
-126-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
-127        </provider>
-128
-129        <activity
-129-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
-130            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-130-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
-131            android:exported="false"
-131-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
-132            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-132-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
-133
-134        <meta-data
-134-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:23:9-25:69
-135            android:name="com.google.android.gms.version"
-135-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:24:13-58
-136            android:value="@integer/google_play_services_version" />
-136-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:25:13-66
-137
-138        <uses-library
-138-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
-139            android:name="androidx.window.extensions"
-139-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
-140            android:required="false" />
-140-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+91            <intent-filter>
+91-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:34:7-37:23
+92                <action android:name="android.intent.action.MAIN" />
+92-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:35:9-61
+92-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:35:17-58
+93
+94                <category android:name="android.intent.category.LAUNCHER" />
+94-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:36:9-69
+94-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:36:19-66
+95            </intent-filter>
+96        </activity>
+97        <!--
+98         Don't delete the meta-data below.
+99             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+100        -->
+101        <meta-data
+101-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:41:5-68
+102            android:name="flutterEmbedding"
+102-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:41:16-47
+103            android:value="2" />
+103-->E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:41:48-65
+104
+105        <activity android:name="com.amolg.flutterbarcodescanner.BarcodeCaptureActivity" />
+105-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:18:9-91
+105-->[:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:18:19-88
+106
+107        <provider
+107-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+108            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+108-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-82
+109            android:authorities="com.example.posq.flutter.image_provider"
+109-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
+110            android:exported="false"
+110-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+111            android:grantUriPermissions="true" >
+111-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+112            <meta-data
+112-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
+113                android:name="android.support.FILE_PROVIDER_PATHS"
+113-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+114                android:resource="@xml/flutter_image_picker_file_paths" />
+114-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
+115        </provider>
+116
+117        <activity
+117-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+118            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+118-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+119            android:exported="false"
+119-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+120            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+120-->[:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+121
+122        <provider
+122-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+123            android:name="net.nfet.flutter.printing.PrintFileProvider"
+123-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-71
+124            android:authorities="com.example.posq.flutter.printing"
+124-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-68
+125            android:exported="false"
+125-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+126            android:grantUriPermissions="true" >
+126-->[:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+127            <meta-data
+127-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
+128                android:name="android.support.FILE_PROVIDER_PATHS"
+128-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+129                android:resource="@xml/flutter_printing_file_paths" />
+129-->[:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
+130        </provider>
+131
+132        <activity
+132-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
+133            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+133-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
+134            android:exported="false"
+134-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
+135            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+135-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
+136
+137        <meta-data
+137-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:23:9-25:69
+138            android:name="com.google.android.gms.version"
+138-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:24:13-58
+139            android:value="@integer/google_play_services_version" />
+139-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:25:13-66
+140
 141        <uses-library
-141-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
-142            android:name="androidx.window.sidecar"
-142-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+141-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+142            android:name="androidx.window.extensions"
+142-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
 143            android:required="false" />
-143-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
-144
-145        <provider
-145-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
-146            android:name="androidx.startup.InitializationProvider"
-146-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
-147            android:authorities="com.example.posq.androidx-startup"
-147-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
-148            android:exported="false" >
-148-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
-149            <meta-data
-149-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
-150                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-150-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
-151                android:value="androidx.startup" />
-151-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+143-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+144        <uses-library
+144-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+145            android:name="androidx.window.sidecar"
+145-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+146            android:required="false" />
+146-->[androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+147
+148        <provider
+148-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+149            android:name="androidx.startup.InitializationProvider"
+149-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+150            android:authorities="com.example.posq.androidx-startup"
+150-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+151            android:exported="false" >
+151-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
 152            <meta-data
-152-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2dd7e1e94a0e65810db6291100ebf315\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
-153                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-153-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2dd7e1e94a0e65810db6291100ebf315\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+152-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+153                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+153-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
 154                android:value="androidx.startup" />
-154-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2dd7e1e94a0e65810db6291100ebf315\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
-155        </provider>
-156
-157        <activity
-157-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:47:9-53:63
-158            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-158-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:48:13-74
-159            android:clearTaskOnLaunch="true"
-159-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:49:13-45
-160            android:screenOrientation="sensorLandscape"
-160-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:50:13-56
-161            android:stateNotNeeded="true"
-161-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:51:13-42
-162            android:theme="@style/zxing_CaptureTheme"
-162-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:52:13-54
-163            android:windowSoftInputMode="stateAlwaysHidden" />
-163-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:53:13-60
-164    </application>
-165
-166</manifest>
+154-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+155            <meta-data
+155-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2dd7e1e94a0e65810db6291100ebf315\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+156                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+156-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2dd7e1e94a0e65810db6291100ebf315\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+157                android:value="androidx.startup" />
+157-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2dd7e1e94a0e65810db6291100ebf315\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+158        </provider>
+159
+160        <activity
+160-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:47:9-53:63
+161            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+161-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:48:13-74
+162            android:clearTaskOnLaunch="true"
+162-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:49:13-45
+163            android:screenOrientation="sensorLandscape"
+163-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:50:13-56
+164            android:stateNotNeeded="true"
+164-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:51:13-42
+165            android:theme="@style/zxing_CaptureTheme"
+165-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:52:13-54
+166            android:windowSoftInputMode="stateAlwaysHidden" />
+166-->[com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:53:13-60
+167    </application>
+168
+169</manifest>

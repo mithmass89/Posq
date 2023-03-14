@@ -1,12 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unnecessary_this, prefer_const_constructors, sized_box_for_whitespace, unnecessary_new, avoid_print, unused_field
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/model.dart';

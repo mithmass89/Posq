@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
+import 'package:posq/setting/printer/printer_network/mainprinter_net.dart';
 import 'package:posq/setting/printer/templateprinter.dart';
 
 class ClassMainPrinter extends StatefulWidget {
@@ -33,6 +34,11 @@ class _ClassMainPrinterState extends State<ClassMainPrinter> {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
                         return TemplatePrinter();
+                      }));
+                    } else if (printer[index] == 'Wi-fi') {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return PrinterMain();
                       }));
                     }
                   },

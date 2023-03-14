@@ -10,6 +10,7 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/classsumamryorderslidemobile.dart';
+import 'package:posq/retailmodul/productclass/classretailcondiment.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classtextprint.dart';
 import 'package:posq/userinfo.dart';
@@ -126,13 +127,12 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
 
   getSumm() async {
     await ClassApi.getSumTrans(widget.trno, dbname, '').then((value) {
-        print('ini summary : $value');
+      print('ini summary : $value');
       if (value.isNotEmpty) {
         setState(() {
           summary = value;
           amounttotal = value.first.totalaftdisc;
         });
-
       } else {
         amounttotal = 0;
       }
@@ -185,7 +185,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                         await getSumm();
                         if (connected == true) {
                           await printing.prints(widget.listdata, summary,
-                              widget.outletinfo.outletname!,widget.outletinfo);
+                              widget.outletinfo.outletname!, widget.outletinfo);
                         } else {
                           await Navigator.push(
                               context,
@@ -237,11 +237,43 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                 direction: DismissDirection.endToStart,
                                 onDismissed:
                                     (DismissDirection direction) async {
-                                  await ClassApi.deactivePosdetail(
-                                          snapshot.data![index].id!.toInt(),
-                                          dbname)
-                                      .whenComplete(() {
-                                    setState(() {
+                                  if (snapshot.data![index].typ !=
+                                      'condiment') {
+                                    await ClassApi.deactivePoscondimentByALL(
+                                        snapshot.data![index].transno!,
+                                        snapshot.data![index].itemseq
+                                            .toString(),
+                                        dbname);
+                                    await ClassApi.deactivePosdetail(
+                                            snapshot.data![index].id!.toInt(),
+                                            dbname)
+                                        .whenComplete(() {
+                                      setState(() {
+                                        snapshot.data!
+                                            .remove(snapshot.data![index]);
+                                      });
+
+                                      widget.refreshdata;
+                                      ClassRetailMainMobile.of(context)!
+                                              .string =
+                                          IafjrndtClass(
+                                              trdt: widget.trnoinfo!.trdt,
+                                              pscd: widget.trnoinfo!.pscd,
+                                              description: '',
+                                              totalaftdisc: 0,
+                                              transno: snapshot.data!.length ==
+                                                      0
+                                                  ? null
+                                                  : widget.trnoinfo!.transno);
+                                    });
+                                  } else {
+                                    await ClassApi.deactivePoscondimentByID(
+                                            snapshot.data![index].transno!,
+                                            snapshot.data![index].itemseq
+                                                .toString(),
+                                            snapshot.data![index].optioncode!,
+                                            dbname)
+                                        .whenComplete(() {
                                       snapshot.data!
                                           .remove(snapshot.data![index]);
                                     });
@@ -255,56 +287,136 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                             transno: snapshot.data!.length == 0
                                                 ? null
                                                 : widget.trnoinfo!.transno);
-                                  });
+                                  }
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SafeArea(
-                                      child: ListTile(
+                                      child: snapshot.data![index].qty!=0? ListTile(
                                         tileColor: Colors.black,
                                         onTap: () async {
-                                          final result = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ClassEditItemMobile(
-                                                        updatedata:
-                                                            widget.updatedata,
-                                                        data: snapshot
-                                                            .data![index],
-                                                        editamount: editamount,
-                                                        editdesc: editdesc,
-                                                        editqty: editqty,
-                                                      ))).then((_) {
-                                            widget.refreshdata;
-                                            widget.updatedata!();
-                                          });
-                                          if (result == null) {
-                                            ClassRetailMainMobile.of(context)!
-                                                    .string =
-                                                IafjrndtClass(
-                                                    trdt: widget
-                                                        .trnoinfo!.transno,
-                                                    pscd: widget.trnoinfo!.pscd,
-                                                    description: '',
-                                                    totalaftdisc: 0,
-                                                    transno: widget
-                                                        .trnoinfo!.transno);
+                                          if (snapshot.data![index].typ !=
+                                                  'condiment' &&
+                                              snapshot.data![index].havecond! <=
+                                                  0) {
+                                            final result = await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ClassEditItemMobile(
+                                                          updatedata:
+                                                              widget.updatedata,
+                                                          data: snapshot
+                                                              .data![index],
+                                                          editamount:
+                                                              editamount,
+                                                          editdesc: editdesc,
+                                                          editqty: editqty,
+                                                        ))).then((_) {
+                                              widget.refreshdata;
+                                              widget.updatedata!();
+                                            });
+                                            if (result == null) {
+                                              ClassRetailMainMobile.of(context)!
+                                                      .string =
+                                                  IafjrndtClass(
+                                                      trdt: widget
+                                                          .trnoinfo!.transno,
+                                                      pscd:
+                                                          widget.trnoinfo!.pscd,
+                                                      description: '',
+                                                      totalaftdisc: 0,
+                                                      transno: widget
+                                                          .trnoinfo!.transno);
+                                            } else {
+                                              ClassRetailMainMobile.of(context)!
+                                                  .string = result;
+                                            }
                                           } else {
-                                            ClassRetailMainMobile.of(context)!
-                                                .string = result;
+                                            ///edit condiment mode///
+                                            final result = await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ClassInputCondiment(
+                                                          fromedit: true,
+                                                          dataedit:
+                                                              snapshot.data,
+                                                          data: Item(
+                                                              itemcode: snapshot
+                                                                  .data![index]
+                                                                  .itemcode,
+                                                              itemdesc: snapshot
+                                                                  .data![index]
+                                                                  .itemdesc,
+                                                              outletcode:
+                                                                  snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .pscd,
+                                                              slsamt: snapshot
+                                                                  .data![index]
+                                                                  .revenueamt,
+                                                              costamt: 0,
+                                                              slsnett: snapshot
+                                                                  .data![index]
+                                                                  .totalaftdisc,
+                                                              taxpct: snapshot
+                                                                  .data![index]
+                                                                  .taxpct,
+                                                              svchgpct: snapshot
+                                                                  .data![index]
+                                                                  .servicepct,
+                                                              slsfl: 1),
+                                                          itemseq: snapshot
+                                                              .data![index]
+                                                              .itemseq!,
+                                                          outletcd: widget
+                                                              .trnoinfo!.pscd!,
+                                                          transno: widget
+                                                              .trnoinfo!
+                                                              .transno!,
+                                                        ))).then((_) {
+                                              widget.refreshdata;
+                                              widget.updatedata!();
+                                            });
+                                            if (result == null) {
+                                              ClassRetailMainMobile.of(context)!
+                                                      .string =
+                                                  IafjrndtClass(
+                                                      trdt: widget
+                                                          .trnoinfo!.transno,
+                                                      pscd:
+                                                          widget.trnoinfo!.pscd,
+                                                      description: '',
+                                                      totalaftdisc: 0,
+                                                      transno: widget
+                                                          .trnoinfo!.transno);
+                                            } else {
+                                              ClassRetailMainMobile.of(context)!
+                                                  .string = result;
+                                            }
                                           }
                                         },
                                         dense: true,
                                         visualDensity: VisualDensity(
                                             vertical: -2), // to compact
-                                        title: Text(
-                                            snapshot.data![index].description!,
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
+                                        title:  Text(
+                                            snapshot.data![index].typ != 
+                                                    'condiment' 
+                                                ? snapshot
+                                                    .data![index].itemdesc!
+                                                : ' *** ${snapshot.data![index].itemdesc!} ***',
+                                            style: snapshot.data![index].typ !=
+                                                    'condiment'
+                                                ? TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold)
+                                                : TextStyle(
+                                                    fontSize: 12,
+                                                  )),
                                         subtitle: Row(
                                           children: [
                                             Text(
@@ -353,7 +465,10 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                       .width *
                                                   0.3,
                                               child: Icon(
-                                                Icons.edit,
+                                                snapshot.data![index].typ !=
+                                                        'condiment'
+                                                    ? Icons.edit
+                                                    : null,
                                                 color: Colors.black,
                                                 size: 15.0,
                                               ),
@@ -378,7 +493,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                             )
                                           ],
                                         ),
-                                      ),
+                                      ):Container(),
                                     ),
                                     Divider(
                                       height: 2,

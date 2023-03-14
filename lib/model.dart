@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/classformat.dart';
 
@@ -355,17 +356,18 @@ class PosCondiment {
   final String? condimentcode;
   final String? condimentdesc;
   final String? condimenttype;
-  final num? qty;
+  late num? qty;
   final num? rateamt;
   final num? rateamttax;
   final num? rateamtservice;
-  final num? totalamt;
-  final num? totaltaxamt;
-  final num? totalserviceamt;
+  late num? totalamt;
+  late num? totaltaxamt;
+  late num? totalserviceamt;
   final String? createdt;
-  final num? totalnett;
+  late num? totalnett;
   final String? optioncode;
   final String? optiondesc;
+  final int itemseq;
 
   PosCondiment({
     this.trdt,
@@ -375,6 +377,7 @@ class PosCondiment {
     this.condimentcode,
     this.condimentdesc,
     this.condimenttype,
+    required this.itemseq,
     this.qty,
     this.rateamt,
     this.rateamttax,
@@ -397,6 +400,7 @@ class PosCondiment {
         condimentdesc = res["condimentdesc"],
         condimentcode = res["condimentcode"],
         condimenttype = res["condimenttype"],
+        itemseq = res["itemseq"],
         qty = res["qty"],
         rateamt = res["rateamt"],
         rateamttax = res["rateamttax"],
@@ -411,7 +415,7 @@ class PosCondiment {
 
   @override
   String toString() {
-    return '{"trdt": $trdt, "transno": $transno,"outletcode": $outletcode,"itemcode": $itemcode,"condimentcode": $condimentcode,condimentdesc:$condimentdesc,condimenttype:$condimenttype,qty:$qty,rateamt:$rateamt,rateamttax:$rateamttax,rateamtservice:$rateamtservice,totalamt:$totalamt,totaltaxamt:$totaltaxamt,totalserviceamt:$totalserviceamt,createdt:$createdt,totalnett:$totalnett,optioncode:$optioncode,optiondesc:$optiondesc},}';
+    return '{"trdt": $trdt, "transno": $transno,"outletcode": $outletcode,"itemcode": $itemcode,"condimentcode": $condimentcode,condimentdesc:$condimentdesc,condimenttype:$condimenttype,qty:$qty,rateamt:$rateamt,rateamttax:$rateamttax,rateamtservice:$rateamtservice,totalamt:$totalamt,totaltaxamt:$totaltaxamt,totalserviceamt:$totalserviceamt,createdt:$createdt,totalnett:$totalnett,optioncode:$optioncode,optiondesc:$optiondesc,itemseq:$itemseq},}';
   }
 
   Map<String, Object?> toJson() {
@@ -423,6 +427,7 @@ class PosCondiment {
       'condimentcode': condimentcode,
       'condimentdesc': condimentdesc,
       'condimenttype': condimenttype,
+      'itemseq': itemseq,
       'qty': qty,
       'rateamt': rateamt,
       'rateamttax': rateamttax,
@@ -430,10 +435,10 @@ class PosCondiment {
       'totalamt': totalamt,
       'totaltaxamt': totaltaxamt,
       'totalserviceamt': totalserviceamt,
-              "createdt" : createdt,
-        "totalnett" : totalnett,
-        "optioncode" : optioncode,
-        "optiondesc" : optiondesc
+      "createdt": createdt,
+      "totalnett": totalnett,
+      "optioncode": optioncode,
+      "optiondesc": optiondesc
     };
   }
 }
@@ -520,6 +525,10 @@ class IafjrndtClass {
   final String? createdt;
   final String? guestname;
   final List<Condiment>? condimentlist;
+  final String? typ;
+  final String? optioncode;
+  final int? havecond;
+  final String? condimenttype;
 
   IafjrndtClass({
     this.id,
@@ -568,6 +577,10 @@ class IafjrndtClass {
     this.createdt,
     this.guestname,
     this.condimentlist,
+    this.typ,
+    this.optioncode,
+    this.havecond,
+    this.condimenttype,
   });
 
   IafjrndtClass.fromJson(
@@ -617,7 +630,11 @@ class IafjrndtClass {
         statustrans = res["statustrans"],
         createdt = res["createdt"],
         guestname = res['guestname'],
-        condimentlist = res['condimentlist'];
+        condimentlist = res['condimentlist'],
+        typ = res['typ'],
+        optioncode = res['optioncode'],
+        havecond = res['havecond'],
+        condimenttype = res['condimenttype'];
 
   Map<String, Object?> toJson() {
     return {
@@ -667,12 +684,16 @@ class IafjrndtClass {
       'createdt': createdt,
       'guestname': guestname,
       'condimentlist': condimentlist,
+      'typ': typ,
+      'optioncode': optioncode,
+      'havecond': havecond,
+      'condimenttype': condimenttype,
     };
   }
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype}';
   }
 }
 
@@ -1391,4 +1412,32 @@ class SelectedItems {
   bool isSelected;
 
   SelectedItems({required this.name, this.isSelected = false});
+}
+
+class TextEditingCondiment {
+  final String opsicode;
+  final String opsidesc;
+  final TextEditingController controller;
+
+  TextEditingCondiment({
+    required this.opsicode,
+    required this.opsidesc,
+    required this.controller,
+  });
+
+  TextEditingCondiment.fromMap(Map<String, dynamic> res)
+      : opsicode = res["opsicode"],
+        opsidesc = res["opsidesc"],
+        controller = res["controller"];
+
+  @override
+  String toString() {
+    return '{"opsicode": $opsicode,"opsidesc": $opsidesc,"controller": $controller}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'opsicode': opsicode,
+        'opsidesc': opsidesc,
+        'controller': controller,
+      };
 }

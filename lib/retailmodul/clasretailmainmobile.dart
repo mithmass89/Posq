@@ -78,6 +78,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   String? email = '';
   String? telp = '';
   num discount = 0;
+  int itemseq = 0;
 
   set discounts(num value) {
     setState(() {
@@ -89,12 +90,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     setState(() {
       trno = value.transno ?? widget.trno;
       if (value.transno == null) {
-        print('check ${value.transno}');
         setState(() {
           item = 0;
           sum = 0;
         });
       } else {
+        itemseq++;
         getDetailData();
         getDataSlide();
       }
@@ -162,7 +163,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     var transno = await ClassApi.checkTrno();
     trno =
         widget.outletinfo.outletcd + '-' + transno[0]['transnonext'].toString();
-    print(trno);
   }
 
   updateTrno() async {
@@ -179,6 +179,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           item = isi.length;
           sum = totalSlsNett + discount;
         });
+        print('ini length item${isi.length}');
       } else {
         setState(() {
           item = 0;
@@ -265,7 +266,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       getDetailData();
     }
 
-      print(now);
+
   }
 
   getSavedCustomers() async {
@@ -322,48 +323,48 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   insertIafjrndt(Item items) async {
     await ClassApi.insertPosDetail(
         IafjrndtClass(
-          trdt: formattedDate,
-          pscd: pscd,
-          transno: widget.trno,
-          split: 'A',
-          transno1: widget.trno,
-          itemcode: items.itemcode,
-          trno1: widget.trno,
-          itemseq: 1,
-          cono: 'cono',
-          waitercd: 'waitercd',
-          discpct: 0,
-          discamt: 0,
-          qty: 1,
-          ratecurcd: 'Rupiah',
-          ratebs1: 1,
-          ratebs2: 1,
-          rateamtcost: items.costamt,
-          rateamtitem: items.slsamt,
-          rateamtservice: 0,
-          rateamttax: 0,
-          rateamttotal: items.slsnett,
-          revenueamt: 1 * items.slsamt!.toDouble(),
-          taxamt: 0,
-          serviceamt: 0,
-          totalaftdisc: 1 * items.slsnett!.toDouble(),
-          rebateamt: 0,
-          rvncoa: 'REVENUE',
-          taxcoa: 'TAX',
-          servicecoa: 'SERVICE',
-          costcoa: 'COST',
-          active: 1,
-          usercrt: 'Admin',
-          userupd: 'Admin',
-          userdel: 'Admin',
-          prnkitchen: 0,
-          prnkitchentm: '10:10',
-          confirmed: '1',
-          description: items.itemdesc,
-          taxpct: items.taxpct,
-          servicepct: items.svchgpct,
-          createdt: now.toString()
-        ),
+            trdt: formattedDate,
+            pscd: pscd,
+            transno: widget.trno,
+            split: 'A',
+            transno1: widget.trno,
+            itemcode: items.itemcode,
+            itemdesc: items.itemdesc,
+            trno1: widget.trno,
+            itemseq: 1,
+            cono: 'cono',
+            waitercd: 'waitercd',
+            discpct: 0,
+            discamt: 0,
+            qty: 1,
+            ratecurcd: 'Rupiah',
+            ratebs1: 1,
+            ratebs2: 1,
+            rateamtcost: items.costamt,
+            rateamtitem: items.slsamt,
+            rateamtservice: 0,
+            rateamttax: 0,
+            rateamttotal: items.slsnett,
+            revenueamt: 1 * items.slsamt!.toDouble(),
+            taxamt: 0,
+            serviceamt: 0,
+            totalaftdisc: 1 * items.slsnett!.toDouble(),
+            rebateamt: 0,
+            rvncoa: 'REVENUE',
+            taxcoa: 'TAX',
+            servicecoa: 'SERVICE',
+            costcoa: 'COST',
+            active: 1,
+            usercrt: 'Admin',
+            userupd: 'Admin',
+            userdel: 'Admin',
+            prnkitchen: 0,
+            prnkitchentm: '10:10',
+            confirmed: '1',
+            description: items.itemdesc,
+            taxpct: items.taxpct,
+            servicepct: items.svchgpct,
+            createdt: now.toString()),
         pscd);
   }
 
@@ -567,6 +568,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                   itemlenght: item,
                                   outletinfo: widget.outletinfo),
                               ClassRetailProductMobile(
+                                itemseq: itemseq,
                                 controller: search,
                                 trno: widget.trno.toString(),
                                 pscd: widget.outletinfo.outletcd,

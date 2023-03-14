@@ -46,7 +46,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
   void initState() {
     super.initState();
     qty = num.parse(widget.data.qty.toString());
-    widget.editdesc.text = widget.data.description!;
+    widget.editdesc.text = widget.data.itemdesc!;
     widget.editamount.text = widget.data.rateamtitem.toString();
     widget.editqty.text = qty.toString();
     handler = DatabaseHandler();
@@ -97,7 +97,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          title: Text('Update ${widget.data.description}',
+          title: Text('Update ${widget.data.itemdesc}',
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
           actions: [

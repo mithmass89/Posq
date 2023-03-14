@@ -38,6 +38,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "charset_converter",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/charset_converter-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "charts_common",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/charts_common-0.12.0",
       "packageUri": "lib/",
@@ -80,6 +86,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "csslib",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/csslib-0.17.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5",
       "packageUri": "lib/",
@@ -88,6 +100,18 @@
     {
       "name": "equatable",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/equatable-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "esc_pos_printer",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/esc_pos_printer-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "esc_pos_utils",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/esc_pos_utils-1.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -158,10 +182,28 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "gbk_codec",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/gbk_codec-0.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.13"
+    },
+    {
       "name": "google_fonts",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/google_fonts-2.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "hex",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/hex-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "html",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/html-0.15.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "http",
@@ -554,6 +596,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "wifi_iot",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/wifi_iot-0.3.18",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "win32",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/win32-2.6.1",
       "packageUri": "lib/",
@@ -578,7 +626,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-03-05T08:22:05.907546Z",
+  "generated": "2023-03-13T09:27:05.465467Z",
   "generator": "pub",
   "generatorVersion": "2.18.0"
 }

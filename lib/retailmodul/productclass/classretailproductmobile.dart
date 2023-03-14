@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, prefer_typing_uninitialized_variables, prefer_const_constructors
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, prefer_typing_uninitialized_variables, prefer_const_constructors, unused_import
 
 import 'dart:io';
 
@@ -17,11 +17,13 @@ class ClassRetailProductMobile extends StatefulWidget {
   final String trno;
   final String? pscd;
   late final controller;
+  final int itemseq;
   ClassRetailProductMobile(
       {Key? key,
       required this.trno,
       required this.pscd,
-      required this.controller})
+      required this.controller,
+      required this.itemseq})
       : super(key: key);
 
   @override
@@ -102,6 +104,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
                     return ShimmerLoading(
                       isLoading: isLoading,
                       child: ClassitemRetailMobile(
+                        itemseq: widget.itemseq,
                         trno: widget.trno,
                         trdt: formattedDate,
                         item: snapshot.data![index],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/classformat.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/savedtransaction/classdetailsavedmobile.dart';
 

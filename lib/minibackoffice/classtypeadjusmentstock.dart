@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/minibackoffice/Receiving/classlistpembelian.dart';

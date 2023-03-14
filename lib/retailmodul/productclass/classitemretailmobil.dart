@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/productclass/classretailcondiment.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
-import 'package:uuid/uuid.dart';
 
 class ClassitemRetailMobile extends StatefulWidget {
   final image;
@@ -18,13 +16,15 @@ class ClassitemRetailMobile extends StatefulWidget {
   final String trdt;
   final String? pscd;
   final String trno;
+  final int itemseq;
   const ClassitemRetailMobile(
       {Key? key,
       this.image,
       required this.item,
       required this.trdt,
       this.pscd,
-      required this.trno})
+      required this.trno,
+      required this.itemseq})
       : super(key: key);
 
   @override
@@ -54,8 +54,9 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
             split: 'A',
             transno1: 'trnobill',
             itemcode: widget.item.itemcode,
+            itemdesc: widget.item.itemdesc,
             trno1: widget.trno,
-            itemseq: counter,
+            itemseq: widget.itemseq,
             cono: 'cono',
             waitercd: 'waitercd',
             discpct: 0,
@@ -81,9 +82,9 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
             servicecoa: 'SERVICE',
             costcoa: 'COST',
             active: 1,
-            usercrt: 'Admin',
-            userupd: 'Admin',
-            userdel: 'Admin',
+            usercrt: usercd,
+            userupd: usercd,
+            userdel: usercd,
             prnkitchen: 0,
             prnkitchentm: now.hour.toString() +
                 ":" +
@@ -104,8 +105,9 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
         split: 'A',
         transno1: 'trnobill',
         itemcode: widget.item.itemcode,
+        itemdesc: widget.item.itemdesc,
         trno1: widget.trno,
-        itemseq: counter,
+        itemseq: widget.itemseq,
         cono: 'cono',
         waitercd: 'waitercd',
         discpct: 0,
@@ -131,9 +133,9 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
         servicecoa: 'SERVICE',
         costcoa: 'COST',
         active: 1,
-        usercrt: 'Admin',
-        userupd: 'Admin',
-        userdel: 'Admin',
+        usercrt: usercd,
+        userupd: usercd,
+        userdel: usercd,
         prnkitchen: 0,
         prnkitchentm: now.hour.toString() +
             ":" +
@@ -161,25 +163,30 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
             if (widget.item.modifiers == 0) {
               if (widget.item.stock != 0 && widget.item.trackstock == 1) {
                 await insertIafjrndt();
+
                 //update to main // callback
                 ClassRetailMainMobile.of(context)!.string = result!;
               } else if (widget.item.trackstock == 0) {
                 await insertIafjrndt();
+
                 ClassRetailMainMobile.of(context)!.string = result!;
               } else {
                 Toast.show("Kamu Kehabisan Stock",
                     duration: Toast.lengthLong, gravity: Toast.center);
               }
             } else {
-              Navigator.push(
+              var result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => ClassInputCondiment(
-                          outletcd: widget.pscd!,
+                          itemseq: widget.itemseq,
+                          outletcd: pscd,
                           transno: widget.trno,
                           data: widget.item,
                         )),
               );
+              print("ini result $result");
+              ClassRetailMainMobile.of(context)!.string = result!;
             }
           },
           leading: Container(

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';

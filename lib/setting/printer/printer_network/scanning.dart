@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 class ClassPrinterNet {
-
-
-
   void scanWifi() async {
     print('Scanning for available Wi-Fi networks...');
     final wifiResult = await Process.run('iwlist', ['scan']);

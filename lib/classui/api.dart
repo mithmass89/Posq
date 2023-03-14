@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
-var api = 'http://192.168.88.24:3000';
-// var api = 'http://192.168.1.18:3000';
+// var api = 'http://192.168.88.24:3000';
+var api = 'http://192.168.1.6:3000';
 // var api = 'http://147.139.163.18:3000';
 var serverkey = '';
 String username = 'massmith';
@@ -147,7 +147,6 @@ class ClassApi {
     }
   }
 
-  
   static Future<dynamic> insert_Poscondiment(
       String dbname, List<PosCondiment> condiment) async {
     var body = {"dbname": dbname, "data": condiment};
@@ -520,6 +519,59 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> deactivePoscondimentByID(
+      String transno, String itemseq, String optioncode, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "transno": transno,
+      "itemseq": itemseq,
+      "optioncode": optioncode
+    };
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deactivecondimentbyid');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> deactivePoscondimentByALL(
+      String transno, String itemseq, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "transno": transno,
+      "itemseq": itemseq,
+    };
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deactiveCondimentByAll');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> deactivePosdetailtrans(
       String trno, String dbname) async {
     var body = {"dbname": dbname, "data": trno};
@@ -548,6 +600,29 @@ class ClassApi {
     print(body);
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/deactivepospaymentTrans');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+
+    static Future<dynamic> updateCondimentTrno(
+      String transno,String itemseq, String dbname) async {
+    var body = {"dbname": dbname, "transno": transno,"itemseq": itemseq};
+    print(body);
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateCondiment');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -953,7 +1028,6 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
-      print(bodyJson);
       return bodyJson
           .map((json) => IafjrndtClass.fromJson(json))
           .where((items) {
@@ -1012,6 +1086,26 @@ class ClassApi {
       List bodyJson = json.decode(response.body);
       print('punya body ${bodyJson}');
       return bodyJson.map((json) => IafjrnhdClass.fromJson(json)).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<PosCondiment>> getDetailCondimentTrno(
+      String transno, String itemcode,String itemseq, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "transno": transno, "itemcode": itemcode,"itemseq":itemseq};
+    final url = Uri.parse('$api/getDetailCondimentTrno');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      return bodyJson.map((json) => PosCondiment.fromJson(json)).toList();
     } else {
       throw Exception();
     }
