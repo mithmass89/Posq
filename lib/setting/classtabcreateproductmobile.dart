@@ -3,15 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/image.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum ImageSourceType { gallery, camera }
 
 class ClassTabCreateProducr extends StatefulWidget {
+  late int multiprice;
   late TextEditingController productcd;
   late TextEditingController productname;
   late TextEditingController amountcost;
@@ -25,11 +29,17 @@ class ClassTabCreateProducr extends StatefulWidget {
   late TextEditingController sku;
   late String? selectedctg;
   final Function? callbackctg;
+  final Function? multipriceSet;
   final String? imagepath;
+  late List<TextEditingController>? controllerMulti;
+  late List<PriceList>? pricelist;
+  final bool fromedit;
+  final bool multiflag;
 
   ClassTabCreateProducr({
     Key? key,
     required this.productcd,
+    required this.multiprice,
     required this.productname,
     required this.amountcost,
     required this.amountsales,
@@ -40,8 +50,14 @@ class ClassTabCreateProducr extends StatefulWidget {
     required this.description,
     this.selectedctg,
     this.callbackctg,
+    this.pricelist,
     required this.barcode,
-    required this.sku,  this.imagepath,
+    required this.sku,
+    required this.imagepath,
+    this.controllerMulti,
+    required this.fromedit,
+    required this.multipriceSet,
+    required this.multiflag,
   }) : super(key: key);
 
   @override
@@ -57,10 +73,62 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
   String? query = '';
   late DatabaseHandler handler;
   bool detailon = false;
+  bool multiharga = false;
+  List<TransactionTipe> transtp = [];
+  FToast? fToast;
+
+  ScrollController _controllerscroll = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    gettransactionTipe();
+    fToast = FToast();
+    fToast!.init(context);
+  }
+
+  _showToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.greenAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("This is a Custom Toast"),
+        ],
+      ),
+    );
+  }
+
+  gettransactionTipe() async {
+    transtp = await ClassApi.getTransactionTipe(pscd, dbname, '');
+    for (var x in transtp) {
+      widget.controllerMulti!.add(TextEditingController(text: '0'));
+      if (widget.fromedit == false) {
+        widget.pricelist!.add(PriceList(
+            transtype: x.transtype!, transdesc: x.transdesc!, amount: 0));
+      }
+    }
+    multiharga = widget.multiflag;
+    if (widget.multiflag == true) {
+      multiharga = widget.multiflag;
+      for (var x in widget.controllerMulti!) {
+        x.text = widget.pricelist![widget.controllerMulti!.indexOf(x)].amount
+            .toString();
+
+        setState(() {});
+      }
+      widget.multipriceSet!(1);
+    } else {
+      widget.multipriceSet!(0);
+    }
   }
 
   Future<void> scanBarcodeNormal() async {
@@ -87,6 +155,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      controller: _controllerscroll,
       shrinkWrap: false,
       children: [
         SizedBox(
@@ -113,13 +182,12 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
               // print(value);
               itemdesc = value;
               setState(() {
-                widget.productcd.text =itemdesc!;
+                widget.productcd.text = itemdesc!;
               });
               print(widget.productcd.text);
             },
           ),
         ),
-
         Container(
           height: MediaQuery.of(context).size.height * 0.09,
           child: TextFieldMobile2(
@@ -133,7 +201,90 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
           indent: 20,
           endIndent: 20,
         ),
-
+        ListTile(
+            title: Text(
+              'Multiple Harga',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            trailing: Checkbox(
+                value: multiharga,
+                onChanged: (value) async {
+                  if (widget.fromedit == false) {
+                    if (widget.amountsales.text != '') {
+                      multiharga = value!;
+                      for (var x in widget.controllerMulti!) {
+                        x.text = widget.amountsales.text;
+                      }
+                      for (var x in widget.pricelist!) {
+                        x.amount = num.parse(widget.amountsales.text);
+                      }
+                      print(widget.pricelist);
+                      setState(() {});
+                      if (multiharga == true) {
+                        widget.multiprice = 1;
+                        setState(() {});
+                        widget.multipriceSet!(widget.multiprice);
+                        print(widget.multiprice);
+                      } else {
+                        widget.multiprice = 0;
+                        print(widget.multiprice);
+                        widget.multipriceSet!(widget.multiprice);
+                      }
+                    } else {
+                      // await _showToast();
+                      Fluttertoast.showToast(
+                          msg: "Harga harus terisi dulu",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  } else {
+                    for (var x in widget.controllerMulti!) {
+                      multiharga = value!;
+                      x.text = widget
+                          .pricelist![widget.controllerMulti!.indexOf(x)].amount
+                          .toString();
+                      setState(() {});
+                    }
+                    if (multiharga == true) {
+                      widget.multiprice = 1;
+                      widget.multipriceSet!(widget.multiprice);
+                      setState(() {});
+                    } else {
+                      widget.multiprice = 0;
+                      widget.multipriceSet!(widget.multiprice);
+                    }
+                  }
+                })),
+        multiharga == true
+            ? Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                child: ListView.builder(
+                    controller: _controllerscroll,
+                    itemCount: transtp.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        dense: true,
+                        subtitle: TextFieldMobile2(
+                          label: transtp[index].transdesc!,
+                          controller: widget.controllerMulti![index],
+                          typekeyboard: TextInputType.number,
+                          onChanged: (value) {
+                            widget.pricelist![index].amount = widget
+                                    .controllerMulti![index].text.isNotEmpty
+                                ? num.parse(widget.controllerMulti![index].text)
+                                : 0;
+                            print(widget.pricelist);
+                            setState(() {});
+                          },
+                        ),
+                      );
+                    }),
+              )
+            : Container(),
         ListTile(
           title: Text(
             'Detail Tambahan',
@@ -184,17 +335,16 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                           height: MediaQuery.of(context).size.height * 0.1,
                           width: MediaQuery.of(context).size.width * 0.9,
                           child: ImageFromGalleryEx(
-                            
                             ImageSourceType.gallery,
                             savingimage: widget.imagepath,
+                            fromedit: widget.fromedit,
                             height: MediaQuery.of(context).size.height * 0.1,
                             width: MediaQuery.of(context).size.width * 0.3,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     TextFieldMobileButton(
                         hint: 'Pilih Kategori',
                         controller: widget.kategory,
@@ -204,9 +354,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                           Ctg result = await showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DialogTabClass(
-                  
-                                );
+                                return DialogTabClass();
                               });
                           setState(() {
                             widget.selectedctg = result.ctgcd;
@@ -289,7 +437,6 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                         )
                       ],
                     ),
-            
                   ],
                 ),
               )

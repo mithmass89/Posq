@@ -14,7 +14,7 @@ import 'package:posq/setting/product_master/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
 import 'package:posq/userinfo.dart';
 
-enum ImageSourceType { gallery, camera }
+// enum ImageSourceType { gallery, camera }
 
 class Editproduct extends StatefulWidget {
   final Item? productcode;
@@ -68,12 +68,16 @@ class _EditproductState extends State<Editproduct>
   String? svchgcoa;
   num? qty = 0;
   late int trackstock;
+  List<TransactionTipe> transtp = [];
+  List<PriceList> pricelist = [];
+  List<TextEditingController> controllerMulti = [];
   set string(String value) => setState(() => pathimage = value);
-
+  int multiprice = 0;
+  bool multiflag = false;
   @override
   void initState() {
     super.initState();
-
+    print(widget.productcode);
     controller = TabController(vsync: this, length: 2);
     productcd.text = widget.productcode!.itemcode!;
     productname.text = widget.productcode!.itemdesc!;
@@ -94,6 +98,12 @@ class _EditproductState extends State<Editproduct>
     print('test barcode : ${widget.productcode!.barcode}');
     barcode.text = widget.productcode!.barcode.toString();
     sku.text = widget.productcode!.sku.toString();
+    pricelist = widget.productcode!.pricelist!;
+    if (widget.productcode!.multiprice == 1) {
+      multiflag = true;
+    } else {
+      multiflag = false;
+    }
   }
 
   getCtg(String ctg) {
@@ -108,13 +118,22 @@ class _EditproductState extends State<Editproduct>
     });
   }
 
+  changeValueMultiPrice(int multiharga) {
+    multiprice = multiharga;
+    setState(() {});
+  }
+
+  checkMultiPrice() {
+    print(widget.productcode!.pricelist!.any((element) => element.amount == 0));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Edit Produk',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: Stack(
         children: [
@@ -146,6 +165,13 @@ class _EditproductState extends State<Editproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      
+                      multiflag: multiflag,
+                      multipriceSet: changeValueMultiPrice,
+                      multiprice: multiprice,
+                      fromedit: true,
+                      pricelist: pricelist,
+                      controllerMulti: controllerMulti,
                       imagepath: widget.productcode!.pathimage,
                       barcode: barcode,
                       sku: sku,
@@ -160,6 +186,7 @@ class _EditproductState extends State<Editproduct>
                       pctservice: pctservice,
                       description: description,
                       selectedctg: selectedctg,
+                      
                     ),
                     ClassKelolaStockMobile(
                       trackstockcallback: updateStockTrack,
@@ -180,12 +207,13 @@ class _EditproductState extends State<Editproduct>
             left: MediaQuery.of(context).size.width * 0.03,
             top: MediaQuery.of(context).size.height * 0.80,
             child: ButtonNoIcon(
-                name: 'Save',
+                name: 'Update',
                 color: Colors.blue,
                 textcolor: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.94,
                 onpressed: () async {
+                  checkMultiPrice();
                   setState(() {
                     pctnett = (double.parse(pcttax.text) +
                             double.parse(pctservice.text)) /
@@ -195,31 +223,34 @@ class _EditproductState extends State<Editproduct>
 
                   await ClassApi.updateProduct(
                       Item(
-                          trackstock: widget.productcode!.trackstock,
-                          outletcode: widget.productcode!.outletcode,
-                          itemcode: widget.productcode!.itemcode,
-                          itemdesc: productname.text,
-                          description: description.text,
-                          slsamt: num.parse(amountsales.text),
-                          costamt: num.parse(amountcost.text),
-                          slsnett: pctnett != 0
-                              ? num.parse(amountsales.text) *
-                                      pctnett!.toDouble() +
-                                  num.parse(amountsales.text)
-                              : num.parse(amountsales.text),
-                          taxpct: num.parse(pcttax.text),
-                          svchgpct: num.parse(pctservice.text),
-                          revenuecoa: revenuecoa.toString(),
-                          taxcoa: taxcoa.toString(),
-                          svchgcoa: svchgcoa,
-                          slsfl: salesflag!.toInt(),
-                          costcoa: costcoa.toString(),
-                          ctg: selectedctg,
-                          pathimage: pathimage,
-                          stock: widget.productcode!.stock,
-                          id: widget.productcode!.id,
-                          barcode: barcode.text,
-                          sku: sku.text),
+                        multiprice: multiprice,
+                        trackstock: widget.productcode!.trackstock,
+                        outletcode: widget.productcode!.outletcode,
+                        itemcode: widget.productcode!.itemcode,
+                        itemdesc: productname.text,
+                        description: description.text,
+                        slsamt: num.parse(amountsales.text),
+                        costamt: num.parse(amountcost.text),
+                        slsnett: pctnett != 0
+                            ? num.parse(amountsales.text) *
+                                    pctnett!.toDouble() +
+                                num.parse(amountsales.text)
+                            : num.parse(amountsales.text),
+                        taxpct: num.parse(pcttax.text),
+                        svchgpct: num.parse(pctservice.text),
+                        revenuecoa: revenuecoa.toString(),
+                        taxcoa: taxcoa.toString(),
+                        svchgcoa: svchgcoa,
+                        slsfl: salesflag!.toInt(),
+                        costcoa: costcoa.toString(),
+                        ctg: kategory.text,
+                        pathimage: pathimage,
+                        stock: widget.productcode!.stock,
+                        id: widget.productcode!.id,
+                        barcode: barcode.text,
+                        sku: sku.text,
+                        pricelist: widget.productcode!.pricelist!,
+                      ),
                       pscd);
                   Navigator.of(context).pop(context);
                 }),

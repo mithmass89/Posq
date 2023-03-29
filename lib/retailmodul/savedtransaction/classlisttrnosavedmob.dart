@@ -24,6 +24,7 @@ class ClassListSavedMobile extends StatefulWidget {
 class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
   DateTime? timestamp;
   String? times;
+  int valueTime=0;
 
   @override
   void initState() {
@@ -31,6 +32,8 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
     timestamp = DateTime.parse(widget.datatransaksi!.createdt!);
     times = timeAgo(
         timestamp!); // 'just now' (or a different value depending on the actual time difference)
+    valueTime = timesInt(timestamp!);
+ 
   }
 
   String timeAgo(DateTime timestamp) {
@@ -52,6 +55,27 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
       return '${difference.inMinutes} minutes ago';
     } else {
       return 'just now';
+    }
+  }
+
+  int timesInt(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+    print(difference.inMinutes);
+    if (difference.inDays >= 365) {
+      return (difference.inDays / 365).floor();
+    } else if (difference.inDays >= 30) {
+      return (difference.inDays / 30).floor();
+    } else if (difference.inDays >= 7) {
+      return (difference.inDays / 7).floor();
+    } else if (difference.inDays >= 1) {
+      return difference.inDays;
+    } else if (difference.inHours >= 1) {
+      return difference.inHours;
+    } else if (difference.inMinutes >= 1) {
+      return difference.inMinutes;
+    } else {
+      return 0;
     }
   }
 
@@ -83,7 +107,8 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
         children: [
           Text(
               '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
-          Text(times!),
+          Text(times!,style: TextStyle(color: valueTime>=10?Colors.red:Colors.green),),
+         
         ],
       ),
     );

@@ -41,7 +41,7 @@ class _ClassSavedTransactionMobileState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Transaksi Tersimpan'),
+        title: Text('Order Management'),
         actions: [],
       ),
       body: Column(
@@ -50,6 +50,7 @@ class _ClassSavedTransactionMobileState
             width: MediaQuery.of(context).size.width * 0.95,
             height: MediaQuery.of(context).size.height * 0.08,
             child: TextFieldMobile2(
+              label: 'Search',
                 suffixIcon: search.text.length != 0
                     ? IconButton(
                         icon: Icon(

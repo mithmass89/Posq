@@ -878,7 +878,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             confirmed: '1',
             description: widget.controller.text,
             taxpct: 0,
-            servicepct: 0,
+            svchgpct: 0,
             statustrans: 'prosess',
             createdt: now.toString()),
         pscd);
@@ -966,7 +966,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     confirmed: '1',
                     description: widget.controller.text,
                     taxpct: 0,
-                    servicepct: 0,
+                    svchgpct: 0,
                   );
                   // ClassRetailMainMobile.of(context)!.string = hasil;
                 });
@@ -2094,7 +2094,7 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
         actions: <Widget>[
           TextButton(
               onPressed: () async {
-                await updateGuest(guestname.text);
+                await updateGuest(guestname.text.isEmpty?'No Guest':guestname.text);
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.remove('savecostmrs');
                 if (widget.fromsaved == false) {

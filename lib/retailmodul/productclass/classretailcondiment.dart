@@ -4,6 +4,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
+import 'package:posq/retailmodul/productclass/subcondimentv2.dart';
 import 'package:posq/userinfo.dart';
 import 'package:collection/collection.dart';
 
@@ -13,7 +14,9 @@ class ClassInputCondiment extends StatefulWidget {
   final String outletcd;
   final int itemseq;
   final List<IafjrndtClass>? dataedit;
+  final IafjrndtClass? datatransaksi;
   final bool? fromedit;
+  final int? iditem;
   const ClassInputCondiment({
     Key? key,
     required this.data,
@@ -21,7 +24,9 @@ class ClassInputCondiment extends StatefulWidget {
     this.dataedit,
     required this.outletcd,
     required this.itemseq,
-    this.fromedit,
+    required this.fromedit,
+    this.iditem,
+    this.datatransaksi,
   }) : super(key: key);
 
   @override
@@ -29,6 +34,7 @@ class ClassInputCondiment extends StatefulWidget {
 }
 
 class _ClassInputCondimentState extends State<ClassInputCondiment> {
+  ScrollController _controllerscroll = ScrollController(); // scroll controller
   String query = '';
   List<Condiment> condiment = [];
   TextEditingController _controlllermainitem = TextEditingController(text: '0');
@@ -41,6 +47,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
   List<PosCondiment> summarycondiment = [];
   List<PosCondiment> poscondimentchoice = [];
   List<PosCondiment> poscondimenttopping = [];
+
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
@@ -48,52 +55,22 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
   Future? checkfromedit;
   List<String> controllerindexing = [];
   bool _isloading = false;
+  int qtyitemmaster = 1;
+  bool hasupdate = false;
+
+//mengammbil data condiment dari item yg tersetup//
   Future<void> getDetailCondiment() async {
     condiment =
         await ClassApi.getItemCondiment(widget.data.itemcode!, dbname, query);
     // print(condiment);
-
-    for (var x in condiment) {
-      if (x.condimenttype == 'menuchoice') {
-        listchoice.add(SelectedItems(isSelected: false, name: x.optiondesc!));
-      } else if (x.condimenttype == 'topping') {
-        qtylist.add(0);
-        controllerindexing.add(x.optiondesc!);
-        controller.add(TextEditingCondiment(
-            opsidesc: x.optiondesc!,
-            opsicode: x.optioncode!,
-            controller: TextEditingController(text: '0')));
-        poscondimenttopping.add(PosCondiment(
-            trdt: formattedDate,
-            itemcode: widget.data.itemcode,
-            transno: widget.transno,
-            outletcode: widget.outletcd,
-            itemseq: widget.itemseq,
-            condimentcode: '',
-            condimentdesc: x.condimentdesc,
-            condimenttype: x.condimenttype,
-            qty: 0,
-            rateamt: x.amount,
-            rateamttax: 0,
-            rateamtservice: 0,
-            totalamt: 0 * x.amount!,
-            totaltaxamt: 0,
-            totalserviceamt: 0,
-            totalnett: 0 * x.amount!,
-            createdt: now.toString(),
-            optioncode: x.optioncode,
-            optiondesc: x.optiondesc));
-      }
-      // print(poscondimenttopping);
-    }
-
     groupedData();
-    if (widget.fromedit == true || widget.fromedit != null) {
-      await checkItemExistFromEdit();
+    if (widget.fromedit == true) {
+      await checkFromEdit();
     }
-
     setState(() {});
   }
+
+//function grouping data//
 
   groupedData() {
     groupedCondiments = groupBy(condiment, (Condiment c) => c.condimentdesc!);
@@ -102,60 +79,78 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
     }
   }
 
-  //proses from edit ///
-  Future<void> checkItemExistFromEdit() async {
-    String selectedchoice = '';
-    List<PosCondiment> datax = await ClassApi.getDetailCondimentTrno(
-        widget.dataedit!.first.transno!,
-        widget.data.itemcode!,
-        widget.itemseq.toString(),
-        dbname,
-        query);
+//proses milih condiment //
+  posCodimentChoice() {
+    poscondimentchoice = [];
+    for (var x in condiment.where((element) => element.isSelected == true)) {
+      poscondimentchoice.add(PosCondiment(
+          transno: widget.transno,
+          itemseq: widget.itemseq,
+          trdt: formattedDate,
+          outletcode: widget.outletcd,
+          itemcode: widget.data.itemcode,
+          condimentcode: x.itemcode,
+          condimentdesc: x.condimentdesc,
+          condimenttype: x.condimenttype,
+          qty: 1,
+          rateamt: x.amount,
+          rateamtservice: x.serviceamount,
+          rateamttax: x.taxamount,
+          totalamt: 1 * x.amount!,
+          totalserviceamt: 1 * x.serviceamount!,
+          totaltaxamt: 1 * x.taxamount!,
+          totalnett: 1 * x.amount!,
+          optioncode: x.optioncode,
+          optiondesc: x.optiondesc,
+          qtystarted: 1));
+    }
+    setState(() {});
 
-    for (var x in datax) {
+    // print(poscondimentchoice);
+  }
+
+  posCodimentTopping() {
+    setState(() {});
+    // print(poscondimenttopping);
+  }
+
+  ///check dari edit or not //
+  checkFromEdit() async {
+    var data = await ClassApi.getDetailCondimentTrno(widget.transno,
+        widget.data.itemcode!, widget.itemseq.toString(), dbname, pscd);
+    // print("ini data for edit $data");
+    for (var x in data) {
       if (x.condimenttype == 'menuchoice') {
-        selectedchoice = x.optiondesc!;
-        setState(() {});
-
         poscondimentchoice.add(x);
-        // print(poscondimentchoice);
+      } else {
+        poscondimenttopping.add(x);
       }
     }
-    for (var x in listchoice) {
-      // print(listchoice.indexOf(x));
-      if (x.name == selectedchoice) {
-        x.isSelected = true;
-        setState(() {});
-      }
+    for (var x in poscondimenttopping) {
+      x.qty = x.qty! / widget.datatransaksi!.qty!;
+      x.qty = x.qty!.toInt();
+      x.qtystarted =  widget.datatransaksi!.qty!;
+      print( 'ini qtystarted ${x.qtystarted}');
     }
 
-    for (var x in datax) {
-      if (x.condimenttype == 'topping') {
-        int indexs = controller
-            .indexWhere((element) => element.opsidesc == x.optiondesc);
-        // print(condiment.where((element) => element.optioncode == x.optioncode));
-        num totalqty = datax
-            .where((element) => element.condimenttype == 'topping')
-            .fold(0, (previousValue, datax) => previousValue + datax.qty!);
-        print(totalqty);
-        controller[indexs].controller.text = x.qty.toString();
-        qtylist[indexs] = x.qty!.toInt();
-        poscondimenttopping[indexs].qty = qtylist[indexs];
-        poscondimenttopping[indexs].totalamt = qtylist[indexs] * x.totalamt!;
-        poscondimenttopping[indexs].totalnett = qtylist[indexs] * x.totalnett!;
-        print(poscondimenttopping);
-      } else {}
-    }
+    qtyitemmaster = widget.datatransaksi!.qty!;
+    _controlllermainitem.text = widget.datatransaksi!.qty.toString();
+
 
     setState(() {});
-    print(poscondimentchoice);
-    print(poscondimenttopping);
+  }
+
+  functionBool(hasil) {
+    hasupdate = hasil;
+    // apakah ada perubahan data atau tidak ;
+   
   }
 
   @override
   void initState() {
     super.initState();
-    getdetailcondiment = getDetailCondiment();
+    getDetailCondiment();
+    _controlllermainitem.text = qtyitemmaster.toString();
     // checkfromedit = checkItemExistFromEdit();
     formattedDate = formatter.format(now);
   }
@@ -170,6 +165,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
           children: [
             Expanded(
                 child: ListView.builder(
+                    controller: _controllerscroll,
                     itemCount: keys.length,
                     itemBuilder: (context, i) {
                       var x = groupedCondiments[keys[i]];
@@ -181,214 +177,41 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                         subtitle: Container(
                           height: MediaQuery.of(context).size.height *
                               x!.length /
-                              10,
+                              15,
                           child: ListView.builder(
+                              controller: _controllerscroll,
                               itemCount: x.length,
                               itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text('${x[index].optiondesc}'),
-                                  subtitle: Text(x[index].amount.toString()),
-                                  trailing: Container(
-                                      width: qtylist[index] != 0
-                                          ? MediaQuery.of(context).size.width *
-                                              0.42
-                                          : MediaQuery.of(context).size.width *
-                                              0.20,
-                                      child: x[index].condimenttype == 'topping'
-                                          ? Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                qtylist[index] != 0
-                                                    ? IconButton(
-                                                        onPressed: () {
-                                                          if (qtylist[index] !=
-                                                              0) {
-                                                            qtylist[index]--;
-                                                            controller[index]
-                                                                    .controller
-                                                                    .text =
-                                                                qtylist[index]
-                                                                    .toString();
-                                                            poscondimenttopping[
-                                                                        index]
-                                                                    .qty =
-                                                                qtylist[index];
-                                                            poscondimenttopping[
-                                                                        index]
-                                                                    .totalamt =
-                                                                qtylist[index] *
-                                                                    x[index]
-                                                                        .amount!;
-                                                            poscondimenttopping[
-                                                                        index]
-                                                                    .totalnett =
-                                                                qtylist[index] *
-                                                                    x[index]
-                                                                        .amount!;
-                                                            print(
-                                                                poscondimenttopping);
-                                                            if (qtylist[
-                                                                    index] ==
-                                                                0) {
-                                                              poscondimenttopping
-                                                                  .removeAt(
-                                                                      index);
-                                                            }
-                                                            setState(() {});
-                                                          }
-                                                        },
-                                                        icon:
-                                                            Icon(Icons.remove),
-                                                        iconSize: 20,
-                                                      )
-                                                    : Container(),
-                                                qtylist[index] != 0
-                                                    ? SizedBox(
-                                                        width: 65,
-                                                        height: 60,
-                                                        child: TextFieldMobile2(
-                                                            readonly: true,
-                                                            enable: false,
-                                                            controller:
-                                                                controller[
-                                                                        index]
-                                                                    .controller,
-                                                            onChanged:
-                                                                (value) {},
-                                                            typekeyboard:
-                                                                TextInputType
-                                                                    .number),
-                                                      )
-                                                    : Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.2,
-                                                        child: ElevatedButton(
-                                                            onPressed: () {
-                                                              qtylist[index] =
-                                                                  1;
-                                                              poscondimenttopping[
-                                                                          index]
-                                                                      .qty =
-                                                                  qtylist[
-                                                                      index];
-                                                              controller[index]
-                                                                  .controller
-                                                                  .text = qtylist[
-                                                                      index]
-                                                                  .toString();
-                                                              poscondimenttopping[
-                                                                          index]
-                                                                      .totalamt =
-                                                                  qtylist[index] *
-                                                                      x[index]
-                                                                          .amount!;
-                                                              poscondimenttopping[
-                                                                          index]
-                                                                      .totalnett =
-                                                                  qtylist[index] *
-                                                                      x[index]
-                                                                          .amount!;
-                                                              print(
-                                                                  poscondimenttopping);
-                                                              setState(() {});
-                                                            },
-                                                            child: Text('Add')),
-                                                      ),
-                                                qtylist[index] != 0
-                                                    ? IconButton(
-                                                        onPressed: () {
-                                                          print(index);
-                                                          if (qtylist[index] >=
-                                                              0) {
-                                                            qtylist[index]++;
-                                                            controller[index]
-                                                                    .controller
-                                                                    .text =
-                                                                qtylist[index]
-                                                                    .toString();
-                                                            poscondimenttopping[
-                                                                        index]
-                                                                    .qty =
-                                                                qtylist[index];
-                                                            poscondimenttopping[
-                                                                        index]
-                                                                    .totalamt =
-                                                                qtylist[index] *
-                                                                    x[index]
-                                                                        .amount!;
-                                                            poscondimenttopping[
-                                                                        index]
-                                                                    .totalnett =
-                                                                qtylist[index] *
-                                                                    x[index]
-                                                                        .amount!;
-                                                            print(
-                                                                poscondimenttopping[
-                                                                    index]);
-                                                            setState(() {});
-                                                          }
-                                                        },
-                                                        icon: Icon(Icons.add),
-                                                        iconSize: 20,
-                                                      )
-                                                    : Container(),
-                                              ],
-                                            )
-                                          : CheckboxListTile(
-                                              value:
-                                                  listchoice[index].isSelected,
-                                              onChanged: (value) {
-                                                for (var x in listchoice) {
-                                                  poscondimentchoice = [];
-                                                  x.isSelected = false;
-                                                  setState(() {});
-                                                }
-                                                listchoice[index].isSelected =
-                                                    value!;
-
-                                                setState(() {});
-                                                isSelected =
-                                                    x[index].optiondesc!;
-                                                poscondimentchoice.add(
-                                                    PosCondiment(
-                                                        trdt: formattedDate,
-                                                        itemcode: widget
-                                                            .data.itemcode,
-                                                        transno: widget.transno,
-                                                        outletcode: widget
-                                                            .outletcd,
-                                                        itemseq: widget.itemseq,
-                                                        condimentcode:
-                                                            x[index].itemcode,
-                                                        condimentdesc: x[index]
-                                                            .condimentdesc,
-                                                        condimenttype: x[index]
-                                                            .condimenttype,
-                                                        qty: 1,
-                                                        rateamt:
-                                                            x[index].amount,
-                                                        rateamttax: 0,
-                                                        rateamtservice: 0,
-                                                        totalamt:
-                                                            x[index].amount,
-                                                        totaltaxamt: 0,
-                                                        totalserviceamt: 0,
-                                                        totalnett:
-                                                            x[index].amount,
-                                                        createdt:
-                                                            now.toString(),
-                                                        optioncode:
-                                                            x[index].optioncode,
-                                                        optiondesc: x[index]
-                                                            .optiondesc));
-                                                print(poscondimentchoice);
-                                              })),
+                                return SubCondimentV2(
+                                  hasUpdate: functionBool,
+                                  hasupdate: hasupdate,
+                                  fromedit: widget.fromedit!,
+                                  master: widget.data,
+                                  qtymaster: qtyitemmaster,
+                                  posCodimentTopping: posCodimentTopping,
+                                  poscondimenttopping: poscondimenttopping,
+                                  transno: widget.transno,
+                                  outletcd: widget.outletcd,
+                                  formattedDate: formattedDate,
+                                  itemseq: widget.itemseq,
+                                  poscondimentchoice: poscondimentchoice,
+                                  mainindex: i,
+                                  subindex: index,
+                                  selectedChoice: listchoice,
+                                  posCodimentChoice: posCodimentChoice,
+                                  condimentlist: condiment,
+                                  condiment: x[index],
                                 );
+                                // return SubCondiment(
+                                //   index: index,
+                                //   poscondimentchoice: poscondimentchoice[index],
+                                //   poscondimenttopping:
+                                //       poscondimenttopping[index],
+                                //   controller: controller[index],
+                                //   qtylist: qtylist[index],
+                                //   condiment: x[index],
+                                //   listchoice: listchoice[index],
+                                // );
                               }),
                         ),
                       );
@@ -399,7 +222,45 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                     child: Row(
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (qtyitemmaster > 1) {
+                              hasupdate = true;
+                              qtyitemmaster--;
+                              _controlllermainitem.text =
+                                  qtyitemmaster.toString();
+                              poscondimentchoice.forEach((element) {
+                                element.qty =
+                                    element.qtystarted! * qtyitemmaster;
+                                element.totalamt =
+                                    qtyitemmaster * element.rateamt!;
+                                element.totaltaxamt =
+                                    element.rateamttax! * element.qty!;
+                                element.totalserviceamt =
+                                    element.rateamtservice! * element.qty!;
+                                element.totalnett =
+                                    element.qty! * element.rateamt! +
+                                        element.totalserviceamt! +
+                                        element.totaltaxamt!;
+                              });
+                              poscondimenttopping.forEach((element) {
+                                element.qty =
+                                    element.qtystarted! * qtyitemmaster;
+                                element.totalamt =
+                                    element.qty! * element.rateamt!;
+                                element.totaltaxamt =
+                                    element.rateamttax! * element.qty!;
+                                element.totalserviceamt =
+                                    element.rateamtservice! * element.qty!;
+                                element.totalnett =
+                                    element.qty! * element.rateamt! +
+                                        element.totalserviceamt! +
+                                        element.totaltaxamt!;
+                              });
+                              // print(poscondimenttopping);
+                              // print(hasupdate);
+                              setState(() {});
+                            }
+                          },
                           icon: Icon(
                             Icons.remove,
                           ),
@@ -416,7 +277,46 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                               typekeyboard: TextInputType.number),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (qtyitemmaster >= 1) {
+                              hasupdate = true;
+                              qtyitemmaster++;
+                              _controlllermainitem.text =
+                                  qtyitemmaster.toString();
+                              poscondimentchoice.forEach((element) {
+                                element.qty =
+                                    element.qtystarted! * qtyitemmaster;
+                                element.totalamt =
+                                    qtyitemmaster * element.rateamt!;
+                                element.totaltaxamt =
+                                    element.rateamttax! * element.qty!;
+                                element.totalserviceamt =
+                                    element.rateamtservice! * element.qty!;
+                                element.totalnett =
+                                    element.qty! * element.rateamt! +
+                                        element.totalserviceamt! +
+                                        element.totaltaxamt!;
+                              });
+                              poscondimenttopping.forEach((element) {
+                                element.qty =
+                                    element.qtystarted! * qtyitemmaster;
+                                element.totalamt =
+                                    element.qty! * element.rateamt!;
+
+                                element.totaltaxamt =
+                                    element.rateamttax! * element.qty!;
+                                element.totalserviceamt =
+                                    element.rateamtservice! * element.qty!;
+                                element.totalnett =
+                                    element.qty! * element.rateamt! +
+                                        element.totalserviceamt! +
+                                        element.totaltaxamt!;
+                              });
+                              setState(() {});
+                              // print(poscondimenttopping);
+                              // print(hasupdate);
+                            }
+                          },
                           icon: Icon(Icons.add),
                           iconSize: 20,
                         )
@@ -430,113 +330,148 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
               height: MediaQuery.of(context).size.height * 0.04,
             ),
             widget.fromedit == false || widget.fromedit == null
-                ? ButtonNoIcon2(
+                ? LoadingButton(
+                    isLoading: _isloading,
                     color: Colors.blue,
                     textcolor: Colors.white,
                     name: 'Simpan',
                     height: MediaQuery.of(context).size.height * 0.05,
                     width: MediaQuery.of(context).size.width * 0.9,
-                    onpressed: () async {
-                      //jadi satu list //
-                      for (var x in poscondimentchoice) {
-                        summarycondiment.add(x);
-                      }
-                      for (var x in poscondimenttopping) {
-                        summarycondiment.add(x);
-                      }
-                      await ClassApi.insert_Poscondiment(
-                          dbname, summarycondiment);
-                      await ClassApi.insertPosDetail(
-                          IafjrndtClass(
-                              trdt: formattedDate,
-                              pscd: widget.data.outletcode,
-                              transno: widget.transno,
-                              transno1: widget.transno,
-                              split: 'A',
-                              itemcode: widget.data.itemcode,
-                              itemdesc: widget.data.itemdesc,
-                              description: widget.data.description,
-                              itemseq: widget.itemseq,
-                              qty: 1,
-                              discpct: 0,
-                              discamt: 0,
-                              ratecurcd: 'Rupiah',
-                              ratebs1: 1,
-                              ratebs2: 1,
-                              rateamtitem: widget.data.slsamt,
-                              rateamtcost: widget.data.costamt,
-                              rateamtservice: 0,
-                              rateamttax: 0,
-                              rateamttotal: widget.data.slsamt!,
-                              revenueamt: 1 * widget.data.slsamt!,
-                              taxamt: 0,
-                              serviceamt: 0,
-                              totalaftdisc: 1 * widget.data.slsamt!,
-                              rebateamt: 0,
-                              rvncoa: 'REVENUE',
-                              taxcoa: 'TAX',
-                              servicecoa: 'SERVICE',
-                              costcoa: 'COST',
-                              active: 1,
-                              usercrt: usercd,
-                              userupd: '',
-                              userdel: '',
-                              prnkitchen: 0,
-                              prnkitchentm: now.hour.toString() +
-                                  ":" +
-                                  now.minute.toString() +
-                                  ":" +
-                                  now.second.toString(),
-                              confirmed: '1',
-                              taxpct: widget.data.taxpct,
-                              servicepct: widget.data.svchgpct,
-                              createdt: now.toString()),
-                          pscd);
-                      var result = IafjrndtClass(
-                          trdt: formattedDate,
-                          pscd: widget.data.outletcode,
-                          transno: widget.transno,
-                          transno1: widget.transno,
-                          split: 'A',
-                          itemcode: widget.data.itemcode,
-                          itemdesc: widget.data.itemdesc,
-                          description: widget.data.description,
-                          qty: 1,
-                          discpct: 0,
-                          discamt: 0,
-                          ratecurcd: 'Rupiah',
-                          ratebs1: 1,
-                          ratebs2: 1,
-                          rateamtcost: widget.data.costamt,
-                          rateamtservice: 0,
-                          rateamttax: 0,
-                          rateamttotal: widget.data.slsamt!,
-                          revenueamt: 1 * widget.data.slsamt!,
-                          taxamt: 0,
-                          serviceamt: 0,
-                          totalaftdisc: 1 * widget.data.slsamt!,
-                          rebateamt: 0,
-                          rvncoa: 'REVENUE',
-                          taxcoa: 'TAX',
-                          servicecoa: 'SERVICE',
-                          costcoa: 'COST',
-                          active: 1,
-                          usercrt: usercd,
-                          userupd: '',
-                          userdel: '',
-                          prnkitchen: 0,
-                          prnkitchentm: now.hour.toString() +
-                              ":" +
-                              now.minute.toString() +
-                              ":" +
-                              now.second.toString(),
-                          confirmed: '1',
-                          taxpct: widget.data.taxpct,
-                          servicepct: widget.data.svchgpct,
-                          createdt: now.toString());
-                      // ClassRetailMainMobile.of(context)!.string = result;
-                      Navigator.of(context).pop(result);
-                    },
+                    onpressed: _isloading == false
+                        ? () async {
+                            setState(() {
+                              _isloading = true;
+                            });
+                            //jadi satu list //
+                            for (var x in poscondimentchoice) {
+                              summarycondiment.add(x);
+                            }
+                            for (var x in poscondimenttopping) {
+                              summarycondiment.add(x);
+                            }
+                            await ClassApi.insert_Poscondiment(
+                                dbname, summarycondiment);
+                            await ClassApi.insertPosDetail(
+                                IafjrndtClass(
+                                    trdt: formattedDate,
+                                    pscd: widget.data.outletcode,
+                                    transno: widget.transno,
+                                    transno1: widget.transno,
+                                    split: 'A',
+                                    itemcode: widget.data.itemcode,
+                                    itemdesc: widget.data.itemdesc,
+                                    description: widget.data.description,
+                                    itemseq: widget.itemseq,
+                                    qty: qtyitemmaster,
+                                    discpct: 0,
+                                    discamt: 0,
+                                    ratecurcd: 'Rupiah',
+                                    ratebs1: 1,
+                                    ratebs2: 1,
+                                    rateamtitem: widget.data.slsamt,
+                                    rateamtcost: widget.data.costamt,
+                                    rateamtservice: widget.data.slsamt! *
+                                        widget.data.svchgpct! /
+                                        100,
+                                    rateamttax: widget.data.slsamt! *
+                                        widget.data.taxpct! /
+                                        100,
+                                    rateamttotal: widget.data.slsamt! +
+                                        (widget.data.slsamt! *
+                                            widget.data.svchgpct! /
+                                            100) +
+                                        (widget.data.slsamt! *
+                                            widget.data.taxpct! /
+                                            100),
+                                    revenueamt:
+                                        qtyitemmaster * widget.data.slsamt!,
+                                    taxamt: (widget.data.slsamt! *
+                                            widget.data.taxpct! /
+                                            100) *
+                                        qtyitemmaster,
+                                    serviceamt: (widget.data.slsamt! *
+                                            widget.data.svchgpct! /
+                                            100) *
+                                        qtyitemmaster,
+                                    totalaftdisc:
+                                        qtyitemmaster * widget.data.slsamt! +
+                                            ((widget.data.slsamt! *
+                                                    widget.data.svchgpct! /
+                                                    100) *
+                                                qtyitemmaster) +
+                                            ((widget.data.slsamt! *
+                                                    widget.data.taxpct! /
+                                                    100) *
+                                                qtyitemmaster),
+                                    rebateamt: 0,
+                                    rvncoa: 'REVENUE',
+                                    taxcoa: 'TAX',
+                                    servicecoa: 'SERVICE',
+                                    costcoa: 'COST',
+                                    active: 1,
+                                    usercrt: usercd,
+                                    userupd: '',
+                                    userdel: '',
+                                    prnkitchen: 0,
+                                    prnkitchentm: now.hour.toString() +
+                                        ":" +
+                                        now.minute.toString() +
+                                        ":" +
+                                        now.second.toString(),
+                                    confirmed: '1',
+                                    taxpct: widget.data.taxpct,
+                                    svchgpct: widget.data.svchgpct,
+                                    createdt: now.toString()),
+                                pscd);
+                            var result = IafjrndtClass(
+                                trdt: formattedDate,
+                                pscd: widget.data.outletcode,
+                                transno: widget.transno,
+                                transno1: widget.transno,
+                                split: 'A',
+                                itemcode: widget.data.itemcode,
+                                itemdesc: widget.data.itemdesc,
+                                description: widget.data.description,
+                                qty: 1,
+                                discpct: 0,
+                                discamt: 0,
+                                ratecurcd: 'Rupiah',
+                                ratebs1: 1,
+                                ratebs2: 1,
+                                rateamtcost: widget.data.costamt,
+                                rateamtservice: 0,
+                                rateamttax: 0,
+                                rateamttotal: widget.data.slsamt!,
+                                revenueamt: 1 * widget.data.slsamt!,
+                                taxamt: 0,
+                                serviceamt: 0,
+                                totalaftdisc: 1 * widget.data.slsamt!,
+                                rebateamt: 0,
+                                rvncoa: 'REVENUE',
+                                taxcoa: 'TAX',
+                                servicecoa: 'SERVICE',
+                                costcoa: 'COST',
+                                active: 1,
+                                usercrt: usercd,
+                                userupd: '',
+                                userdel: '',
+                                prnkitchen: 0,
+                                prnkitchentm: now.hour.toString() +
+                                    ":" +
+                                    now.minute.toString() +
+                                    ":" +
+                                    now.second.toString(),
+                                confirmed: '1',
+                                taxpct: widget.data.taxpct,
+                                svchgpct: widget.data.svchgpct,
+                                createdt: now.toString());
+                            // ClassRetailMainMobile.of(context)!.string = result;
+                            setState(() {
+                              _isloading = false;
+                            });
+                            Navigator.of(context).pop(result);
+                          }
+                        : null,
                   )
                 : LoadingButton(
                     isLoading: _isloading,
@@ -545,70 +480,100 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                     name: 'Update',
                     height: MediaQuery.of(context).size.height * 0.05,
                     width: MediaQuery.of(context).size.width * 0.9,
-                    onpressed: () async {
-                      setState(() {
-                        _isloading = true;
-                      });
-                      //jadi satu list //
-                      await ClassApi.updateCondimentTrno(
-                          widget.transno, widget.itemseq.toString(), dbname);
-                      for (var x in poscondimentchoice) {
-                        summarycondiment.add(x);
-                      }
-                      for (var x in poscondimenttopping) {
-                        summarycondiment.add(x);
-                      }
-                      await ClassApi.insert_Poscondiment(
-                          dbname, summarycondiment);
+                    onpressed: _isloading == false
+                        ? () async {
+                            setState(() {
+                              _isloading = true;
+                            });
+                            // print('ini hasupdate : $hasupdate');
+                            //jadi satu list //
+                            await ClassApi.updateCondimentTrno(widget.transno,
+                                widget.itemseq.toString(), dbname);
+                            for (var x in poscondimentchoice) {
+                              summarycondiment.add(x);
+                            }
+                            if (hasupdate == false) {
+                              for (var x in poscondimenttopping) {
+                                x.qty = x.qty! * widget.datatransaksi!.qty!;
+                                print(x.qty);
+                              }
+                            } else {
+                              for (var x in poscondimenttopping) {
+                                x.qty =  x.qtystarted! * qtyitemmaster;
+                                print(x.qty);
+                              }
+                            }
 
-                      var result = IafjrndtClass(
-                          trdt: formattedDate,
-                          pscd: widget.outletcd,
-                          transno: widget.transno,
-                          transno1: widget.transno,
-                          split: 'A',
-                          itemcode: widget.data.itemcode,
-                          itemdesc: widget.data.itemdesc,
-                          description: widget.data.description,
-                          qty: 1,
-                          discpct: 0,
-                          discamt: 0,
-                          ratecurcd: 'Rupiah',
-                          ratebs1: 1,
-                          ratebs2: 1,
-                          rateamtcost: widget.data.costamt,
-                          rateamtservice: 0,
-                          rateamttax: 0,
-                          rateamttotal: widget.data.slsamt!,
-                          revenueamt: 1 * widget.data.slsamt!,
-                          taxamt: 0,
-                          serviceamt: 0,
-                          totalaftdisc: 1 * widget.data.slsamt!,
-                          rebateamt: 0,
-                          rvncoa: 'REVENUE',
-                          taxcoa: 'TAX',
-                          servicecoa: 'SERVICE',
-                          costcoa: 'COST',
-                          active: 1,
-                          usercrt: usercd,
-                          userupd: '',
-                          userdel: '',
-                          prnkitchen: 0,
-                          prnkitchentm: now.hour.toString() +
-                              ":" +
-                              now.minute.toString() +
-                              ":" +
-                              now.second.toString(),
-                          confirmed: '1',
-                          taxpct: widget.data.taxpct,
-                          servicepct: widget.data.svchgpct,
-                          createdt: now.toString());
-                      setState(() {
-                        _isloading = false;
-                      });
-                      // ClassRetailMainMobile.of(context)!.string = result;
-                      Navigator.of(context).pop(result);
-                    },
+                            for (var x in poscondimenttopping) {
+                              summarycondiment.add(x);
+                            }
+                            await ClassApi.insert_Poscondiment(
+                                dbname, summarycondiment);
+                            var result = IafjrndtClass(
+                                id: widget.iditem,
+                                trdt: formattedDate,
+                                pscd: widget.outletcd,
+                                transno: widget.transno,
+                                transno1: widget.transno,
+                                split: 'A',
+                                itemcode: widget.data.itemcode,
+                                itemdesc: widget.data.itemdesc,
+                                description: widget.data.description,
+                                qty: qtyitemmaster,
+                                discpct: 0,
+                                discamt: 0,
+                                ratecurcd: 'Rupiah',
+                                ratebs1: 1,
+                                ratebs2: 1,
+                                rateamtcost: widget.data.costamt,
+                                rateamtitem: widget.data.slsamt!,
+                                rateamtservice:
+                                    (widget.data.slsamt! / qtyitemmaster) *
+                                        widget.data.svchgpct! /
+                                        100,
+                                rateamttax:
+                                    (widget.data.slsamt! / qtyitemmaster) *
+                                        widget.data.taxpct! /
+                                        100,
+                                rateamttotal:
+                                    widget.data.slsamt! / qtyitemmaster,
+                                revenueamt: qtyitemmaster * widget.data.slsamt!,
+                                taxamt: (qtyitemmaster * widget.data.slsamt!) *
+                                    widget.data.taxpct! *
+                                    100,
+                                serviceamt:
+                                    (qtyitemmaster * widget.data.slsamt!) *
+                                        widget.data.svchgpct! *
+                                        100,
+                                totalaftdisc:
+                                    qtyitemmaster * widget.data.slsamt!,
+                                rebateamt: 0,
+                                rvncoa: 'REVENUE',
+                                taxcoa: 'TAX',
+                                servicecoa: 'SERVICE',
+                                costcoa: 'COST',
+                                active: 1,
+                                usercrt: usercd,
+                                userupd: '',
+                                userdel: '',
+                                prnkitchen: 0,
+                                prnkitchentm: now.hour.toString() +
+                                    ":" +
+                                    now.minute.toString() +
+                                    ":" +
+                                    now.second.toString(),
+                                confirmed: '1',
+                                taxpct: widget.data.taxpct,
+                                svchgpct: widget.data.svchgpct,
+                                createdt: now.toString());
+                            await ClassApi.updatePosDetail(result, dbname);
+                            setState(() {
+                              _isloading = false;
+                            });
+                            // ClassRetailMainMobile.of(context)!.string = result;
+                            Navigator.of(context).pop(result);
+                          }
+                        : null,
                   ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.01,

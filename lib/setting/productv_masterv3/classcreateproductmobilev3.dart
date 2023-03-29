@@ -69,9 +69,9 @@ class _Createproductv3State extends State<Createproductv3>
   String? query = '';
   num? qty = 0;
   bool connect = false;
-
+  bool multiflag = false;
   set string(String value) => setState(() => pathimage = value);
-
+  int multiprice = 0;
   @override
   void initState() {
     super.initState();
@@ -104,10 +104,16 @@ class _Createproductv3State extends State<Createproductv3>
     }
   }
 
+  changeValueMultiPrice(int multiharga) {
+    multiprice = multiharga;
+    setState(() {});
+  }
+
   Future<void> _createProduct(Item data, String dbname) async {
     print(data);
     await ClassApi.insertProduct(
         Item(
+          multiprice: multiprice,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
           itemdesc: data.itemdesc.toString(),
@@ -122,7 +128,7 @@ class _Createproductv3State extends State<Createproductv3>
           slsfl: data.slsfl,
           costcoa: data.costcoa.toString(),
           ctg: data.ctg.toString(),
-          stock: adjusmentstock.text!=''? num.parse(adjusmentstock.text):0,
+          stock: adjusmentstock.text != '' ? num.parse(adjusmentstock.text) : 0,
           pathimage: pathimage.toString(),
           description: description.text.toString(),
           trackstock: trackstock,
@@ -164,6 +170,9 @@ class _Createproductv3State extends State<Createproductv3>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      imagepath: pathimage,
+                      multiprice: multiprice,
+                      fromedit: false,
                       barcode: barcode,
                       sku: sku,
                       productcd: productcd,
@@ -175,6 +184,8 @@ class _Createproductv3State extends State<Createproductv3>
                       pcttax: pcttax,
                       pctservice: pctservice,
                       description: description,
+                      multipriceSet: changeValueMultiPrice,
+                      multiflag: multiflag,
                     ),
                     ClassKelolaStockMobile(
                       trackstockcallback: updateStockTrack,
@@ -225,6 +236,7 @@ class _Createproductv3State extends State<Createproductv3>
                             var random = uuid.v4();
                             await _createProduct(
                                 Item(
+                                  multiprice: multiprice,
                                   outletcode: widget.pscd!,
                                   itemcode: random,
                                   itemdesc: productname.text,

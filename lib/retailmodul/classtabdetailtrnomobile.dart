@@ -78,7 +78,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                                 dense: true,
                                 visualDensity: VisualDensity(vertical: -2), // t
                                 leading: Text('${x[index].qty.toString()} X'),
-                                title: Text(x[index].description.toString(),
+                                title: Text(x[index].itemdesc.toString(),
                                     style: TextStyle(fontSize: 14)),
                                 trailing: Text(
                                     '${CurrencyFormat.convertToIdr(x[index].totalaftdisc, 0)}'),

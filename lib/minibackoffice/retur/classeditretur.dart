@@ -72,7 +72,9 @@ class _ClassEditReturnState extends State<ClassEditReturn> {
     if (widget.data != null) {
       print(widget.data);
       items = Item(
-          itemcode: widget.data['prodcd'], itemdesc: widget.data['proddesc']);
+          multiprice: 0,
+          itemcode: widget.data['prodcd'],
+          itemdesc: widget.data['proddesc']);
       _trno.text = widget.data['subtrno'];
       _note.text = widget.data!['notes'];
       // _unit.text = widget.data!['unituse'];
@@ -234,7 +236,6 @@ class _ClassEditReturnState extends State<ClassEditReturn> {
                             qty.text = qtyremains.toString();
                           }
                         });
-                     
                       } else {}
                     },
                     typekeyboard: TextInputType.number,

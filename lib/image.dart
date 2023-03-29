@@ -4,14 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/menu.dart';
+import 'package:posq/setting/product_master/classeditproductv2mob.dart';
 
 class ImageFromGalleryEx extends StatefulWidget {
   final type;
   final savingimage;
   final double? height;
   final double? width;
+  final bool? fromedit;
   const ImageFromGalleryEx(this.type,
-      {Key? key, this.callback, this.savingimage, this.height, this.width})
+      {Key? key,
+      this.callback,
+      this.savingimage,
+      this.height,
+      this.width,
+      this.fromedit})
       : super(key: key);
   final StringCallback? callback;
   @override
@@ -82,8 +89,14 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                         preferredCameraDevice: CameraDevice.front);
                     setState(() {
                       _image = File(image.path);
-                      print(image.path);
-                      Createproduct.of(context)!.string = image.path.toString();
+                      print('ini imagepath ${image.path}');
+
+                      if (widget.fromedit == true) {
+                        Editproduct.of(context)!.string = image.path.toString();
+                      } else {
+                        Createproduct.of(context)!.string =
+                            image.path.toString();
+                      }
                     });
                   },
                   child: Text('Pilih Foto'))

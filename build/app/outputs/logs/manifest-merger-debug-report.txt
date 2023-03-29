@@ -5,17 +5,18 @@ INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\And
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-44:12
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-44:12
 MERGED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-44:12
-MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-33:12
 MERGED from [:sqflite] E:\posplay2\posplay2\posplay\posplay\posq\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-14:12
-MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [:path_provider_android] E:\posplay2\posplay2\posplay\posplay\posq\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
+MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-33:12
+MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d465b5bd3ec000602b156d6128eda120\material-1.3.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03117f7ba41de6a04a9f48ae55b48967\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\199571e7bd935bc0dc1a8e979fab6aa9\appcompat-1.4.2\AndroidManifest.xml:17:1-24:12
@@ -39,15 +40,15 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] C:\Users\Mitro\.gradl
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\1347e8ec1a82d01dcd8b1786664cd739\jetified-lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ad201fac15a88598107ec645f351f5b4\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.appcompat:appcompat-resources:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd411ad61047cdf53be825a28fc3b253\jetified-appcompat-resources-1.4.2\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\09c1773ed3597f8bec6064dc26d157be\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5649324daca3b4ca6dbbe591dc80e7b5\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:17:1-37:12
 MERGED from [androidx.media:media:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5e86ac6112f317c2f69cf5fc4d8a9536\media-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ea2da72bd5ca4f251f51c345aebba41f\coordinatorlayout-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.transition:transition:1.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f80d6dba72e89729b638c53f3294343\transition-1.2.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd411ad61047cdf53be825a28fc3b253\jetified-appcompat-resources-1.4.2\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\61fd575f974e3d768efc2f6a143e0eae\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\986216458f3c0df423ee68e7f1177976\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\09c1773ed3597f8bec6064dc26d157be\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5649324daca3b4ca6dbbe591dc80e7b5\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:17:1-37:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ae39e38aa58f5c391f29a4bfad4a41a4\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\627b1a478fb3a47175bfa78ea61ecb83\slidingpanelayout-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\9416e837706c8050a4b4397a65e9077c\recyclerview-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -60,8 +61,8 @@ MERGED from [androidx.exifinterface:exifinterface:1.3.3] C:\Users\Mitro\.gradle\
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2dd7e1e94a0e65810db6291100ebf315\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:17:1-37:12
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\1a700d90560db5b83be244a9e0368578\jetified-startup-runtime-1.0.0\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6c6575c923e75933616af1a602db32e0\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\69ba5a98805d81d755806668ff70d04f\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6bb69121fbfc7f55675d79a165028fc2\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\69ba5a98805d81d755806668ff70d04f\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\884708a9396f81808c0ac10f4b98ea32\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\41b22dd8d8dde3e75988a2b2f33a162b\lifecycle-runtime-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.savedstate:savedstate:1.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\fdae5211189a2e7f88bcaf74e1e4ea74\jetified-savedstate-1.2.0\AndroidManifest.xml:17:1-24:12
@@ -262,28 +263,30 @@ uses-sdk
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
-MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] E:\posplay2\posplay2\posplay\posplay\posq\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] E:\posplay2\posplay2\posplay\posplay\posq\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] E:\posplay2\posplay2\posplay\posplay\posq\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] E:\posplay2\posplay2\posplay\posplay\posq\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d465b5bd3ec000602b156d6128eda120\material-1.3.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\d465b5bd3ec000602b156d6128eda120\material-1.3.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03117f7ba41de6a04a9f48ae55b48967\constraintlayout-2.0.1\AndroidManifest.xml:5:5-7:41
@@ -330,24 +333,24 @@ MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\Mitro\.gradle\ca
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ad201fac15a88598107ec645f351f5b4\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat-resources:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd411ad61047cdf53be825a28fc3b253\jetified-appcompat-resources-1.4.2\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat-resources:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd411ad61047cdf53be825a28fc3b253\jetified-appcompat-resources-1.4.2\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\09c1773ed3597f8bec6064dc26d157be\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\09c1773ed3597f8bec6064dc26d157be\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5649324daca3b4ca6dbbe591dc80e7b5\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5649324daca3b4ca6dbbe591dc80e7b5\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.media:media:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5e86ac6112f317c2f69cf5fc4d8a9536\media-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.media:media:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5e86ac6112f317c2f69cf5fc4d8a9536\media-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ea2da72bd5ca4f251f51c345aebba41f\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ea2da72bd5ca4f251f51c345aebba41f\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.transition:transition:1.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f80d6dba72e89729b638c53f3294343\transition-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.transition:transition:1.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f80d6dba72e89729b638c53f3294343\transition-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd411ad61047cdf53be825a28fc3b253\jetified-appcompat-resources-1.4.2\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd411ad61047cdf53be825a28fc3b253\jetified-appcompat-resources-1.4.2\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\61fd575f974e3d768efc2f6a143e0eae\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\61fd575f974e3d768efc2f6a143e0eae\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\986216458f3c0df423ee68e7f1177976\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\986216458f3c0df423ee68e7f1177976\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\09c1773ed3597f8bec6064dc26d157be\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\09c1773ed3597f8bec6064dc26d157be\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5649324daca3b4ca6dbbe591dc80e7b5\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5649324daca3b4ca6dbbe591dc80e7b5\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8d120aa649c2aed370574c7028952cac\jetified-emoji2-1.0.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ae39e38aa58f5c391f29a4bfad4a41a4\viewpager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ae39e38aa58f5c391f29a4bfad4a41a4\viewpager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\627b1a478fb3a47175bfa78ea61ecb83\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
@@ -372,10 +375,10 @@ MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\Mitro\.gradle\cach
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\1a700d90560db5b83be244a9e0368578\jetified-startup-runtime-1.0.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6c6575c923e75933616af1a602db32e0\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6c6575c923e75933616af1a602db32e0\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\69ba5a98805d81d755806668ff70d04f\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\69ba5a98805d81d755806668ff70d04f\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6bb69121fbfc7f55675d79a165028fc2\cardview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6bb69121fbfc7f55675d79a165028fc2\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\69ba5a98805d81d755806668ff70d04f\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\69ba5a98805d81d755806668ff70d04f\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\884708a9396f81808c0ac10f4b98ea32\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\884708a9396f81808c0ac10f4b98ea32\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\41b22dd8d8dde3e75988a2b2f33a162b\lifecycle-runtime-2.5.1\AndroidManifest.xml:20:5-22:41
@@ -446,10 +449,6 @@ ADDED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\bui
 		ADDED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
 	android:name
 		ADDED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
-uses-permission#android.permission.BLUETOOTH_ADVERTISE
-ADDED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:25:5-78
-	android:name
-		ADDED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:25:22-75
 activity#io.flutter.plugins.urllauncher.WebViewActivity
 ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
 	android:exported
@@ -458,6 +457,20 @@ ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\bui
 		ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
 	android:name
 		ADDED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+provider#net.nfet.flutter.printing.PrintFileProvider
+ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+	android:grantUriPermissions
+		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+	android:authorities
+		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-68
+	android:exported
+		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-71
+uses-permission#android.permission.BLUETOOTH_ADVERTISE
+ADDED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:25:5-78
+	android:name
+		ADDED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\debug\AndroidManifest.xml:25:22-75
 uses-feature#android.hardware.wifi
 ADDED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-58
 MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3fa0f52c2c1a215aec8a35bdb99be09e\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:42:5-44:36
@@ -476,16 +489,6 @@ uses-permission#android.permission.WRITE_SETTINGS
 ADDED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:17:5-73
 	android:name
 		ADDED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:17:22-70
-provider#net.nfet.flutter.printing.PrintFileProvider
-ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
-	android:grantUriPermissions
-		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
-	android:authorities
-		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-68
-	android:exported
-		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
-	android:name
-		ADDED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-71
 activity#com.google.android.gms.common.api.GoogleApiActivity
 ADDED from [com.google.android.gms:play-services-base:17.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
 	android:exported

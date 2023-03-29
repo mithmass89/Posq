@@ -17,6 +17,7 @@ class ClassitemRetailMobile extends StatefulWidget {
   final String? pscd;
   final String trno;
   final int itemseq;
+
   const ClassitemRetailMobile(
       {Key? key,
       this.image,
@@ -24,7 +25,7 @@ class ClassitemRetailMobile extends StatefulWidget {
       required this.trdt,
       this.pscd,
       required this.trno,
-      required this.itemseq})
+      required this.itemseq,})
       : super(key: key);
 
   @override
@@ -41,7 +42,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
   void initState() {
     super.initState();
     ToastContext().init(context);
-    print(widget.trno);
+    print('ini dari product ${widget.trno}');
   }
 
   Future<IafjrndtClass?> insertIafjrndt() async {
@@ -94,7 +95,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
             confirmed: '1',
             description: widget.item.itemdesc,
             taxpct: widget.item.taxpct,
-            servicepct: widget.item.svchgpct,
+            svchgpct: widget.item.svchgpct,
             statustrans: 'prosess',
             createdt: now.toString()),
         pscd);
@@ -145,7 +146,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
         confirmed: '1',
         description: widget.item.itemdesc,
         taxpct: widget.item.taxpct,
-        servicepct: widget.item.svchgpct,
+        svchgpct: widget.item.svchgpct,
         statustrans: 'prosess',
         createdt: now.toString());
     return result;
@@ -158,7 +159,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          dense: true,
+          // dense: true,
           onTap: () async {
             if (widget.item.modifiers == 0) {
               if (widget.item.stock != 0 && widget.item.trackstock == 1) {
@@ -179,6 +180,8 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ClassInputCondiment(
+                      
+                          fromedit: false,
                           itemseq: widget.itemseq,
                           outletcd: pscd,
                           transno: widget.trno,
@@ -211,7 +214,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
           ),
           // contentPadding: EdgeInsets.all(8.0),
           title: Text(widget.item.itemdesc!),
-          subtitle: Text(widget.item.modifiers.toString()),
+          subtitle:widget.item.modifiers!=0? Text('Bisa Custome : ${widget.item.modifiers.toString()}'):Container(),
           trailing: widget.item.trackstock == 1
               ? Column(
                   children: [

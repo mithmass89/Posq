@@ -55,6 +55,7 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             alignment: Alignment.centerRight,
@@ -78,12 +79,12 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.02,
+            height: MediaQuery.of(context).size.height * 0.01,
             width: MediaQuery.of(context).size.width * 1,
           ),
           Container(
             alignment: Alignment.topCenter,
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.32,
             width: MediaQuery.of(context).size.width * 1,
             decoration: BoxDecoration(color: Colors.grey[200]),
             child: Row(

@@ -80,8 +80,6 @@ class _MainappsState extends State<Mainapps> {
       date = formatter.format(now);
     });
 
-    print(time);
-    print(date);
   }
 
   @override

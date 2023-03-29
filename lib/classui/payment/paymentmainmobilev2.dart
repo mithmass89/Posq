@@ -66,10 +66,10 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
     formattedDate = formatter.format(now);
     loadKey();
     getDataTransaksi();
+    checkbalance();
     result = widget.balance;
     _controller = TabController(length: 2, vsync: this);
     // result = widget.balance - num.parse(amountcash.text);
@@ -79,8 +79,6 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
       });
       checkbalance();
     });
-    handler = DatabaseHandler();
-    checkbalance();
   }
 
   getDataTransaksi() async {
@@ -94,8 +92,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
 
   Future<dynamic> checkbalance() async {
     await ClassApi.getSumPyTrno(widget.trno).then((value) {
-      print('ini value check ${value[0].totalamt}');
-      if (value.first.totalamt != null) {
+      if (value[0]['totalamt'] != null) {
         setState(() {
           result = widget.balance - value.first.totalamt!;
         });

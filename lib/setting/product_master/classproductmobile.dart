@@ -48,6 +48,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
   Future<List<Item>> getitemOutlet(query) async {
     List<Item> data =
         await ClassApi.getItemList(widget.pscd, widget.pscd, query);
+    print("ini data : $data");
     return data;
   }
 

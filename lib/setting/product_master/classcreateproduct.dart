@@ -54,7 +54,8 @@ class _CreateproductState extends State<Createproduct>
   final TextEditingController catatan = TextEditingController();
   final TextEditingController barcode = TextEditingController();
   final TextEditingController sku = TextEditingController();
-
+  List<TextEditingController> controllerMulti = [];
+  List<PriceList> pricelist = [];
   late int trackstock;
   Gntrantp? gntrantp;
   bool forresto = false;
@@ -69,8 +70,15 @@ class _CreateproductState extends State<Createproduct>
   String? query = '';
   num? qty = 0;
   bool connect = false;
+  int multiprice = 0;
+  bool multiflag = false;
 
-  set string(String value) => setState(() => pathimage = value);
+  set string(String? value) {
+    setState(() {
+      pathimage = value;
+    });
+    print("ini value $value");
+  }
 
   @override
   void initState() {
@@ -104,6 +112,11 @@ class _CreateproductState extends State<Createproduct>
     }
   }
 
+  changeValueMultiPrice(int multiharga) {
+    multiprice = multiharga;
+    setState(() {});
+  }
+
   Future<void> _createProduct(Item data, String dbname) async {
     print(data);
     await ClassApi.insertProduct(
@@ -121,13 +134,15 @@ class _CreateproductState extends State<Createproduct>
           svchgcoa: data.svchgcoa.toString(),
           slsfl: data.slsfl,
           costcoa: data.costcoa.toString(),
-          ctg: data.ctg.toString(),
-          stock: adjusmentstock.text!=''? num.parse(adjusmentstock.text):0,
+          ctg: kategory.text,
+          stock: adjusmentstock.text != '' ? num.parse(adjusmentstock.text) : 0,
           pathimage: pathimage.toString(),
           description: description.text.toString(),
           trackstock: trackstock,
           barcode: barcode.text.toString(),
           sku: sku.text,
+          pricelist: pricelist,
+          multiprice: multiprice,
         ),
         dbname);
   }
@@ -164,6 +179,12 @@ class _CreateproductState extends State<Createproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      imagepath: pathimage,
+                      multiflag: multiflag,
+                      multipriceSet: changeValueMultiPrice,
+                      fromedit: false,
+                      pricelist: pricelist,
+                      controllerMulti: controllerMulti,
                       barcode: barcode,
                       sku: sku,
                       productcd: productcd,
@@ -175,6 +196,7 @@ class _CreateproductState extends State<Createproduct>
                       pcttax: pcttax,
                       pctservice: pctservice,
                       description: description,
+                      multiprice: multiprice,
                     ),
                     ClassKelolaStockMobile(
                       trackstockcallback: updateStockTrack,
@@ -196,7 +218,7 @@ class _CreateproductState extends State<Createproduct>
             left: MediaQuery.of(context).size.width * 0.03,
             top: MediaQuery.of(context).size.height * 0.80,
             child: ButtonNoIcon(
-                name: 'Save',
+                name: 'Simpan',
                 color: productname.text != '' &&
                         productcd.text != '' &&
                         amountsales.text != ''
@@ -225,6 +247,7 @@ class _CreateproductState extends State<Createproduct>
                             var random = uuid.v4();
                             await _createProduct(
                                 Item(
+                                  multiprice: multiprice,
                                   outletcode: widget.pscd!,
                                   itemcode: random,
                                   itemdesc: productname.text,

@@ -646,10 +646,14 @@ class _LoadingButtonState extends State<LoadingButton> {
       child: InkWell(
         onTap: widget.isLoading! ? null : widget.onpressed!,
         child: Container(
+          decoration: BoxDecoration(
+              color: widget.color,
+             borderRadius: const BorderRadius.all(Radius.circular(10)),
+          ),
           alignment: Alignment.center,
           height: widget.height,
           width: widget.width,
-          color: Colors.blue,
+        
           child: widget.isLoading!
               ? CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

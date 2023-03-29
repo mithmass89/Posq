@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
 import 'package:posq/setting/product_master/productmain.dart';
+import 'package:posq/setting/tipetransaksi/maintipetransaksi.dart';
 
 class MainMenuProduct extends StatefulWidget {
   final String pscd;
@@ -16,7 +17,11 @@ class MainMenuProduct extends StatefulWidget {
 }
 
 class _MainMenuProductState extends State<MainMenuProduct> {
-  List<String> menulist = ["Product Master", "Modifier Master"];
+  List<String> menulist = [
+    "Product Master",
+    "Modifier Master",
+    "Tipe Transaksi"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,14 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => MainCondiment(
+                                  pscd: widget.outletinfo!.outletcd,
+                                )),
+                      );
+                    } else if (menulist[index] == 'Tipe Transaksi') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainTransaksiType(
                                   pscd: widget.outletinfo!.outletcd,
                                 )),
                       );

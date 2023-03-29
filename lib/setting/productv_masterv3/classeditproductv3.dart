@@ -69,7 +69,8 @@ class _EditproductV3State extends State<EditproductV3>
   num? qty = 0;
   late int trackstock;
   set string(String value) => setState(() => pathimage = value);
-
+  int multiprice = 0;
+    bool multiflag = false;
   @override
   void initState() {
     super.initState();
@@ -106,6 +107,11 @@ class _EditproductV3State extends State<EditproductV3>
     setState(() {
       trackstock = value;
     });
+  }
+
+  changeValueMultiPrice(int multiharga) {
+    multiprice = multiharga;
+    setState(() {});
   }
 
   @override
@@ -146,6 +152,10 @@ class _EditproductV3State extends State<EditproductV3>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                     multiflag: multiflag,
+                      multipriceSet: changeValueMultiPrice,
+                      multiprice: multiprice,
+                      fromedit: true,
                       imagepath: widget.productcode!.pathimage,
                       barcode: barcode,
                       sku: sku,
@@ -195,6 +205,7 @@ class _EditproductV3State extends State<EditproductV3>
 
                   await ClassApi.updateProduct(
                       Item(
+                          multiprice: multiprice,
                           trackstock: widget.productcode!.trackstock,
                           outletcode: widget.productcode!.outletcode,
                           itemcode: widget.productcode!.itemcode,

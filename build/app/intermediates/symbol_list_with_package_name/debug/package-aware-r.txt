@@ -1716,6 +1716,7 @@ drawable common_google_signin_btn_text_light
 drawable common_google_signin_btn_text_light_focused
 drawable common_google_signin_btn_text_light_normal
 drawable common_google_signin_btn_text_light_normal_background
+drawable corner
 drawable design_bottom_navigation_item_background
 drawable design_fab_background
 drawable design_ic_visibility
@@ -1768,6 +1769,7 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable test_custom_background
 drawable test_level_drawable
+drawable toast_bg
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 id ALT
@@ -2380,6 +2382,7 @@ layout text_view_with_line_height_from_layout
 layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
+layout toast_custom
 layout zxing_barcode_scanner
 layout zxing_capture
 mipmap ic_launcher

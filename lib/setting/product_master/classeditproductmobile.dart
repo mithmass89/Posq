@@ -45,7 +45,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
   String? revenuecoa;
   String? taxcoa;
   String? svchgcoa;
-
+int multiprice  = 0;
   @override
   void initState() {
     super.initState();
@@ -69,6 +69,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
 
   Future<int> addItem() async {
     Item ctg = Item(
+        multiprice: multiprice,
       outletcode: 'OUTLET',
       itemcode: productcd.text,
       itemdesc: productname.text,
@@ -296,6 +297,7 @@ class _ClassEditProductMobileState extends State<ClassEditProductMobile> {
                     handler = DatabaseHandler();
                     handler.initializeDB(databasename).whenComplete(() async {
                       await handler.updateItems(Item(
+                          multiprice: multiprice,
                         trackstock: 0,
                         outletcode: widget.productcode!.outletcode,
                         itemcode: widget.productcode!.itemcode,

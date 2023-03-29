@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
+import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/classedititemmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
@@ -26,6 +27,7 @@ class SlideUpPanel extends StatefulWidget {
   final IafjrndtClass? trnoinfo;
   final Outlet outletinfo;
   late int? qty;
+  late int? itemlength;
   final num? amount;
   late List<IafjrndtClass> listdata;
   final Function? updatedata;
@@ -34,6 +36,7 @@ class SlideUpPanel extends StatefulWidget {
   final bool animated;
   final bool? fromsaved;
   late num? sum;
+  final List<TransactionTipe> datatransaksi;
 
   SlideUpPanel(
       {Key? key,
@@ -49,7 +52,9 @@ class SlideUpPanel extends StatefulWidget {
       required this.outletinfo,
       required this.animated,
       required this.sum,
-      this.fromsaved})
+      required this.itemlength,
+      this.fromsaved,
+      required this.datatransaksi})
       : super(key: key);
 
   @override
@@ -75,6 +80,11 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   bool connected = false;
   PrintSmall printing = PrintSmall();
+  Future<List<IafjrndtClass>>? getDetails;
+  List<IafjrndtClass> datadetail = [];
+  List<String> ordertype = ['Dine in', 'Take Away'];
+  int multiprice = 0;
+  int? selectedindex;
 
   @override
   void initState() {
@@ -86,6 +96,20 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     print(widget.trnoinfo!.trdt);
     checkPrinter();
     getSumm();
+    getDetails = getDetailTrnos();
+    ToastContext().init(context);
+  }
+
+  Future<List<IafjrndtClass>> getDetailTrnos() async {
+    datadetail = await ClassApi.getTrnoDetail(trno, dbname, '');
+    if (datadetail.first.salestype != 'normal') {
+      selectedindex = widget.datatransaksi.indexWhere(
+          (element) => element.transdesc == datadetail.first.salestype);
+          print('ini index : ${datadetail.first}');
+    }
+
+    setState(() {});
+    return datadetail;
   }
 
   checkPrinter() async {
@@ -139,6 +163,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     });
   }
 
+  checkSalesType() {}
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -166,7 +192,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                 Expanded(
                     flex: 4,
                     child: Text(
-                      'BARANG : ${widget.qty} ',
+                      'BARANG : ${widget.itemlength}',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -214,6 +240,114 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ],
             ),
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.05,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.datatransaksi.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: selectedindex != index
+                              ? Colors.blue
+                              : Colors.pink, // foreground
+                        ),
+                        onPressed: () async {
+                          selectedindex = index;
+                          print(index == index);
+                          Toast.show(
+                              "Success Change ${widget.datatransaksi[index].transdesc}",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                          for (var element in datadetail) {
+                            var amountprice = element.pricelist!
+                                .where((element) =>
+                                    element.transtype ==
+                                    widget.datatransaksi[index].transtype)
+                                .toList();
+                            var result = IafjrndtClass(
+                                salestype:
+                                    widget.datatransaksi[index].transdesc,
+                                condimenttype: element.condimenttype,
+                                svchgpct: element.svchgpct,
+                                multiprice: element.multiprice,
+                                pricelist: element.pricelist,
+                                typ: element.typ,
+                                optioncode: element.optioncode,
+                                havecond: element.havecond,
+                                active: element.active,
+                                trdt: element.trdt,
+                                transno: element.transno,
+                                split: element.split,
+                                itemdesc: element.itemdesc,
+                                qty: element.qty,
+                                description: element.description,
+                                createdt: element.createdt,
+                                rateamtitem: amountprice.isNotEmpty
+                                    ? amountprice.first.amount
+                                    : element.rateamtitem,
+                                discamt: element.discamt,
+                                discpct: element.discpct,
+                                taxpct: element.taxpct,
+                                revenueamt: amountprice.isNotEmpty
+                                    ? element.qty! * amountprice.first.amount
+                                    : element.revenueamt,
+                                taxamt: amountprice.isNotEmpty
+                                    ? (element.qty! *
+                                            amountprice.first.amount) *
+                                        element.taxpct! /
+                                        100
+                                    : element.taxamt,
+                                serviceamt: amountprice.isNotEmpty
+                                    ? (element.qty! *
+                                            amountprice.first.amount) *
+                                        element.svchgpct! /
+                                        100
+                                    : element.serviceamt,
+                                totalaftdisc: amountprice.isNotEmpty
+                                    ? (element.qty! *
+                                            amountprice.first.amount) +
+                                        ((element.qty! *
+                                                amountprice.first.amount) *
+                                            element.taxpct! /
+                                            100) +
+                                        ((element.qty! *
+                                                amountprice.first.amount) *
+                                            element.svchgpct! /
+                                            100)
+                                    : element.totalaftdisc,
+                                id: element.id);
+
+                            ClassApi.updatePosDetail(result, pscd);
+                          }
+                          await getDetailTrnos().then((value) {
+                            setState(() {});
+                          });
+                          await getSumm();
+                          widget.updatedata!();
+                          widget.refreshdata;
+
+                          ClassRetailMainMobile.of(context)!.string =
+                              IafjrndtClass(
+                                  trdt: widget.trnoinfo!.trdt,
+                                  pscd: widget.trnoinfo!.pscd,
+                                  description: '',
+                                  totalaftdisc: 0,
+                                  transno: datadetail.length == 0
+                                      ? null
+                                      : widget.trnoinfo!.transno);
+                          setState(() {});
+                        },
+                        child: Text(widget.datatransaksi[index].transdesc!)),
+                  );
+                }),
+          ),
           Container(
               height: widget.qty! <= 4
                   ? MediaQuery.of(context).size.height *
@@ -221,39 +355,38 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       double.parse(widget.qty.toString())
                   : MediaQuery.of(context).size.height * 0.11 * 4,
               child: FutureBuilder(
-                  future: ClassApi.getTrnoDetail(trno, dbname, ''),
+                  future: getDetails,
                   builder:
                       (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
-                    if (snapshot.hasData) {
-                      print(snapshot.data);
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      print(datadetail);
                       return SafeArea(
                         child: ListView.builder(
                             controller: widget.controllers,
-                            itemCount: snapshot.data!.length,
+                            itemCount: datadetail.length,
                             itemBuilder: (context, index) {
-                              widget.listdata = snapshot.data!;
+                              widget.listdata = datadetail;
                               return Dismissible(
-                                key: ValueKey<int>(snapshot.data![index].id!),
+                                key: ValueKey<int>(datadetail[index].id!),
                                 direction: DismissDirection.endToStart,
                                 onDismissed:
                                     (DismissDirection direction) async {
-                                  if (snapshot.data![index].typ !=
-                                      'condiment') {
+                                  if (datadetail[index].typ != 'condiment') {
                                     await ClassApi.deactivePoscondimentByALL(
-                                        snapshot.data![index].transno!,
-                                        snapshot.data![index].itemseq
-                                            .toString(),
+                                        datadetail[index].transno!,
+                                        datadetail[index].itemseq.toString(),
                                         dbname);
                                     await ClassApi.deactivePosdetail(
-                                            snapshot.data![index].id!.toInt(),
+                                            datadetail[index].id!.toInt(),
                                             dbname)
                                         .whenComplete(() {
                                       setState(() {
-                                        snapshot.data!
-                                            .remove(snapshot.data![index]);
+                                        datadetail.remove(datadetail[index]);
                                       });
-
+                                      widget.updatedata!();
                                       widget.refreshdata;
+
                                       ClassRetailMainMobile.of(context)!
                                               .string =
                                           IafjrndtClass(
@@ -261,30 +394,36 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                               pscd: widget.trnoinfo!.pscd,
                                               description: '',
                                               totalaftdisc: 0,
-                                              transno: snapshot.data!.length ==
-                                                      0
+                                              transno: datadetail.length == 0
                                                   ? null
                                                   : widget.trnoinfo!.transno);
                                     });
+                                    await getDetails!.then((value) {
+                                      setState(() {});
+                                    });
                                   } else {
                                     await ClassApi.deactivePoscondimentByID(
-                                            snapshot.data![index].transno!,
-                                            snapshot.data![index].itemseq
+                                            datadetail[index].transno!,
+                                            datadetail[index]
+                                                .itemseq
                                                 .toString(),
-                                            snapshot.data![index].optioncode!,
+                                            datadetail[index].optioncode!,
                                             dbname)
                                         .whenComplete(() {
-                                      snapshot.data!
-                                          .remove(snapshot.data![index]);
+                                      datadetail.remove(datadetail[index]);
                                     });
                                     widget.refreshdata;
+                                    await getDetailTrnos().then((value) {
+                                      setState(() {});
+                                    });
+
                                     ClassRetailMainMobile.of(context)!.string =
                                         IafjrndtClass(
                                             trdt: widget.trnoinfo!.trdt,
                                             pscd: widget.trnoinfo!.pscd,
                                             description: '',
                                             totalaftdisc: 0,
-                                            transno: snapshot.data!.length == 0
+                                            transno: datadetail.length == 0
                                                 ? null
                                                 : widget.trnoinfo!.transno);
                                   }
@@ -294,206 +433,291 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SafeArea(
-                                      child: snapshot.data![index].qty!=0? ListTile(
-                                        tileColor: Colors.black,
-                                        onTap: () async {
-                                          if (snapshot.data![index].typ !=
-                                                  'condiment' &&
-                                              snapshot.data![index].havecond! <=
-                                                  0) {
-                                            final result = await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ClassEditItemMobile(
-                                                          updatedata:
-                                                              widget.updatedata,
-                                                          data: snapshot
-                                                              .data![index],
-                                                          editamount:
-                                                              editamount,
-                                                          editdesc: editdesc,
-                                                          editqty: editqty,
-                                                        ))).then((_) {
-                                              widget.refreshdata;
-                                              widget.updatedata!();
-                                            });
-                                            if (result == null) {
-                                              ClassRetailMainMobile.of(context)!
-                                                      .string =
-                                                  IafjrndtClass(
-                                                      trdt: widget
-                                                          .trnoinfo!.transno,
-                                                      pscd:
-                                                          widget.trnoinfo!.pscd,
-                                                      description: '',
-                                                      totalaftdisc: 0,
-                                                      transno: widget
-                                                          .trnoinfo!.transno);
-                                            } else {
-                                              ClassRetailMainMobile.of(context)!
-                                                  .string = result;
-                                            }
-                                          } else {
-                                            ///edit condiment mode///
-                                            final result = await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ClassInputCondiment(
-                                                          fromedit: true,
-                                                          dataedit:
-                                                              snapshot.data,
-                                                          data: Item(
-                                                              itemcode: snapshot
-                                                                  .data![index]
-                                                                  .itemcode,
-                                                              itemdesc: snapshot
-                                                                  .data![index]
-                                                                  .itemdesc,
-                                                              outletcode:
-                                                                  snapshot
-                                                                      .data![
-                                                                          index]
-                                                                      .pscd,
-                                                              slsamt: snapshot
-                                                                  .data![index]
-                                                                  .revenueamt,
-                                                              costamt: 0,
-                                                              slsnett: snapshot
-                                                                  .data![index]
-                                                                  .totalaftdisc,
-                                                              taxpct: snapshot
-                                                                  .data![index]
-                                                                  .taxpct,
-                                                              svchgpct: snapshot
-                                                                  .data![index]
-                                                                  .servicepct,
-                                                              slsfl: 1),
-                                                          itemseq: snapshot
-                                                              .data![index]
-                                                              .itemseq!,
-                                                          outletcd: widget
-                                                              .trnoinfo!.pscd!,
+                                      child: datadetail[index].qty != 0
+                                          ? ListTile(
+                                              tileColor: Colors.black,
+                                              onTap: () async {
+                                                if (datadetail[index].typ !=
+                                                        'condiment' &&
+                                                    datadetail[index]
+                                                            .havecond! <=
+                                                        0) {
+                                                  final result =
+                                                      await Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ClassEditItemMobile(
+                                                                    updatedata:
+                                                                        widget
+                                                                            .updatedata,
+                                                                    data: datadetail[
+                                                                        index],
+                                                                    editamount:
+                                                                        editamount,
+                                                                    editdesc:
+                                                                        editdesc,
+                                                                    editqty:
+                                                                        editqty,
+                                                                  ))).then((_) {
+                                                    widget.refreshdata;
+                                                    widget.updatedata!();
+                                                  });
+                                                  ClassRetailMainMobile.of(context)!
+                                                          .string =
+                                                      IafjrndtClass(
+                                                          trdt: widget.trnoinfo!
+                                                              .transno,
+                                                          pscd: widget
+                                                              .trnoinfo!.pscd,
+                                                          description: '',
+                                                          totalaftdisc: 0,
                                                           transno: widget
                                                               .trnoinfo!
-                                                              .transno!,
-                                                        ))).then((_) {
-                                              widget.refreshdata;
-                                              widget.updatedata!();
-                                            });
-                                            if (result == null) {
-                                              ClassRetailMainMobile.of(context)!
-                                                      .string =
-                                                  IafjrndtClass(
-                                                      trdt: widget
-                                                          .trnoinfo!.transno,
-                                                      pscd:
-                                                          widget.trnoinfo!.pscd,
-                                                      description: '',
-                                                      totalaftdisc: 0,
-                                                      transno: widget
-                                                          .trnoinfo!.transno);
-                                            } else {
-                                              ClassRetailMainMobile.of(context)!
-                                                  .string = result;
-                                            }
-                                          }
-                                        },
-                                        dense: true,
-                                        visualDensity: VisualDensity(
-                                            vertical: -2), // to compact
-                                        title:  Text(
-                                            snapshot.data![index].typ != 
-                                                    'condiment' 
-                                                ? snapshot
-                                                    .data![index].itemdesc!
-                                                : ' *** ${snapshot.data![index].itemdesc!} ***',
-                                            style: snapshot.data![index].typ !=
-                                                    'condiment'
-                                                ? TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold)
-                                                : TextStyle(
-                                                    fontSize: 12,
-                                                  )),
-                                        subtitle: Row(
-                                          children: [
-                                            Text(
-                                                '${CurrencyFormat.convertToIdr(snapshot.data![index].rateamtitem, 0)},',
-                                                style: TextStyle(fontSize: 12)),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.01,
-                                            ),
-                                            Text('x',
-                                                style: TextStyle(fontSize: 12)),
-                                            Text('${snapshot.data![index].qty}',
-                                                style: TextStyle(fontSize: 12)),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.03,
-                                            ),
-                                            snapshot.data![index].discamt != 0
-                                                ? Row(
-                                                    children: [
-                                                      Text('Discount',
-                                                          style: TextStyle(
-                                                              fontSize: 12)),
-                                                      Text(
-                                                          '-${CurrencyFormat.convertToIdr(snapshot.data![index].discamt, 0)}',
-                                                          style: TextStyle(
-                                                              fontSize: 12)),
-                                                    ],
-                                                  )
-                                                : Container(),
-                                          ],
-                                        ),
-                                        trailing: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.centerRight,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              child: Icon(
-                                                snapshot.data![index].typ !=
-                                                        'condiment'
-                                                    ? Icons.edit
-                                                    : null,
-                                                color: Colors.black,
-                                                size: 15.0,
+                                                              .transno);
+                                                  await getDetailTrnos()
+                                                      .then((value) {
+                                                    setState(() {
+                                                      datadetail = value;
+                                                    });
+                                                  });
+                                                  if (result == null) {
+                                                    ClassRetailMainMobile.of(context)!
+                                                            .string =
+                                                        IafjrndtClass(
+                                                            trdt: widget
+                                                                .trnoinfo!
+                                                                .transno,
+                                                            pscd: widget
+                                                                .trnoinfo!.pscd,
+                                                            description: '',
+                                                            totalaftdisc: 0,
+                                                            transno: widget
+                                                                .trnoinfo!
+                                                                .transno);
+                                                  } else {
+                                                    ClassRetailMainMobile.of(
+                                                            context)!
+                                                        .string = result;
+                                                    await getDetailTrnos()
+                                                        .then((value) {
+                                                      setState(() {
+                                                        datadetail = value;
+                                                      });
+                                                    });
+                                                  }
+                                                } else {
+                                                  ///edit condiment mode///
+                                                  final result = datadetail[
+                                                                  index]
+                                                              .condimenttype ==
+                                                          ''
+                                                      ? await Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ClassInputCondiment(
+                                                                    datatransaksi:
+                                                                        datadetail[
+                                                                            index],
+                                                                    iditem:
+                                                                        datadetail[index]
+                                                                            .id,
+                                                                    fromedit:
+                                                                        true,
+                                                                    dataedit:
+                                                                        datadetail,
+                                                                    data: Item(
+                                                                        multiprice:
+                                                                            multiprice,
+                                                                        itemcode: datadetail[index]
+                                                                            .itemcode,
+                                                                        itemdesc:
+                                                                            datadetail[index]
+                                                                                .itemdesc,
+                                                                        outletcode:
+                                                                            datadetail[index]
+                                                                                .pscd,
+                                                                        slsamt: datadetail[index].revenueamt! /
+                                                                            datadetail[index]
+                                                                                .qty!,
+                                                                        costamt:
+                                                                            0,
+                                                                        slsnett:
+                                                                            datadetail[index]
+                                                                                .totalaftdisc,
+                                                                        taxpct: datadetail[index]
+                                                                            .taxpct,
+                                                                        svchgpct:
+                                                                            datadetail[index]
+                                                                                .svchgpct,
+                                                                        slsfl:
+                                                                            1),
+                                                                    itemseq: datadetail[
+                                                                            index]
+                                                                        .itemseq!,
+                                                                    outletcd: widget
+                                                                        .trnoinfo!
+                                                                        .pscd!,
+                                                                    transno:
+                                                                        widget
+                                                                            .trno,
+                                                                  ))).then(
+                                                          (_) async {
+                                                          widget.refreshdata;
+                                                          widget.updatedata!();
+                                                        })
+                                                      : null;
+                                                  ClassRetailMainMobile.of(context)!
+                                                          .string =
+                                                      IafjrndtClass(
+                                                          trdt: widget.trnoinfo!
+                                                              .transno,
+                                                          pscd: widget
+                                                              .trnoinfo!.pscd,
+                                                          description: '',
+                                                          totalaftdisc: 0,
+                                                          transno: widget
+                                                              .trnoinfo!
+                                                              .transno);
+                                                  await getDetailTrnos()
+                                                      .then((value) {
+                                                    setState(() {
+                                                      datadetail = value;
+                                                    });
+                                                  });
+                                                  if (result == null) {
+                                                    ClassRetailMainMobile.of(context)!
+                                                            .string =
+                                                        IafjrndtClass(
+                                                            trdt: widget
+                                                                .trnoinfo!
+                                                                .transno,
+                                                            pscd: widget
+                                                                .trnoinfo!.pscd,
+                                                            description: '',
+                                                            totalaftdisc: 0,
+                                                            transno: widget
+                                                                .trnoinfo!
+                                                                .transno);
+                                                  } else {
+                                                    ClassRetailMainMobile.of(
+                                                            context)!
+                                                        .string = result;
+                                                  }
+                                                }
+                                              },
+                                              dense: true,
+                                              visualDensity: VisualDensity(
+                                                  vertical: -2), // to compact
+                                              title: Text(
+                                                  datadetail[index].typ !=
+                                                          'condiment'
+                                                      ? datadetail[index]
+                                                          .itemdesc!
+                                                      : ' *** ${datadetail[index].itemdesc!} ***',
+                                                  style: datadetail[index]
+                                                              .typ !=
+                                                          'condiment'
+                                                      ? TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold)
+                                                      : TextStyle(
+                                                          fontSize: 12,
+                                                        )),
+                                              subtitle: Row(
+                                                children: [
+                                                  Text(
+                                                      '${CurrencyFormat.convertToIdr(datadetail[index].rateamtitem, 0)},',
+                                                      style: TextStyle(
+                                                          fontSize: 12)),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.01,
+                                                  ),
+                                                  Text('x',
+                                                      style: TextStyle(
+                                                          fontSize: 12)),
+                                                  Text(
+                                                      '${datadetail[index].qty}',
+                                                      style: TextStyle(
+                                                          fontSize: 12)),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.03,
+                                                  ),
+                                                  datadetail[index].discamt != 0
+                                                      ? Row(
+                                                          children: [
+                                                            Text('Discount',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12)),
+                                                            Text(
+                                                                '-${CurrencyFormat.convertToIdr(datadetail[index].discamt, 0)}',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12)),
+                                                          ],
+                                                        )
+                                                      : Container(),
+                                                ],
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.01,
-                                            ),
-                                            Container(
-                                              alignment: Alignment.centerRight,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              child: Text(
-                                                  '${CurrencyFormat.convertToIdr(snapshot.data![index].revenueamt, 0)}',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.black54)),
+                                              trailing: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.3,
+                                                    child: Icon(
+                                                      datadetail[index].typ !=
+                                                              'condiment'
+                                                          ? Icons.edit
+                                                          : null,
+                                                      color: Colors.black,
+                                                      size: 15.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.01,
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.3,
+                                                    child: Text(
+                                                        '${CurrencyFormat.convertToIdr(datadetail[index].revenueamt, 0)}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors
+                                                                .black54)),
+                                                  )
+                                                ],
+                                              ),
                                             )
-                                          ],
-                                        ),
-                                      ):Container(),
+                                          : Container(),
                                     ),
                                     Divider(
                                       height: 2,
@@ -507,8 +731,19 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                               );
                             }),
                       );
-                    } else if (snapshot.hasError) {
-                      return Container();
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return ShimmerLoading(
+                        isLoading: true,
+                        child: ListView.builder(
+                            itemCount: widget.itemlength,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                              );
+                            }),
+                      );
                     }
                     return Container();
                   })),

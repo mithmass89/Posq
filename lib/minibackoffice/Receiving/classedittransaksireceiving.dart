@@ -66,6 +66,7 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
     if (widget.data != null) {
       print(widget.data);
       items = Item(
+          multiprice: 0,
           itemcode: widget.data['prodcd'], itemdesc: widget.data['proddesc']);
       _penjual.text = widget.data!['supcd'];
       _note.text = widget.data!['notes'];

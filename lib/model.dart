@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/classformat.dart';
@@ -86,8 +88,11 @@ class Item {
   final num? slsamt2;
   final num? slsnett2;
   final int? modifiers;
+  final List<PriceList>? pricelist;
+  final int multiprice;
 
   Item({
+    required this.multiprice,
     this.id,
     this.outletcode,
     this.itemcode,
@@ -113,6 +118,7 @@ class Item {
     this.slsamt2,
     this.slsnett2,
     this.modifiers,
+    this.pricelist,
   });
 
   Item.fromJson(
@@ -141,11 +147,14 @@ class Item {
         slsamt2 = res["slsamt2"],
         slsnett2 = res["slsnett2"],
         modifiers = res["modifiers"],
-        sku = res["sku"];
+        sku = res["sku"],
+        multiprice = res["multiprice"],
+        pricelist = List<PriceList>.from(
+            jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)));
 
   @override
   String toString() {
-    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers}';
+    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers,"pricelist":$pricelist,"multiprice":$multiprice}';
   }
 
   Map<String, Object?> toJson() {
@@ -175,6 +184,8 @@ class Item {
       'slsnett2': slsnett2,
       'slsamt2': slsamt2,
       'modifiers': modifiers,
+      'pricelist': List<dynamic>.from(pricelist!.map((x) => x.toJson())),
+      'multiprice': multiprice
     };
   }
 }
@@ -270,6 +281,41 @@ class Ctg {
   }
 }
 
+class PriceList {
+  final int? id;
+  final String transtype;
+  final String transdesc;
+  late num amount;
+
+  PriceList({
+    this.id,
+    required this.transtype,
+    required this.transdesc,
+    required this.amount,
+  });
+
+  PriceList.fromJson(
+    Map<String, dynamic> res,
+  )   : id = res["id"],
+        transtype = res["transtype"],
+        transdesc = res["transdesc"],
+        amount = res["amount"];
+
+  @override
+  String toString() {
+    return '{"id": $id, "transtype": $transtype,"transdesc": $transdesc,"amount": $amount}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'transtype': transtype,
+      'transdesc': transdesc,
+      'amount': amount,
+    };
+  }
+}
+
 class Condiment_Map {
   final String? itemcode;
   final String condimentcode;
@@ -303,19 +349,33 @@ class Condiment {
   final String? optioncode;
   final String? optiondesc;
   final num? amount;
+  late num? taxamount;
+  late num? serviceamount;
+  late num? taxpct;
+  late num? servicepct;
   final num? qty;
   final num? totalcond;
+  late num? nettamount;
   late String condimenttype;
+  late bool? isSelected = false;
+  final int? active;
 
   Condiment({
+    this.active,
     this.itemcode,
     this.condimentdesc,
     this.optioncode,
     this.optiondesc,
     this.amount,
+    this.taxamount,
+    this.serviceamount,
+    this.taxpct,
+    this.servicepct,
     this.qty,
     this.totalcond,
+    this.nettamount,
     required this.condimenttype,
+    this.isSelected = false,
   });
 
   Condiment.fromJson(
@@ -327,11 +387,18 @@ class Condiment {
         qty = res["qty"],
         totalcond = res["totalcond"],
         amount = res["amount"],
-        condimenttype = res["condimenttype"];
+        taxamount = res["taxamount"],
+        serviceamount = res['serviceamount'],
+        taxpct = res['taxpct'],
+        servicepct = res['servicepct'],
+        nettamount = res['nettamount'],
+        condimenttype = res["condimenttype"],
+        isSelected = res["isSelected"] = false,
+        active = res['active'];
 
   @override
   String toString() {
-    return '{"itemcode": $itemcode, "condimentdesc": $condimentdesc,"optioncode": $optioncode,"qty": $qty,"amount": $amount,"optiondesc": $optiondesc,"totalcond": $totalcond,"condimenttype": $condimenttype}';
+    return '{"itemcode": $itemcode, "condimentdesc": $condimentdesc,"optioncode": $optioncode,"qty": $qty,"amount": $amount,"taxamount": $taxamount,"taxpct": $taxpct,"servicepct": $servicepct,"serviceamount": $serviceamount,"optiondesc": $optiondesc,"totalcond": $totalcond,"condimenttype": $condimenttype,"nettamount": $nettamount,"isSelected": $isSelected,active:$active}';
   }
 
   Map<String, Object?> toJson() {
@@ -341,9 +408,16 @@ class Condiment {
       'optioncode': optioncode,
       'qty': qty,
       'amount': amount,
+      'taxpct': taxpct,
+      'servicepct': servicepct,
+      'taxamount': taxamount,
+      'serviceamount': serviceamount,
       'optiondesc': optiondesc,
       'totalcond': totalcond,
       'condimenttype': condimenttype,
+      'nettamount': nettamount,
+      'isSelected': isSelected = false,
+      'active': active
     };
   }
 }
@@ -368,6 +442,8 @@ class PosCondiment {
   final String? optioncode;
   final String? optiondesc;
   final int itemseq;
+  late bool? isSelected;
+  late int? qtystarted;
 
   PosCondiment({
     this.trdt,
@@ -389,6 +465,8 @@ class PosCondiment {
     this.totalnett,
     this.optioncode,
     this.optiondesc,
+    this.isSelected,
+    this.qtystarted,
   });
 
   PosCondiment.fromJson(
@@ -411,11 +489,13 @@ class PosCondiment {
         createdt = res["createdt"],
         totalnett = res["totalnett"],
         optioncode = res["optioncode"],
-        optiondesc = res["optiondesc"];
+        optiondesc = res["optiondesc"],
+        isSelected = res["isSelected"],
+        qtystarted = res['qtystarted'];
 
   @override
   String toString() {
-    return '{"trdt": $trdt, "transno": $transno,"outletcode": $outletcode,"itemcode": $itemcode,"condimentcode": $condimentcode,condimentdesc:$condimentdesc,condimenttype:$condimenttype,qty:$qty,rateamt:$rateamt,rateamttax:$rateamttax,rateamtservice:$rateamtservice,totalamt:$totalamt,totaltaxamt:$totaltaxamt,totalserviceamt:$totalserviceamt,createdt:$createdt,totalnett:$totalnett,optioncode:$optioncode,optiondesc:$optiondesc,itemseq:$itemseq},}';
+    return '{"trdt": $trdt, "transno": $transno,"outletcode": $outletcode,"itemcode": $itemcode,"condimentcode": $condimentcode,condimentdesc:$condimentdesc,condimenttype:$condimenttype,qty:$qty,rateamt:$rateamt,rateamttax:$rateamttax,rateamtservice:$rateamtservice,totalamt:$totalamt,totaltaxamt:$totaltaxamt,totalserviceamt:$totalserviceamt,createdt:$createdt,totalnett:$totalnett,optioncode:$optioncode,optiondesc:$optiondesc,itemseq:$itemseq,isSelected:$isSelected,qtystarted:$qtystarted},}';
   }
 
   Map<String, Object?> toJson() {
@@ -438,7 +518,9 @@ class PosCondiment {
       "createdt": createdt,
       "totalnett": totalnett,
       "optioncode": optioncode,
-      "optiondesc": optiondesc
+      "optiondesc": optiondesc,
+      "isSelected": isSelected,
+      "qtystarted": qtystarted
     };
   }
 }
@@ -520,7 +602,7 @@ class IafjrndtClass {
   final String? confirmed;
   final String? description;
   final num? taxpct;
-  final num? servicepct;
+  final num? svchgpct;
   final String? statustrans;
   final String? createdt;
   final String? guestname;
@@ -529,8 +611,12 @@ class IafjrndtClass {
   final String? optioncode;
   final int? havecond;
   final String? condimenttype;
+  final List<PriceList>? pricelist;
+  final int? multiprice;
+  final String? salestype;
 
   IafjrndtClass({
+    this.salestype,
     this.id,
     this.trdt,
     this.pscd,
@@ -572,7 +658,7 @@ class IafjrndtClass {
     this.confirmed,
     this.description,
     this.taxpct,
-    this.servicepct,
+    this.svchgpct,
     this.statustrans,
     this.createdt,
     this.guestname,
@@ -581,12 +667,15 @@ class IafjrndtClass {
     this.optioncode,
     this.havecond,
     this.condimenttype,
+    this.pricelist,
+    this.multiprice,
   });
 
   IafjrndtClass.fromJson(
     Map<String, dynamic> res,
   )   : id = res["id"],
         trdt = res["trdt"],
+        salestype = res["salestype"],
         pscd = res["pscd"],
         transno = res["transno"].toString(),
         split = res["split"],
@@ -626,7 +715,7 @@ class IafjrndtClass {
         confirmed = res["confirmed"],
         description = res["description"],
         taxpct = res["taxpct"],
-        servicepct = res["servicepct"],
+        svchgpct = res["svchgpct"],
         statustrans = res["statustrans"],
         createdt = res["createdt"],
         guestname = res['guestname'],
@@ -634,7 +723,12 @@ class IafjrndtClass {
         typ = res['typ'],
         optioncode = res['optioncode'],
         havecond = res['havecond'],
-        condimenttype = res['condimenttype'];
+        condimenttype = res['condimenttype'],
+        multiprice = res["multiprice"],
+        pricelist = res['pricelist'] != null 
+            ? List<PriceList>.from(
+                jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)))
+            : [];
 
   Map<String, Object?> toJson() {
     return {
@@ -679,7 +773,7 @@ class IafjrndtClass {
       'confirmed': confirmed,
       'description': description,
       'taxpct': taxpct,
-      'servicepct': servicepct,
+      'svchgpct': svchgpct,
       'statustrans': statustrans,
       'createdt': createdt,
       'guestname': guestname,
@@ -688,12 +782,15 @@ class IafjrndtClass {
       'optioncode': optioncode,
       'havecond': havecond,
       'condimenttype': condimenttype,
+      'pricelist': List<dynamic>.from(pricelist!.map((x) => x.toJson())),
+      'multiprice': multiprice,
+      'salestype': salestype
     };
   }
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype}';
   }
 }
 
@@ -1348,6 +1445,33 @@ class PaymentEmail {
   Map<String, dynamic> toJson() => {
         'metode': metode,
         'jumlah': jumlah,
+      };
+}
+
+class TransactionTipe {
+  late String? transtype;
+  late String? transdesc;
+  final int? active;
+  final int? id;
+
+  TransactionTipe({this.transtype, this.transdesc, this.active, this.id});
+
+  TransactionTipe.fromJson(Map<String, dynamic> res)
+      : transtype = res["transtype"],
+        transdesc = res["transdesc"],
+        id = res["id"],
+        active = res["active"];
+
+  @override
+  String toString() {
+    return '{"transtype": $transtype, "transdesc": $transdesc, "active": $active,"id": $id,}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'transtype': transtype,
+        'transdesc': transdesc,
+        'active': active,
+        'id': id,
       };
 }
 

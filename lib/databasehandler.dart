@@ -911,7 +911,7 @@ where x.nettamt<>0
       iafjrndt.serviceamt,
       iafjrndt.totalaftdisc,
       iafjrndt.taxpct,
-      iafjrndt.servicepct,
+      iafjrndt.svchgpct,
       iafjrndt.id
     ]);
     print('update iafjrndt success ${iafjrndt.id}');

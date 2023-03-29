@@ -405,6 +405,17 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
               onPressed: () async {
                 await ClassApi.updatePosDetail(
                         IafjrndtClass(
+                            createdt: widget.data.createdt,
+                            pricelist: widget.data.pricelist,
+                            active: widget.data.active,
+                            trdt: widget.data.trdt,
+                            transno: widget.data.transno,
+                            split: widget.data.split,
+                            multiprice: widget.data.multiprice,
+                            salestype: widget.data.salestype,
+                            typ: widget.data.typ,
+                            optioncode: widget.data.optioncode,
+                            havecond: widget.data.havecond,
                             itemcode: widget.data.itemcode,
                             description: widget.editdesc.text,
                             qty: qty.toInt(),
@@ -424,7 +435,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                                 ? 0
                                 : num.parse(discountpct.text),
                             taxpct: tax.text == '' ? 0 : num.parse(tax.text),
-                            servicepct: service.text == ''
+                            svchgpct: service.text == ''
                                 ? 0
                                 : num.parse(service.text),
                             revenueamt: (qty.toInt() * int.parse(widget.editamount.text)) -

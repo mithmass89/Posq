@@ -79,6 +79,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   String? telp = '';
   num discount = 0;
   int itemseq = 0;
+  int itemlength = 0;
 
   set discounts(num value) {
     setState(() {
@@ -86,12 +87,15 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     });
   }
 
+  List<TransactionTipe> data = [];
+
   set string(IafjrndtClass value) {
     setState(() {
       trno = value.transno ?? widget.trno;
       if (value.transno == null) {
         setState(() {
           item = 0;
+          itemlength = 0;
           sum = 0;
         });
       } else {
@@ -139,9 +143,16 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           confirmed: value.confirmed,
           description: value.description,
           taxpct: value.taxpct,
-          servicepct: value.servicepct);
+          svchgpct: value.svchgpct);
     });
     print('tersampaikan');
+  }
+
+  getTransaksiTipe() async {
+    var datas = await ClassApi.getTransactionTipe(pscd, dbname, '');
+    data = datas;
+    setState(() {});
+    print(data);
   }
 
 //terakir sampai sini / pengen refresh
@@ -175,14 +186,21 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       if (isi.isNotEmpty) {
         num totalSlsNett = isi.fold(
             0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
+
         setState(() {
           item = isi.length;
+          itemlength = isi
+              .where((element) => element.condimenttype == '')
+              .toList()
+              .length;
           sum = totalSlsNett + discount;
         });
         print('ini length item${isi.length}');
       } else {
         setState(() {
           item = 0;
+          itemlength = 0;
+          sum = 0;
         });
       }
     });
@@ -221,7 +239,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     print('print ini trno : ${widget.trno}');
     formattedDate = formatter.format(now);
     checkPending();
+    checkTrno();
     _pc.isAttached;
+    getTransaksiTipe();
     iafjrndt = IafjrndtClass(
       trdt: '',
       pscd: '',
@@ -265,8 +285,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     if (widget.trno != null) {
       getDetailData();
     }
-
-
   }
 
   getSavedCustomers() async {
@@ -363,7 +381,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
             confirmed: '1',
             description: items.itemdesc,
             taxpct: items.taxpct,
-            servicepct: items.svchgpct,
+            svchgpct: items.svchgpct,
             createdt: now.toString()),
         pscd);
   }
@@ -583,6 +601,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       switch (_scrollisanimated) {
                         case true:
                           return SlideUpPanel(
+                            datatransaksi: data,
                             fromsaved: widget.fromsaved,
                             sum: sum,
                             animated: _scrollisanimated,
@@ -608,6 +627,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                             refreshdata: () {
                               getDataSlide();
                             },
+                            itemlength: itemlength,
                           );
                         case false:
                           return Container(
@@ -642,7 +662,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       Expanded(
                                           flex: 4,
                                           child: Text(
-                                            'BARANG : ${item} ',
+                                            'BARANG : ${itemlength} ',
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,

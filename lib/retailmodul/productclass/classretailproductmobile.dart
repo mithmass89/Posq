@@ -43,11 +43,14 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   Map<String, List<Map<String, dynamic>>> groupdata = {};
   List<String> keys = [];
 
+
   @override
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
     getOutletItem = getItems(widget.controller.text);
+    print(widget.trno);
+
   }
 
   getItems(query) async {
@@ -62,6 +65,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
     return data;
   }
 
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -104,6 +108,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
                     return ShimmerLoading(
                       isLoading: isLoading,
                       child: ClassitemRetailMobile(
+                   
                         itemseq: widget.itemseq,
                         trno: widget.trno,
                         trdt: formattedDate,

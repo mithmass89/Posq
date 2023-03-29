@@ -135,7 +135,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     });
     List.generate(widget.datatrans.length, (index) {
       itememail.add(ItemMail(
-          item: widget.datatrans[index].description!,
+          item: widget.datatrans[index].itemdesc!,
           harga: widget.datatrans[index].totalaftdisc!));
     });
   }

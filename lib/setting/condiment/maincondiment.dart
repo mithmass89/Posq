@@ -70,11 +70,35 @@ class _MainCondimentState extends State<MainCondiment> {
                       child: ListView.builder(
                           itemCount: condiment.length,
                           itemBuilder: (context, index) {
-                            return Card(
-                              child: ListTile(
-                                title: Text(condiment[index].condimentdesc!),
-                                trailing: Text('total opsi : ${condiment[index].totalcond!.toString()}'),
-                                onTap: () {},
+                            return Dismissible(
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                color: Colors.grey[100],
+                                alignment: Alignment.centerRight,
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Icon(Icons.close),
+                              ),
+                              key: ValueKey<String>(condiment[index].itemcode!),
+                              onDismissed: (DismissDirection direction) async {
+                                await ClassApi.deactiveCondiment(
+                                    pscd, condiment[index].itemcode!);
+                                setState(() {
+                                  condiment.remove(condiment[index]);
+                                });
+                              },
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(condiment[index].condimentdesc!,
+                                      style: condiment[index].active == 0
+                                          ? TextStyle(
+                                            color: Colors.red,
+                                              decoration:
+                                                  TextDecoration.lineThrough)
+                                          : null),
+                                  trailing: Text(
+                                      'total opsi : ${condiment[index].totalcond!.toString()}'),
+                                  onTap: () {},
+                                ),
                               ),
                             );
                           }),
@@ -99,7 +123,9 @@ class _MainCondimentState extends State<MainCondiment> {
                 });
               },
             ),
-            SizedBox(height: MediaQuery.of(context).size.width*0.02,),
+            SizedBox(
+              height: MediaQuery.of(context).size.width * 0.02,
+            ),
           ],
         ),
       ),
