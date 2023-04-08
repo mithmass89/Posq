@@ -8,13 +8,15 @@ class ButtonClassAction extends StatefulWidget {
   final double? height;
   final double? widht;
   final String? name;
+  final color;
   const ButtonClassAction(
       {Key? key,
       this.onpressed,
       this.height,
       this.widht,
       this.name,
-      this.iconasset})
+      this.iconasset,
+      this.color})
       : super(key: key);
 
   @override
@@ -25,36 +27,54 @@ class _ButtonClassActionState extends State<ButtonClassAction> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+
       // elevation: 1,
       child: InkWell(
         onTap: widget.onpressed,
         child: Container(
+          height: widget.height,
+          width: widget.widht,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.orange,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(35),
+                topRight: Radius.circular(35),
+                bottomLeft: Radius.circular(35),
+                bottomRight: Radius.circular(35)),
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 alignment: Alignment.center,
-                height: 40,
-                width: 40,
+                height: 50,
+                width: 50,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    image: DecorationImage(
-                      image: AssetImage(widget.iconasset.toString()),
-                      fit: BoxFit.fill,
-                    )),
+                  color: Colors.white,
+                  // image: DecorationImage(
+                  //   image: AssetImage(widget.iconasset.toString()),
+                  //   fit: BoxFit.fill,
+                  // ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40)),
+                ),
               ),
               Container(
                   margin: EdgeInsets.all(10),
                   alignment: Alignment.center,
-                  child: Text(widget.name.toString()),
+                  child: Text(
+                    widget.name.toString(),
+                    style: TextStyle(color: Colors.white,fontSize: 12),
+                  ),
                   height: widget.height,
                   width: widget.widht,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                  )),
+                  ))
             ],
           ),
         ),
@@ -312,7 +332,7 @@ class NumPad extends StatelessWidget {
     Key? key,
     this.buttonSizewidth = 80,
     this.buttonSizeheight = 50,
-    this.buttonColor = Colors.indigo,
+    this.buttonColor = Colors.blueAccent,
     this.iconColor = Colors.white,
     required this.delete,
     required this.onSubmit,
@@ -647,13 +667,12 @@ class _LoadingButtonState extends State<LoadingButton> {
         onTap: widget.isLoading! ? null : widget.onpressed!,
         child: Container(
           decoration: BoxDecoration(
-              color: widget.color,
-             borderRadius: const BorderRadius.all(Radius.circular(10)),
+            color: widget.color,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           alignment: Alignment.center,
           height: widget.height,
           width: widget.width,
-        
           child: widget.isLoading!
               ? CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

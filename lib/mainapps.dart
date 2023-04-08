@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unnecessary_this, prefer_const_constructors, sized_box_for_whitespace, unnecessary_new, avoid_print, unused_field
 
-
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
@@ -31,8 +30,16 @@ class _MainappsState extends State<Mainapps> {
   DateTime currentTime = DateTime.now();
   String? time;
   String? date;
+  String? date1;
   bool? hasoutlet = false;
   Outlet? outletinfo;
+  List todaysales = [
+    {'totalaftdisc': 0}
+  ];
+  List monthlysales = [
+    {'totalaftdisc': 0}
+  ];
+  List chartdata = [];
 
   @override
   void initState() {
@@ -50,6 +57,7 @@ class _MainappsState extends State<Mainapps> {
 
   checkNewApp() async {
     await getOutlet(usercd);
+    await getSelesToday();
   }
 
   getOutlet(String usercd) async {
@@ -76,10 +84,19 @@ class _MainappsState extends State<Mainapps> {
     setState(() {
       var now = new DateTime.now();
       var formatter = new DateFormat('dd-MM-yyyy');
+      var formatter1 = new DateFormat('yyyy-MM-dd');
       time = DateFormat('kk:mm:a').format(now);
       date = formatter.format(now);
+      date1 = formatter1.format(now);
     });
+  }
 
+  getSelesToday() async {
+    todayDate();
+    todaysales = await ClassApi.getTodaySales(date1!, dbname);
+    monthlysales = await ClassApi.monthlysales(date1!, dbname);
+    chartdata = await ClassApi.listdataChart(date1!, dbname);
+    setState(() {});
   }
 
   @override
@@ -98,6 +115,14 @@ class _MainappsState extends State<Mainapps> {
                 case true:
                   // do something else
                   return AppsMobile(
+                    todaysale: todaysales.isNotEmpty
+                        ? todaysales
+                        : [
+                            {'trdt': '2023-01-01'},
+                            {'totalaftdisc': 0}
+                          ],
+                    monthlysales: monthlysales,
+                    chartdata: chartdata,
                     profileusaha: Outlet(
                       outletcd: outletinfo!.outletcd,
                       outletname: outletinfo!.outletname,
@@ -108,9 +133,30 @@ class _MainappsState extends State<Mainapps> {
                   );
               }
             }
-            return Container(
-              child: Text('Something wrong'),
-            );
+            switch (hasoutlet) {
+              case false:
+                return ClassSetupProfileMobile();
+              case true:
+                // do something else
+                return AppsMobile(
+                  chartdata: chartdata,
+                  todaysale: todaysales.isNotEmpty
+                      ? todaysales
+                      : [
+                          {'trdt': '2023-01-01'},
+                          {'totalaftdisc': 0}
+                        ],
+                  monthlysales: monthlysales,
+                  profileusaha: Outlet(
+                    outletcd: outletinfo!.outletcd,
+                    outletname: outletinfo!.outletname,
+                    telp: outletinfo!.telp,
+                    alamat: outletinfo!.alamat,
+                    kodepos: outletinfo!.kodepos,
+                  ),
+                );
+            }
+            return Container();
           },
         ));
   }

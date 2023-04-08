@@ -61,7 +61,7 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
             alignment: Alignment.centerRight,
             height: MediaQuery.of(context).size.height * 0.27,
             width: MediaQuery.of(context).size.width * 1,
-            decoration: BoxDecoration(color: Colors.grey[200]),
+            // decoration: BoxDecoration(color: Colors.grey[200]),
             child: SizedBox(
               height: 70,
               child: Center(
@@ -86,7 +86,7 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
             alignment: Alignment.topCenter,
             height: MediaQuery.of(context).size.height * 0.32,
             width: MediaQuery.of(context).size.width * 1,
-            decoration: BoxDecoration(color: Colors.grey[200]),
+            // decoration: BoxDecoration(color: Colors.grey[200]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,

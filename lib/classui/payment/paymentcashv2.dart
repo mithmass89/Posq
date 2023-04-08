@@ -207,7 +207,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 textcolor: Colors.white,
                 name: 'Uang Pas',
-                color: Colors.blue,
+        color: Colors.orange,
                 onpressed: () {
                   checkcontroller();
                   setState(() {
@@ -222,7 +222,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 textcolor: Colors.white,
                 name: 'Terima',
-                color: Colors.blue,
+               color: Colors.orange,
                 //// checking balance //////
                 onpressed: widget.result <= 0 || widget.result == 0
                     ? () async {
@@ -294,7 +294,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                     style: TextStyle(color: Colors.white),
                   ),
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                         color: Colors.orange,
                       borderRadius: BorderRadius.circular(15)),
                 );
               }),

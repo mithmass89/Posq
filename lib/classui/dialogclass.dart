@@ -880,7 +880,9 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             taxpct: 0,
             svchgpct: 0,
             statustrans: 'prosess',
-            createdt: now.toString()),
+            createdt: now.toString(),
+            guestname: 'No Guest Name'
+            ),
         pscd);
   }
 

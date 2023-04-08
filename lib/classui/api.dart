@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
-// var api = 'http://192.168.88.24:3000';
-var api = 'http://192.168.1.19:3000';
+var api = 'http://10.10.10.165:3000';
+// var api = 'http://192.168.1.19:3000';
 // var api = 'http://147.139.163.18:3000';
 var serverkey = '';
 String username = 'massmith';
@@ -417,6 +417,85 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/updateitem');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getTodaySales(String date, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": date,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/salestoday');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List status = json.decode(response.body);
+
+      return status.isNotEmpty
+          ? status
+          : [
+              {'trdt': '2023-01-01'},
+              {'totalaftdisc': 0}
+            ];
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> monthlysales(String date, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": date,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/salesmonthly');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List status = json.decode(response.body);
+
+      return status.isNotEmpty
+          ? status
+          : [
+              {'trdt': '2023-01-01'},
+              {'totalaftdisc': 0}
+            ];
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> listdataChart(String date, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": date,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/listdatachart');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

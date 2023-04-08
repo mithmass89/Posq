@@ -17,16 +17,18 @@ class ClassitemRetailMobile extends StatefulWidget {
   final String? pscd;
   final String trno;
   final int itemseq;
+  final String? guestname;
 
-  const ClassitemRetailMobile(
-      {Key? key,
-      this.image,
-      required this.item,
-      required this.trdt,
-      this.pscd,
-      required this.trno,
-      required this.itemseq,})
-      : super(key: key);
+  const ClassitemRetailMobile({
+    Key? key,
+    this.image,
+    required this.item,
+    required this.trdt,
+    this.pscd,
+    required this.trno,
+    required this.itemseq,
+    this.guestname,
+  }) : super(key: key);
 
   @override
   State<ClassitemRetailMobile> createState() => _ClassitemRetailMobileState();
@@ -97,6 +99,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
             taxpct: widget.item.taxpct,
             svchgpct: widget.item.svchgpct,
             statustrans: 'prosess',
+            guestname: widget.guestname,
             createdt: now.toString()),
         pscd);
     result = IafjrndtClass(
@@ -148,6 +151,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
         taxpct: widget.item.taxpct,
         svchgpct: widget.item.svchgpct,
         statustrans: 'prosess',
+        guestname: widget.guestname!.isEmpty ? 'No guest' : widget.guestname,
         createdt: now.toString());
     return result;
   }
@@ -180,7 +184,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ClassInputCondiment(
-                      
+                          guestname: widget.guestname!,
                           fromedit: false,
                           itemseq: widget.itemseq,
                           outletcd: pscd,
@@ -208,13 +212,19 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
               fit: BoxFit.cover,
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
-                return Center(child: const Text('No Image'));
+                return Center(
+                    child: Icon(
+                  Icons.image,
+                  size: MediaQuery.of(context).devicePixelRatio * 21,
+                ));
               },
             ),
           ),
           // contentPadding: EdgeInsets.all(8.0),
           title: Text(widget.item.itemdesc!),
-          subtitle:widget.item.modifiers!=0? Text('Bisa Custome : ${widget.item.modifiers.toString()}'):Container(),
+          subtitle: widget.item.modifiers != 0
+              ? Text('Bisa Custome : ${widget.item.modifiers.toString()}')
+              : Container(),
           trailing: widget.item.trackstock == 1
               ? Column(
                   children: [
@@ -244,6 +254,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Text(
                     '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
         ),

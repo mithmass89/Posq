@@ -382,6 +382,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
             description: items.itemdesc,
             taxpct: items.taxpct,
             svchgpct: items.svchgpct,
+            guestname: guestname != '' ? 'No Guest' : guestname,
             createdt: now.toString()),
         pscd);
   }
@@ -446,7 +447,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           width: MediaQuery.of(context).size.width * 1,
                         ),
                         Container(
-                          decoration: BoxDecoration(color: Colors.blue),
+                          decoration: BoxDecoration(color: Colors.orange),
                           child: Row(
                             children: [
                               IconButton(
@@ -547,7 +548,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           ),
                         ),
                         Container(
-                          decoration: BoxDecoration(color: Colors.grey[200]),
+                          // decoration: BoxDecoration(color: Colors.grey[200]),
                           child: TabBar(
                             controller: controller,
                             tabs: [
@@ -586,6 +587,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                   itemlenght: item,
                                   outletinfo: widget.outletinfo),
                               ClassRetailProductMobile(
+                                guestname:
+                                    guestname == '' ? 'No Guest' : guestname!,
                                 itemseq: itemseq,
                                 controller: search,
                                 trno: widget.trno.toString(),
@@ -601,6 +604,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       switch (_scrollisanimated) {
                         case true:
                           return SlideUpPanel(
+                            guestname: guestname!,
                             datatransaksi: data,
                             fromsaved: widget.fromsaved,
                             sum: sum,
@@ -702,11 +706,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       curve: Curves.linear,
                       duration: 300,
                       textcolor: _scrollisanimated == true
-                          ? Colors.blue
+                          ? Colors.orange
                           : Colors.white,
                       color: _scrollisanimated == true
                           ? Colors.white
-                          : Colors.blue,
+                          : Colors.orange,
                       height: MediaQuery.of(context).size.height * 0.06,
                       width: _scrollisanimated == false
                           ? MediaQuery.of(context).size.width * 0.95
@@ -743,7 +747,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       curve: Curves.linear,
                       duration: 400,
                       textcolor: Colors.white,
-                      color: Colors.blue,
+                      color: Colors.orange,
                       height: MediaQuery.of(context).size.height * 0.06,
                       width: _scrollisanimated == false
                           ? MediaQuery.of(context).size.width * 0.0

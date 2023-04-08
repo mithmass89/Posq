@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'POS Demo',
       theme: ThemeData(
         useMaterial3: true,
-        textTheme: GoogleFonts.nunitoSansTextTheme(textTheme).copyWith(),
+        textTheme: GoogleFonts.questrialTextTheme(textTheme).copyWith(),
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (context) => Mainapps(),
         '/RetailMain': (context) => ClassRetailMainMobile(
-                        fromsaved: false,
+              fromsaved: false,
               outletinfo: Outlet(outletcd: '', outletname: ''),
               pscd: '',
               qty: 0,
@@ -82,7 +82,11 @@ class RouteGenerator {
 
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(builder: (_) {
-      return AppsMobile();
+      return AppsMobile(
+        chartdata: [],
+        monthlysales: [],
+        todaysale: [],
+      );
     });
   }
 }

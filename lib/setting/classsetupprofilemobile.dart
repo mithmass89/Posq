@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, avoid_unnecessary_containers, prefer_const_constructors, unused_local_variable
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/classui/api.dart';
@@ -43,7 +44,9 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
     super.initState();
     ToastContext().init(context);
     apicloud = ClassApi();
-    checkInternet();
+    if (kIsWeb == false) {
+      checkInternet();
+    }
   }
 
   /// create outlet for first time///
@@ -255,6 +258,9 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => AppsMobile(
+                                        chartdata: [],
+                                            monthlysales: [],
+                                            todaysale: [],
                                             profileusaha: Outlet(
                                               outletname: namaoutlet.toString(),
                                               telp: num.parse(telp.toString()),

@@ -135,9 +135,9 @@
     },
     {
       "name": "fl_chart",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/fl_chart-0.20.1",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/fl_chart-0.61.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.17"
     },
     {
       "name": "flutter",
@@ -314,12 +314,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "path_drawing",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_drawing-0.5.1+1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "path_parsing",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_parsing-0.2.1",
       "packageUri": "lib/",
@@ -364,12 +358,6 @@
     {
       "name": "pdf",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/pdf-3.6.4",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "pedantic",
-      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/pedantic-1.11.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -512,6 +500,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "syncfusion_flutter_charts",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/syncfusion_flutter_charts-21.1.38",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "syncfusion_flutter_core",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/syncfusion_flutter_core-21.1.38",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "synchronized",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/synchronized-3.0.1",
       "packageUri": "lib/",
@@ -632,7 +632,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-03-22T14:36:31.267301Z",
+  "generated": "2023-04-08T04:50:02.329395Z",
   "generator": "pub",
   "generatorVersion": "2.18.0"
 }

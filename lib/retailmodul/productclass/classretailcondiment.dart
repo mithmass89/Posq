@@ -17,6 +17,7 @@ class ClassInputCondiment extends StatefulWidget {
   final IafjrndtClass? datatransaksi;
   final bool? fromedit;
   final int? iditem;
+  final String guestname;
   const ClassInputCondiment({
     Key? key,
     required this.data,
@@ -26,7 +27,7 @@ class ClassInputCondiment extends StatefulWidget {
     required this.itemseq,
     required this.fromedit,
     this.iditem,
-    this.datatransaksi,
+    this.datatransaksi, required this.guestname,
   }) : super(key: key);
 
   @override
@@ -353,6 +354,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                                 dbname, summarycondiment);
                             await ClassApi.insertPosDetail(
                                 IafjrndtClass(
+                                  guestname: widget.guestname.isEmpty ? 'No guest' : widget.guestname,
                                     trdt: formattedDate,
                                     pscd: widget.data.outletcode,
                                     transno: widget.transno,

@@ -63,97 +63,371 @@ class _MenuMainState extends State<MenuMain> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: GridView.count(
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 1,
-        crossAxisCount: 4,
-        children: [
-          ButtonClassAction(
-            iconasset: 'retail.png',
-            height: MediaQuery.of(context).size.height * 0.02,
-            widht: MediaQuery.of(context).size.width * 0.40,
-            onpressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ClassRetailMainMobile(
-                          fromsaved: false,
-                          trno: trno,
-                          qty: 0,
-                          pscd: widget.pscd.toString(),
-                          outletinfo: widget.outletinfo!,
-                        )),
-              );
-            },
-            name: 'Transaksi ',
+    return LayoutBuilder(builder: (
+      context,
+      BoxConstraints constraints,
+    ) {
+      if (constraints.maxWidth <= 480) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'retail.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassRetailMainMobile(
+                              fromsaved: false,
+                              trno: trno,
+                              qty: 0,
+                              pscd: widget.pscd.toString(),
+                              outletinfo: widget.outletinfo!,
+                            )),
+                  );
+                },
+                name: 'Transaksi ',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'outlet.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () async {
+                  final Outlet result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Selectoutletmobile()),
+                  );
+                  setState(() {});
+                  // callbackTitle(result);
+                  AppsMobile.of(context)!.string = result;
+                  print(result);
+                },
+                name: 'Outlet',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'pembeli.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassListCustomers()),
+                  );
+                },
+                name: 'Customer',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'products.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainMenuProduct(
+                              pscd: widget.outletinfo!.outletcd,
+                              outletinfo: widget.outletinfo!,
+                            )),
+                  );
+                },
+                name: 'Product',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'pegawai.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () {},
+                name: 'Pegawai',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'help.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () async {
+                  // handler = DatabaseHandler();
+                  // await handler.upgradeDB();
+                },
+                name: 'Help',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+            ],
           ),
-          ButtonClassAction(
-            iconasset: 'outlet.png',
-            height: MediaQuery.of(context).size.height * 0.02,
-            widht: MediaQuery.of(context).size.width * 0.40,
-            onpressed: () async {
-              final Outlet result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const Selectoutletmobile()),
-              );
-              setState(() {});
-              // callbackTitle(result);
-              AppsMobile.of(context)!.string = result;
-              print(result);
-            },
-            name: 'Outlet',
+        );
+      } else if (constraints.maxWidth <= 820) {
+        // diatas 480P ///
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'retail.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.095,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassRetailMainMobile(
+                              fromsaved: false,
+                              trno: trno,
+                              qty: 0,
+                              pscd: widget.pscd.toString(),
+                              outletinfo: widget.outletinfo!,
+                            )),
+                  );
+                },
+                name: 'Transaksi ',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'outlet.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.095,
+                onpressed: () async {
+                  final Outlet result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Selectoutletmobile()),
+                  );
+                  setState(() {});
+                  // callbackTitle(result);
+                  AppsMobile.of(context)!.string = result;
+                  print(result);
+                },
+                name: 'Outlet',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'pembeli.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.095,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassListCustomers()),
+                  );
+                },
+                name: 'Customer',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'products.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.095,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainMenuProduct(
+                              pscd: widget.outletinfo!.outletcd,
+                              outletinfo: widget.outletinfo!,
+                            )),
+                  );
+                },
+                name: 'Product',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'pegawai.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.095,
+                onpressed: () {},
+                name: 'Pegawai',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'help.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.095,
+                onpressed: () async {
+                  // handler = DatabaseHandler();
+                  // await handler.upgradeDB();
+                },
+                name: 'Help',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+            ],
           ),
-          ButtonClassAction(
-            iconasset: 'pembeli.png',
-            height: MediaQuery.of(context).size.height * 0.02,
-            widht: MediaQuery.of(context).size.width * 0.40,
-            onpressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ClassListCustomers()),
-              );
-            },
-            name: 'Customer',
+        );
+      } else if (constraints.maxWidth >= 1180) {
+        //landscape ipad //
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'retail.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.075,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassRetailMainMobile(
+                              fromsaved: false,
+                              trno: trno,
+                              qty: 0,
+                              pscd: widget.pscd.toString(),
+                              outletinfo: widget.outletinfo!,
+                            )),
+                  );
+                },
+                name: 'Transaksi ',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'outlet.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                     widht: MediaQuery.of(context).size.width * 0.075,
+                onpressed: () async {
+                  final Outlet result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Selectoutletmobile()),
+                  );
+                  setState(() {});
+                  // callbackTitle(result);
+                  AppsMobile.of(context)!.string = result;
+                  print(result);
+                },
+                name: 'Outlet',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'pembeli.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                     widht: MediaQuery.of(context).size.width * 0.075,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassListCustomers()),
+                  );
+                },
+                name: 'Customer',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'products.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                      widht: MediaQuery.of(context).size.width * 0.075,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainMenuProduct(
+                              pscd: widget.outletinfo!.outletcd,
+                              outletinfo: widget.outletinfo!,
+                            )),
+                  );
+                },
+                name: 'Product',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'pegawai.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                        widht: MediaQuery.of(context).size.width * 0.075,
+                onpressed: () {},
+                name: 'Pegawai',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                iconasset: 'help.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                      widht: MediaQuery.of(context).size.width * 0.075,
+                onpressed: () async {
+                  // handler = DatabaseHandler();
+                  // await handler.upgradeDB();
+                },
+                name: 'Help',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+            ],
           ),
-          ButtonClassAction(
-            iconasset: 'products.png',
-            height: MediaQuery.of(context).size.height * 0.03,
-            widht: MediaQuery.of(context).size.width * 0.42,
-            onpressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MainMenuProduct(
-                          pscd: widget.outletinfo!.outletcd,
-                          outletinfo: widget.outletinfo!,
-                        )),
-              );
-            },
-            name: 'Product',
-          ),
-          ButtonClassAction(
-            iconasset: 'pegawai.png',
-            height: MediaQuery.of(context).size.height * 0.02,
-            widht: MediaQuery.of(context).size.width * 0.40,
-            onpressed: () {},
-            name: 'Pegawai',
-          ),
-          ButtonClassAction(
-            iconasset: 'help.png',
-            height: MediaQuery.of(context).size.height * 0.02,
-            widht: MediaQuery.of(context).size.width * 0.40,
-            onpressed: () async {
-              // handler = DatabaseHandler();
-              // await handler.upgradeDB();
-            },
-            name: 'Help',
-          ),
-        ],
-      ),
-    );
+        );
+      }
+      return Container();
+    });
   }
 }

@@ -37,6 +37,7 @@ class SlideUpPanel extends StatefulWidget {
   final bool? fromsaved;
   late num? sum;
   final List<TransactionTipe> datatransaksi;
+  final String guestname;
 
   SlideUpPanel(
       {Key? key,
@@ -54,7 +55,7 @@ class SlideUpPanel extends StatefulWidget {
       required this.sum,
       required this.itemlength,
       this.fromsaved,
-      required this.datatransaksi})
+      required this.datatransaksi, required this.guestname})
       : super(key: key);
 
   @override
@@ -517,6 +518,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                           MaterialPageRoute(
                                                               builder: (context) =>
                                                                   ClassInputCondiment(
+                                                                    guestname: widget.guestname,
                                                                     datatransaksi:
                                                                         datadetail[
                                                                             index],

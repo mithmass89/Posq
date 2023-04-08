@@ -7,6 +7,7 @@ class DrawerWidgetMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -66,6 +67,9 @@ class DrawerWidgetMain extends StatelessWidget {
 
 Widget _drawerHeader() {
   return UserAccountsDrawerHeader(
+    decoration: BoxDecoration(
+      color: Colors.orange
+    ),
     currentAccountPicture: ClipOval(
       child: Image(
           image: AssetImage('assets/images/orang2.jpeg'),

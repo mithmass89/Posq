@@ -18,12 +18,14 @@ class ClassRetailProductMobile extends StatefulWidget {
   final String? pscd;
   late final controller;
   final int itemseq;
+  final String guestname;
   ClassRetailProductMobile(
       {Key? key,
       required this.trno,
       required this.pscd,
       required this.controller,
-      required this.itemseq})
+      required this.itemseq,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -43,14 +45,12 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   Map<String, List<Map<String, dynamic>>> groupdata = {};
   List<String> keys = [];
 
-
   @override
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
     getOutletItem = getItems(widget.controller.text);
     print(widget.trno);
-
   }
 
   getItems(query) async {
@@ -65,7 +65,6 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
     return data;
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -108,7 +107,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
                     return ShimmerLoading(
                       isLoading: isLoading,
                       child: ClassitemRetailMobile(
-                   
+                        guestname: widget.guestname==''?'No Guest Name': widget.guestname,
                         itemseq: widget.itemseq,
                         trno: widget.trno,
                         trdt: formattedDate,

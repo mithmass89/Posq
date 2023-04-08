@@ -1,9 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/classformat.dart';
 
 class Summarytoday extends StatefulWidget {
-  const Summarytoday({Key? key}) : super(key: key);
+  final List todaysale;
+  final List monthlysales;
+  const Summarytoday(
+      {Key? key, required this.todaysale, required this.monthlysales})
+      : super(key: key);
 
   @override
   State<Summarytoday> createState() => _SummarytodayState();
@@ -11,9 +16,16 @@ class Summarytoday extends StatefulWidget {
 
 class _SummarytodayState extends State<Summarytoday> {
   @override
+  void initState() {
+    print(widget.todaysale);
+    super.initState();
+print(widget.todaysale==null);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      height: MediaQuery.of(context).size.height * 0.4,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -22,174 +34,79 @@ class _SummarytodayState extends State<Summarytoday> {
             height: MediaQuery.of(context).size.height * 0.01,
             width: MediaQuery.of(context).size.width * 1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+          ListTile(
+            title: Container(
+              height: MediaQuery.of(context).size.height * 0.025,
+              width: MediaQuery.of(context).size.width * 0.50,
+              child: Text('Ringkasan',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 19)),
+            ),
+            trailing: GestureDetector(
+              onTap: () {},
+              child: Container(
+                alignment: Alignment.centerRight,
+                height: MediaQuery.of(context).size.height * 0.02,
+                width: MediaQuery.of(context).size.width * 0.40,
+                child: Text(
+                  'Lihat Selebihnya >>',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ),
+            ),
+          ),
+          // SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.01,
+          //   width: MediaQuery.of(context).size.width * 1,
+          // ),
+          Column(
             mainAxisSize: MainAxisSize.min,
+            // scrollDirection: Axis.horizontal,
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-                width: MediaQuery.of(context).size.width * 0.02,
+              Card(
+                elevation: 5,
+                child: ListTile(
+                  dense: true,
+                  title: Text('Penjualan Hari ini'),
+                  trailing: widget.todaysale.isNotEmpty
+                      ? Text(
+                          '${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      : Text('0'),
+                ),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.019,
-                width: MediaQuery.of(context).size.width * 0.50,
-                child: Text('Laporan Hari Ini',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white)),
+
+              Card(
+                elevation: 5,
+                child: ListTile(
+                  dense: true,
+                  title: Text('Penjualan Bulan ini'),
+                  trailing: Text(
+                    '${CurrencyFormat.convertToIdr(widget.monthlysales.isNotEmpty ? widget.monthlysales.first['totalaftdisc'] : 0, 0)}',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  height: MediaQuery.of(context).size.height * 0.02,
-                  width: MediaQuery.of(context).size.width * 0.40,
-                  child: Text(
-                    'Lihat Selebihnya >>',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height * 0.01,
+              //   width: MediaQuery.of(context).size.width * 0.03,
+              // ),
+              Card(
+                elevation: 5,
+                child: ListTile(
+                  dense: true,
+                  title: Text('Penjualan Rata Rata'),
+                  trailing: Text(
+                    '10',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ],
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.03,
-            width: MediaQuery.of(context).size.width * 1,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.08,
-              width: MediaQuery.of(context).size.width * 1,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.01,
-                    width: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  Material(
-                    elevation: 10,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            alignment: Alignment.centerLeft,
-                            height: MediaQuery.of(context).size.height * 0.025,
-                            width: MediaQuery.of(context).size.width * 0.30,
-                            child: Text('Penjualan'),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            alignment: Alignment.centerLeft,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            width: MediaQuery.of(context).size.width * 0.30,
-                            child: Text(
-                              'Rp 510,000',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.01,
-                    width: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  Material(
-                    elevation: 10,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            alignment: Alignment.centerLeft,
-                            height: MediaQuery.of(context).size.height * 0.025,
-                            width: MediaQuery.of(context).size.width * 0.30,
-                            child: Text('Pengeluaran'),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            alignment: Alignment.centerLeft,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            width: MediaQuery.of(context).size.width * 0.30,
-                            child: Text(
-                              'Rp 85,000',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.01,
-                    width: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  Material(
-                           elevation: 10,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            alignment: Alignment.centerLeft,
-                            height: MediaQuery.of(context).size.height * 0.025,
-                            width: MediaQuery.of(context).size.width * 0.30,
-                            child: Text('Product Terjual'),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            alignment: Alignment.centerLeft,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            width: MediaQuery.of(context).size.width * 0.30,
-                            child: Text(
-                              '10',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
         ],
       ),

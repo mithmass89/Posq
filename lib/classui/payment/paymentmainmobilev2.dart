@@ -226,7 +226,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                   height: MediaQuery.of(context).size.height * 0.16,
                   width: MediaQuery.of(context).size.width * 1,
                   decoration: const BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.orange,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20)),

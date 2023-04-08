@@ -253,7 +253,7 @@ class _TextFieldMobile2State extends State<TextFieldMobile2> {
           label: widget.label != null ? Text(widget.label.toString()) : null,
           border: InputBorder.none,
           filled: true,
-          fillColor: Colors.grey[100],
+          fillColor: Colors.white,
           // contentPadding:
           //     const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 0.0),
           focusedBorder: OutlineInputBorder(
