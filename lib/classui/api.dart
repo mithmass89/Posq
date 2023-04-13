@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
-var api = 'http://10.10.10.165:3000';
+var api = 'http://192.168.88.14:3000';
 // var api = 'http://192.168.1.19:3000';
 // var api = 'http://147.139.163.18:3000';
 var serverkey = '';
@@ -428,6 +428,53 @@ class ClassApi {
       var status = json.decode(response.body);
 
       return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateUserGmail(
+      UserInfoSys data, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "data": data,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateUserGmail');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> checkUserFromOauth(String email, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "email": email,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/checkUserFromOauth');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List user = json.decode(response.body);
+
+      return user;
     } else {
       throw Exception();
     }
@@ -902,6 +949,54 @@ class ClassApi {
     var data = {"usercd": usercd};
 
     final url = Uri.parse('$api/outlet_user');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<dynamic>> getAccessUser(String usercd) async {
+    // print(json.encode(pembayaran));
+    var data = {"usercd": usercd};
+
+    final url = Uri.parse('$api/getAccessUser');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<dynamic>> getUserinfofromManual(
+      String email, String password) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "email": email,
+      "password": password,
+    };
+
+    final url = Uri.parse('$api/getUserinfofromManual');
     print(url);
     final response = await http.post(url,
         headers: <String, String>{

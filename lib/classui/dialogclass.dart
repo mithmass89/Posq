@@ -881,8 +881,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             svchgpct: 0,
             statustrans: 'prosess',
             createdt: now.toString(),
-            guestname: 'No Guest Name'
-            ),
+            guestname: 'No Guest Name'),
         pscd);
   }
 
@@ -1084,10 +1083,11 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
         actions: <Widget>[
           TextButton(
               onPressed: () async {
-                await handler.activeZeroiafjrndttrno(
-                    IafjrndtClass(active: 1, transno: widget.trno));
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false);
+                // await handler.activeZeroiafjrndttrno(
+                //     IafjrndtClass(active: 1, transno: widget.trno));
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //     '/', (Route<dynamic> route) => false);
+                Navigator.of(context).pop();
               },
               child: Text('Batal')),
           TextButton(
@@ -1095,7 +1095,7 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
                 await handler.activeZeroiafjrndttrno(
                     IafjrndtClass(active: 1, transno: widget.trno));
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false);
+                    '/Dashboard', (Route<dynamic> route) => false);
               },
               child: Text('OK!'))
         ],
@@ -2048,6 +2048,7 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   String trno = '';
+  List<String> table = [];
 
   @override
   void initState() {
@@ -2096,7 +2097,8 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
         actions: <Widget>[
           TextButton(
               onPressed: () async {
-                await updateGuest(guestname.text.isEmpty?'No Guest':guestname.text);
+                await updateGuest(
+                    guestname.text.isEmpty ? 'No Guest' : guestname.text);
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.remove('savecostmrs');
                 if (widget.fromsaved == false) {

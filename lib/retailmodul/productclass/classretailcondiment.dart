@@ -333,7 +333,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
             widget.fromedit == false || widget.fromedit == null
                 ? LoadingButton(
                     isLoading: _isloading,
-                    color: Colors.blue,
+                    color: Colors.orange,
                     textcolor: Colors.white,
                     name: 'Simpan',
                     height: MediaQuery.of(context).size.height * 0.05,
@@ -477,7 +477,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                   )
                 : LoadingButton(
                     isLoading: _isloading,
-                    color: Colors.blue,
+                    color: Colors.orange,
                     textcolor: Colors.white,
                     name: 'Update',
                     height: MediaQuery.of(context).size.height * 0.05,

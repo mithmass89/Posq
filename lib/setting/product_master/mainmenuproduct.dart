@@ -18,8 +18,8 @@ class MainMenuProduct extends StatefulWidget {
 
 class _MainMenuProductState extends State<MainMenuProduct> {
   List<String> menulist = [
-    "Product Master",
-    "Modifier Master",
+    "Tambah produk",
+    "Condiment /  Topping",
     "Tipe Transaksi"
   ];
 
@@ -27,16 +27,30 @@ class _MainMenuProductState extends State<MainMenuProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Product Setting'),
+          title: Text('Kelola Produk'),
         ),
         body: ListView.builder(
             itemCount: menulist.length,
             itemBuilder: (context, index) {
               return Card(
                 child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 24,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: menulist[index] == 'Tambah produk'
+                          ? Image.asset('addproduct.png')
+                          : menulist[index] == 'Condiment /  Topping'
+                              ? Image.asset('condiment.png')
+                              : menulist[index] == 'Tipe Transaksi'
+                                  ? Image.asset('transaction.png')
+                                  : Container(),
+                    ),
+                  ),
                   title: Text(menulist[index]),
                   onTap: () {
-                    if (menulist[index] == 'Product Master') {
+                    if (menulist[index] == 'Tambah produk') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -44,7 +58,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                                   pscd: widget.outletinfo!.outletcd,
                                 )),
                       );
-                    } else if (menulist[index] == 'Modifier Master') {
+                    } else if (menulist[index] == 'Condiment /  Topping') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(

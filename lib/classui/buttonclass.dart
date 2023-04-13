@@ -9,13 +9,15 @@ class ButtonClassAction extends StatefulWidget {
   final double? widht;
   final String? name;
   final color;
-  const ButtonClassAction(
+  late bool? splash;
+  ButtonClassAction(
       {Key? key,
       this.onpressed,
       this.height,
       this.widht,
       this.name,
       this.iconasset,
+      this.splash,
       this.color})
       : super(key: key);
 
@@ -26,57 +28,50 @@ class ButtonClassAction extends StatefulWidget {
 class _ButtonClassActionState extends State<ButtonClassAction> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-
-      // elevation: 1,
-      child: InkWell(
-        onTap: widget.onpressed,
-        child: Container(
-          height: widget.height,
-          width: widget.widht,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(35),
-                topRight: Radius.circular(35),
-                bottomLeft: Radius.circular(35),
-                bottomRight: Radius.circular(35)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  // image: DecorationImage(
-                  //   image: AssetImage(widget.iconasset.toString()),
-                  //   fit: BoxFit.fill,
-                  // ),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
-                      bottomRight: Radius.circular(40)),
-                ),
+    return InkWell(
+      splashColor: Colors.orange,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(35),
+          topRight: Radius.circular(35),
+          bottomLeft: Radius.circular(35),
+          bottomRight: Radius.circular(35)),
+      onTap: widget.onpressed,
+      child: Container(
+        height: widget.height,
+        width: widget.widht,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color:  Colors.blueGrey ,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(35),
+              topRight: Radius.circular(35),
+              bottomLeft: Radius.circular(35),
+              bottomRight: Radius.circular(35)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 24,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(widget.iconasset.toString()),
               ),
-              Container(
-                  margin: EdgeInsets.all(10),
-                  alignment: Alignment.center,
-                  child: Text(
-                    widget.name.toString(),
-                    style: TextStyle(color: Colors.white,fontSize: 12),
-                  ),
-                  height: widget.height,
-                  width: widget.widht,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ))
-            ],
-          ),
+            ),
+            Container(
+                margin: EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child: Text(
+                  widget.name.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+                height: widget.height,
+                width: widget.widht,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ))
+          ],
         ),
       ),
     );

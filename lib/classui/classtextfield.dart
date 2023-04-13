@@ -269,3 +269,90 @@ class _TextFieldMobile2State extends State<TextFieldMobile2> {
     );
   }
 }
+
+class TextFieldMobileLogin extends StatefulWidget {
+  final String? label;
+  final String? hint;
+  final TextEditingController controller;
+  final int? maxline;
+  final ValueChanged<String> onChanged;
+  final typekeyboard;
+  final bool? enable;
+  final double? height;
+  final double? width;
+  final suffixIcon;
+  final prefixIcon;
+  late bool? readonly;
+  late FocusNode? focus;
+  final bool? showpassword;
+  var expands;
+  var minLines;
+  var validator;
+
+  TextFieldMobileLogin(
+      {Key? key,
+      this.label,
+      required this.controller,
+      required this.onChanged,
+      required this.typekeyboard,
+      this.maxline,
+      this.hint,
+      this.enable = true,
+      this.height,
+      this.width,
+      this.suffixIcon,
+      this.readonly,
+      this.focus,
+      this.validator,
+      this.expands,
+      this.minLines,
+      this.showpassword,
+      this.prefixIcon})
+      : super(key: key);
+
+  @override
+  State<TextFieldMobileLogin> createState() => _TextFieldMobileLoginState();
+}
+
+class _TextFieldMobileLoginState extends State<TextFieldMobileLogin> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        validator: widget.validator,
+ 
+        obscureText: !widget.showpassword!, //This will obscure text dynamically
+        focusNode: widget.focus,
+        readOnly: widget.readonly ?? false,
+        keyboardType: widget.typekeyboard,
+        onChanged: widget.onChanged,
+        controller: widget.controller,
+        // autofocus: false,
+        style: const TextStyle(fontSize: 15.0, color: Colors.black),
+        decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon,
+          prefixIcon: widget.prefixIcon,
+          hintText: widget.hint,
+          label: widget.label != null ? Text(widget.label.toString()) : null,
+          // border: InputBorder.none,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          // contentPadding:
+          //     const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 0.0),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+        ),
+      ),
+    );
+  }
+}

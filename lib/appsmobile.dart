@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/chart.dart';
+import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/drawermainmenumobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/classui/dialogclass.dart';
@@ -43,12 +44,6 @@ class _AppsMobileState extends State<AppsMobile> {
 
   @override
   void initState() {
-    widget.todaysale.isNotEmpty
-        ? widget.todaysale
-        : [
-            {'trdt': '2023-01-01'},
-            {'totalaftdisc': 0}
-          ];
     super.initState();
     _scaffoldKey = GlobalKey<ScaffoldState>();
     outlet = Outlet(
@@ -115,67 +110,84 @@ class _AppsMobileState extends State<AppsMobile> {
                           height: MediaQuery.of(context).size.height * 0.040,
                           width: MediaQuery.of(context).size.width * 1,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.03,
-                            ),
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: const Text('?'),
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.03,
-                            ),
-                            Container(
-                                width: MediaQuery.of(context).size.width * 0.65,
-                                alignment: Alignment.centerLeft,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.65,
-                                      child: Text(outlet!.outletname.toString(),
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.65,
-                                      child: Text(usercd,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                          )),
-                                    ),
-                                  ],
-                                )),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.menu,
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.03,
                               ),
-                              iconSize: 30,
-                              color: Colors.white,
-                              splashColor: Colors.purple,
-                              onPressed: () {
-                                _scaffoldKey.currentState!.openDrawer();
-                              },
-                            ),
-                          ],
+                              imageurl == ''
+                                  ? CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: AssetImage(
+                                        'assets/sheryl.png',
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(imageurl),
+                                    ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.03,
+                              ),
+                              Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.60,
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.65,
+                                        child: Text(
+                                            outlet!.outletname.toString(),
+                                            style: TextStyle(
+                                                fontSize: 25,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.65,
+                                        child: Text(usercd,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                            )),
+                                      ),
+                                    ],
+                                  )),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.05,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.menu,
+                                ),
+                                iconSize: 30,
+                                color: Colors.white,
+                                splashColor: Colors.purple,
+                                onPressed: () {
+                                  _scaffoldKey.currentState!.openDrawer();
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
@@ -222,11 +234,43 @@ class _AppsMobileState extends State<AppsMobile> {
                           ),
                           Text('Ringkasan Chart',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                                fontSize: 16,
+                              )),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.05,
                             width: MediaQuery.of(context).size.width * 0.45,
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    width: MediaQuery.of(context).size.width * 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          widget.todaysale.isNotEmpty
+                              ? SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.70,
+                                  child: Text(
+                                    '${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                )
+                              : SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.70,
+                                  child: Text('0')),
                           ButtonNoIcon(
                             color: Colors.transparent,
                             textcolor: Colors.orange,
@@ -249,11 +293,7 @@ class _AppsMobileState extends State<AppsMobile> {
                     padding: EdgeInsets.all(10),
                     height: MediaQuery.of(context).size.height * 0.3,
                     width: MediaQuery.of(context).size.width * 1,
-                    child: LineChartSample1(widget.chartdata.isNotEmpty
-                        ? widget.chartdata
-                        : [
-                            {"trdt": "2023-01-01", "totalaftdisc": "0"}
-                          ]),
+                    child: LineChartSample1(widget.chartdata),
                   )
                 ],
               ));

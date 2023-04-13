@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "729243564178",
+    "project_id": "aovipos",
+    "storage_bucket": "aovipos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729243564178:android:845bad81702645ecb50e4b",
+        "android_client_info": {
+          "package_name": "com.example.posq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729243564178-d4autvjs7d0sapau80u0cd89rj44ivh6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.posq",
+            "certificate_hash": "e07edfa5e72057efa6c9be2ffebc4783d77f593b"
+          }
+        },
+        {
+          "client_id": "729243564178-1ek33l1cmhjki60q3g7skao5ivt6v49b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqJaMK21vtdaRLMoFU56Lfl9wLyH1cp54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729243564178-1ek33l1cmhjki60q3g7skao5ivt6v49b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

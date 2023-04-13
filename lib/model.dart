@@ -725,7 +725,7 @@ class IafjrndtClass {
         havecond = res['havecond'],
         condimenttype = res['condimenttype'],
         multiprice = res["multiprice"],
-        pricelist = res['pricelist'] != null 
+        pricelist = res['pricelist'] != null
             ? List<PriceList>.from(
                 jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)))
             : [];
@@ -1563,5 +1563,49 @@ class TextEditingCondiment {
         'opsicode': opsicode,
         'opsidesc': opsidesc,
         'controller': controller,
+      };
+}
+
+class UserInfoSys {
+  final String? usercode;
+  final String fullname;
+  final String? email;
+  final String urlpic;
+  final String uuid;
+  final String token;
+  final String lastsignin;
+
+  UserInfoSys({
+    this.usercode,
+    required this.fullname,
+    this.email,
+    required this.urlpic,
+    required this.uuid,
+    required this.token,
+    required this.lastsignin,
+  });
+
+  UserInfoSys.fromMap(Map<String, dynamic> res)
+      : usercode = res["usercode"],
+        fullname = res["fullname"],
+        email = res["email"],
+        urlpic = res["urlpic"],
+        uuid = res["uuid"],
+        token = res["token"],
+        lastsignin = res["lastsignin"];
+
+  @override
+  String toString() {
+    return '{"usercode": $usercode,"fullname": $fullname,"email": $email,"urlpic": $urlpic,"uuid": $uuid,"token": $token,"lastsignin": $lastsignin}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'usercode': usercode,
+        'fullname': fullname,
+        'email': email,
+        'urlpic': urlpic,
+        'uuid': uuid,
+        'token': token,
+        'lastsignin': lastsignin,
       };
 }

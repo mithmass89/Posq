@@ -11,13 +11,17 @@ import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
 import 'package:posq/setting/classpromomobile.dart';
 import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
+import 'package:posq/userinfo.dart';
 
 class DrawerRetailMain extends StatefulWidget {
   final String? outletname;
   final Outlet outletinfo;
   final bool fromsaved;
   const DrawerRetailMain(
-      {Key? key, required this.outletname, required this.outletinfo, required this.fromsaved})
+      {Key? key,
+      required this.outletname,
+      required this.outletinfo,
+      required this.fromsaved})
       : super(key: key);
 
   @override
@@ -34,7 +38,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.orange,
             ),
             child: Column(
               children: [
@@ -47,7 +51,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.white,
-                          width: 1,
+                          width: 2,
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -56,12 +60,12 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         children: [
                           Text(
                             widget.outletname.toString(),
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white, fontSize: 24),
                           ),
                           Icon(
                             Icons.arrow_right_outlined,
                             color: Colors.white,
-                            size: 25.0,
+                            size: 30.0,
                           ),
                         ],
                       ),
@@ -75,10 +79,36 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                 Row(
                   children: [
                     CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.transparent,
-                      child: const Text('Profile'),
+                      radius: 40,
+                      backgroundColor: Colors.white,
+                      backgroundImage: AssetImage(
+                        'assets/sheryl.png',
+                      ),
                     ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.03,
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          child: Text(
+                            usercd,
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          child: Text(
+                            'SHIFT 1 ',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 )
               ],

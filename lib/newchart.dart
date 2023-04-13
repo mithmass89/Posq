@@ -24,15 +24,16 @@ class LineChartSample1State extends State<LineChartSample1> {
   void initState() {
     super.initState();
     isShowingMainData = false;
+    
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List.generate(
         widget.chartdata.length,
         (index) => chartData.add(SalesData(
             DateTime.parse(widget.chartdata[index]['trdt']),
             widget.chartdata[index]['totalaftdisc'])));
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Center(
         child: AspectRatio(
       aspectRatio: 1.5,
@@ -40,7 +41,7 @@ class LineChartSample1State extends State<LineChartSample1> {
           SfCartesianChart(primaryXAxis: DateTimeAxis(), series: <ChartSeries>[
         // Renders line chart
         LineSeries<SalesData, DateTime>(
-            width: 2,
+            width: 3,
             dataSource: chartData,
             xValueMapper: (SalesData sales, _) => sales.date,
             yValueMapper: (SalesData sales, _) => sales.sales)

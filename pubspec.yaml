@@ -51,6 +51,9 @@ dependencies:
   esc_pos_printer: ^4.1.0
   fluttertoast: ^8.2.1
   syncfusion_flutter_charts: ^21.1.38
+  firebase_core: ^2.9.0
+  firebase_auth: ^4.4.0
+  google_sign_in: ^6.1.0
 
 dependency_override:
   firebase_messaging_platform_interface: 3.1.6
@@ -126,6 +129,17 @@ flutter:
     - list.png
     - icons8-barcode-100.png
     - icons8-checklist-100.png
+    - sheryl.png
+    - cart1.png
+    - outlet1.png
+    - investor.png
+    - product1.png
+    - staff.png
+    - support.png
+    - transaction.png
+    - condiment.png
+    - addproduct.png
+    - google.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

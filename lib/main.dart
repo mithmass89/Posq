@@ -1,13 +1,23 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
+import 'package:posq/login.dart';
 import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+bool shouldUseFirebaseEmulator = false;
+
+late final FirebaseApp app;
+late final FirebaseAuth auth;
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MyApp(
     onGenerateRoute: RouteGenerator.generateRoute,
   ));
@@ -36,13 +46,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (context) => Mainapps(),
+        '/': (context) => /*Mainapps()*/ Login(),
         '/RetailMain': (context) => ClassRetailMainMobile(
               fromsaved: false,
               outletinfo: Outlet(outletcd: '', outletname: ''),
               pscd: '',
               qty: 0,
-            )
+            ),
+        '/Dashboard': (context) => Mainapps(),
       },
     );
 

@@ -41,6 +41,7 @@ class MenuMain extends StatefulWidget {
 
 class _MenuMainState extends State<MenuMain> {
   String? trno = '';
+  bool selected = false;
 
   deleteDatabase() async {
     print('oke');
@@ -78,10 +79,14 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'retail.png',
+                splash: selected,
+                iconasset: 'cart1.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () {
+                  setState(() {
+                    selected = !selected;
+                  });
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -101,16 +106,20 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'outlet.png',
+                splash: selected,
+                iconasset: 'outlet1.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () async {
+                  setState(() {
+                    selected = !selected;
+                  });
                   final Outlet result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const Selectoutletmobile()),
                   );
-                  setState(() {});
+
                   // callbackTitle(result);
                   AppsMobile.of(context)!.string = result;
                   print(result);
@@ -122,10 +131,13 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'pembeli.png',
+                splash: selected,
+                iconasset: 'investor.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () {
+                  selected = !selected;
+                  setState(() {});
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -139,10 +151,13 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'products.png',
+                splash: selected,
+                iconasset: 'settings.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () {
+                  selected = !selected;
+                  setState(() {});
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -152,17 +167,21 @@ class _MenuMainState extends State<MenuMain> {
                             )),
                   );
                 },
-                name: 'Product',
+                name: 'Kelola',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'pegawai.png',
+                splash: selected,
+                iconasset: 'staff.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: () {},
+                onpressed: () {
+                  selected = !selected;
+                  setState(() {});
+                },
                 name: 'Pegawai',
               ),
               SizedBox(
@@ -170,10 +189,13 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'help.png',
+                splash: selected,
+                iconasset: 'support.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () async {
+                  selected = !selected;
+                  setState(() {});
                   // handler = DatabaseHandler();
                   // await handler.upgradeDB();
                 },
@@ -259,7 +281,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'products.png',
+                iconasset: 'settings.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.095,
                 onpressed: () {
@@ -272,7 +294,7 @@ class _MenuMainState extends State<MenuMain> {
                             )),
                   );
                 },
-                name: 'Product',
+                name: 'Kelola',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -343,7 +365,7 @@ class _MenuMainState extends State<MenuMain> {
               ButtonClassAction(
                 iconasset: 'outlet.png',
                 height: MediaQuery.of(context).size.height * 0.04,
-                     widht: MediaQuery.of(context).size.width * 0.075,
+                widht: MediaQuery.of(context).size.width * 0.075,
                 onpressed: () async {
                   final Outlet result = await Navigator.push(
                     context,
@@ -364,7 +386,7 @@ class _MenuMainState extends State<MenuMain> {
               ButtonClassAction(
                 iconasset: 'pembeli.png',
                 height: MediaQuery.of(context).size.height * 0.04,
-                     widht: MediaQuery.of(context).size.width * 0.075,
+                widht: MediaQuery.of(context).size.width * 0.075,
                 onpressed: () {
                   Navigator.push(
                     context,
@@ -379,9 +401,9 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'products.png',
+                iconasset: 'settings.png',
                 height: MediaQuery.of(context).size.height * 0.04,
-                      widht: MediaQuery.of(context).size.width * 0.075,
+                widht: MediaQuery.of(context).size.width * 0.075,
                 onpressed: () {
                   Navigator.push(
                     context,
@@ -401,7 +423,7 @@ class _MenuMainState extends State<MenuMain> {
               ButtonClassAction(
                 iconasset: 'pegawai.png',
                 height: MediaQuery.of(context).size.height * 0.04,
-                        widht: MediaQuery.of(context).size.width * 0.075,
+                widht: MediaQuery.of(context).size.width * 0.075,
                 onpressed: () {},
                 name: 'Pegawai',
               ),
@@ -412,7 +434,7 @@ class _MenuMainState extends State<MenuMain> {
               ButtonClassAction(
                 iconasset: 'help.png',
                 height: MediaQuery.of(context).size.height * 0.04,
-                      widht: MediaQuery.of(context).size.width * 0.075,
+                widht: MediaQuery.of(context).size.width * 0.075,
                 onpressed: () async {
                   // handler = DatabaseHandler();
                   // await handler.upgradeDB();

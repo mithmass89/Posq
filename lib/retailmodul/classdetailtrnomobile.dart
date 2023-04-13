@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/classformat.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classdetailtransactionmobile.dart';
@@ -77,7 +78,7 @@ class _DetailTrnoState extends State<DetailTrno> {
                   title: Text(widget.trno!.substring(1,8).toString()),
                   subtitle: Text(widget.datatransaksi!.totalamt == null
                       ? '0'
-                      : widget.datatransaksi!.totalamt.toString()),
+                      : CurrencyFormat.convertToIdr(widget.datatransaksi!.totalamt,0)),
                   trailing: Text(
                     statustransaction == null
                         ? 'No Settle yet'

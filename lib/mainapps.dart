@@ -140,12 +140,7 @@ class _MainappsState extends State<Mainapps> {
                 // do something else
                 return AppsMobile(
                   chartdata: chartdata,
-                  todaysale: todaysales.isNotEmpty
-                      ? todaysales
-                      : [
-                          {'trdt': '2023-01-01'},
-                          {'totalaftdisc': 0}
-                        ],
+                  todaysale: todaysales,
                   monthlysales: monthlysales,
                   profileusaha: Outlet(
                     outletcd: outletinfo!.outletcd,
