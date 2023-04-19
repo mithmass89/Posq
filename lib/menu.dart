@@ -1,6 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_const_constructors_in_immutables, must_be_immutable, prefer_generic_function_type_aliases, non_constant_identifier_names, prefer_const_constructors, avoid_print, unused_import, unused_local_variable
 
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show getApplicationDocumentsDirectory;
@@ -16,6 +17,7 @@ import 'package:posq/model.dart';
 import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
+import 'package:posq/userinfo.dart';
 import 'package:uuid/uuid.dart';
 import 'package:posq/classui/api.dart';
 
@@ -110,20 +112,31 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'outlet1.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: () async {
-                  setState(() {
-                    selected = !selected;
-                  });
-                  final Outlet result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Selectoutletmobile()),
-                  );
+                onpressed: accesslist.contains('selectoutlet') == true
+                    ? () async {
+                        setState(() {
+                          selected = !selected;
+                        });
+                        final Outlet result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Selectoutletmobile()),
+                        );
 
-                  // callbackTitle(result);
-                  AppsMobile.of(context)!.string = result;
-                  print(result);
-                },
+                        // callbackTitle(result);
+                        AppsMobile.of(context)!.string = result;
+                        print(result);
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses outlet",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
                 name: 'Outlet',
               ),
               SizedBox(
@@ -135,7 +148,7 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'investor.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: () {
+                onpressed:accesslist.contains('createcostumer') == true? () {
                   selected = !selected;
                   setState(() {});
                   Navigator.push(
@@ -143,6 +156,15 @@ class _MenuMainState extends State<MenuMain> {
                     MaterialPageRoute(
                         builder: (context) => ClassListCustomers()),
                   );
+                }:(){
+                     Fluttertoast.showToast(
+                            msg: "Tidak punya akses customer",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                 },
                 name: 'Customer',
               ),
@@ -155,18 +177,29 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'settings.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: () {
-                  selected = !selected;
-                  setState(() {});
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainMenuProduct(
-                              pscd: widget.outletinfo!.outletcd,
-                              outletinfo: widget.outletinfo!,
-                            )),
-                  );
-                },
+                onpressed: accesslist.contains('setting') == true
+                    ? () {
+                        selected = !selected;
+                        setState(() {});
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainMenuProduct(
+                                    pscd: widget.outletinfo!.outletcd,
+                                    outletinfo: widget.outletinfo!,
+                                  )),
+                        );
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses kelola",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
                 name: 'Kelola',
               ),
               SizedBox(
@@ -178,10 +211,21 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'staff.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: () {
-                  selected = !selected;
-                  setState(() {});
-                },
+                onpressed: accesslist.contains('pegawai') == true
+                    ? () {
+                        selected = !selected;
+                        setState(() {});
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses pegawai",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
                 name: 'Pegawai',
               ),
               SizedBox(

@@ -41,6 +41,15 @@ class _ClassSavedTransactionMobileState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black54,
+          ),
+        ),
         title: Text('Order Management'),
         actions: [],
       ),
@@ -50,7 +59,7 @@ class _ClassSavedTransactionMobileState
             width: MediaQuery.of(context).size.width * 0.95,
             height: MediaQuery.of(context).size.height * 0.08,
             child: TextFieldMobile2(
-              label: 'Search',
+                label: 'Search',
                 suffixIcon: search.text.length != 0
                     ? IconButton(
                         icon: Icon(

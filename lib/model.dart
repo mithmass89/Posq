@@ -614,62 +614,65 @@ class IafjrndtClass {
   final List<PriceList>? pricelist;
   final int? multiprice;
   final String? salestype;
+  final String? tablesid;
 
-  IafjrndtClass({
-    this.salestype,
-    this.id,
-    this.trdt,
-    this.pscd,
-    this.transno,
-    this.split,
-    this.transno1,
-    this.itemcode,
-    this.itemdesc,
-    this.trno1,
-    this.itemseq,
-    this.cono,
-    this.waitercd,
-    this.discpct,
-    this.discamt,
-    this.qty,
-    this.ratecurcd,
-    this.ratebs1,
-    this.ratebs2,
-    this.rateamtcost,
-    this.rateamtitem,
-    this.rateamtservice,
-    this.rateamttax,
-    this.rateamttotal,
-    this.revenueamt,
-    this.taxamt,
-    this.serviceamt,
-    this.totalaftdisc,
-    this.rebateamt,
-    this.rvncoa,
-    this.taxcoa,
-    this.servicecoa,
-    this.costcoa,
-    this.active,
-    this.usercrt,
-    this.userupd,
-    this.userdel,
-    this.prnkitchen,
-    this.prnkitchentm,
-    this.confirmed,
-    this.description,
-    this.taxpct,
-    this.svchgpct,
-    this.statustrans,
-    this.createdt,
-    this.guestname,
-    this.condimentlist,
-    this.typ,
-    this.optioncode,
-    this.havecond,
-    this.condimenttype,
-    this.pricelist,
-    this.multiprice,
-  });
+  IafjrndtClass(
+      {this.salestype,
+      this.id,
+      this.trdt,
+      this.pscd,
+      this.transno,
+      this.split,
+      this.transno1,
+      this.itemcode,
+      this.itemdesc,
+      this.trno1,
+      this.itemseq,
+      this.cono,
+      this.waitercd,
+      this.discpct,
+      this.discamt,
+      this.qty,
+      this.ratecurcd,
+      this.ratebs1,
+      this.ratebs2,
+      this.rateamtcost,
+      this.rateamtitem,
+      this.rateamtservice,
+      this.rateamttax,
+      this.rateamttotal,
+      this.revenueamt,
+      this.taxamt,
+      this.serviceamt,
+      this.totalaftdisc,
+      this.rebateamt,
+      this.rvncoa,
+      this.taxcoa,
+      this.servicecoa,
+      this.costcoa,
+      this.active,
+      this.usercrt,
+      this.userupd,
+      this.userdel,
+      this.prnkitchen,
+      this.prnkitchentm,
+      this.confirmed,
+      this.description,
+      this.taxpct,
+      this.svchgpct,
+      this.statustrans,
+      this.createdt,
+      this.guestname,
+      this.condimentlist,
+      this.typ,
+      this.optioncode,
+      this.havecond,
+      this.condimenttype,
+      this.pricelist,
+      this.multiprice,
+      this.tablesid
+      
+      });
 
   IafjrndtClass.fromJson(
     Map<String, dynamic> res,
@@ -725,6 +728,7 @@ class IafjrndtClass {
         havecond = res['havecond'],
         condimenttype = res['condimenttype'],
         multiprice = res["multiprice"],
+        tablesid = res["tablesid"],
         pricelist = res['pricelist'] != null
             ? List<PriceList>.from(
                 jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)))
@@ -784,13 +788,14 @@ class IafjrndtClass {
       'condimenttype': condimenttype,
       'pricelist': List<dynamic>.from(pricelist!.map((x) => x.toJson())),
       'multiprice': multiprice,
-      'salestype': salestype
+      'salestype': salestype,
+      'tablesid': tablesid
     };
   }
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,}';
   }
 }
 
@@ -1472,6 +1477,36 @@ class TransactionTipe {
         'transdesc': transdesc,
         'active': active,
         'id': id,
+      };
+}
+
+class TableMaster {
+  late String? tablecd;
+  late String? sectioncd;
+  final int? posx;
+  final int? posy;
+  final int? id;
+
+  TableMaster({this.tablecd, this.sectioncd, this.posx, this.posy, this.id});
+
+  TableMaster.fromJson(Map<String, dynamic> res)
+      : tablecd = res["tablecd"],
+        sectioncd = res["sectioncd"],
+        posx = res["posx"],
+        posy = res["posy"],
+        id = res["id"];
+
+  @override
+  String toString() {
+    return '{"tablecd": $tablecd, "sectioncd": $sectioncd, "posx": $posx,"posy": $posy,"id": $id,}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'tablecd': tablecd,
+        'sectioncd': sectioncd,
+        'posx': posx,
+        'posy': posy,
+        'id': id
       };
 }
 

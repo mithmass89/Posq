@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, unused_import, avoid_print, unused_field, must_be_immutable
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -80,6 +81,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   num discount = 0;
   int itemseq = 0;
   int itemlength = 0;
+  Random random = new Random();
+  int randomNumber = 0;
 
   set discounts(num value) {
     setState(() {
@@ -230,6 +233,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
   @override
   void initState() {
+    randomNumber = random.nextInt(100);
     controller = TabController(vsync: this, length: 2);
     //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
@@ -581,14 +585,18 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                             controller: controller,
                             children: [
                               ClassRetailManualMobile(
+                                  guestname: guestname == ''
+                                      ? randomNumber.toString()
+                                      : guestname!,
                                   refreshdata: getDataSlide,
                                   trno:
                                       widget.trno == null ? trno : widget.trno,
                                   itemlenght: item,
                                   outletinfo: widget.outletinfo),
                               ClassRetailProductMobile(
-                                guestname:
-                                    guestname == '' ? 'No Guest' : guestname!,
+                                guestname: guestname == ''
+                                    ? randomNumber.toString()
+                                    : guestname!,
                                 itemseq: itemseq,
                                 controller: search,
                                 trno: widget.trno.toString(),
@@ -604,7 +612,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       switch (_scrollisanimated) {
                         case true:
                           return SlideUpPanel(
-                            guestname: guestname!,
+                            guestname: guestname!.isEmpty
+                                ? randomNumber.toString()
+                                : guestname!,
                             datatransaksi: data,
                             fromsaved: widget.fromsaved,
                             sum: sum,
@@ -676,10 +686,10 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           flex: 1,
                                           child: IconButton(
                                             icon: Icon(
-                                              Icons.table_restaurant_outlined,
+                                              Icons.table_bar,
                                             ),
                                             iconSize: 25,
-                                            color: Colors.black,
+                                            color: Colors.blueGrey,
                                             splashColor: Colors.purple,
                                             onPressed: () async {
                                               await showDialog(
@@ -718,10 +728,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       onpressed: () async {
                         _pc.open();
                         if (_scrollisanimated == true) {
+                          await getDataSlide();
                           return await showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return DialogClassSimpan(
+                                  datatrans: listdata!.first,
                                   fromsaved: widget.fromsaved!,
                                   outletinfo: widget.outletinfo,
                                   pscd: widget.outletinfo.outletcd,

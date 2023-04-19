@@ -106,7 +106,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
                               )));
                 },
                 textcolor: Colors.white,
-                color: Colors.blue,
+                color: Colors.orange,
                 name: haspayment == true ? 'Reopen' : 'Selesaikan',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
@@ -114,7 +114,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
               ButtonNoIcon(
                 onpressed: () {},
                 textcolor: Colors.white,
-                color: Colors.blue,
+                color: Colors.orange,
                 name: 'Print',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
@@ -122,7 +122,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
               ButtonNoIcon(
                 onpressed: () {},
                 textcolor: Colors.white,
-                color: Colors.blue,
+                color: Colors.orange,
                 name: 'Kirim',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,

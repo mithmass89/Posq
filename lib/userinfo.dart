@@ -5,3 +5,4 @@ String dbname = '';
 List<String> listoutlets = [];
 List<String> accesslist = [];
 String imageurl = '';
+String emaillogin = '';

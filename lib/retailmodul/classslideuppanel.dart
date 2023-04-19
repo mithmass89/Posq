@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_generic_function_type_aliases, sized_box_for_whitespace, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
@@ -15,7 +16,6 @@ import 'package:posq/retailmodul/productclass/classretailcondiment.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classtextprint.dart';
 import 'package:posq/userinfo.dart';
-import 'package:toast/toast.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 
 typedef void StringCallback(IafjrndtClass val);
@@ -55,7 +55,8 @@ class SlideUpPanel extends StatefulWidget {
       required this.sum,
       required this.itemlength,
       this.fromsaved,
-      required this.datatransaksi, required this.guestname})
+      required this.datatransaksi,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -90,7 +91,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   @override
   void initState() {
     super.initState();
-    ToastContext().init(context);
+
     trno = widget.trno;
     formattedDate = formatter.format(now);
     getDataSlide();
@@ -98,7 +99,6 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     checkPrinter();
     getSumm();
     getDetails = getDetailTrnos();
-    ToastContext().init(context);
   }
 
   Future<List<IafjrndtClass>> getDetailTrnos() async {
@@ -106,7 +106,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     if (datadetail.first.salestype != 'normal') {
       selectedindex = widget.datatransaksi.indexWhere(
           (element) => element.transdesc == datadetail.first.salestype);
-          print('ini index : ${datadetail.first}');
+      print('ini index : ${datadetail.first}');
     }
 
     setState(() {});
@@ -208,18 +208,34 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       iconSize: 25,
                       color: connected == true ? Colors.green : Colors.red,
                       splashColor: Colors.purple,
-                      onPressed: () async {
-                        await getSumm();
-                        if (connected == true) {
-                          await printing.prints(widget.listdata, summary,
-                              widget.outletinfo.outletname!, widget.outletinfo);
-                        } else {
-                          await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ClassMainPrinter()));
-                        }
-                      },
+                      onPressed: accesslist.contains('settingprinter') == true
+                          ? () async {
+                              await getSumm();
+                              if (connected == true) {
+                                await printing.prints(
+                                    widget.listdata,
+                                    summary,
+                                    widget.outletinfo.outletname!,
+                                    widget.outletinfo);
+                              } else {
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassMainPrinter()));
+                              }
+                            }
+                          : () {
+                              Fluttertoast.showToast(
+                                  msg: "Tidak Punya Akses Printer",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 11, 12, 14),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            },
                     )),
                 Expanded(
                     flex: 1,
@@ -228,8 +244,25 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                         Icons.people_alt,
                       ),
                       iconSize: 25,
-                      color: Colors.black,
-                      splashColor: Colors.purple,
+                      color: Colors.blueGrey,
+                      splashColor: Colors.blueGrey,
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DialogCustomerList();
+                            });
+                      },
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.table_bar,
+                      ),
+                      iconSize: 25,
+                      color: Colors.blueGrey,
+                      splashColor: Colors.blueGrey,
                       onPressed: () async {
                         await showDialog(
                             context: context,
@@ -251,7 +284,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                 itemCount: widget.datatransaksi.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(7.0),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -262,10 +295,14 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                         onPressed: () async {
                           selectedindex = index;
                           print(index == index);
-                          Toast.show(
-                              "Success Change ${widget.datatransaksi[index].transdesc}",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
+                          Fluttertoast.showToast(
+                              msg: "Sukses Change",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                           for (var element in datadetail) {
                             var amountprice = element.pricelist!
                                 .where((element) =>
@@ -350,6 +387,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                 }),
           ),
           Container(
+            alignment: Alignment.topCenter,
+         
               height: widget.qty! <= 4
                   ? MediaQuery.of(context).size.height *
                       0.11 *
@@ -370,65 +409,95 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                               widget.listdata = datadetail;
                               return Dismissible(
                                 key: ValueKey<int>(datadetail[index].id!),
-                                direction: DismissDirection.endToStart,
-                                onDismissed:
-                                    (DismissDirection direction) async {
-                                  if (datadetail[index].typ != 'condiment') {
-                                    await ClassApi.deactivePoscondimentByALL(
-                                        datadetail[index].transno!,
-                                        datadetail[index].itemseq.toString(),
-                                        dbname);
-                                    await ClassApi.deactivePosdetail(
-                                            datadetail[index].id!.toInt(),
-                                            dbname)
-                                        .whenComplete(() {
-                                      setState(() {
-                                        datadetail.remove(datadetail[index]);
-                                      });
-                                      widget.updatedata!();
-                                      widget.refreshdata;
+                                direction:
+                                    accesslist.contains('deleteitem') == true
+                                        ? DismissDirection.endToStart
+                                        : DismissDirection.none,
+                                onDismissed: accesslist
+                                            .contains('deleteitem') ==
+                                        true
+                                    ? (DismissDirection direction) async {
+                                        if (datadetail[index].typ !=
+                                            'condiment') {
+                                          await ClassApi
+                                              .deactivePoscondimentByALL(
+                                                  datadetail[index].transno!,
+                                                  datadetail[index]
+                                                      .itemseq
+                                                      .toString(),
+                                                  dbname);
+                                          await ClassApi.deactivePosdetail(
+                                                  datadetail[index].id!.toInt(),
+                                                  dbname)
+                                              .whenComplete(() {
+                                            setState(() {
+                                              datadetail
+                                                  .remove(datadetail[index]);
+                                            });
+                                            widget.updatedata!();
+                                            widget.refreshdata;
 
-                                      ClassRetailMainMobile.of(context)!
-                                              .string =
-                                          IafjrndtClass(
-                                              trdt: widget.trnoinfo!.trdt,
-                                              pscd: widget.trnoinfo!.pscd,
-                                              description: '',
-                                              totalaftdisc: 0,
-                                              transno: datadetail.length == 0
-                                                  ? null
-                                                  : widget.trnoinfo!.transno);
-                                    });
-                                    await getDetails!.then((value) {
-                                      setState(() {});
-                                    });
-                                  } else {
-                                    await ClassApi.deactivePoscondimentByID(
-                                            datadetail[index].transno!,
-                                            datadetail[index]
-                                                .itemseq
-                                                .toString(),
-                                            datadetail[index].optioncode!,
-                                            dbname)
-                                        .whenComplete(() {
-                                      datadetail.remove(datadetail[index]);
-                                    });
-                                    widget.refreshdata;
-                                    await getDetailTrnos().then((value) {
-                                      setState(() {});
-                                    });
+                                            ClassRetailMainMobile.of(context)!
+                                                    .string =
+                                                IafjrndtClass(
+                                                    trdt: widget.trnoinfo!.trdt,
+                                                    pscd: widget.trnoinfo!.pscd,
+                                                    description: '',
+                                                    totalaftdisc: 0,
+                                                    transno:
+                                                        datadetail.length == 0
+                                                            ? null
+                                                            : widget.trnoinfo!
+                                                                .transno);
+                                          });
+                                          await getDetails!.then((value) {
+                                            setState(() {});
+                                          });
+                                        } else {
+                                          await ClassApi
+                                                  .deactivePoscondimentByID(
+                                                      datadetail[index]
+                                                          .transno!,
+                                                      datadetail[index]
+                                                          .itemseq
+                                                          .toString(),
+                                                      datadetail[index]
+                                                          .optioncode!,
+                                                      dbname)
+                                              .whenComplete(() {
+                                            datadetail
+                                                .remove(datadetail[index]);
+                                          });
+                                          widget.refreshdata;
+                                          await getDetailTrnos().then((value) {
+                                            setState(() {});
+                                          });
 
-                                    ClassRetailMainMobile.of(context)!.string =
-                                        IafjrndtClass(
-                                            trdt: widget.trnoinfo!.trdt,
-                                            pscd: widget.trnoinfo!.pscd,
-                                            description: '',
-                                            totalaftdisc: 0,
-                                            transno: datadetail.length == 0
-                                                ? null
-                                                : widget.trnoinfo!.transno);
-                                  }
-                                },
+                                          ClassRetailMainMobile.of(context)!
+                                                  .string =
+                                              IafjrndtClass(
+                                                  trdt: widget.trnoinfo!.trdt,
+                                                  pscd: widget.trnoinfo!.pscd,
+                                                  description: '',
+                                                  totalaftdisc: 0,
+                                                  transno:
+                                                      datadetail.length == 0
+                                                          ? null
+                                                          : widget.trnoinfo!
+                                                              .transno);
+                                        }
+                                      }
+                                    : (DismissDirection direction) {
+                                        Fluttertoast.showToast(
+                                            msg: "Tidak Dapat Akses delete",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor:
+                                                Color.fromARGB(255, 11, 12, 14),
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
@@ -518,7 +587,9 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                           MaterialPageRoute(
                                                               builder: (context) =>
                                                                   ClassInputCondiment(
-                                                                    guestname: widget.guestname,
+                                                                    guestname:
+                                                                        widget
+                                                                            .guestname,
                                                                     datatransaksi:
                                                                         datadetail[
                                                                             index],

@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, prefer_generic_function_type_aliases, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
-import 'package:toast/toast.dart';
 
 typedef void StringCallback(IafjrndtClass val);
 
@@ -14,6 +14,7 @@ class ClassRetailManualMobile extends StatefulWidget {
   final int? itemlenght;
   final String? trno;
   final Function? refreshdata;
+  final String? guestname;
 
   const ClassRetailManualMobile({
     Key? key,
@@ -21,6 +22,7 @@ class ClassRetailManualMobile extends StatefulWidget {
     this.itemlenght,
     this.trno,
     this.refreshdata,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -167,9 +169,15 @@ class _ClassRetailManualMobileState extends State<ClassRetailManualMobile> {
                                     ClassRetailMainMobile.of(context)!.string =
                                         results;
                                   } else {
-                                    Toast.show("Masukan Harga dulu",
-                                        duration: Toast.lengthLong,
-                                        gravity: Toast.center);
+                                    Fluttertoast.showToast(
+                                        msg: "Isi Amount Dulu",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
                                   }
 
                                   setState(() {});

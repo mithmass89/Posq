@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
@@ -193,17 +194,29 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                         CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0)),
                   ),
                   TextButton(
-                      onPressed: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (_) => DialogClassCancelorder(
-                                fromsaved: widget.fromsaved,
-                                outletinfo: widget.outletinfo,
-                                outletcd: widget.pscd!,
-                                trno: x.first.transno!)).then((_) {
-                          setState(() {});
-                        });
-                      },
+                      onPressed: accesslist.contains('canceltrans') == true
+                          ? () async {
+                              await showDialog(
+                                  context: context,
+                                  builder: (_) => DialogClassCancelorder(
+                                      fromsaved: widget.fromsaved,
+                                      outletinfo: widget.outletinfo,
+                                      outletcd: widget.pscd!,
+                                      trno: x.first.transno!)).then((_) {
+                                setState(() {});
+                              });
+                            }
+                          : () {
+                              Fluttertoast.showToast(
+                                  msg: "Tidak Punya Akses Cancel Order",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 11, 12, 14),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            },
                       child: Text('Batalkan transaksi'))
                 ],
               ),

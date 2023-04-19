@@ -3,9 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
-var api = 'http://192.168.88.14:3000';
-// var api = 'http://192.168.1.19:3000';
+// var api = 'http://192.168.88.14:3000';
+var api = 'http://192.168.1.17:3000';
 // var api = 'http://147.139.163.18:3000';
+
 var serverkey = '';
 String username = 'massmith';
 String password = 'massmith';
@@ -152,6 +153,27 @@ class ClassApi {
     var body = {"dbname": dbname, "data": transaksi};
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/insert_transactiontype');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertTableMaster(
+      String dbname, List<TableMaster> table) async {
+    var body = {"dbname": dbname, "data": table};
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertTableMaster');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -333,7 +355,8 @@ class ClassApi {
           data.transno,
           data.active,
           data.usercrt,
-          data.createdt
+          data.createdt,
+          data.guestname
         ]
       ]
     };
@@ -645,11 +668,123 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> updateTablestrno(
+      String dbname, String trno, String table) async {
+    var body = {"dbname": dbname, "transno": trno, "table": table};
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateTablestrno');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      print(status);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateTables_use(
+      String dbname, String transno, String tablecd) async {
+    var body = {"dbname": dbname, "transno": transno, "tablecd": tablecd};
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateTables_use');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      print(status);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+
+    static Future<dynamic> cleartable(
+      String dbname, String transno) async {
+    var body = {"dbname": dbname, "transno": transno,};
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/cleartable');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      print(status);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+
+  
+
   static Future<dynamic> deactivePosdetail(int id, String dbname) async {
     var body = {"dbname": dbname, "data": id};
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/deactiveposdetail');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> deactiveTable(int id, String dbname) async {
+    var body = {"dbname": dbname, "id": id};
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deactiveTable');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> deactiveTableAll() async {
+    var body = {"dbname": dbname};
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deactiveTableAll');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -987,6 +1122,60 @@ class ClassApi {
       throw Exception();
     }
   }
+
+  static Future<List<TableMaster>> getTableList(String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/getTableList');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => TableMaster.fromJson(json)).where((items) {
+        final itemdescLower = items.tablecd!.toLowerCase();
+        final itemcodes = items.tablecd!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+
+    static Future<List<TableMaster>> getTablesNotUse(String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/getTablesNotUse');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => TableMaster.fromJson(json)).where((items) {
+        final itemdescLower = items.tablecd!.toLowerCase();
+        final itemcodes = items.tablecd!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
 
   static Future<List<dynamic>> getUserinfofromManual(
       String email, String password) async {

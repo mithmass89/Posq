@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/login.dart';
 import 'package:posq/setting/classpromomobile.dart';
 import 'package:posq/syncdatabase/syncdb.dart';
+import 'package:posq/userinfo.dart';
 
 class DrawerWidgetMain extends StatelessWidget {
- 
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -15,49 +17,78 @@ class DrawerWidgetMain extends StatelessWidget {
           _drawerItem(
               icon: Icons.folder,
               text: 'Laporan',
-              onTap: () => print('Tap My Files')),
+              onTap: accesslist.contains('laporan') == true
+                  ? () => print('Tap My Files')
+                  : () {
+                      Fluttertoast.showToast(
+                          msg: "Tidak punya akses laporan",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }),
           _drawerItem(
               icon: Icons.money,
               text: 'Kelola Promo',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ClassPromoMobile()),
-                );
-              }),
+              onTap: accesslist.contains('kelolapromo') == true
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ClassPromoMobile()),
+                      );
+                    }
+                  : () {
+                      Fluttertoast.showToast(
+                          msg: "Tidak punya akses Kelola promo",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }),
           _drawerItem(
               icon: Icons.group,
               text: 'Informasi akun',
               onTap: () => print('Tap Shared menu')),
           _drawerItem(
               icon: Icons.lock_clock,
-              text: 'Close kasir',
+              text: 'Tutup kasir',
               onTap: () => print('Tap Recent menu')),
           _drawerItem(
               icon: Icons.settings,
               text: 'Setting',
-              onTap: () => print('Tap Trash menu')),
+              onTap: accesslist.contains('setting') == true
+                  ? () => print('Tap Trash menu')
+                  : () {
+                      Fluttertoast.showToast(
+                          msg: "Tidak punya akses Kelola setting",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }),
           Divider(height: 25, thickness: 1),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
-            child: Text("Labels",
+            child: Text("Others",
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
                 )),
           ),
           _drawerItem(
-              icon: Icons.sync,
-              text: 'Sync Database',
+              icon: Icons.logout,
+              text: 'Log Out',
               onTap: () {
-                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SyncDatabaseClass(
-            
-                      )),
-                );
+                LogOut.signOut(context: context);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
               }),
         ],
       ),
@@ -67,23 +98,21 @@ class DrawerWidgetMain extends StatelessWidget {
 
 Widget _drawerHeader() {
   return UserAccountsDrawerHeader(
-    decoration: BoxDecoration(
-      color: Colors.orange
-    ),
-    currentAccountPicture: ClipOval(
-      child: Image(
-          image: AssetImage('assets/images/orang2.jpeg'),
-          errorBuilder: (context, error, stackTrace) {
-            return Center(
-                child: Text(
-              'No Image',
-              style: TextStyle(color: Colors.white),
-            ));
-          },
-          fit: BoxFit.cover),
-    ),
-    accountName: Text('Admin'),
-    accountEmail: Text('admin@gmail.com'),
+    decoration: BoxDecoration(color: Colors.orange),
+    // currentAccountPicture: ClipOval(
+    //   child: Image(
+    //       image: AssetImage('assets/images/orang2.jpeg'),
+    //       errorBuilder: (context, error, stackTrace) {
+    //         return Center(
+    //             child: Text(
+    //           'No Image',
+    //           style: TextStyle(color: Colors.white),
+    //         ));
+    //       },
+    //       fit: BoxFit.cover),
+    // ),
+    accountName: Text(usercd),
+    accountEmail: Text(emaillogin),
   );
 }
 

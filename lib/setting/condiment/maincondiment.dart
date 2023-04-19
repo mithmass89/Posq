@@ -24,6 +24,15 @@ class _MainCondimentState extends State<MainCondiment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text('Modifier List'),
       ),
       body: Container(
@@ -91,7 +100,7 @@ class _MainCondimentState extends State<MainCondiment> {
                                   title: Text(condiment[index].condimentdesc!,
                                       style: condiment[index].active == 0
                                           ? TextStyle(
-                                            color: Colors.red,
+                                              color: Colors.red,
                                               decoration:
                                                   TextDecoration.lineThrough)
                                           : null),

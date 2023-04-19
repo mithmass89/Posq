@@ -172,6 +172,7 @@ class _LoginState extends State<Login> {
                                     setState(() {
                                       usercd = values[0]['usercd'];
                                       imageurl = values[0]['urlpict'];
+                                      emaillogin = email.text;
                                     });
                                     await ClassApi.getOutlets(usercd)
                                         .then((valued) {
@@ -268,6 +269,7 @@ class _LoginState extends State<Login> {
                                   setState(() {
                                     usercd = values[0]['usercd'];
                                     imageurl = value.photoURL!;
+                                    emaillogin = value.email!;
                                     print('ini urlpics : $imageurl');
                                   });
                                   await ClassApi.getOutlets(usercd)

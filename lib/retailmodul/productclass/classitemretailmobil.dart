@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
@@ -49,110 +51,113 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
 
   Future<IafjrndtClass?> insertIafjrndt() async {
     now = DateTime.now();
+
     await ClassApi.insertPosDetail(
         IafjrndtClass(
-            trdt: widget.trdt,
-            pscd: pscd,
-            transno: widget.trno,
-            split: 'A',
-            transno1: 'trnobill',
-            itemcode: widget.item.itemcode,
-            itemdesc: widget.item.itemdesc,
-            trno1: widget.trno,
-            itemseq: widget.itemseq,
-            cono: 'cono',
-            waitercd: 'waitercd',
-            discpct: 0,
-            discamt: 0,
-            qty: 1,
-            ratecurcd: 'Rupiah',
-            ratebs1: 1,
-            ratebs2: 1,
-            rateamtcost: widget.item.costamt,
-            rateamtitem: widget.item.slsamt,
-            rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
-            rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
-            rateamttotal: widget.item.slsnett,
-            revenueamt: 1 * widget.item.slsamt!.toDouble(),
-            taxamt: widget.item.slsamt! * widget.item.taxpct! / 100,
-            serviceamt: widget.item.slsamt! * widget.item.svchgpct! / 100,
-            totalaftdisc: 1 * widget.item.slsamt! +
-                widget.item.slsamt! * widget.item.taxpct! / 100 +
-                widget.item.slsamt! * widget.item.svchgpct! / 100,
-            rebateamt: 0,
-            rvncoa: 'REVENUE',
-            taxcoa: 'TAX',
-            servicecoa: 'SERVICE',
-            costcoa: 'COST',
-            active: 1,
-            usercrt: usercd,
-            userupd: usercd,
-            userdel: usercd,
-            prnkitchen: 0,
-            prnkitchentm: now.hour.toString() +
-                ":" +
-                now.minute.toString() +
-                ":" +
-                now.second.toString(),
-            confirmed: '1',
-            description: widget.item.itemdesc,
-            taxpct: widget.item.taxpct,
-            svchgpct: widget.item.svchgpct,
-            statustrans: 'prosess',
-            guestname: widget.guestname,
-            createdt: now.toString()),
+          trdt: widget.trdt,
+          pscd: pscd,
+          transno: widget.trno,
+          split: 'A',
+          transno1: 'trnobill',
+          itemcode: widget.item.itemcode,
+          itemdesc: widget.item.itemdesc,
+          trno1: widget.trno,
+          itemseq: widget.itemseq,
+          cono: 'cono',
+          waitercd: 'waitercd',
+          discpct: 0,
+          discamt: 0,
+          qty: 1,
+          ratecurcd: 'Rupiah',
+          ratebs1: 1,
+          ratebs2: 1,
+          rateamtcost: widget.item.costamt,
+          rateamtitem: widget.item.slsamt,
+          rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
+          rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
+          rateamttotal: widget.item.slsnett,
+          revenueamt: 1 * widget.item.slsamt!.toDouble(),
+          taxamt: widget.item.slsamt! * widget.item.taxpct! / 100,
+          serviceamt: widget.item.slsamt! * widget.item.svchgpct! / 100,
+          totalaftdisc: 1 * widget.item.slsamt! +
+              widget.item.slsamt! * widget.item.taxpct! / 100 +
+              widget.item.slsamt! * widget.item.svchgpct! / 100,
+          rebateamt: 0,
+          rvncoa: 'REVENUE',
+          taxcoa: 'TAX',
+          servicecoa: 'SERVICE',
+          costcoa: 'COST',
+          active: 1,
+          usercrt: usercd,
+          userupd: usercd,
+          userdel: usercd,
+          prnkitchen: 0,
+          prnkitchentm: now.hour.toString() +
+              ":" +
+              now.minute.toString() +
+              ":" +
+              now.second.toString(),
+          confirmed: '1',
+          description: widget.item.itemdesc,
+          taxpct: widget.item.taxpct,
+          svchgpct: widget.item.svchgpct,
+          statustrans: 'prosess',
+          createdt: now.toString(),
+          guestname: widget.guestname,
+        ),
         pscd);
     result = IafjrndtClass(
-        trdt: widget.trdt,
-        pscd: pscd,
-        transno: widget.trno,
-        split: 'A',
-        transno1: 'trnobill',
-        itemcode: widget.item.itemcode,
-        itemdesc: widget.item.itemdesc,
-        trno1: widget.trno,
-        itemseq: widget.itemseq,
-        cono: 'cono',
-        waitercd: 'waitercd',
-        discpct: 0,
-        discamt: 0,
-        qty: 1,
-        ratecurcd: 'Rupiah',
-        ratebs1: 1,
-        ratebs2: 1,
-        rateamtcost: widget.item.costamt,
-        rateamtitem: widget.item.slsamt,
-        rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
-        rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
-        rateamttotal: widget.item.slsnett,
-        revenueamt: 1 * widget.item.slsamt!.toDouble(),
-        taxamt: widget.item.slsamt! * widget.item.taxpct! / 100,
-        serviceamt: widget.item.slsamt! * widget.item.svchgpct! / 100,
-        totalaftdisc: 1 * widget.item.slsamt! +
-            widget.item.slsamt! * widget.item.taxpct! / 100 +
-            widget.item.slsamt! * widget.item.svchgpct! / 100,
-        rebateamt: 0,
-        rvncoa: 'REVENUE',
-        taxcoa: 'TAX',
-        servicecoa: 'SERVICE',
-        costcoa: 'COST',
-        active: 1,
-        usercrt: usercd,
-        userupd: usercd,
-        userdel: usercd,
-        prnkitchen: 0,
-        prnkitchentm: now.hour.toString() +
-            ":" +
-            now.minute.toString() +
-            ":" +
-            now.second.toString(),
-        confirmed: '1',
-        description: widget.item.itemdesc,
-        taxpct: widget.item.taxpct,
-        svchgpct: widget.item.svchgpct,
-        statustrans: 'prosess',
-        guestname: widget.guestname!.isEmpty ? 'No guest' : widget.guestname,
-        createdt: now.toString());
+      trdt: widget.trdt,
+      pscd: pscd,
+      transno: widget.trno,
+      split: 'A',
+      transno1: 'trnobill',
+      itemcode: widget.item.itemcode,
+      itemdesc: widget.item.itemdesc,
+      trno1: widget.trno,
+      itemseq: widget.itemseq,
+      cono: 'cono',
+      waitercd: 'waitercd',
+      discpct: 0,
+      discamt: 0,
+      qty: 1,
+      ratecurcd: 'Rupiah',
+      ratebs1: 1,
+      ratebs2: 1,
+      rateamtcost: widget.item.costamt,
+      rateamtitem: widget.item.slsamt,
+      rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
+      rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
+      rateamttotal: widget.item.slsnett,
+      revenueamt: 1 * widget.item.slsamt!.toDouble(),
+      taxamt: widget.item.slsamt! * widget.item.taxpct! / 100,
+      serviceamt: widget.item.slsamt! * widget.item.svchgpct! / 100,
+      totalaftdisc: 1 * widget.item.slsamt! +
+          widget.item.slsamt! * widget.item.taxpct! / 100 +
+          widget.item.slsamt! * widget.item.svchgpct! / 100,
+      rebateamt: 0,
+      rvncoa: 'REVENUE',
+      taxcoa: 'TAX',
+      servicecoa: 'SERVICE',
+      costcoa: 'COST',
+      active: 1,
+      usercrt: usercd,
+      userupd: usercd,
+      userdel: usercd,
+      prnkitchen: 0,
+      prnkitchentm: now.hour.toString() +
+          ":" +
+          now.minute.toString() +
+          ":" +
+          now.second.toString(),
+      confirmed: '1',
+      description: widget.item.itemdesc,
+      taxpct: widget.item.taxpct,
+      svchgpct: widget.item.svchgpct,
+      statustrans: 'prosess',
+      createdt: now.toString(),
+      guestname: widget.guestname,
+    );
     return result;
   }
 

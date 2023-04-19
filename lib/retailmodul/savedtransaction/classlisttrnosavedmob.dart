@@ -24,7 +24,7 @@ class ClassListSavedMobile extends StatefulWidget {
 class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
   DateTime? timestamp;
   String? times;
-  int valueTime=0;
+  int valueTime = 0;
 
   @override
   void initState() {
@@ -33,7 +33,6 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
     times = timeAgo(
         timestamp!); // 'just now' (or a different value depending on the actual time difference)
     valueTime = timesInt(timestamp!);
- 
   }
 
   String timeAgo(DateTime timestamp) {
@@ -100,15 +99,39 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
       title: Text(widget.datatransaksi!.guestname == null
           ? 'No Guest'
           : widget.datatransaksi!.guestname!),
-      subtitle: Text(widget.datatransaksi!.transno!),
+      subtitle: Column(
+        children: [
+          Row(
+            children: [
+              Text(widget.datatransaksi!.transno!),
+            ],
+          ),
+          Row(
+            children: [
+              Text(widget.datatransaksi!.tablesid!),
+            ],
+          ),
+        ],
+      ),
       // subtitle: Text(widget.datatransaksi!.time!),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-              '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
-          Text(times!,style: TextStyle(color: valueTime>=10?Colors.red:Colors.green),),
-         
+          Container(
+            alignment: Alignment.centerRight,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Text(
+                '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Text(
+              times!,
+              style:
+                  TextStyle(color: valueTime >= 10 ? Colors.red : Colors.green),
+            ),
+          ),
         ],
       ),
     );

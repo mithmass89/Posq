@@ -8,6 +8,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "animated_text_kit",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/animated_text_kit-4.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "archive",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/archive-3.3.6",
       "packageUri": "lib/",
@@ -102,6 +108,12 @@
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "dropdown_button2",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/dropdown_button2-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "equatable",
@@ -716,7 +728,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-04-10T10:58:01.468912Z",
+  "generated": "2023-04-19T05:49:44.957952Z",
   "generator": "pub",
   "generatorVersion": "2.18.0"
 }

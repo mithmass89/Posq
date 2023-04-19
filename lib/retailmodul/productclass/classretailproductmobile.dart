@@ -107,7 +107,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
                     return ShimmerLoading(
                       isLoading: isLoading,
                       child: ClassitemRetailMobile(
-                        guestname: widget.guestname==''?'No Guest Name': widget.guestname,
+                        guestname: widget.guestname,
                         itemseq: widget.itemseq,
                         trno: widget.trno,
                         trdt: formattedDate,

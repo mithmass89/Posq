@@ -39,9 +39,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'POS Demo',
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          // <-- SEE HERE
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
         useMaterial3: true,
         textTheme: GoogleFonts.questrialTextTheme(textTheme).copyWith(),
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

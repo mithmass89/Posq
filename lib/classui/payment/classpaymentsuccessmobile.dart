@@ -353,7 +353,7 @@ ${payment.reduce((value, element) => value + element)}
                                 } else {
                                   await updateTrno();
                                 }
-
+                                await ClassApi.cleartable(dbname, widget.trno);
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) =>

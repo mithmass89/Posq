@@ -40,12 +40,14 @@ class _MainappsState extends State<Mainapps> {
     {'totalaftdisc': 0}
   ];
   List chartdata = [];
+  Future<dynamic>? checkapps;
 
   @override
   void initState() {
     super.initState();
     loadKey();
-    checkNewApp();
+    checkapps = checkingApps();
+    // checkNewApp();
   }
 
   loadKey() async {
@@ -55,9 +57,13 @@ class _MainappsState extends State<Mainapps> {
         : midtranskey.getString('serverkey')!;
   }
 
-  checkNewApp() async {
+  Future<dynamic> checkNewApp() async {
     await getOutlet(usercd);
     await getSelesToday();
+  }
+
+  checkingApps() async {
+    await checkNewApp();
   }
 
   getOutlet(String usercd) async {
@@ -101,58 +107,74 @@ class _MainappsState extends State<Mainapps> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: LayoutBuilder(
-          builder: (
-            context,
-            BoxConstraints constraints,
-          ) {
-            if (constraints.maxWidth <= 480) {
-              switch (hasoutlet) {
-                case false:
-                  return ClassSetupProfileMobile();
-                case true:
-                  // do something else
-                  return AppsMobile(
-                    todaysale: todaysales.isNotEmpty
-                        ? todaysales
-                        : [
-                            {'trdt': '2023-01-01'},
-                            {'totalaftdisc': 0}
-                          ],
-                    monthlysales: monthlysales,
-                    chartdata: chartdata,
-                    profileusaha: Outlet(
-                      outletcd: outletinfo!.outletcd,
-                      outletname: outletinfo!.outletname,
-                      telp: outletinfo!.telp,
-                      alamat: outletinfo!.alamat,
-                      kodepos: outletinfo!.kodepos,
-                    ),
-                  );
-              }
-            }
-            switch (hasoutlet) {
-              case false:
-                return ClassSetupProfileMobile();
-              case true:
-                // do something else
-                return AppsMobile(
-                  chartdata: chartdata,
-                  todaysale: todaysales,
-                  monthlysales: monthlysales,
-                  profileusaha: Outlet(
-                    outletcd: outletinfo!.outletcd,
-                    outletname: outletinfo!.outletname,
-                    telp: outletinfo!.telp,
-                    alamat: outletinfo!.alamat,
-                    kodepos: outletinfo!.kodepos,
-                  ),
-                );
-            }
-            return Container();
-          },
-        ));
+    return FutureBuilder(
+        future: checkapps,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Center(
+                child: Container(
+                  alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    child: CircularProgressIndicator()),
+              ),
+            );
+          } else {
+            return Scaffold(
+                resizeToAvoidBottomInset: true,
+                body: LayoutBuilder(
+                  builder: (
+                    context,
+                    BoxConstraints constraints,
+                  ) {
+                    if (constraints.maxWidth <= 480) {
+                      switch (hasoutlet) {
+                        case false:
+                          return ClassSetupProfileMobile();
+                        case true:
+                          // do something else
+                          return AppsMobile(
+                            todaysale: todaysales.isNotEmpty
+                                ? todaysales
+                                : [
+                                    {'trdt': '2023-01-01'},
+                                    {'totalaftdisc': 0}
+                                  ],
+                            monthlysales: monthlysales,
+                            chartdata: chartdata,
+                            profileusaha: Outlet(
+                              outletcd: outletinfo!.outletcd,
+                              outletname: outletinfo!.outletname,
+                              telp: outletinfo!.telp,
+                              alamat: outletinfo!.alamat,
+                              kodepos: outletinfo!.kodepos,
+                            ),
+                          );
+                      }
+                    }
+                    switch (hasoutlet) {
+                      case false:
+                        return ClassSetupProfileMobile();
+                      case true:
+                        // do something else
+                        return AppsMobile(
+                          chartdata: chartdata,
+                          todaysale: todaysales,
+                          monthlysales: monthlysales,
+                          profileusaha: Outlet(
+                            outletcd: outletinfo!.outletcd,
+                            outletname: outletinfo!.outletname,
+                            telp: outletinfo!.telp,
+                            alamat: outletinfo!.alamat,
+                            kodepos: outletinfo!.kodepos,
+                          ),
+                        );
+                    }
+                    return Container();
+                  },
+                ));
+          }
+        });
   }
 }

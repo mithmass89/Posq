@@ -41,7 +41,7 @@ class _ButtonClassActionState extends State<ButtonClassAction> {
         width: widget.widht,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color:  Colors.blueGrey ,
+          color: Colors.blueGrey,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(35),
               topRight: Radius.circular(35),
@@ -662,9 +662,12 @@ class _LoadingButtonState extends State<LoadingButton> {
         onTap: widget.isLoading! ? null : widget.onpressed!,
         child: Container(
           decoration: BoxDecoration(
-            color: widget.color,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-          ),
+              border: Border.all(
+                color: Colors.black,
+                width: 0.5,
+              ),
+              borderRadius: BorderRadius.circular(10),
+              color: widget.color),
           alignment: Alignment.center,
           height: widget.height,
           width: widget.width,

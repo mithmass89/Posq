@@ -1,7 +1,10 @@
 // ignore_for_file: unused_import
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
+import 'package:posq/login.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
@@ -43,17 +46,18 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      alignment: Alignment.center,
+                      alignment: Alignment.topLeft,
                       height: MediaQuery.of(context).size.height * 0.04,
-                      width: MediaQuery.of(context).size.width * 0.5,
+                      width: MediaQuery.of(context).size.width * 0.3,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
+                        // border: Border.all(
+                        //   color: Colors.white,
+                        //   width: 2,
+                        // ),
+                        // borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -118,57 +122,152 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             leading: Icon(
               Icons.attach_money,
             ),
+            trailing: SizedBox(
+              width: 40.0,
+              child: DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.black,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 7.0,
+                      color: Colors.pink,
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    FlickerAnimatedText('Pro'),
+                    FlickerAnimatedText('New !!'),
+                  ],
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
+              ),
+            ),
             title: Text('Kelola Promo'),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return ClassPromoMobile();
-              }));
-            },
+            onTap: accesslist.contains('kelolapromo') == true
+                ? () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ClassPromoMobile();
+                    }));
+                  }
+                : () {
+                    Fluttertoast.showToast(
+                        msg: "Tidak punya akses kelola promo",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
           ),
           ListTile(
             leading: Icon(
               Icons.history_outlined,
             ),
             title: const Text('Riwayat Transaksi'),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return Listtransaction(
-                  fromsaved: widget.fromsaved,
-                  pscd: widget.outletinfo.outletcd,
-                  outletinfo: widget.outletinfo,
-                );
-              }));
-            },
+            onTap: accesslist.contains('riwayattrans') == true
+                ? () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return Listtransaction(
+                        fromsaved: widget.fromsaved,
+                        pscd: widget.outletinfo.outletcd,
+                        outletinfo: widget.outletinfo,
+                      );
+                    }));
+                  }
+                : () {
+                    Fluttertoast.showToast(
+                        msg: "Tidak punya access riwayat",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
           ),
           ListTile(
             leading: Icon(
               Icons.add_chart_outlined,
             ),
             title: const Text('Laporan'),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return ClassSummaryReport(user: 'Admin');
-              }));
-            },
+            onTap: accesslist.contains('laporan') == true
+                ? () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ClassSummaryReport(user: 'Admin');
+                    }));
+                  }
+                : () {
+                    Fluttertoast.showToast(
+                        msg: "Tidak punya access laporan",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
           ),
           ListTile(
             leading: Icon(
               Icons.add_box,
             ),
             title: const Text('Kelola Produk'),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return ClassAdjusmentType(
-                  pscd: widget.outletinfo,
-                );
-              }));
-            },
+            onTap: accesslist.contains('setting') == true
+                ? () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ClassAdjusmentType(
+                        pscd: widget.outletinfo,
+                      );
+                    }));
+                  }
+                : () {
+                    Fluttertoast.showToast(
+                        msg: "Tidak punya access laporan",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
           ),
-          ListTile(
+          ListTile(       trailing: SizedBox(
+              width: 40.0,
+              child: DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.black,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 7.0,
+                      color: Colors.pink,
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    FlickerAnimatedText('Pro'),
+                    FlickerAnimatedText('New !!'),
+                  ],
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
+              ),
+            ),
             leading: Icon(
               Icons.people_outline_outlined,
             ),
@@ -181,13 +280,50 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             },
           ),
           ListTile(
+                   trailing: SizedBox(
+              width: 40.0,
+              child: DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.black,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 7.0,
+                      color: Colors.pink,
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    FlickerAnimatedText('Pro'),
+                    FlickerAnimatedText('New !!'),
+                  ],
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
+              ),
+            ),
             leading: Icon(
               Icons.shopify_sharp,
             ),
             title: const Text('Toko Online'),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: accesslist.contains('tokoonline') == true
+                ? () {
+                    Navigator.pop(context);
+                  }
+                : () {
+                    Fluttertoast.showToast(
+                        msg: "Tidak punya access Toko Online",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
           ),
           ListTile(
             leading: Icon(
@@ -198,6 +334,14 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () {
+                LogOut.signOut(context: context);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
+              }),
           Container(
               child: Align(
                   alignment: FractionalOffset.bottomCenter,
@@ -205,28 +349,78 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                     children: <Widget>[
                       Divider(),
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.1,
+                        height: MediaQuery.of(context).size.height * 0.03,
                       ),
                       ListTile(
+                               trailing: SizedBox(
+              width: 40.0,
+              child: DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.black,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 7.0,
+                      color: Colors.pink,
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    FlickerAnimatedText('Pro'),
+                    FlickerAnimatedText('New !!'),
+                  ],
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
+              ),
+            ),
                         leading: Icon(Icons.settings),
                         title: Text('Integrasi '),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return ClassListIntegrasi();
-                          }));
-                        },
+                        onTap: accesslist.contains('integrasi') == true
+                            ? () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return ClassListIntegrasi();
+                                }));
+                              }
+                            : () {
+                                Fluttertoast.showToast(
+                                    msg: "Tidak punya access Integrasi",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              },
                       ),
                       ListTile(
                         leading: Icon(Icons.print),
                         title: Text('Printer'),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return ClassMainPrinter();
-                          }));
-                        },
-                      )
+                        onTap: accesslist.contains('settingprinter') == true
+                            ? () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return ClassMainPrinter();
+                                }));
+                              }
+                            : () {
+                                Fluttertoast.showToast(
+                                    msg: "Tidak punya access Printer",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              },
+                      ),
                     ],
                   ))),
         ],

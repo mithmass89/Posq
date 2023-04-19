@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:math';
+import 'package:dropdown_button2/src/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
@@ -1092,6 +1093,11 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
               child: Text('Batal')),
           TextButton(
               onPressed: () async {
+                Random random = new Random();
+                int randomNumber =
+                    random.nextInt(100); // from 0 upto 99 included
+                await ClassApi.updateTrnoGuest(
+                    pscd, widget.trno, 'no guest $randomNumber');
                 await handler.activeZeroiafjrndttrno(
                     IafjrndtClass(active: 1, transno: widget.trno));
                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -2028,6 +2034,7 @@ class DialogClassSimpan extends StatefulWidget {
   final String pscd;
   final Outlet outletinfo;
   final bool? fromsaved;
+  final IafjrndtClass datatrans;
 
   DialogClassSimpan({
     Key? key,
@@ -2035,6 +2042,7 @@ class DialogClassSimpan extends StatefulWidget {
     required this.pscd,
     required this.outletinfo,
     this.fromsaved,
+    required this.datatrans,
   }) : super(key: key);
 
   @override
@@ -2049,15 +2057,33 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
   var formatter = DateFormat('yyyy-MM-dd');
   String trno = '';
   List<String> table = [];
+  List<String> items = [];
+  String? selectedValue;
 
   @override
   void initState() {
     super.initState();
+    getTables();
+    print('ini data ${widget.datatrans.tablesid}');
     formattedDate = formatter.format(now);
+    if (widget.datatrans.guestname != '' &&
+        widget.datatrans.guestname != null) {
+      guestname.text = widget.datatrans.guestname!;
+      setState(() {});
+    } if (widget.datatrans.tablesid != '' &&
+        widget.datatrans.tablesid != null) {
+      selectedValue = widget.datatrans.tablesid;
+      print('update tables');
+      setState(() {});
+    }
   }
 
   updateGuest(String guestname) async {
     await ClassApi.updateTrnoGuest(dbname, widget.trno, guestname);
+  }
+
+  updateTablestrno(String table) async {
+    await ClassApi.updateTablestrno(dbname, widget.trno, selectedValue!);
   }
 
   checkTrno() async {
@@ -2071,6 +2097,17 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
     await checkTrno();
   }
 
+  getTables() async {
+    await ClassApi.getTablesNotUse('').then((value) {
+      if (value.isNotEmpty) {
+        for (var x in value) {
+          items.add(x.tablecd!);
+        }
+      }
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
@@ -2082,7 +2119,7 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.1,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: TextFieldMobile2(
                     label: 'Guest Name',
@@ -2091,12 +2128,107 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
                     typekeyboard: TextInputType.text,
                   ),
                 ),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    isExpanded: true,
+                    hint: Row(
+                      children: [
+                        Icon(
+                          Icons.list,
+                          size: 16,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Expanded(
+                          child: Text(
+                        selectedValue==null?   'Table No.':selectedValue!,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    items: items
+                        .map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
+                        .toList(),
+                    value: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as String;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      height: 50,
+                      width: 160,
+                      padding: const EdgeInsets.only(left: 14, right: 14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: Colors.black26,
+                        ),
+                        color: Colors.orange,
+                      ),
+                      elevation: 2,
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(
+                        Icons.arrow_forward_ios_outlined,
+                      ),
+                      iconSize: 14,
+                      iconEnabledColor: Colors.yellow,
+                      iconDisabledColor: Colors.grey,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 200,
+                      width: 200,
+                      padding: null,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.redAccent,
+                      ),
+                      elevation: 8,
+                      offset: const Offset(-20, 0),
+                      scrollbarTheme: ScrollbarThemeData(
+                        radius: const Radius.circular(40),
+                        thickness: MaterialStateProperty.all<double>(6),
+                        thumbVisibility: MaterialStateProperty.all<bool>(true),
+                      ),
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                      padding: EdgeInsets.only(left: 14, right: 14),
+                    ),
+                  ),
+                ),
               ],
             )),
         title: Text('Simpan Sebagai '),
         actions: <Widget>[
           TextButton(
               onPressed: () async {
+                print(selectedValue);
+                if (selectedValue != null) {
+                  await updateTablestrno(selectedValue!);
+                  await ClassApi.updateTables_use(
+                      dbname, widget.trno, selectedValue!);
+                }
                 await updateGuest(
                     guestname.text.isEmpty ? 'No Guest' : guestname.text);
                 final prefs = await SharedPreferences.getInstance();

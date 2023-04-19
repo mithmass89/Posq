@@ -29,9 +29,15 @@ class _ClassListCustomersState extends State<ClassListCustomers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          child: Icon( Icons.arrow_back_ios, color: Colors.black,  ),
+          onTap: () {
+            Navigator.pop(context);
+          } ,
+        ) ,
         title: Text(
-          'Customers List',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          'Buat Customer',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: FutureBuilder(

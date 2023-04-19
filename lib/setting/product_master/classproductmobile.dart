@@ -68,6 +68,15 @@ class _ClassproductmobileState extends State<Classproductmobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        leading: GestureDetector(
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           'Product List',
           style: TextStyle(color: Colors.black),
