@@ -64,21 +64,21 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
   //// create user access to outlet they have/////
 
   /// create GNTRANP ///
-  Future<void> _insertGntrantp(String profile) async {
-    List<List> datatrtp = [
-      ["1001", "Receiving", "RR-", outletcd.text, 0],
-      ["1002", "Store Request", "SR-", outletcd.text, 0],
-      ["1003", "Stock Opname", "ST-", outletcd.text, 0],
-      ["1004", "Return Receiving", "RNR-", outletcd.text, 0],
-      ["1005", "Return Store", "RSR-", outletcd.text, 0],
-      ["2001", "Account Payable", "AP-", outletcd.text, 0],
-      ["2003", "Account Receivable", "AR-", outletcd.text, 0],
-      ["3001", "Cash & Bank In", "CB-IN-", outletcd.text, 0],
-      ["3002", "Cash & Bank Out", "CB-OUT-", outletcd.text, 0]
-    ];
+  // Future<void> _insertGntrantp(String profile) async {
+  //   List<List> datatrtp = [
+  //     ["1001", "Receiving", "RR-", outletcd.text, 0],
+  //     ["1002", "Store Request", "SR-", outletcd.text, 0],
+  //     ["1003", "Stock Opname", "ST-", outletcd.text, 0],
+  //     ["1004", "Return Receiving", "RNR-", outletcd.text, 0],
+  //     ["1005", "Return Store", "RSR-", outletcd.text, 0],
+  //     ["2001", "Account Payable", "AP-", outletcd.text, 0],
+  //     ["2003", "Account Receivable", "AR-", outletcd.text, 0],
+  //     ["3001", "Cash & Bank In", "CB-IN-", outletcd.text, 0],
+  //     ["3002", "Cash & Bank Out", "CB-OUT-", outletcd.text, 0]
+  //   ];
 
-    await ClassApi.insertTranstype(datatrtp, outletcd.text);
-  }
+  //   await ClassApi.insertTranstype(datatrtp, outletcd.text);
+  // }
 
   ///save data profile for later ///
 
@@ -248,7 +248,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                     outletcd: outletcd.text,
                                     profile: outletcd.text));
                                 await ClassApi.insertOutletUser(outletcd.text);
-                                await _insertGntrantp(outletcd.text);
+                                // await _insertGntrantp(outletcd.text);
                                 setState(() {
                                   _isloading = false;
                                   pscd = outletcd.text;

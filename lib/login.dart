@@ -8,6 +8,10 @@ import 'package:posq/classui/color.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
+import 'package:posq/paymentcheck.dart';
+import 'package:posq/registerform.dart';
+import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/userinfo.dart';
 
 class Login extends StatefulWidget {
@@ -174,25 +178,47 @@ class _LoginState extends State<Login> {
                                       imageurl = values[0]['urlpict'];
                                       emaillogin = email.text;
                                     });
-                                    await ClassApi.getOutlets(usercd)
-                                        .then((valued) {
-                                      dbname = valued[0]['outletcode'];
-                                      pscd = valued[0]['outletcode'];
-                                      for (var x in valued) {
-                                        listoutlets.add(x['outletcode']);
-                                      }
-                                    });
-                                    await ClassApi.getAccessUser(usercd)
-                                        .then((valueds) {
-                                      for (var x in valueds) {
-                                        accesslist.add(x['access']);
-                                      }
-                                    });
+                                    await ClassApi.checkVerifiedPayment(
+                                            emaillogin)
+                                        .then((value) async {
+                                      if (value[0]['paymentcheck'] ==
+                                              'pending' ||
+                                          value[0]['paymentcheck'] == '') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PaymentChecks(
+                                                    email: emaillogin,
+                                                    trno: value[0]
+                                                        ['pytransaction'],
+                                                  )),
+                                        );
+                                      } else {
+                                        await ClassApi.getOutlets(usercd)
+                                            .then((valued) {
+                                          dbname = valued[0]['outletcode'];
+                                          pscd = valued[0]['outletcode'];
+                                          for (var x in valued) {
+                                            listoutlets.add(x['outletcode']);
+                                          }
+                                        });
+                                        await ClassApi.getAccessUser(usercd)
+                                            .then((valueds) {
+                                          for (var x in valueds) {
+                                            accesslist.add(x['access']);
+                                          }
+                                        });
 
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => Mainapps()),
-                                        (Route<dynamic> route) => false);
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Mainapps()),
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                      }
+                                    });
                                   } else {
                                     Fluttertoast.showToast(
                                         msg: "User Not Found",
@@ -260,7 +286,6 @@ class _LoginState extends State<Login> {
                                       urlpic: value.photoURL!,
                                       uuid: value.uid),
                                   'profiler');
-
                               await ClassApi.checkUserFromOauth(
                                       value.email!, 'profiler')
                                   .then((values) async {
@@ -272,25 +297,63 @@ class _LoginState extends State<Login> {
                                     emaillogin = value.email!;
                                     print('ini urlpics : $imageurl');
                                   });
-                                  await ClassApi.getOutlets(usercd)
-                                      .then((valued) {
-                                    dbname = valued[0]['outletcode'];
-                                    pscd = valued[0]['outletcode'];
-                                    for (var x in valued) {
-                                      listoutlets.add(x['outletcode']);
+                                  await ClassApi.checkVerifiedPayment(
+                                          emaillogin)
+                                      .then((value) async {
+                                    print(value[0]['paymentcheck']);
+                                    if (value[0]['paymentcheck'] == 'pending' ||
+                                        value[0]['paymentcheck'] == '') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PaymentChecks(
+                                                  email: emaillogin,
+                                                  trno: value[0]
+                                                      ['pytransaction'],
+                                                )),
+                                      );
+                                      Fluttertoast.showToast(
+                                          msg: "Memverifikasi pembayaran",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              Color.fromARGB(255, 11, 12, 14),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    } else {
+                                      await ClassApi.getOutlets(usercd)
+                                          .then((valued) async {
+                                        if (valued.length != 0) {
+                                          dbname = valued[0]['outletcode'];
+                                          pscd = valued[0]['outletcode'];
+                                          for (var x in valued) {
+                                            listoutlets.add(x['outletcode']);
+                                          }
+                                          await ClassApi.getAccessUser(usercd)
+                                              .then((valueds) {
+                                            for (var x in valueds) {
+                                              accesslist.add(x['access']);
+                                            }
+                                          });
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Mainapps()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ClassSetupProfileMobile()),
+                                          );
+                                        }
+                                      });
                                     }
                                   });
-                                  await ClassApi.getAccessUser(usercd)
-                                      .then((valueds) {
-                                    for (var x in valueds) {
-                                      accesslist.add(x['access']);
-                                    }
-                                  });
-
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => Mainapps()),
-                                      (Route<dynamic> route) => false);
                                 } else {
                                   Fluttertoast.showToast(
                                       msg: "User Not Found",
@@ -338,7 +401,13 @@ class _LoginState extends State<Login> {
                             Text("Belum Punya Akun ? ",
                                 style: TextStyle(fontSize: 14)),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterForm()),
+                                );
+                              },
                               child: Text(" Daftar ",
                                   style: TextStyle(fontSize: 14)),
                             ),
@@ -380,6 +449,7 @@ class Authentication {
             await auth.signInWithCredential(credential);
 
         user = userCredential.user;
+        await user?.sendEmailVerification();
         print(userCredential);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
@@ -387,9 +457,11 @@ class Authentication {
           print(e);
         } else if (e.code == 'invalid-credential') {
           // handle the error here
+          print(e);
         }
       } catch (e) {
         // handle the error here
+        print(e);
       }
     }
 

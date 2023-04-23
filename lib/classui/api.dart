@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var api = 'http://192.168.1.17:3000';
-// var api = 'http://147.139.163.18:3000';
+// var api = 'http://192.168.1.17:3000';
+var api = 'http://147.139.163.18:3000';
 
 var serverkey = '';
 String username = 'massmith';
 String password = 'massmith';
 var basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+var basicAuthMID = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
 
 class ClassApi {
   static Future<dynamic> sendMail(
@@ -91,6 +93,31 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/insertpromo');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertRegisterUser(
+      String email, String usercd, String password) async {
+    var body = {
+      "email": email,
+      "usercd": usercd,
+      "password": password,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertRegisterUser');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -712,10 +739,11 @@ class ClassApi {
     }
   }
 
-
-    static Future<dynamic> cleartable(
-      String dbname, String transno) async {
-    var body = {"dbname": dbname, "transno": transno,};
+  static Future<dynamic> cleartable(String dbname, String transno) async {
+    var body = {
+      "dbname": dbname,
+      "transno": transno,
+    };
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/cleartable');
@@ -734,9 +762,6 @@ class ClassApi {
       throw Exception();
     }
   }
-
-
-  
 
   static Future<dynamic> deactivePosdetail(int id, String dbname) async {
     var body = {"dbname": dbname, "data": id};
@@ -1101,6 +1126,28 @@ class ClassApi {
     }
   }
 
+  static Future<List<dynamic>> checkVerifiedPayment(String email) async {
+    // print(json.encode(pembayaran));
+    var data = {"email": email};
+
+    final url = Uri.parse('$api/checkVerifiedPayment');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<dynamic>> getAccessUser(String usercd) async {
     // print(json.encode(pembayaran));
     var data = {"usercd": usercd};
@@ -1149,8 +1196,7 @@ class ClassApi {
     }
   }
 
-
-    static Future<List<TableMaster>> getTablesNotUse(String query) async {
+  static Future<List<TableMaster>> getTablesNotUse(String query) async {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname};
     final url = Uri.parse('$api/getTablesNotUse');
@@ -1175,7 +1221,6 @@ class ClassApi {
       throw Exception();
     }
   }
-
 
   static Future<List<dynamic>> getUserinfofromManual(
       String email, String password) async {
@@ -1627,6 +1672,102 @@ class ClassApi {
       }).toList();
     } else {
       throw Exception();
+    }
+  }
+
+  static Future<dynamic> updatePaymentFirst(String subsrcription,
+      String pytransaction, String paymentcheck, String email) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "subsrcription": subsrcription,
+      "pytransaction": pytransaction,
+      "paymentcheck": paymentcheck,
+      "email": email,
+    };
+    final url = Uri.parse('$api/updatePaymentFirst');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updatePaymentVerification(
+      String paymentcheck, String email) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "paymentcheck": paymentcheck,
+      "email": email,
+    };
+    final url = Uri.parse('$api/updatePaymentVerification');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> snapinMidtrans(
+      num amount, String trno, String subscribetion) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "transaction_details": {"order_id": '$trno', "gross_amount": amount},
+      "credit_card": {"secure": true}
+    };
+    final url =
+        Uri.parse('https://app.sandbox.midtrans.com/snap/v1/transactions');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'authorization':
+              'Basic U0ItTWlkLXNlcnZlci1KNFhKandjLXBUQlFZc1k0aFVGenRDUC06'
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return json.decode(response.body)['redirect_url'];
+    } else {
+      print(json.decode(response.body)['redirect_url']);
+      return json.decode(response.body)['redirect_url'];
+    }
+  }
+
+  static Future<dynamic> getStatusTransactionSubscribe(String trno) async {
+    final url = Uri.parse('https://api.sandbox.midtrans.com/v2/$trno/status');
+    final response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization':
+            'Basic U0ItTWlkLXNlcnZlci1KNFhKandjLXBUQlFZc1k0aFVGenRDUC06'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      return status['transaction_status'];
+    } else {
+      return response.statusCode;
     }
   }
 }

@@ -83,6 +83,8 @@ dev_dependencies:
   path_provider: ^2.0.0
   printing: ^5.3.0
   dropdown_button2: ^2.1.0
+  in_app_purchase: ^3.1.5
+
   
 
 
