@@ -13,6 +13,10 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/payment/paymentmobile.dart';
 import 'package:posq/databasehandler.dart';
+import 'package:posq/retailmodul/classdrawermaintabs.dart';
+import 'package:posq/retailmodul/classretailmanualtab.dart';
+import 'package:posq/retailmodul/classretailproducttabs.dart';
+import 'package:posq/retailmodul/detailtranstab.dart';
 import 'package:posq/retailmodul/savedtransaction/classlisttransactionmobile.dart';
 import 'package:posq/retailmodul/productclass/classretailproductmobile.dart';
 import 'package:posq/retailmodul/savedtransaction/classsavedtransactionmobile.dart';
@@ -399,158 +403,508 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        drawer: DrawerRetailMain(
-          fromsaved: widget.fromsaved!,
-          outletinfo: widget.outletinfo,
-          outletname: widget.outletinfo.outletname,
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height * 1,
-          color: Colors.white,
-          child: WillPopScope(
-            onWillPop: () async {
-              return await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DialogClassWillPop(
-                      trno: trno.toString(),
-                    );
-                  });
-            },
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                SlidingUpPanel(
-                    onPanelSlide: (value) {
-                      if (value == 0.0) {
-                        setState(() {
-                          _scrollisanimated = false;
-                        });
-                        // print(_scrollisanimated);
-                      } else if (value < 0.5) {
-                        setState(() {
-                          _scrollisanimated = true;
-                        });
-                      }
-                    },
-                    controller: _pc,
-                    // header :Center(child: Text('ini header')),
+    return LayoutBuilder(builder: (
+      context,
+      BoxConstraints constraints,
+    ) {
+      if (constraints.maxWidth <= 480) {
+        return Scaffold(
+            key: _scaffoldKey,
+            resizeToAvoidBottomInset: false,
+            drawer: DrawerRetailMain(
+              fromsaved: widget.fromsaved!,
+              outletinfo: widget.outletinfo,
+              outletname: widget.outletinfo.outletname,
+            ),
+            body: Container(
+              height: MediaQuery.of(context).size.height * 1,
+              color: Colors.white,
+              child: WillPopScope(
+                onWillPop: () async {
+                  return await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DialogClassWillPop(
+                          trno: trno.toString(),
+                        );
+                      });
+                },
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    SlidingUpPanel(
+                        onPanelSlide: (value) {
+                          if (value == 0.0) {
+                            setState(() {
+                              _scrollisanimated = false;
+                            });
+                            // print(_scrollisanimated);
+                          } else if (value < 0.5) {
+                            setState(() {
+                              _scrollisanimated = true;
+                            });
+                          }
+                        },
+                        controller: _pc,
+                        // header :Center(child: Text('ini header')),
 
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(10)),
-                    minHeight: MediaQuery.of(context).size.height * 0.20,
-                    maxHeight: MediaQuery.of(context).size.height * 0.96,
-                    body: Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035,
-                          width: MediaQuery.of(context).size.width * 1,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(color: Colors.orange),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.menu,
-                                ),
-                                iconSize: 30,
-                                color: Colors.white,
-                                splashColor: Colors.transparent,
-                                onPressed: () {
-                                  _scaffoldKey.currentState!.openDrawer();
-                                },
-                              ),
-                              Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.07,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.62,
-                                  child: TextFieldMobile2(
-                                    hint: 'Searching',
-                                    controller: search,
-                                    onChanged: (value) {
-                                      setState(() {});
-                                    },
-                                    typekeyboard: TextInputType.text,
-                                  )),
-                              IconButton(
-                                icon: Image.asset(
-                                  'icons8-barcode-100.png',
-                                  height: 30,
-                                  width: 30,
-                                ),
-                                iconSize: 30,
-                                color: Colors.white,
-                                splashColor: Colors.transparent,
-                                onPressed: () {
-                                  scanBarcodeNormal();
-                                },
-                              ),
-                              Stack(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
+                        minHeight: MediaQuery.of(context).size.height * 0.20,
+                        maxHeight: MediaQuery.of(context).size.height * 0.96,
+                        body: Column(
+                          children: [
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.035,
+                              width: MediaQuery.of(context).size.width * 1,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(color: Colors.orange),
+                              child: Row(
                                 children: [
                                   IconButton(
-                                    icon: Image.asset(
-                                        'icons8-checklist-100.png',
-                                        height: 20,
-                                        width: 20),
+                                    icon: Icon(
+                                      Icons.menu,
+                                    ),
                                     iconSize: 30,
                                     color: Colors.white,
                                     splashColor: Colors.transparent,
-                                    onPressed: () async {
-                                      await checkSF();
-                                      await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ClassSavedTransactionMobile(
-                                                    pscd: widget
-                                                        .outletinfo.alamat,
-                                                    outletinfo:
-                                                        widget.outletinfo,
-                                                  )));
+                                    onPressed: () {
+                                      _scaffoldKey.currentState!.openDrawer();
                                     },
                                   ),
-                                  pending != 0
-                                      ? Positioned(
-                                          top: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.009,
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.02,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.02,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20)),
-                                                color: Colors.red),
-                                            child: Text(
-                                              pending.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ))
-                                      : Container(),
+                                  Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.62,
+                                      child: TextFieldMobile2(
+                                        hint: 'Searching',
+                                        controller: search,
+                                        onChanged: (value) {
+                                          setState(() {});
+                                        },
+                                        typekeyboard: TextInputType.text,
+                                      )),
+                                  IconButton(
+                                    icon: Image.asset(
+                                      'icons8-barcode-100.png',
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                    iconSize: 30,
+                                    color: Colors.white,
+                                    splashColor: Colors.transparent,
+                                    onPressed: () {
+                                      scanBarcodeNormal();
+                                    },
+                                  ),
+                                  Stack(
+                                    children: [
+                                      IconButton(
+                                        icon: Image.asset(
+                                            'icons8-checklist-100.png',
+                                            height: 20,
+                                            width: 20),
+                                        iconSize: 30,
+                                        color: Colors.white,
+                                        splashColor: Colors.transparent,
+                                        onPressed: () async {
+                                          await checkSF();
+                                          await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ClassSavedTransactionMobile(
+                                                        pscd: widget
+                                                            .outletinfo.alamat,
+                                                        outletinfo:
+                                                            widget.outletinfo,
+                                                      )));
+                                        },
+                                      ),
+                                      pending != 0
+                                          ? Positioned(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01,
+                                              right: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.009,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.02,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.02,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20)),
+                                                    color: Colors.red),
+                                                child: Text(
+                                                  pending.toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ))
+                                          : Container(),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            Container(
+                              // decoration: BoxDecoration(color: Colors.grey[200]),
+                              child: TabBar(
+                                controller: controller,
+                                tabs: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    child: Text(
+                                      'Manual',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    child: Text(
+                                      'Produk',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.007,
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.6,
+                              width: MediaQuery.of(context).size.width * 1,
+                              child: TabBarView(
+                                controller: controller,
+                                children: [
+                                  ClassRetailManualMobile(
+                                      guestname: guestname == ''
+                                          ? randomNumber.toString()
+                                          : guestname!,
+                                      refreshdata: getDataSlide,
+                                      trno: widget.trno == null
+                                          ? trno
+                                          : widget.trno,
+                                      itemlenght: item,
+                                      outletinfo: widget.outletinfo),
+                                  ClassRetailProductMobile(
+                                    guestname: guestname == ''
+                                        ? randomNumber.toString()
+                                        : guestname!,
+                                    itemseq: itemseq,
+                                    controller: search,
+                                    trno: widget.trno.toString(),
+                                    pscd: widget.outletinfo.outletcd,
+                                  )
+                                  // Center(child: Text('Product')),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
+                        panelBuilder: (_pc) {
+                          switch (_scrollisanimated) {
+                            case true:
+                              return SlideUpPanel(
+                                guestname: guestname!.isEmpty
+                                    ? randomNumber.toString()
+                                    : guestname!,
+                                datatransaksi: data,
+                                fromsaved: widget.fromsaved,
+                                sum: sum,
+                                animated: _scrollisanimated,
+                                outletinfo: Outlet(
+                                  alamat: widget.outletinfo.alamat,
+                                  kodepos: widget.outletinfo.kodepos,
+                                  outletcd: widget.outletinfo.outletcd,
+                                  outletname: widget.outletinfo.outletname,
+                                  telp: widget.outletinfo.telp,
+                                  trnonext: widget.outletinfo.trnonext,
+                                  trnopynext: widget.outletinfo.trnopynext,
+                                ),
+                                updatedata: getDataSlide,
+                                listdata: listdata!,
+                                qty: item,
+                                amount: sum,
+                                trno: widget.trno.toString(),
+                                trnoinfo: iafjrndt,
+                                controllers: _pc,
+                                callback: (IafjrndtClass val) {
+                                  getDataSlide();
+                                },
+                                refreshdata: () {
+                                  getDataSlide();
+                                },
+                                itemlength: itemlength,
+                              );
+                            case false:
+                              return Container(
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                        onTap: () {},
+                                        child: Icon(
+                                          Icons.menu_sharp,
+                                          size: 25,
+                                        )),
+                                    // Row(
+                                    //   children: [
+                                    //     Expanded(
+                                    //       child: Divider(),
+                                    //     ),
+                                    //   ],
+                                    // ),
+
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          // color: Colors.blue,
+                                          ),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.04,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Expanded(
+                                              flex: 4,
+                                              child: Text(
+                                                'BARANG : ${itemlength} ',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17),
+                                              )),
+                                          Expanded(
+                                              flex: 1,
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons.table_bar,
+                                                ),
+                                                iconSize: 25,
+                                                color: Colors.blueGrey,
+                                                splashColor: Colors.purple,
+                                                onPressed: () async {
+                                                  await showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return DialogCustomerList();
+                                                      });
+                                                },
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                          }
+                          return Container();
+                        }),
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height * 0.02,
+                      left: MediaQuery.of(context).size.width * 0.025,
+                      child: ButtonNoIconAnimated(
+                          curve: Curves.linear,
+                          duration: 300,
+                          textcolor: _scrollisanimated == true
+                              ? Colors.orange
+                              : Colors.white,
+                          color: _scrollisanimated == true
+                              ? Colors.white
+                              : Colors.orange,
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          width: _scrollisanimated == false
+                              ? MediaQuery.of(context).size.width * 0.95
+                              : MediaQuery.of(context).size.width * 0.40,
+                          onpressed: () async {
+                            _pc.open();
+                            if (_scrollisanimated == true) {
+                              await getDataSlide();
+                              return await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return DialogClassSimpan(
+                                      datatrans: listdata!.first,
+                                      fromsaved: widget.fromsaved!,
+                                      outletinfo: widget.outletinfo,
+                                      pscd: widget.outletinfo.outletcd,
+                                      trno: trno == ''
+                                          ? widget.trno!
+                                          : trno.toString(),
+                                    );
+                                  });
+                            }
+                          },
+                          name: _scrollisanimated == false
+                              ? 'Tagih ${CurrencyFormat.convertToIdr(sum, 0)} '
+                              : 'Simpan'),
+                    ),
+                    AnimatedPositioned(
+                      curve: Curves.linear,
+                      duration: const Duration(milliseconds: 400),
+                      bottom: MediaQuery.of(context).size.height * 0.02,
+                      left: _scrollisanimated == false
+                          ? MediaQuery.of(context).size.width * 0.9
+                          : MediaQuery.of(context).size.width * 0.45,
+                      child: ButtonNoIconAnimated(
+                          curve: Curves.linear,
+                          duration: 400,
+                          textcolor: Colors.white,
+                          color: Colors.orange,
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          width: _scrollisanimated == false
+                              ? MediaQuery.of(context).size.width * 0.0
+                              : MediaQuery.of(context).size.width * 0.53,
+                          onpressed: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PaymentV2MobileClass(
+                                        fromsaved: widget.fromsaved!,
+                                        datatrans: listdata!,
+                                        outletinfo: widget.outletinfo,
+                                        balance: sum.toInt(),
+                                        pscd: widget.outletinfo.outletcd,
+                                        trdt: formattedDate,
+                                        trno: widget.trno.toString(),
+                                        outletname:
+                                            widget.outletinfo.outletname,
+                                      )),
+                            );
+                            ClassRetailMainMobile.of(context)!.string = result!;
+                          },
+                          name: 'Bayar'),
+                    ),
+                  ],
+                ),
+              ),
+            ));
+      } else if (constraints.maxWidth >= 820) {
+        return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.orange,
+              title: Text(
+                'Transaksi',
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: TextFieldMobile2(
+                      hint: 'Cari barang',
+                      controller: search,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      typekeyboard: TextInputType.text,
+                    )),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.16,
+                ),
+                IconButton(
+                  icon: Image.asset(
+                    'icons8-barcode-100.png',
+                    height: 40,
+                    width: 40,
+                  ),
+                  iconSize: 40,
+                  color: Colors.white,
+                  splashColor: Colors.transparent,
+                  onPressed: () {
+                    scanBarcodeNormal();
+                  },
+                ),
+                Stack(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.list),
+                      iconSize: 40,
+                      color: Colors.white,
+                      splashColor: Colors.transparent,
+                      onPressed: () async {
+                        await checkSF();
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ClassSavedTransactionMobile(
+                                      pscd: widget.outletinfo.alamat,
+                                      outletinfo: widget.outletinfo,
+                                    )));
+                      },
+                    ),
+                    pending != 0
+                        ? Positioned(
+                            top: MediaQuery.of(context).size.height * 0.01,
+                            right: MediaQuery.of(context).size.height * 0.009,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: MediaQuery.of(context).size.height * 0.03,
+                              width: MediaQuery.of(context).size.height * 0.03,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  color: Colors.red),
+                              child: Text(
+                                pending.toString(),
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ))
+                        : Container(),
+                  ],
+                ),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.06,
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.print,
+                          color: Colors.white,
+                        ))),
+              ],
+            ),
+            key: _scaffoldKey,
+            resizeToAvoidBottomInset: false,
+            drawer: DrawerRetailMainTabs(
+              fromsaved: widget.fromsaved!,
+              outletinfo: widget.outletinfo,
+              outletname: widget.outletinfo.outletname,
+            ),
+            body: Row(
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
                         Container(
+                          width: MediaQuery.of(context).size.width * 0.65,
                           // decoration: BoxDecoration(color: Colors.grey[200]),
                           child: TabBar(
                             controller: controller,
@@ -558,32 +912,39 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               Container(
                                 alignment: Alignment.center,
                                 height: 50,
+                                width: 100,
                                 child: Text(
                                   'Manual',
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 0, 160, 147),
+                                  ),
                                 ),
                               ),
                               Container(
+                                width: 100,
                                 alignment: Alignment.center,
                                 height: 50,
                                 child: Text(
                                   'Produk',
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 0, 160, 147),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.007,
-                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.6,
-                          width: MediaQuery.of(context).size.width * 1,
+                          height: MediaQuery.of(context).size.height * 0.75,
+                          width: MediaQuery.of(context).size.width * 0.6,
                           child: TabBarView(
                             controller: controller,
                             children: [
-                              ClassRetailManualMobile(
+                              ClassRetailManualTabs(
                                   guestname: guestname == ''
                                       ? randomNumber.toString()
                                       : guestname!,
@@ -592,7 +953,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       widget.trno == null ? trno : widget.trno,
                                   itemlenght: item,
                                   outletinfo: widget.outletinfo),
-                              ClassRetailProductMobile(
+                              ClassRetailProductTabs(
                                 guestname: guestname == ''
                                     ? randomNumber.toString()
                                     : guestname!,
@@ -607,184 +968,64 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                         ),
                       ],
                     ),
-                    panelBuilder: (_pc) {
-                      switch (_scrollisanimated) {
-                        case true:
-                          return SlideUpPanel(
-                            guestname: guestname!.isEmpty
-                                ? randomNumber.toString()
-                                : guestname!,
-                            datatransaksi: data,
-                            fromsaved: widget.fromsaved,
-                            sum: sum,
-                            animated: _scrollisanimated,
-                            outletinfo: Outlet(
-                              alamat: widget.outletinfo.alamat,
-                              kodepos: widget.outletinfo.kodepos,
-                              outletcd: widget.outletinfo.outletcd,
-                              outletname: widget.outletinfo.outletname,
-                              telp: widget.outletinfo.telp,
-                              trnonext: widget.outletinfo.trnonext,
-                              trnopynext: widget.outletinfo.trnopynext,
-                            ),
-                            updatedata: getDataSlide,
-                            listdata: listdata!,
-                            qty: item,
-                            amount: sum,
-                            trno: widget.trno.toString(),
-                            trnoinfo: iafjrndt,
-                            controllers: _pc,
-                            callback: (IafjrndtClass val) {
-                              getDataSlide();
-                            },
-                            refreshdata: () {
-                              getDataSlide();
-                            },
-                            itemlength: itemlength,
-                          );
-                        case false:
-                          return Container(
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                    onTap: () {},
-                                    child: Icon(
-                                      Icons.menu_sharp,
-                                      size: 25,
-                                    )),
-                                // Row(
-                                //   children: [
-                                //     Expanded(
-                                //       child: Divider(),
-                                //     ),
-                                //   ],
-                                // ),
-
-                                Container(
-                                  decoration: BoxDecoration(
-                                      // color: Colors.blue,
-                                      ),
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.04,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.9,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Expanded(
-                                          flex: 4,
-                                          child: Text(
-                                            'BARANG : ${itemlength} ',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 17),
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.table_bar,
-                                            ),
-                                            iconSize: 25,
-                                            color: Colors.blueGrey,
-                                            splashColor: Colors.purple,
-                                            onPressed: () async {
-                                              await showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return DialogCustomerList();
-                                                  });
-                                            },
-                                          )),
-                                    ],
-                                  ),
+                  ],
+                ),
+                Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                              color: Color.fromARGB(255, 0, 160, 147),
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.095,
+                              child: Text(
+                                'Detail Transaksi',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ),
+                          DetailTransTabs(
+                                guestname: guestname!.isEmpty
+                                    ? randomNumber.toString()
+                                    : guestname!,
+                                datatransaksi: data,
+                                fromsaved: widget.fromsaved,
+                                sum: sum,
+                                animated: _scrollisanimated,
+                                outletinfo: Outlet(
+                                  alamat: widget.outletinfo.alamat,
+                                  kodepos: widget.outletinfo.kodepos,
+                                  outletcd: widget.outletinfo.outletcd,
+                                  outletname: widget.outletinfo.outletname,
+                                  telp: widget.outletinfo.telp,
+                                  trnonext: widget.outletinfo.trnonext,
+                                  trnopynext: widget.outletinfo.trnopynext,
                                 ),
-                              ],
-                            ),
-                          );
-                      }
-                      return Container();
-                    }),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.02,
-                  left: MediaQuery.of(context).size.width * 0.025,
-                  child: ButtonNoIconAnimated(
-                      curve: Curves.linear,
-                      duration: 300,
-                      textcolor: _scrollisanimated == true
-                          ? Colors.orange
-                          : Colors.white,
-                      color: _scrollisanimated == true
-                          ? Colors.white
-                          : Colors.orange,
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      width: _scrollisanimated == false
-                          ? MediaQuery.of(context).size.width * 0.95
-                          : MediaQuery.of(context).size.width * 0.40,
-                      onpressed: () async {
-                        _pc.open();
-                        if (_scrollisanimated == true) {
-                          await getDataSlide();
-                          return await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogClassSimpan(
-                                  datatrans: listdata!.first,
-                                  fromsaved: widget.fromsaved!,
-                                  outletinfo: widget.outletinfo,
-                                  pscd: widget.outletinfo.outletcd,
-                                  trno: trno == ''
-                                      ? widget.trno!
-                                      : trno.toString(),
-                                );
-                              });
-                        }
-                      },
-                      name: _scrollisanimated == false
-                          ? 'Tagih ${CurrencyFormat.convertToIdr(sum, 0)} '
-                          : 'Simpan'),
-                ),
-                AnimatedPositioned(
-                  curve: Curves.linear,
-                  duration: const Duration(milliseconds: 400),
-                  bottom: MediaQuery.of(context).size.height * 0.02,
-                  left: _scrollisanimated == false
-                      ? MediaQuery.of(context).size.width * 0.9
-                      : MediaQuery.of(context).size.width * 0.45,
-                  child: ButtonNoIconAnimated(
-                      curve: Curves.linear,
-                      duration: 400,
-                      textcolor: Colors.white,
-                      color: Colors.orange,
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      width: _scrollisanimated == false
-                          ? MediaQuery.of(context).size.width * 0.0
-                          : MediaQuery.of(context).size.width * 0.53,
-                      onpressed: () async {
-                        final result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PaymentV2MobileClass(
-                                    fromsaved: widget.fromsaved!,
-                                    datatrans: listdata!,
-                                    outletinfo: widget.outletinfo,
-                                    balance: sum.toInt(),
-                                    pscd: widget.outletinfo.outletcd,
-                                    trdt: formattedDate,
-                                    trno: widget.trno.toString(),
-                                    outletname: widget.outletinfo.outletname,
-                                  )),
-                        );
-                        ClassRetailMainMobile.of(context)!.string = result!;
-                      },
-                      name: 'Bayar'),
-                ),
+                                updatedata: getDataSlide,
+                                listdata: listdata!,
+                                qty: item,
+                                amount: sum,
+                                trno: widget.trno.toString(),
+                                trnoinfo: iafjrndt,
+                        
+                                callback: (IafjrndtClass val) {
+                                  getDataSlide();
+                                },
+                                refreshdata: () {
+                                  getDataSlide();
+                                },
+                                itemlength: itemlength, 
+                              )
+                      ],
+                    ))
               ],
-            ),
-          ),
-        ));
+            ));
+      }
+      return Text('Device Not Supported Yet');
+    });
   }
 }

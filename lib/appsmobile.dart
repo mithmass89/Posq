@@ -11,6 +11,7 @@ import 'package:posq/menu.dart';
 import 'package:posq/classsummarytodaymobile.dart';
 import 'package:posq/model.dart';
 import 'package:posq/newchart.dart';
+import 'package:posq/summarytab.dart';
 import 'package:posq/userinfo.dart';
 
 class AppsMobile extends StatefulWidget {
@@ -312,7 +313,7 @@ class _AppsMobileState extends State<AppsMobile> {
                       //     bottomLeft: Radius.circular(20),
                       //     bottomRight: Radius.circular(20)),
                     ),
-                    height: MediaQuery.of(context).size.height * 0.13,
+                    height: MediaQuery.of(context).size.height * 0.15,
                     width: MediaQuery.of(context).size.width * 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -396,7 +397,7 @@ class _AppsMobileState extends State<AppsMobile> {
                     width: MediaQuery.of(context).size.width * 0.02,
                   ),
                   Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.2,
                       width: MediaQuery.of(context).size.width * 1,
                       child: MenuMain(
                           pscd: pscd.toString(),
@@ -405,54 +406,70 @@ class _AppsMobileState extends State<AppsMobile> {
                               }),
                           outletinfo: widget.profileusaha)),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.04,
                     width: MediaQuery.of(context).size.width * 0.02,
                   ),
-                  Container(
-                      height: MediaQuery.of(context).size.height * 0.30,
-                      width: MediaQuery.of(context).size.width * 1,
-                      child: Summarytoday(
-                        monthlysales: widget.monthlysales,
-                        todaysale: widget.todaysale,
-                      )),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    width: MediaQuery.of(context).size.width * 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            width: MediaQuery.of(context).size.width * 0.02,
-                          ),
-                          Text('Ringkasan Chart',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            width: MediaQuery.of(context).size.width * 0.02,
-                          ),
-                          ButtonNoIcon(
-                            color: Colors.transparent,
-                            textcolor: Colors.blue,
-                            name: 'Choose Category',
-                            onpressed: () async {
-                              await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return DialogClass1(
-                                      fromreopen: false,
-                                    );
-                                  });
-                            },
-                          )
-                        ],
+                  Row(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: SummaryTodayTabs(
+                          monthlysales: widget.monthlysales,
+                          todaysale: widget.todaysale,
+                        ),
                       ),
-                    ),
+                      Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            height:
+                                MediaQuery.of(context).size.height * 0.08,
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text('Ringkasan Chart',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                            0.05,
+                                    width:
+                                        MediaQuery.of(context).size.width *
+                                            0.12,
+                                  ),
+                                  ButtonNoIcon(
+                                    color: Colors.transparent,
+                                    textcolor: Colors.blue,
+                                    name: 'Choose Category',
+                                    onpressed: () async {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return DialogClass1(
+                                              fromreopen: false,
+                                            );
+                                          });
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.42,
+                              width:
+                                  MediaQuery.of(context).size.width * 0.5,
+                              child: LineChartSample1(widget.chartdata)),
+                        ],
+                      )
+                    ],
                   ),
-                  Expanded(child: LineChartSample1(widget.chartdata))
                 ],
               ));
         }

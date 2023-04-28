@@ -80,14 +80,14 @@
 41-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:17:5-73
 41-->[:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\debug\AndroidManifest.xml:17:22-70
 42    <uses-permission android:name="android.permission.WAKE_LOCK" />
-42-->[com.google.android.gms:play-services-measurement-api:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\02bce8d987efba1ddc518a224d073e94\jetified-play-services-measurement-api-21.2.1\AndroidManifest.xml:24:5-68
-42-->[com.google.android.gms:play-services-measurement-api:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\02bce8d987efba1ddc518a224d073e94\jetified-play-services-measurement-api-21.2.1\AndroidManifest.xml:24:22-65
+42-->[com.google.android.gms:play-services-measurement-api:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\210abdb4b52b30b4fca97d7b1e82ed13\jetified-play-services-measurement-api-21.2.2\AndroidManifest.xml:24:5-68
+42-->[com.google.android.gms:play-services-measurement-api:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\210abdb4b52b30b4fca97d7b1e82ed13\jetified-play-services-measurement-api-21.2.2\AndroidManifest.xml:24:22-65
 43    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
-43-->[com.google.android.gms:play-services-measurement-api:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\02bce8d987efba1ddc518a224d073e94\jetified-play-services-measurement-api-21.2.1\AndroidManifest.xml:25:5-79
-43-->[com.google.android.gms:play-services-measurement-api:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\02bce8d987efba1ddc518a224d073e94\jetified-play-services-measurement-api-21.2.1\AndroidManifest.xml:25:22-76
+43-->[com.google.android.gms:play-services-measurement-api:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\210abdb4b52b30b4fca97d7b1e82ed13\jetified-play-services-measurement-api-21.2.2\AndroidManifest.xml:25:5-79
+43-->[com.google.android.gms:play-services-measurement-api:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\210abdb4b52b30b4fca97d7b1e82ed13\jetified-play-services-measurement-api-21.2.2\AndroidManifest.xml:25:22-76
 44    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
-44-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:26:5-110
-44-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:26:22-107
+44-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:26:5-110
+44-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:26:22-107
 45    <uses-permission android:name="com.android.vending.BILLING" />
 45-->[com.android.billingclient:billing:5.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a528e18806f56ad4395eaa0755001e8c\jetified-billing-5.1.0\AndroidManifest.xml:10:5-67
 45-->[com.android.billingclient:billing:5.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a528e18806f56ad4395eaa0755001e8c\jetified-billing-5.1.0\AndroidManifest.xml:10:22-64
@@ -213,7 +213,7 @@
 120            android:directBootAware="true"
 120-->[com.google.firebase:firebase-common:20.3.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ccc8611bea956523f2342e11806c3bfb\jetified-firebase-common-20.3.2\AndroidManifest.xml:34:13-43
 121            android:exported="false" >
-121-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:68:13-37
+121-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:68:13-37
 122            <meta-data
 122-->[:firebase_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
 123                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
@@ -227,17 +227,17 @@
 127                android:value="com.google.firebase.components.ComponentRegistrar" />
 127-->[:firebase_core] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
 128            <meta-data
-128-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:69:13-71:85
+128-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:69:13-71:85
 129                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
-129-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:70:17-109
+129-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:70:17-109
 130                android:value="com.google.firebase.components.ComponentRegistrar" />
-130-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:71:17-82
+130-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:71:17-82
 131            <meta-data
-131-->[com.google.android.gms:play-services-measurement-api:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\02bce8d987efba1ddc518a224d073e94\jetified-play-services-measurement-api-21.2.1\AndroidManifest.xml:31:13-33:85
+131-->[com.google.android.gms:play-services-measurement-api:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\210abdb4b52b30b4fca97d7b1e82ed13\jetified-play-services-measurement-api-21.2.2\AndroidManifest.xml:31:13-33:85
 132                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
-132-->[com.google.android.gms:play-services-measurement-api:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\02bce8d987efba1ddc518a224d073e94\jetified-play-services-measurement-api-21.2.1\AndroidManifest.xml:32:17-139
+132-->[com.google.android.gms:play-services-measurement-api:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\210abdb4b52b30b4fca97d7b1e82ed13\jetified-play-services-measurement-api-21.2.2\AndroidManifest.xml:32:17-139
 133                android:value="com.google.firebase.components.ComponentRegistrar" />
-133-->[com.google.android.gms:play-services-measurement-api:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\02bce8d987efba1ddc518a224d073e94\jetified-play-services-measurement-api-21.2.1\AndroidManifest.xml:33:17-82
+133-->[com.google.android.gms:play-services-measurement-api:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\210abdb4b52b30b4fca97d7b1e82ed13\jetified-play-services-measurement-api-21.2.2\AndroidManifest.xml:33:17-82
 134            <meta-data
 134-->[com.google.firebase:firebase-installations:17.1.3] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\619c481396424a019b1b4af3b73530a8\jetified-firebase-installations-17.1.3\AndroidManifest.xml:17:13-19:85
 135                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
@@ -296,73 +296,73 @@
 164        </provider>
 165
 166        <activity
-166-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:29:9-46:20
+166-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:29:9-46:20
 167            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
-167-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:30:13-80
+167-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:30:13-80
 168            android:excludeFromRecents="true"
-168-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:31:13-46
+168-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:31:13-46
 169            android:exported="true"
-169-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:32:13-36
+169-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:32:13-36
 170            android:launchMode="singleTask"
-170-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:33:13-44
+170-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:33:13-44
 171            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-171-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:34:13-72
+171-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:34:13-72
 172            <intent-filter>
-172-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:35:13-45:29
+172-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:35:13-45:29
 173                <action android:name="android.intent.action.VIEW" />
-173-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:36:17-69
-173-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:36:25-66
+173-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:36:17-69
+173-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:36:25-66
 174
 175                <category android:name="android.intent.category.DEFAULT" />
-175-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:38:17-76
-175-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:38:27-73
+175-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:38:17-76
+175-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:38:27-73
 176                <category android:name="android.intent.category.BROWSABLE" />
-176-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:39:17-78
-176-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:39:27-75
+176-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:39:17-78
+176-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:39:27-75
 177
 178                <data
-178-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:41:17-44:51
+178-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:41:17-44:51
 179                    android:host="firebase.auth"
-179-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:42:21-49
+179-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:42:21-49
 180                    android:path="/"
-180-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:43:21-37
+180-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:43:21-37
 181                    android:scheme="genericidp" />
-181-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:44:21-48
+181-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:44:21-48
 182            </intent-filter>
 183        </activity>
 184        <activity
-184-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:47:9-64:20
+184-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:47:9-64:20
 185            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
-185-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:48:13-79
+185-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:48:13-79
 186            android:excludeFromRecents="true"
-186-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:49:13-46
+186-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:49:13-46
 187            android:exported="true"
-187-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:50:13-36
+187-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:50:13-36
 188            android:launchMode="singleTask"
-188-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:51:13-44
+188-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:51:13-44
 189            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-189-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:52:13-72
+189-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:52:13-72
 190            <intent-filter>
-190-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:53:13-63:29
+190-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:53:13-63:29
 191                <action android:name="android.intent.action.VIEW" />
-191-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:36:17-69
-191-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:36:25-66
+191-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:36:17-69
+191-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:36:25-66
 192
 193                <category android:name="android.intent.category.DEFAULT" />
-193-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:38:17-76
-193-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:38:27-73
+193-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:38:17-76
+193-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:38:27-73
 194                <category android:name="android.intent.category.BROWSABLE" />
-194-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:39:17-78
-194-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:39:27-75
+194-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:39:17-78
+194-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:39:27-75
 195
 196                <data
-196-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:41:17-44:51
+196-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:41:17-44:51
 197                    android:host="firebase.auth"
-197-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:42:21-49
+197-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:42:21-49
 198                    android:path="/"
-198-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:43:21-37
+198-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:43:21-37
 199                    android:scheme="recaptcha" />
-199-->[com.google.firebase:firebase-auth:21.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6996040fa0aa5487ff901e36596299e3\jetified-firebase-auth-21.2.0\AndroidManifest.xml:44:21-48
+199-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\AndroidManifest.xml:44:21-48
 200            </intent-filter>
 201        </activity>
 202        <activity
@@ -404,33 +404,33 @@
 222-->[com.google.firebase:firebase-common:20.3.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ccc8611bea956523f2342e11806c3bfb\jetified-firebase-common-20.3.2\AndroidManifest.xml:30:13-36
 223
 224        <receiver
-224-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:29:9-33:20
+224-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:29:9-33:20
 225            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
-225-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:30:13-85
+225-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:30:13-85
 226            android:enabled="true"
-226-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:31:13-35
+226-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:31:13-35
 227            android:exported="false" >
-227-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:32:13-37
+227-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:32:13-37
 228        </receiver>
 229
 230        <service
-230-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:35:9-38:40
+230-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:35:9-38:40
 231            android:name="com.google.android.gms.measurement.AppMeasurementService"
-231-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:36:13-84
+231-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:36:13-84
 232            android:enabled="true"
-232-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:37:13-35
+232-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:37:13-35
 233            android:exported="false" />
-233-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:38:13-37
+233-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:38:13-37
 234        <service
-234-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:39:9-43:72
+234-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:39:9-43:72
 235            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
-235-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:40:13-87
+235-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:40:13-87
 236            android:enabled="true"
-236-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:41:13-35
+236-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:41:13-35
 237            android:exported="false"
-237-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:42:13-37
+237-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:42:13-37
 238            android:permission="android.permission.BIND_JOB_SERVICE" />
-238-->[com.google.android.gms:play-services-measurement:21.2.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\85fb3ab19e97ba1692c21cd6615db585\jetified-play-services-measurement-21.2.1\AndroidManifest.xml:43:13-69
+238-->[com.google.android.gms:play-services-measurement:21.2.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\24835b99198540434cf1e786b1177aa7\jetified-play-services-measurement-21.2.2\AndroidManifest.xml:43:13-69
 239
 240        <activity
 240-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cc67751070ba8f7377d63ab76544c726\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45

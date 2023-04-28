@@ -19,97 +19,107 @@ class _SummarytodayState extends State<Summarytoday> {
   void initState() {
     print(widget.todaysale);
     super.initState();
-print(widget.todaysale==null);
+    print(widget.todaysale == null);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.4,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.01,
-            width: MediaQuery.of(context).size.width * 1,
-          ),
-          ListTile(
-            title: Container(
-              height: MediaQuery.of(context).size.height * 0.025,
-              width: MediaQuery.of(context).size.width * 0.50,
-              child: Text('Ringkasan',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 19)),
-            ),
-            trailing: GestureDetector(
-              onTap: () {},
-              child: Container(
-                alignment: Alignment.centerRight,
-                height: MediaQuery.of(context).size.height * 0.02,
-                width: MediaQuery.of(context).size.width * 0.40,
-                child: Text(
-                  'Lihat Selebihnya >>',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-              ),
-            ),
-          ),
-          // SizedBox(
-          //   height: MediaQuery.of(context).size.height * 0.01,
-          //   width: MediaQuery.of(context).size.width * 1,
-          // ),
-          Column(
+    return LayoutBuilder(builder: (
+      context,
+      BoxConstraints constraints,
+    ) {
+      if (constraints.maxWidth <= 480) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            // scrollDirection: Axis.horizontal,
             children: [
-              Card(
-                elevation: 5,
-                child: ListTile(
-                  dense: true,
-                  title: Text('Penjualan Hari ini'),
-                  trailing: widget.todaysale.isNotEmpty
-                      ? Text(
-                          '${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      : Text('0'),
-                ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.01,
+                width: MediaQuery.of(context).size.width * 1,
               ),
-
-              Card(
-                elevation: 5,
-                child: ListTile(
-                  dense: true,
-                  title: Text('Penjualan Bulan ini'),
-                  trailing: Text(
-                    '${CurrencyFormat.convertToIdr(widget.monthlysales.isNotEmpty ? widget.monthlysales.first['totalaftdisc'] : 0, 0)}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+              ListTile(
+                title: Container(
+                  height: MediaQuery.of(context).size.height * 0.025,
+                  width: MediaQuery.of(context).size.width * 0.50,
+                  child: Text('Ringkasan',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 19)),
+                ),
+                trailing: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    height: MediaQuery.of(context).size.height * 0.02,
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    child: Text(
+                      'Lihat Selebihnya >>',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
                   ),
                 ),
               ),
               // SizedBox(
               //   height: MediaQuery.of(context).size.height * 0.01,
-              //   width: MediaQuery.of(context).size.width * 0.03,
+              //   width: MediaQuery.of(context).size.width * 1,
               // ),
-              Card(
-                elevation: 5,
-                child: ListTile(
-                  dense: true,
-                  title: Text('Penjualan Rata Rata'),
-                  trailing: Text(
-                    '10',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                // scrollDirection: Axis.horizontal,
+                children: [
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      dense: true,
+                      title: Text('Penjualan Hari ini'),
+                      trailing: widget.todaysale.isNotEmpty
+                          ? Text(
+                              '${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          : Text('0'),
+                    ),
                   ),
-                ),
+
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      dense: true,
+                      title: Text('Penjualan Bulan ini'),
+                      trailing: Text(
+                        '${CurrencyFormat.convertToIdr(widget.monthlysales.isNotEmpty ? widget.monthlysales.first['totalaftdisc'] : 0, 0)}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   height: MediaQuery.of(context).size.height * 0.01,
+                  //   width: MediaQuery.of(context).size.width * 0.03,
+                  // ),
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      dense: true,
+                      title: Text('Penjualan Rata Rata'),
+                      trailing: Text(
+                        '10',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-    );
+        );
+
+
+      }
+      return Container();
+    });
   }
 }

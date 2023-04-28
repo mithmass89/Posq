@@ -148,16 +148,18 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'investor.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed:accesslist.contains('createcostumer') == true? () {
-                  selected = !selected;
-                  setState(() {});
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClassListCustomers()),
-                  );
-                }:(){
-                     Fluttertoast.showToast(
+                onpressed: accesslist.contains('createcostumer') == true
+                    ? () {
+                        selected = !selected;
+                        setState(() {});
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ClassListCustomers()),
+                        );
+                      }
+                    : () {
+                        Fluttertoast.showToast(
                             msg: "Tidak punya akses customer",
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.CENTER,
@@ -165,7 +167,7 @@ class _MenuMainState extends State<MenuMain> {
                             backgroundColor: Color.fromARGB(255, 11, 12, 14),
                             textColor: Colors.white,
                             fontSize: 16.0);
-                },
+                      },
                 name: 'Customer',
               ),
               SizedBox(
@@ -252,10 +254,10 @@ class _MenuMainState extends State<MenuMain> {
             ],
           ),
         );
-      } else if (constraints.maxWidth <= 820) {
+      } else if (constraints.maxWidth >= 820) {
         // diatas 480P ///
         return Container(
-          height: MediaQuery.of(context).size.height * 0.4,
+          height: MediaQuery.of(context).size.height * 0.5,
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
@@ -264,9 +266,9 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'retail.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.095,
+                iconasset: 'cart1.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {
                   Navigator.push(
                     context,
@@ -287,9 +289,9 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'outlet.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.095,
+                iconasset: 'outlet1.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
                   final Outlet result = await Navigator.push(
                     context,
@@ -308,9 +310,9 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'pembeli.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.095,
+                iconasset: 'investor.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {
                   Navigator.push(
                     context,
@@ -326,8 +328,8 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 iconasset: 'settings.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.095,
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {
                   Navigator.push(
                     context,
@@ -345,9 +347,9 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'pegawai.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.095,
+                iconasset: 'staff.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {},
                 name: 'Pegawai',
               ),
@@ -356,9 +358,9 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'help.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.095,
+                iconasset: 'support.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
                   // handler = DatabaseHandler();
                   // await handler.upgradeDB();
@@ -369,121 +371,15 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.04,
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
-            ],
-          ),
-        );
-      } else if (constraints.maxWidth >= 1180) {
-        //landscape ipad //
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.4,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
               ButtonClassAction(
-                iconasset: 'retail.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.075,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClassRetailMainMobile(
-                              fromsaved: false,
-                              trno: trno,
-                              qty: 0,
-                              pscd: widget.pscd.toString(),
-                              outletinfo: widget.outletinfo!,
-                            )),
-                  );
-                },
-                name: 'Transaksi ',
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
-              ButtonClassAction(
-                iconasset: 'outlet.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.075,
-                onpressed: () async {
-                  final Outlet result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Selectoutletmobile()),
-                  );
-                  setState(() {});
-                  // callbackTitle(result);
-                  AppsMobile.of(context)!.string = result;
-                  print(result);
-                },
-                name: 'Outlet',
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
-              ButtonClassAction(
-                iconasset: 'pembeli.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.075,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClassListCustomers()),
-                  );
-                },
-                name: 'Customer',
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
-              ButtonClassAction(
-                iconasset: 'settings.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.075,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainMenuProduct(
-                              pscd: widget.outletinfo!.outletcd,
-                              outletinfo: widget.outletinfo!,
-                            )),
-                  );
-                },
-                name: 'Product',
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
-              ButtonClassAction(
-                iconasset: 'pegawai.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.075,
-                onpressed: () {},
-                name: 'Pegawai',
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
-              ButtonClassAction(
-                iconasset: 'help.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.075,
+                iconasset: 'support.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
                   // handler = DatabaseHandler();
                   // await handler.upgradeDB();
                 },
-                name: 'Help',
+                name: 'Updgrade',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,

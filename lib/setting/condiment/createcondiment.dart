@@ -45,234 +45,571 @@ class _CondimentCreateState extends State<CondimentCreate> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: Text('Modifier Creation'),
-      ),
-      body: Container(
-        child: ListView(
-          children: [
-            ListTile(
-              title: Text(
-                'Detail Modifier',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            TextFieldMobile2(
-              label: 'Modifier name',
-              controller: modifiername,
-              typekeyboard: TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  var rng = Random();
-                  for (var i = 0; i < 10; i++) {}
-                  setState(() {
-                    condimentcode = '${modifiername.text.substring(0, 1)}'
-                            '${rng.nextInt(10000)}'
-                        .replaceAll(' ', '');
-                  });
-                  if (_listcondiment.isNotEmpty) {
-                    for (var x in _listcondiment) {
-                      x.itemcode = condimentcode;
-                    }
-                  }
-                });
-              },
-            ),
-            ListTile(
-              title: Text(
-                'Tipe Modifier',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            TextFieldMobileButton(
-                hint: 'Tipe Modifier',
-                controller: typeopse,
-                typekeyboard: TextInputType.text,
-                onChanged: (value) {},
-                ontap: () async {
-                  choice = await showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DialogTipeCondiment();
-                      });
-                  if (choice!.opsidesc.isNotEmpty) {
-                    setState(() {
-                      typeopse.text = choice!.opsidesc;
-                    });
-                  }
-                  if (_listcondiment.isNotEmpty) {
-                    for (var x in _listcondiment) {
-                      x.condimenttype = choice!.opsitype;
-                    }
-                  }
-                }),
-            ListTile(
-              title: Text(
-                'Buat Opsi',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            TextFieldMobileButton(
-                hint: 'Opsi',
-                controller: opsi,
-                typekeyboard: TextInputType.text,
-                onChanged: (value) {},
-                ontap: () async {
-                  _selectedOption = await Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => OptionCreate()));
-                  print(_selectedOption);
-                  for (var x in _selectedOption) {
-                    _listcondiment.add(Condiment(
-                        taxamount: taxpct.text != ''
-                            ? num.parse(taxpct.text) * x.amount!
-                            : 0,
-                        serviceamount: servicepct.text != ''
-                            ? num.parse(servicepct.text) * x.amount!
-                            : 0,
-                        taxpct: taxpct.text != '' ? num.parse(taxpct.text) : 0,
-                        servicepct: servicepct.text != ''
-                            ? num.parse(servicepct.text)
-                            : 0,
-                        itemcode: condimentcode,
-                        condimentdesc: modifiername.text,
-                        optioncode: x.code,
-                        optiondesc: x.description,
-                        amount: x.amount,
-                        condimenttype: choice!.opsitype,
-                        qty: x.qty,
-                        nettamount: x.amount! +
-                            num.parse(taxpct.text) * x.amount! +
-                            num.parse(servicepct.text) * x.amount!));
-                    setState(() {
-                      optionList.add(x.description!);
-                      opsi.text = optionList.toString();
-                    });
-                  }
-                  print(_listcondiment);
-                }),
-            ListTile(
-              title: Text(
-                'Pilih Item yg Akan di masukan modifier',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            TextFieldMobileButton(
-                hint: 'Pilih set menu',
-                controller: selectedset,
-                typekeyboard: TextInputType.text,
-                onChanged: (value) {},
-                ontap: () async {
-                  var list = await showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DialogSetMenu();
-                      });
-                  for (var x in list) {
-                    selectedItem.add(Condiment_Map(
-                        condimentcode: condimentcode, itemcode: x));
-                  }
-                  setState(() {
-                    selectedset.text = list.toString();
-                  });
-                  print(selectedItem);
-                }),
-            ListTile(
-              title: Text(
-                'Pajak Dan Service',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Row(
+    return LayoutBuilder(builder: (
+      context,
+      BoxConstraints constraints,
+    ) {
+      if (constraints.maxWidth <= 480) {
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            title: Text('Modifier Creation'),
+          ),
+          body: Container(
+            child: ListView(
               children: [
-                Expanded(
-                  child: TextFieldMobile2(
-                    label: 'Persentasi Tax',
-                    controller: taxpct,
-                    typekeyboard: TextInputType.number,
-                    onChanged: (value) {
-                      _listcondiment.forEach((element) {
-                        element.taxpct = num.parse(taxpct.text);
-                        element.taxamount =
-                            element.amount! * num.parse(taxpct.text)/100;
-                      });
-                      _listcondiment.forEach((element) {
-                        element.nettamount !=
-                            element.amount! +
-                                element.taxamount! +
-                                element.serviceamount!;
-                      });
-                      print(_listcondiment);
-                      setState(() {});
-                    },
+                ListTile(
+                  title: Text(
+                    'Detail Modifier',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Expanded(
-                  child: TextFieldMobile2(
-                    label: 'Persentasi Service',
-                    controller: servicepct,
-                    typekeyboard: TextInputType.number,
-                    onChanged: (value) {
-                      _listcondiment.forEach((element) {
-                        element.servicepct = num.parse(servicepct.text);
-                        element.serviceamount =
-                            element.amount! * num.parse(servicepct.text)/100;
+                TextFieldMobile2(
+                  label: 'Modifier name',
+                  controller: modifiername,
+                  typekeyboard: TextInputType.text,
+                  onChanged: (value) {
+                    setState(() {
+                      var rng = Random();
+                      for (var i = 0; i < 10; i++) {}
+                      setState(() {
+                        condimentcode = '${modifiername.text.substring(0, 1)}'
+                                '${rng.nextInt(10000)}'
+                            .replaceAll(' ', '');
                       });
-
-                      print(_listcondiment);
-                      setState(() {});
-                    },
+                      if (_listcondiment.isNotEmpty) {
+                        for (var x in _listcondiment) {
+                          x.itemcode = condimentcode;
+                        }
+                      }
+                    });
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Tipe Modifier',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
+                ),
+                TextFieldMobileButton(
+                    hint: 'Tipe Modifier',
+                    controller: typeopse,
+                    typekeyboard: TextInputType.text,
+                    onChanged: (value) {},
+                    ontap: () async {
+                      choice = await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogTipeCondiment();
+                          });
+                      if (choice!.opsidesc.isNotEmpty) {
+                        setState(() {
+                          typeopse.text = choice!.opsidesc;
+                        });
+                      }
+                      if (_listcondiment.isNotEmpty) {
+                        for (var x in _listcondiment) {
+                          x.condimenttype = choice!.opsitype;
+                        }
+                      }
+                    }),
+                ListTile(
+                  title: Text(
+                    'Buat Opsi',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextFieldMobileButton(
+                    hint: 'Opsi',
+                    controller: opsi,
+                    typekeyboard: TextInputType.text,
+                    onChanged: (value) {},
+                    ontap: () async {
+                      _selectedOption = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OptionCreate()));
+                      print(_selectedOption);
+                      for (var x in _selectedOption) {
+                        _listcondiment.add(Condiment(
+                            taxamount: taxpct.text != ''
+                                ? num.parse(taxpct.text) * x.amount!
+                                : 0,
+                            serviceamount: servicepct.text != ''
+                                ? num.parse(servicepct.text) * x.amount!
+                                : 0,
+                            taxpct:
+                                taxpct.text != '' ? num.parse(taxpct.text) : 0,
+                            servicepct: servicepct.text != ''
+                                ? num.parse(servicepct.text)
+                                : 0,
+                            itemcode: condimentcode,
+                            condimentdesc: modifiername.text,
+                            optioncode: x.code,
+                            optiondesc: x.description,
+                            amount: x.amount,
+                            condimenttype: choice!.opsitype,
+                            qty: x.qty,
+                            nettamount: x.amount! +
+                                num.parse(taxpct.text) * x.amount! +
+                                num.parse(servicepct.text) * x.amount!));
+                        setState(() {
+                          optionList.add(x.description!);
+                          opsi.text = optionList.toString();
+                        });
+                      }
+                      print(_listcondiment);
+                    }),
+                ListTile(
+                  title: Text(
+                    'Pilih Item yg Akan di masukan modifier',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextFieldMobileButton(
+                    hint: 'Pilih set menu',
+                    controller: selectedset,
+                    typekeyboard: TextInputType.text,
+                    onChanged: (value) {},
+                    ontap: () async {
+                      var list = await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogSetMenu();
+                          });
+                      for (var x in list) {
+                        selectedItem.add(Condiment_Map(
+                            condimentcode: condimentcode, itemcode: x));
+                      }
+                      setState(() {
+                        selectedset.text = list.toString();
+                      });
+                      print(selectedItem);
+                    }),
+                ListTile(
+                  title: Text(
+                    'Pajak Dan Service',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFieldMobile2(
+                        label: 'Persentasi Tax',
+                        controller: taxpct,
+                        typekeyboard: TextInputType.number,
+                        onChanged: (value) {
+                          _listcondiment.forEach((element) {
+                            element.taxpct = num.parse(taxpct.text);
+                            element.taxamount =
+                                element.amount! * num.parse(taxpct.text) / 100;
+                          });
+                          _listcondiment.forEach((element) {
+                            element.nettamount !=
+                                element.amount! +
+                                    element.taxamount! +
+                                    element.serviceamount!;
+                          });
+                          print(_listcondiment);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: TextFieldMobile2(
+                        label: 'Persentasi Service',
+                        controller: servicepct,
+                        typekeyboard: TextInputType.number,
+                        onChanged: (value) {
+                          _listcondiment.forEach((element) {
+                            element.servicepct = num.parse(servicepct.text);
+                            element.serviceamount = element.amount! *
+                                num.parse(servicepct.text) /
+                                100;
+                          });
+
+                          print(_listcondiment);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      LoadingButton(
+                        isLoading: isLoading,
+                        textcolor: Colors.white,
+                        color: Colors.blue,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.955,
+                        name: 'Simpan',
+                        onpressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          _listcondiment.forEach((element) {
+                            element.nettamount = element.amount! +
+                                element.taxamount! +
+                                element.serviceamount!;
+                          });
+
+                          await ClassApi.insertCondiment_Master(
+                              dbname, _listcondiment);
+                          await ClassApi.insertCondiment_Map(
+                              dbname, selectedItem);
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  LoadingButton(
-                    isLoading: isLoading,
-                    textcolor: Colors.white,
-                    color: Colors.blue,
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.955,
-                    name: 'Simpan',
-                    onpressed: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      _listcondiment.forEach((element) {
-                        element.nettamount = element.amount! +
-                            element.taxamount! +
-                            element.serviceamount!;
-                      });
-
-                      await ClassApi.insertCondiment_Master(
-                          dbname, _listcondiment);
-                      await ClassApi.insertCondiment_Map(dbname, selectedItem);
-                      setState(() {
-                        isLoading = false;
-                      });
-                      Navigator.of(context).pop();
-                    },
+          ),
+        );
+      } else if (constraints.maxWidth >= 820) {
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            title: Text('Modifier Creation'),
+          ),
+          body: Container(
+            child: ListView(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: ListTile(
+                        title: Text(
+                          'Detail Modifier',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: ListTile(
+                        title: Text(
+                          'Tipe Modifier',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: TextFieldMobile2(
+                        label: 'Modifier name',
+                        controller: modifiername,
+                        typekeyboard: TextInputType.text,
+                        onChanged: (value) {
+                          setState(() {
+                            var rng = Random();
+                            for (var i = 0; i < 10; i++) {}
+                            setState(() {
+                              condimentcode =
+                                  '${modifiername.text.substring(0, 1)}'
+                                          '${rng.nextInt(10000)}'
+                                      .replaceAll(' ', '');
+                            });
+                            if (_listcondiment.isNotEmpty) {
+                              for (var x in _listcondiment) {
+                                x.itemcode = condimentcode;
+                              }
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: TextFieldMobileButton(
+                          hint: 'Tipe Modifier',
+                          controller: typeopse,
+                          typekeyboard: TextInputType.text,
+                          onChanged: (value) {},
+                          ontap: () async {
+                            choice = await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogTipeCondiment();
+                                });
+                            if (choice!.opsidesc.isNotEmpty) {
+                              setState(() {
+                                typeopse.text = choice!.opsidesc;
+                              });
+                            }
+                            if (_listcondiment.isNotEmpty) {
+                              for (var x in _listcondiment) {
+                                x.condimenttype = choice!.opsitype;
+                              }
+                            }
+                          }),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: ListTile(
+                        title: Text(
+                          'Buat Opsi',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: ListTile(
+                        title: Text(
+                          'Pilih Item yg Akan di masukan modifier',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: TextFieldMobileButton(
+                          hint: 'Opsi',
+                          controller: opsi,
+                          typekeyboard: TextInputType.text,
+                          onChanged: (value) {},
+                          ontap: () async {
+                            _selectedOption = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => OptionCreate()));
+                            print(_selectedOption);
+                            for (var x in _selectedOption) {
+                              _listcondiment.add(Condiment(
+                                  taxamount: taxpct.text != ''
+                                      ? num.parse(taxpct.text) * x.amount!
+                                      : 0,
+                                  serviceamount: servicepct.text != ''
+                                      ? num.parse(servicepct.text) * x.amount!
+                                      : 0,
+                                  taxpct: taxpct.text != ''
+                                      ? num.parse(taxpct.text)
+                                      : 0,
+                                  servicepct: servicepct.text != ''
+                                      ? num.parse(servicepct.text)
+                                      : 0,
+                                  itemcode: condimentcode,
+                                  condimentdesc: modifiername.text,
+                                  optioncode: x.code,
+                                  optiondesc: x.description,
+                                  amount: x.amount,
+                                  condimenttype: choice!.opsitype,
+                                  qty: x.qty,
+                                  nettamount: x.amount! +
+                                      num.parse(taxpct.text) * x.amount! +
+                                      num.parse(servicepct.text) * x.amount!));
+                              setState(() {
+                                optionList.add(x.description!);
+                                opsi.text = optionList.toString();
+                              });
+                            }
+                            print(_listcondiment);
+                          }),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: TextFieldMobileButton(
+                          hint: 'Pilih set menu',
+                          controller: selectedset,
+                          typekeyboard: TextInputType.text,
+                          onChanged: (value) {},
+                          ontap: () async {
+                            var list = await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogSetMenu();
+                                });
+                            for (var x in list) {
+                              selectedItem.add(Condiment_Map(
+                                  condimentcode: condimentcode, itemcode: x));
+                            }
+                            setState(() {
+                              selectedset.text = list.toString();
+                            });
+                            print(selectedItem);
+                          }),
+                    ),
+                  ],
+                ),
+                ListTile(
+                  title: Text(
+                    'Pajak Dan Service',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
-                ],
-              ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFieldMobile2(
+                        label: 'Persentasi Tax',
+                        controller: taxpct,
+                        typekeyboard: TextInputType.number,
+                        onChanged: (value) {
+                          _listcondiment.forEach((element) {
+                            element.taxpct = num.parse(taxpct.text);
+                            element.taxamount =
+                                element.amount! * num.parse(taxpct.text) / 100;
+                          });
+                          _listcondiment.forEach((element) {
+                            element.nettamount !=
+                                element.amount! +
+                                    element.taxamount! +
+                                    element.serviceamount!;
+                          });
+                          print(_listcondiment);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: TextFieldMobile2(
+                        label: 'Persentasi Service',
+                        controller: servicepct,
+                        typekeyboard: TextInputType.number,
+                        onChanged: (value) {
+                          _listcondiment.forEach((element) {
+                            element.servicepct = num.parse(servicepct.text);
+                            element.serviceamount = element.amount! *
+                                num.parse(servicepct.text) /
+                                100;
+                          });
+
+                          print(_listcondiment);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          LoadingButton(
+                            isLoading: isLoading,
+                            textcolor: Colors.white,
+                            color: Colors.orange,
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            name: 'Simpan',
+                            onpressed: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              _listcondiment.forEach((element) {
+                                element.nettamount = element.amount! +
+                                    element.taxamount! +
+                                    element.serviceamount!;
+                              });
+
+                              await ClassApi.insertCondiment_Master(
+                                  dbname, _listcondiment);
+                              await ClassApi.insertCondiment_Map(
+                                  dbname, selectedItem);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          LoadingButton(
+                            isLoading: isLoading,
+                            textcolor: Colors.orange,
+                            color: Colors.white,
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            name: 'Apply',
+                            onpressed: () async {
+                              _listcondiment.forEach((element) {
+                                element.nettamount = element.amount! +
+                                    element.taxamount! +
+                                    element.serviceamount!;
+                              });
+
+                              await ClassApi.insertCondiment_Master(
+                                  dbname, _listcondiment);
+                              await ClassApi.insertCondiment_Map(
+                                  dbname, selectedItem);
+                              setState(() {
+                                _listcondiment = [];
+                                selectedItem = [];
+                                modifiername.text = '';
+                                amount.text = '';
+                                taxpct.text = '';
+                                servicepct.text = '';
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+              ],
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        );
+      }
+      return Container();
+    });
   }
 }

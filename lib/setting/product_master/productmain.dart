@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:posq/setting/product_master/classproductmobile.dart' ; 
+import 'package:posq/setting/product_master/classproductmobile.dart';
+import 'package:posq/setting/product_master/tabletclass/classproducttab.dart';
 
 class Productmain extends StatefulWidget {
   const Productmain({Key? key, required this.pscd}) : super(key: key);
-final String pscd;
+  final String pscd;
   @override
   State<Productmain> createState() => _ProductmainState();
 }
@@ -19,6 +20,10 @@ class _ProductmainState extends State<Productmain> {
     ) {
       if (constraints.maxWidth <= 480) {
         return Classproductmobile(
+          pscd: widget.pscd,
+        );
+      } else if (constraints.maxWidth >= 480) {
+        return ClassproductTab(
           pscd: widget.pscd,
         );
       }

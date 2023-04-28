@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
+import 'package:posq/firebase_options.dart';
 import 'package:posq/login.dart';
 import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
@@ -16,7 +20,9 @@ late final FirebaseApp app;
 late final FirebaseAuth auth;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(MyApp(
     onGenerateRoute: RouteGenerator.generateRoute,

@@ -39,106 +39,217 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text('Buat Tipe Transaksi'),
-        actions: [
-          Container(
-            child: IconButton(
-              onPressed: () {
-                descriptionlist = [];
-                setState(() {});
-              },
-              icon: Icon(Icons.delete),
-              color: Colors.red,
-            ),
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.02,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: ListView.builder(
-                itemCount: descriptionlist!.length,
-                itemBuilder: (context, index) {
-                  return Row(children: [
-                    Expanded(
-                      flex: 5,
-                      child: TextFieldMobile2(
-                          label: 'Transaksi tipe',
-                          controller: descriptionlist![index],
-                          typekeyboard: TextInputType.text,
-                          onChanged: (value) {
-                            var rng = Random();
-                            for (var i = 0; i < 10; i++) {
-                              // print(rng.nextInt(1000));
-
-                            }
-                            listtipe[index].transtype =
-                                rng.nextInt(1000).toString();
-                            listtipe[index].transdesc =
-                                descriptionlist![index].text;
-                            print(listtipe);
-                          }),
-                    ),
-                    Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () {
-                            removeWidget(index);
-                          },
-                          icon: Icon(Icons.close),
-                          color: Colors.red,
-                          iconSize: 17,
-                        )),
-                  ]);
-                }),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                LoadingButton(
-                    isLoading: _isloading,
-                    color: Colors.pink,
-                    textcolor: Colors.white,
-                    name: 'Simpan',
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    onpressed: _isloading == false
-                        ? () async {
-                            _isloading = true;
-                            await ClassApi.insert_TransactionType(
-                                dbname, listtipe);
-                            setState(() {});
-                            _isloading = false;
-                            Navigator.of(context).pop();
-                          }
-                        : null),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.05,
-                ),
-                ButtonNoIcon(
-                  textcolor: Colors.white,
-                  color: Colors.blue,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  name: 'Tambah Tipe',
-                  onpressed: () async {
-                    _addWidget();
+    return LayoutBuilder(builder: (
+      context,
+      BoxConstraints constraints,
+    ) {
+      if (constraints.maxWidth <= 480) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: Text('Buat Tipe Transaksi'),
+            actions: [
+              Container(
+                child: IconButton(
+                  onPressed: () {
+                    descriptionlist = [];
                     setState(() {});
                   },
+                  icon: Icon(Icons.delete),
+                  color: Colors.red,
                 ),
-              ],
-            ),
+              )
+            ],
           ),
-        ],
-      ),
-    );
+          body: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: ListView.builder(
+                    itemCount: descriptionlist!.length,
+                    itemBuilder: (context, index) {
+                      return Row(children: [
+                        Expanded(
+                          flex: 5,
+                          child: TextFieldMobile2(
+                              label: 'Transaksi tipe',
+                              controller: descriptionlist![index],
+                              typekeyboard: TextInputType.text,
+                              onChanged: (value) {
+                                var rng = Random();
+                                for (var i = 0; i < 10; i++) {
+                                  // print(rng.nextInt(1000));
+
+                                }
+                                listtipe[index].transtype =
+                                    rng.nextInt(1000).toString();
+                                listtipe[index].transdesc =
+                                    descriptionlist![index].text;
+                                print(listtipe);
+                              }),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              onPressed: () {
+                                removeWidget(index);
+                              },
+                              icon: Icon(Icons.close),
+                              color: Colors.red,
+                              iconSize: 17,
+                            )),
+                      ]);
+                    }),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    LoadingButton(
+                        isLoading: _isloading,
+                        color: Colors.pink,
+                        textcolor: Colors.white,
+                        name: 'Simpan',
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        onpressed: _isloading == false
+                            ? () async {
+                                _isloading = true;
+                                await ClassApi.insert_TransactionType(
+                                    dbname, listtipe);
+                                setState(() {});
+                                _isloading = false;
+                                Navigator.of(context).pop();
+                              }
+                            : null),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    ButtonNoIcon(
+                      textcolor: Colors.white,
+                      color: Colors.blue,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      name: 'Tambah Tipe',
+                      onpressed: () async {
+                        _addWidget();
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      } else if (constraints.maxWidth >= 820) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: Text('Buat Tipe Transaksi'),
+            actions: [
+              Container(
+                child: IconButton(
+                  onPressed: () {
+                    descriptionlist = [];
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.delete),
+                  color: Colors.red,
+                ),
+              )
+            ],
+          ),
+          body: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: ListView.builder(
+                    itemCount: descriptionlist!.length,
+                    itemBuilder: (context, index) {
+                      return Row(children: [
+                        Expanded(
+                          flex: 5,
+                          child: TextFieldMobile2(
+                              label: 'Transaksi tipe',
+                              controller: descriptionlist![index],
+                              typekeyboard: TextInputType.text,
+                              onChanged: (value) {
+                                var rng = Random();
+                                for (var i = 0; i < 10; i++) {
+                                  // print(rng.nextInt(1000));
+
+                                }
+                                listtipe[index].transtype =
+                                    rng.nextInt(1000).toString();
+                                listtipe[index].transdesc =
+                                    descriptionlist![index].text;
+                                print(listtipe);
+                              }),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              onPressed: () {
+                                removeWidget(index);
+                              },
+                              icon: Icon(Icons.close),
+                              color: Colors.red,
+                              iconSize: 17,
+                            )),
+                      ]);
+                    }),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    LoadingButton(
+                        isLoading: _isloading,
+                        color: Colors.orange,
+                        textcolor: Colors.white,
+                        name: 'Simpan',
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        onpressed: _isloading == false
+                            ? () async {
+                                _isloading = true;
+                                await ClassApi.insert_TransactionType(
+                                    dbname, listtipe);
+                                setState(() {});
+                                _isloading = false;
+                                Navigator.of(context).pop();
+                              }
+                            : null),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    LoadingButton(
+                      isLoading: false,
+                      textcolor: Colors.orange,
+                      color: Colors.white,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      name: 'Tambah Tipe',
+                      onpressed: () async {
+                        _addWidget();
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      return Container();
+    });
   }
 }

@@ -41,7 +41,7 @@ class _ButtonClassActionState extends State<ButtonClassAction> {
         width: widget.widht,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.blueGrey,
+          color: Color.fromARGB(255, 0, 115, 119),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(35),
               topRight: Radius.circular(35),
@@ -328,6 +328,176 @@ class NumPad extends StatelessWidget {
     this.buttonSizewidth = 80,
     this.buttonSizeheight = 50,
     this.buttonColor = Colors.blueAccent,
+    this.iconColor = Colors.white,
+    required this.delete,
+    required this.onSubmit,
+    required this.controller,
+    required this.clear,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // margin: const EdgeInsets.only(left: 30, right: 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // implement the number keys (from 0 to 9) with the NumberButton widget
+            // the NumberButton widget is defined in the bottom of this file
+            children: [
+              NumberButton(
+                number: 1,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+              NumberButton(
+                number: 2,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+              NumberButton(
+                number: 3,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              NumberButton(
+                number: 4,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+              NumberButton(
+                number: 5,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+              NumberButton(
+                number: 6,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              NumberButton(
+                number: 7,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+              NumberButton(
+                number: 8,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+              NumberButton(
+                number: 9,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // this button is used to delete the last number
+              // IconButton(
+              //   onPressed: () => delete(),
+              //   icon: Container(
+              //     color: Colors.blue,
+              //     height: buttonSizeheight,
+              //     width: buttonSizewidth,
+              //     child: Icon(
+              //       Icons.backspace,
+              //       color: iconColor,
+              //     ),
+              //   ),
+              //   iconSize: 35,
+              // ),
+              SizedBox(
+                height: buttonSizeheight,
+                width: buttonSizewidth,
+                child: ElevatedButton(
+                  onPressed: () {
+                    delete();
+                  },
+                  child: Icon(
+                    Icons.backspace,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+
+              NumberButton(
+                number: 0,
+                heightsize: buttonSizeheight,
+                widthsize: buttonSizewidth,
+                color: buttonColor,
+                controller: controller,
+              ),
+              // this button is used to submit the entered value
+              SizedBox(
+                height: buttonSizeheight,
+                width: buttonSizewidth,
+                child: ElevatedButton(
+                    onPressed: () {
+                      clear();
+                    },
+                    child: Text('C',
+                        style: TextStyle(color: Colors.black, fontSize: 20))),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NumPadTabs extends StatelessWidget {
+  final double buttonSizewidth;
+  final double buttonSizeheight;
+  final Color buttonColor;
+  final Color iconColor;
+  final TextEditingController controller;
+  final Function delete;
+  final Function onSubmit;
+  final Function clear;
+
+  const NumPadTabs({
+    Key? key,
+    this.buttonSizewidth = 80,
+    this.buttonSizeheight = 55,
+    this.buttonColor = Colors.orange,
     this.iconColor = Colors.white,
     required this.delete,
     required this.onSubmit,

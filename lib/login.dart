@@ -419,8 +419,372 @@ class _LoginState extends State<Login> {
                 )
               ],
             );
+          } else if (constraints.maxWidth >= 800) {
+            return Container(
+              color: Colors.white,
+              child: Column(children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.orange),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40.0),
+                          topRight: Radius.circular(40.0),
+                          bottomRight: Radius.circular(40.0),
+                          bottomLeft: Radius.circular(40.0)),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.white, Colors.white])),
+                  height: MediaQuery.of(context).size.height * 0.75,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'AOVI POS',
+                          style: TextStyle(fontSize: 24, color: Colors.orange),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFieldMobileLogin(
+                          validator: (value) {
+                            final emailRegex =
+                                RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+                            if (!emailRegex.hasMatch(email.text)) {
+                              // Email address is invalid, do something
+                              print(value);
+                            } else {
+                              print(value);
+                            }
+                          },
+                          showpassword: true,
+                          hint: 'e-mail',
+                          prefixIcon: Icon(Icons.email),
+                          controller: email,
+                          onChanged: (String value) {},
+                          typekeyboard: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFieldMobileLogin(
+                          hint: 'password',
+                          showpassword: passwordlock,
+                          prefixIcon: Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              // Based on passwordVisible state choose the icon
+                              passwordlock
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            onPressed: () {
+                              // Update the state i.e. toogle the state of passwordVisible variable
+                              setState(() {
+                                passwordlock = !passwordlock;
+                              });
+                            },
+                          ),
+                          controller: password,
+                          onChanged: (String value) {},
+                          typekeyboard: null,
+                        ),
+                      ),
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height * 0.01,
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.orange, // Background color
+                            ),
+                            onPressed: () async {
+                              // await _lo
+                              await ClassApi.getUserinfofromManual(
+                                      email.text, password.text)
+                                  .then((value) async {
+                                if (value.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "User Not Found",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 11, 12, 14),
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                } else {
+                                  await ClassApi.checkUserFromOauth(
+                                          email.text, 'profiler')
+                                      .then((values) async {
+                                    if (values.isNotEmpty) {
+                                      print(values);
+                                      setState(() {
+                                        usercd = values[0]['usercd'];
+                                        imageurl = values[0]['urlpict'];
+                                        emaillogin = email.text;
+                                      });
+                                      await ClassApi.checkVerifiedPayment(
+                                              emaillogin)
+                                          .then((value) async {
+                                        if (value[0]['paymentcheck'] ==
+                                                'pending' ||
+                                            value[0]['paymentcheck'] == '') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PaymentChecks(
+                                                      email: emaillogin,
+                                                      trno: value[0]
+                                                          ['pytransaction'],
+                                                    )),
+                                          );
+                                        } else {
+                                          await ClassApi.getOutlets(usercd)
+                                              .then((valued) {
+                                            dbname = valued[0]['outletcode'];
+                                            pscd = valued[0]['outletcode'];
+                                            for (var x in valued) {
+                                              listoutlets.add(x['outletcode']);
+                                            }
+                                          });
+                                          await ClassApi.getAccessUser(usercd)
+                                              .then((valueds) {
+                                            for (var x in valueds) {
+                                              accesslist.add(x['access']);
+                                            }
+                                          });
+
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Mainapps()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        }
+                                      });
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "User Not Found",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              Color.fromARGB(255, 11, 12, 14),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    }
+                                  });
+                                  print(value);
+                                }
+                              });
+                            },
+                            child: Container(
+                                padding: EdgeInsets.all(10),
+                                alignment: Alignment.center,
+                                width: MediaQuery.of(context).size.width * 0.80,
+                                child: Text(
+                                  'Masuk ',
+                                  style: TextStyle(color: Colors.white),
+                                ))),
+                      ),
+                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white, // Background color
+                          ),
+                          onPressed: () async {
+                            await LogOut.signOut(context: context);
+                            await Authentication.signInWithGoogle(
+                                    context: context)
+                                .then((value) async {
+                              if (value!.email == null) {
+                                Fluttertoast.showToast(
+                                    msg: "Email is not Verified",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else {
+                                await ClassApi.updateUserGmail(
+                                    UserInfoSys(
+                                        fullname: value.displayName!,
+                                        token: '',
+                                        lastsignin: '',
+                                        urlpic: value.photoURL!,
+                                        uuid: value.uid),
+                                    'profiler');
+                                await ClassApi.checkUserFromOauth(
+                                        value.email!, 'profiler')
+                                    .then((values) async {
+                                  if (values.isNotEmpty) {
+                                    print(values);
+                                    setState(() {
+                                      usercd = values[0]['usercd'];
+                                      imageurl = value.photoURL!;
+                                      emaillogin = value.email!;
+                                      print('ini urlpics : $imageurl');
+                                    });
+                                    await ClassApi.checkVerifiedPayment(
+                                            emaillogin)
+                                        .then((value) async {
+                                      print(value[0]['paymentcheck']);
+                                      if (value[0]['paymentcheck'] ==
+                                              'pending' ||
+                                          value[0]['paymentcheck'] == '') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PaymentChecks(
+                                                    email: emaillogin,
+                                                    trno: value[0]
+                                                        ['pytransaction'],
+                                                  )),
+                                        );
+                                        Fluttertoast.showToast(
+                                            msg: "Memverifikasi pembayaran",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor:
+                                                Color.fromARGB(255, 11, 12, 14),
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      } else {
+                                        await ClassApi.getOutlets(usercd)
+                                            .then((valued) async {
+                                          if (valued.length != 0) {
+                                            dbname = valued[0]['outletcode'];
+                                            pscd = valued[0]['outletcode'];
+                                            for (var x in valued) {
+                                              listoutlets.add(x['outletcode']);
+                                            }
+                                            await ClassApi.getAccessUser(usercd)
+                                                .then((valueds) {
+                                              for (var x in valueds) {
+                                                accesslist.add(x['access']);
+                                              }
+                                            });
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Mainapps()),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                          } else {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ClassSetupProfileMobile()),
+                                            );
+                                          }
+                                        });
+                                      }
+                                    });
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: "User Not Found",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    LogOut.signOut(context: context);
+                                  }
+                                });
+                              }
+                            });
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width * 0.24,
+                            height: MediaQuery.of(context).size.height * 0.03,
+                            child: Wrap(
+                              children: <Widget>[
+                                ImageIcon(
+                                  AssetImage("google.png"),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text("masuk dengan gmail",
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.orange)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      TextButton(
+                          onPressed: () {},
+                          child: Text('Lupa Password ?',
+                              style: TextStyle(color: Colors.orange)))
+                    ],
+                  ),
+                ),
+                Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 1,
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                     
+                        // SizedBox(
+                        //   height: MediaQuery.of(context).size.height * 0.02,
+                        // ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width * 0.70,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Belum Punya Akun ? ",
+                                  style: TextStyle(fontSize: 14)),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterForm()),
+                                  );
+                                },
+                                child: Text(" Daftar ",
+                                    style: TextStyle(fontSize: 14)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ))
+              ]),
+            );
           }
-          return Container();
+          return Center(
+            child: Text('Device Not Supported yet'),
+          );
         }));
   }
 }
