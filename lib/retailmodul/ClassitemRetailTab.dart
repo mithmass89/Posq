@@ -8,6 +8,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/retailmodul/detailtranstab.dart';
 import 'package:posq/retailmodul/productclass/classretailcondiment.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
@@ -20,6 +21,8 @@ class ClassitemRetailTabs extends StatefulWidget {
   final String trno;
   final int itemseq;
   final String? guestname;
+  final VoidCallback refreshdata;
+  final VoidCallback? updatedata;
 
   const ClassitemRetailTabs({
     Key? key,
@@ -30,6 +33,8 @@ class ClassitemRetailTabs extends StatefulWidget {
     required this.trno,
     required this.itemseq,
     this.guestname,
+    required this.refreshdata,
+    required this.updatedata,
   }) : super(key: key);
 
   @override
@@ -172,10 +177,12 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
 
             //update to main // callback
             ClassRetailMainMobile.of(context)!.string = result!;
+            // DetailTransTabs.of(context)!.refreshtrans = result!;
           } else if (widget.item.trackstock == 0) {
             await insertIafjrndt();
 
             ClassRetailMainMobile.of(context)!.string = result!;
+            // DetailTransTabs.of(context)!.refreshtrans = result!;
           } else {
             Toast.show("Kamu Kehabisan Stock",
                 duration: Toast.lengthLong, gravity: Toast.center);
@@ -196,6 +203,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
           print("ini result $result");
           ClassRetailMainMobile.of(context)!.string = result!;
         }
+        widget.refreshdata();
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.20,
@@ -257,7 +265,10 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                       width: MediaQuery.of(context).size.width * 0.2,
                       child: Text(
                         widget.item.itemdesc!,
-                        style: TextStyle(fontSize: 10, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     widget.item.modifiers != 0
@@ -304,10 +315,8 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                             width: MediaQuery.of(context).size.width * 0.2,
                             child: Text(
                               '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10,
-                                  color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.white),
                             ),
                           ),
                   ],

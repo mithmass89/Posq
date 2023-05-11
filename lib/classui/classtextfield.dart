@@ -270,6 +270,170 @@ class _TextFieldMobile2State extends State<TextFieldMobile2> {
   }
 }
 
+class TextFieldTab1 extends StatefulWidget {
+  final String? label;
+  final String? hint;
+  final TextEditingController controller;
+  final int? maxline;
+  final ValueChanged<String> onChanged;
+  final typekeyboard;
+  final bool? enable;
+  final double? height;
+  final double? width;
+  final suffixIcon;
+  late bool? readonly;
+  late FocusNode? focus;
+  var expands;
+  var minLines;
+  var validator;
+
+  TextFieldTab1(
+      {Key? key,
+      this.label,
+      required this.controller,
+      required this.onChanged,
+      required this.typekeyboard,
+      this.maxline,
+      this.hint,
+      this.enable = true,
+      this.height,
+      this.width,
+      this.suffixIcon,
+      this.readonly,
+      this.focus,
+      this.validator,
+      this.expands,
+      this.minLines})
+      : super(key: key);
+
+  @override
+  State<TextFieldTab1> createState() => _TextFieldTab1State();
+}
+
+class _TextFieldTab1State extends State<TextFieldTab1> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        validator: widget.validator,
+        // expands: widget.expands,
+        // minLines: widget.minLines,
+        // maxLines: widget.maxline,
+
+        focusNode: widget.focus,
+        readOnly: widget.readonly ?? false,
+        keyboardType: widget.typekeyboard,
+        onChanged: widget.onChanged,
+        controller: widget.controller,
+        // autofocus: false,
+        style: const TextStyle(fontSize: 15.0, color: Colors.black),
+        decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon,
+          hintText: widget.hint,
+          label: widget.label != null ? Text(widget.label.toString()) : null,
+          border: InputBorder.none,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding:
+              const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 0.0),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class TextFieldTab2 extends StatefulWidget {
+  final String? label;
+  final String? hint;
+  final TextEditingController controller;
+  final int? maxline;
+  final ValueChanged<String> onChanged;
+  final typekeyboard;
+  final bool? enable;
+  final double? height;
+  final double? width;
+  final suffixIcon;
+  late bool? readonly;
+  late FocusNode? focus;
+  var expands;
+  var minLines;
+  var validator;
+
+  TextFieldTab2(
+      {Key? key,
+      this.label,
+      required this.controller,
+      required this.onChanged,
+      required this.typekeyboard,
+      this.maxline,
+      this.hint,
+      this.enable = true,
+      this.height,
+      this.width,
+      this.suffixIcon,
+      this.readonly,
+      this.focus,
+      this.validator,
+      this.expands,
+      this.minLines})
+      : super(key: key);
+
+  @override
+  State<TextFieldTab2> createState() => _TextFieldTab2State();
+}
+
+class _TextFieldTab2State extends State<TextFieldTab2> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        validator: widget.validator,
+        // expands: widget.expands,
+        // minLines: widget.minLines,
+        // maxLines: widget.maxline,
+
+        focusNode: widget.focus,
+        readOnly: widget.readonly ?? false,
+        keyboardType: widget.typekeyboard,
+        onChanged: widget.onChanged,
+        controller: widget.controller,
+        // autofocus: false,
+        style: const TextStyle(fontSize: 15.0, color: Colors.black),
+        decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon,
+          hintText: widget.hint,
+          label: widget.label != null ? Text(widget.label.toString()) : null,
+          border: InputBorder.none,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding:
+              const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 0.0),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
 class TextFieldMobileLogin extends StatefulWidget {
   final String? label;
   final String? hint;
@@ -321,7 +485,7 @@ class _TextFieldMobileLoginState extends State<TextFieldMobileLogin> {
       padding: const EdgeInsets.all(10),
       child: TextFormField(
         validator: widget.validator,
- 
+
         obscureText: !widget.showpassword!, //This will obscure text dynamically
         focusNode: widget.focus,
         readOnly: widget.readonly ?? false,

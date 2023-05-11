@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/dialogclass.dart';
+import 'package:posq/classui/payment/paymenttablet/paymentcashtab.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 
@@ -55,48 +56,57 @@ class _ClassRetailManualTabsState extends State<ClassRetailManualTabs> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.centerLeft,
+      width: MediaQuery.of(context).size.width * 1,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            height: MediaQuery.of(context).size.height * 0.2,
-            width: MediaQuery.of(context).size.width * 1,
-            // decoration: BoxDecoration(color: Colors.grey[200]),
-            child: Center(
-                child: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-              ),
-              controller: _myController,
-              textAlign: TextAlign.center,
-              showCursor: false,
-              style: const TextStyle(fontSize: 40),
-              // Disable the default soft keybaord
-              keyboardType: TextInputType.none,
-            )),
-          ),
+          // Container(
+          //   alignment: Alignment.centerLeft,
+          //   height: MediaQuery.of(context).size.height * 0.2,
+          //   width: MediaQuery.of(context).size.width * 1,
+          //   // decoration: BoxDecoration(color: Colors.grey[200]),
+          //   child: Center(
+          //       child: TextField(
+          //     decoration: InputDecoration(
+          //       border: InputBorder.none,
+          //     ),
+          //     controller: _myController,
+          //     textAlign: TextAlign.center,
+          //     showCursor: false,
+          //     style: const TextStyle(fontSize: 40),
+          //     // Disable the default soft keybaord
+          //     keyboardType: TextInputType.none,
+          //   )),
+          // ),
           Container(
             alignment: Alignment.topCenter,
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.7,
             // decoration: BoxDecoration(color: Colors.grey[200]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  alignment: Alignment.topCenter,
-                  child: NumPadTabs(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    width: MediaQuery.of(context).size.width * 0.55,
+                    alignment: Alignment.topCenter,
+                    child: PaymentCashTabs(
+                      resetTextEditing: resetTextEditing,
+                      itemlenght: widget.itemlenght,
+                      dialog: dialog,
+                      outletinfo: widget.outletinfo,
+                      controller: _myController,
+                      trno: widget.trno!,
+                    )
+                    /* NumPadTabs(
                     controller: _myController,
                     delete: () {
                       _myController.text = _myController.text
                           .substring(0, _myController.text.length - 1);
                     },
                     onSubmit: () {
-                      debugPrint('Your code: ${_myController.text}');
+                      print('object');
 
                       showDialog(
                           context: context,
@@ -108,120 +118,118 @@ class _ClassRetailManualTabsState extends State<ClassRetailManualTabs> {
                               ));
                     },
                     clear: () {
-                      _myController.text = '';
+                      _myController.text = 'Rp.';
                     },
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.05,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  child: Column(
-                    children: [
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.2,
-                          width: MediaQuery.of(context).size.width * 0.10,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.shopping_bag_outlined,
-                                ),
-                                iconSize: 30,
-                                color: Colors.black,
-                                splashColor: Colors.purple,
-                                onPressed: () async {
-                                  if (_myController.text != '' ||
-                                      _myController.text == '0') {
-                                    final IafjrndtClass results =
-                                        await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return DialogClassRetailDesc(
-                                                itemlenght: widget.itemlenght,
-                                                trno: widget.trno,
-                                                cleartext: () {
-                                                  resetTextEditing();
-                                                },
-                                                outletinfo: widget.outletinfo,
-                                                result: double.parse(
-                                                    _myController.text == ''
-                                                        ? '0'
-                                                        : _myController.text),
-                                                controller: dialog,
-                                                callback:
-                                                    (IafjrndtClass val) {},
-                                              );
-                                            });
-                                    ClassRetailMainMobile.of(context)!.string =
-                                        results;
-                                  } else {
-                                    Fluttertoast.showToast(
-                                        msg: "Isi Amount Dulu",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor:
-                                            Color.fromARGB(255, 11, 12, 14),
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                  }
+                  ),*/
+                    ),
 
-                                  setState(() {});
-                                },
-                              ),
-                              Text('Deskripsi')
-                            ],
-                          )),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.02,
-                      ),
-                      Container(
-                          width: MediaQuery.of(context).size.width * 0.10,
-                          height: MediaQuery.of(context).size.height * 0.2,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.contact_page_outlined,
-                                ),
-                                iconSize: 30,
-                                color: Colors.black,
-                                splashColor: Colors.purple,
-                                onPressed: () async {
-                                  await showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return DialogCustomerManual(
-                                          pscd: widget.outletinfo.outletcd,
-                                          trno: widget.trno!,
-                                        );
-                                      });
-                                },
-                              ),
-                              Text('pelanggan')
-                            ],
-                          )),
-                    ],
-                  ),
-                )
+                // Container(
+                //   height: MediaQuery.of(context).size.height * 0.45,
+                //   child: Column(
+                //     children: [
+                //       Container(
+                //           height: MediaQuery.of(context).size.height * 0.22,
+                //           width: MediaQuery.of(context).size.width * 0.10,
+                //           alignment: Alignment.center,
+                //           decoration: BoxDecoration(
+                //               border: Border.all(
+                //                 color: Colors.grey,
+                //                 width: 1,
+                //               ),
+                //               borderRadius: BorderRadius.circular(12),
+                //               color: Colors.white),
+                //           child: Column(
+                //             children: [
+                //               IconButton(
+                //                 icon: Icon(
+                //                   Icons.shopping_bag_outlined,
+                //                 ),
+                //                 iconSize: 30,
+                //                 color: Colors.black,
+                //                 splashColor: Colors.purple,
+                //                 onPressed: () async {
+                //                   if (_myController.text != '' ||
+                //                       _myController.text == '0') {
+                //                     final IafjrndtClass results =
+                //                         await showDialog(
+                //                             context: context,
+                //                             builder: (BuildContext context) {
+                //                               return DialogClassRetailDesc(
+                //                                 itemlenght: widget.itemlenght,
+                //                                 trno: widget.trno,
+                //                                 cleartext: () {
+                //                                   resetTextEditing();
+                //                                 },
+                //                                 outletinfo: widget.outletinfo,
+                //                                 result: double.parse(
+                //                                     _myController.text == ''
+                //                                         ? '0'
+                //                                         : _myController.text),
+                //                                 controller: dialog,
+                //                                 callback:
+                //                                     (IafjrndtClass val) {},
+                //                               );
+                //                             });
+                //                     ClassRetailMainMobile.of(context)!.string =
+                //                         results;
+                //                   } else {
+                //                     Fluttertoast.showToast(
+                //                         msg: "Isi Amount Dulu",
+                //                         toastLength: Toast.LENGTH_LONG,
+                //                         gravity: ToastGravity.CENTER,
+                //                         timeInSecForIosWeb: 1,
+                //                         backgroundColor:
+                //                             Color.fromARGB(255, 11, 12, 14),
+                //                         textColor: Colors.white,
+                //                         fontSize: 16.0);
+                //                   }
+
+                //                   setState(() {});
+                //                 },
+                //               ),
+                //               Text('Deskripsi')
+                //             ],
+                //           )),
+                //       SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.02,
+                //       ),
+                //       Container(
+                //           width: MediaQuery.of(context).size.width * 0.10,
+                //           height: MediaQuery.of(context).size.height * 0.23,
+                //           alignment: Alignment.center,
+                //           decoration: BoxDecoration(
+                //               border: Border.all(
+                //                 color: Colors.grey,
+                //                 width: 1,
+                //               ),
+                //               borderRadius: BorderRadius.circular(12),
+                //               color: Colors.white),
+                //           child: Column(
+                //             children: [
+                //               IconButton(
+                //                 icon: Icon(
+                //                   Icons.contact_page_outlined,
+                //                 ),
+                //                 iconSize: 30,
+                //                 color: Colors.black,
+                //                 splashColor: Colors.purple,
+                //                 onPressed: () async {
+                //                   await showDialog(
+                //                       context: context,
+                //                       builder: (BuildContext context) {
+                //                         return DialogCustomerManual(
+                //                           pscd: widget.outletinfo.outletcd,
+                //                           trno: widget.trno!,
+                //                         );
+                //                       });
+                //                 },
+                //               ),
+                //               Text('pelanggan')
+                //             ],
+                //           )),
+                //     ],
+                //   ),
+                // )
               ],
             ),
           ),

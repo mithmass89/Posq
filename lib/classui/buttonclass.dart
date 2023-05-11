@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/classformat.dart';
 
 class ButtonClassAction extends StatefulWidget {
   final VoidCallback? onpressed;
@@ -495,7 +496,7 @@ class NumPadTabs extends StatelessWidget {
 
   const NumPadTabs({
     Key? key,
-    this.buttonSizewidth = 80,
+    this.buttonSizewidth = 100,
     this.buttonSizeheight = 55,
     this.buttonColor = Colors.orange,
     this.iconColor = Colors.white,
@@ -518,21 +519,21 @@ class NumPadTabs extends StatelessWidget {
             // implement the number keys (from 0 to 9) with the NumberButton widget
             // the NumberButton widget is defined in the bottom of this file
             children: [
-              NumberButton(
+              NumberButtonTab(
                 number: 1,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
                 color: buttonColor,
                 controller: controller,
               ),
-              NumberButton(
+              NumberButtonTab(
                 number: 2,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
                 color: buttonColor,
                 controller: controller,
               ),
-              NumberButton(
+              NumberButtonTab(
                 number: 3,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
@@ -545,21 +546,21 @@ class NumPadTabs extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              NumberButton(
+              NumberButtonTab(
                 number: 4,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
                 color: buttonColor,
                 controller: controller,
               ),
-              NumberButton(
+              NumberButtonTab(
                 number: 5,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
                 color: buttonColor,
                 controller: controller,
               ),
-              NumberButton(
+              NumberButtonTab(
                 number: 6,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
@@ -572,21 +573,21 @@ class NumPadTabs extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              NumberButton(
+              NumberButtonTab(
                 number: 7,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
                 color: buttonColor,
                 controller: controller,
               ),
-              NumberButton(
+              NumberButtonTab(
                 number: 8,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
                 color: buttonColor,
                 controller: controller,
               ),
-              NumberButton(
+              NumberButtonTab(
                 number: 9,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
@@ -617,6 +618,11 @@ class NumPadTabs extends StatelessWidget {
                 height: buttonSizeheight,
                 width: buttonSizewidth,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                   onPressed: () {
                     delete();
                   },
@@ -627,18 +633,24 @@ class NumPadTabs extends StatelessWidget {
                 ),
               ),
 
-              NumberButton(
+              NumberButtonTab(
                 number: 0,
                 heightsize: buttonSizeheight,
                 widthsize: buttonSizewidth,
                 color: buttonColor,
                 controller: controller,
               ),
+
               // this button is used to submit the entered value
               SizedBox(
                 height: buttonSizeheight,
                 width: buttonSizewidth,
                 child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
                     onPressed: () {
                       clear();
                     },
@@ -690,6 +702,57 @@ class NumberButton extends StatelessWidget {
             controller.text = '';
           } else {
             controller.text += number.toString();
+          }
+        },
+        child: Center(
+          child: Text(
+            number.toString(),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NumberButtonTab extends StatelessWidget {
+  final int number;
+  final double heightsize;
+  final double widthsize;
+  final Color color;
+  final TextEditingController controller;
+  final Icon? icon;
+
+  const NumberButtonTab({
+    Key? key,
+    required this.number,
+    required this.color,
+    required this.controller,
+    required this.heightsize,
+    required this.widthsize,
+    this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: widthsize,
+      height: heightsize,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        onPressed: () {
+          if (controller.text.isNotEmpty && controller.text.startsWith('0')) {
+            controller.text = '';
+          } else {
+            controller.text += number.toString();
+            // CurrencyFormat.convertToIdr(
+            //     int.parse((controller.text += number.toString())), 0);
           }
         },
         child: Center(

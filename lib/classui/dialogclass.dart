@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
+import 'package:posq/classui/payment/paymentsugestionclass.dart';
 import 'package:posq/classui/searchwidget.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
@@ -838,6 +839,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             split: 'A',
             transno1: 'trnobill',
             itemcode: widget.controller.text,
+            itemdesc: widget.controller.text,
             trno1: widget.trno,
             itemseq: widget.itemlenght,
             cono: 'cono',
@@ -1208,6 +1210,10 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
     });
   }
 }
+
+////payment class  ////
+
+/// end dialogpayment ///
 
 class DialogClassReopen extends StatefulWidget {
   final String trno;
@@ -2070,8 +2076,8 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
         widget.datatrans.guestname != null) {
       guestname.text = widget.datatrans.guestname!;
       setState(() {});
-    } if (widget.datatrans.tablesid != '' &&
-        widget.datatrans.tablesid != null) {
+    }
+    if (widget.datatrans.tablesid != '' && widget.datatrans.tablesid != null) {
       selectedValue = widget.datatrans.tablesid;
       print('update tables');
       setState(() {});
@@ -2143,7 +2149,9 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
                         ),
                         Expanded(
                           child: Text(
-                        selectedValue==null?   'Table No.':selectedValue!,
+                            selectedValue == null
+                                ? 'Table No.'
+                                : selectedValue!,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -2194,6 +2202,236 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
                       iconSize: 14,
                       iconEnabledColor: Colors.yellow,
                       iconDisabledColor: Colors.grey,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 200,
+                      width: 200,
+                      padding: null,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.redAccent,
+                      ),
+                      elevation: 8,
+                      offset: const Offset(-20, 0),
+                      scrollbarTheme: ScrollbarThemeData(
+                        radius: const Radius.circular(40),
+                        thickness: MaterialStateProperty.all<double>(6),
+                        thumbVisibility: MaterialStateProperty.all<bool>(true),
+                      ),
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                      padding: EdgeInsets.only(left: 14, right: 14),
+                    ),
+                  ),
+                ),
+              ],
+            )),
+        title: Text('Simpan Sebagai '),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () async {
+                print(selectedValue);
+                if (selectedValue != null) {
+                  await updateTablestrno(selectedValue!);
+                  await ClassApi.updateTables_use(
+                      dbname, widget.trno, selectedValue!);
+                }
+                await updateGuest(
+                    guestname.text.isEmpty ? 'No Guest' : guestname.text);
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('savecostmrs');
+                if (widget.fromsaved == false) {
+                  await updateTrno();
+                } else {
+                  await checkTrno();
+                }
+
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => ClassRetailMainMobile(
+                              fromsaved: widget.fromsaved,
+                              pscd: widget.pscd,
+                              trno: trno,
+                              outletinfo: widget.outletinfo,
+                              qty: 0,
+                            )),
+                    (Route<dynamic> route) => false);
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
+class DialogClassSimpanTab extends StatefulWidget {
+  final String trno;
+  final String pscd;
+  final Outlet outletinfo;
+  final bool? fromsaved;
+  final IafjrndtClass datatrans;
+
+  DialogClassSimpanTab({
+    Key? key,
+    required this.trno,
+    required this.pscd,
+    required this.outletinfo,
+    this.fromsaved,
+    required this.datatrans,
+  }) : super(key: key);
+
+  @override
+  State<DialogClassSimpanTab> createState() => _DialogClassSimpanTabState();
+}
+
+class _DialogClassSimpanTabState extends State<DialogClassSimpanTab> {
+  TextEditingController guestname = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var formattedDate;
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  String trno = '';
+  List<String> table = [];
+  List<String> items = [];
+  String? selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    getTables();
+    print('ini data ${widget.datatrans.tablesid}');
+    formattedDate = formatter.format(now);
+    if (widget.datatrans.guestname != '' &&
+        widget.datatrans.guestname != null) {
+      guestname.text = widget.datatrans.guestname!;
+      setState(() {});
+    }
+    if (widget.datatrans.tablesid != '' && widget.datatrans.tablesid != null) {
+      selectedValue = widget.datatrans.tablesid;
+      print('update tables');
+      setState(() {});
+    }
+  }
+
+  updateGuest(String guestname) async {
+    await ClassApi.updateTrnoGuest(dbname, widget.trno, guestname);
+  }
+
+  updateTablestrno(String table) async {
+    await ClassApi.updateTablestrno(dbname, widget.trno, selectedValue!);
+  }
+
+  checkTrno() async {
+    var transno = await ClassApi.checkTrno();
+    trno = widget.pscd + '-' + transno[0]['transnonext'].toString();
+    print(trno);
+  }
+
+  updateTrno() async {
+    await ClassApi.updateTrno(dbname);
+    await checkTrno();
+  }
+
+  getTables() async {
+    await ClassApi.getTablesNotUse('').then((value) {
+      if (value.isNotEmpty) {
+        for (var x in value) {
+          items.add(x.tablecd!);
+        }
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: TextFieldTab1(
+                    label: 'Guest Name',
+                    controller: guestname,
+                    onChanged: (String value) {},
+                    typekeyboard: TextInputType.text,
+                  ),
+                ),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    isExpanded: true,
+                    hint: Row(
+                      children: [
+                        Icon(
+                          Icons.list,
+                          size: 16,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Expanded(
+                          child: Text(
+                            selectedValue == null
+                                ? 'Table No.'
+                                : selectedValue!,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    items: items
+                        .map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
+                        .toList(),
+                    value: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as String;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      height: 50,
+                      width: 160,
+                      padding: const EdgeInsets.only(left: 14, right: 14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: Colors.black26,
+                        ),
+                        color: Colors.orange,
+                      ),
+                      elevation: 2,
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(
+                        Icons.arrow_forward_ios_outlined,
+                      ),
+                      iconSize: 14,
+                      iconEnabledColor: Colors.yellow,
+                      iconDisabledColor: Colors.white,
                     ),
                     dropdownStyleData: DropdownStyleData(
                       maxHeight: 200,

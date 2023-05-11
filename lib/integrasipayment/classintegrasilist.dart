@@ -24,12 +24,12 @@ class _ClassListIntegrasiState extends State<ClassListIntegrasi> {
                 title: Text('Midtrans Payment Online'),
                 subtitle:
                     Text('Midtrans adalah penyedia layanan Payment Gateaway'),
-                  onTap: (){
-                     Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return ClassPaymentMidtrans();
-                          }));
-                  },
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return ClassPaymentMidtrans();
+                  }));
+                },
               ),
               Divider()
             ],
@@ -40,12 +40,24 @@ class _ClassListIntegrasiState extends State<ClassListIntegrasi> {
                 title: Text('Xendit Payment Online'),
                 subtitle:
                     Text('Xendit adalah penyedia layanan Payment Gateaway'),
-                    onTap: (){
-                         Toast.show(
-                          "Saat ini belum tersedia",
-                          duration: Toast.lengthLong,
-                          gravity: Toast.center);
-                    },
+                onTap: () {
+                  Toast.show("Saat ini belum tersedia",
+                      duration: Toast.lengthLong, gravity: Toast.center);
+                },
+              ),
+              Divider()
+            ],
+          ),
+          Column(
+            children: [
+              ListTile(
+                title: Text('Duitku'),
+                onTap: () {
+                  Toast.show("Saat ini belum tersedia",
+                      duration: Toast.lengthLong, gravity: Toast.center);
+                },
+                subtitle: Text(
+                    'Duitku adalah payment gateway selain xendit dan midtrans'),
               ),
               Divider()
             ],
@@ -54,11 +66,9 @@ class _ClassListIntegrasiState extends State<ClassListIntegrasi> {
             children: [
               ListTile(
                 title: Text('Raja Ongkir'),
-                onTap: (){
-                     Toast.show(
-                          "Saat ini belum tersedia",
-                          duration: Toast.lengthLong,
-                          gravity: Toast.center);
+                onTap: () {
+                  Toast.show("Saat ini belum tersedia",
+                      duration: Toast.lengthLong, gravity: Toast.center);
                 },
                 subtitle: Text(
                     'Raja Ongkir adalah penyedia layanan pihak ketiga untuk Terhubung langsung dengan perusahaan expedisi semisal JNE,Si Cepat'),

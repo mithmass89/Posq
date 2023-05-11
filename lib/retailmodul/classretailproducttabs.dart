@@ -20,13 +20,17 @@ class ClassRetailProductTabs extends StatefulWidget {
   late final controller;
   final int itemseq;
   final String guestname;
+  final VoidCallback refreshdata;
+  final VoidCallback? updatedata;
   ClassRetailProductTabs(
       {Key? key,
       required this.trno,
       required this.pscd,
       required this.controller,
       required this.itemseq,
-      required this.guestname})
+      required this.guestname,
+      required this.refreshdata,
+      this.updatedata})
       : super(key: key);
 
   @override
@@ -115,6 +119,12 @@ class _ClassRetailProductTabsState extends State<ClassRetailProductTabs> {
                       return ShimmerLoading(
                         isLoading: isLoading,
                         child: ClassitemRetailTabs(
+                          refreshdata: () {
+                            widget.refreshdata();
+                          },
+                          updatedata: (){
+                            widget.updatedata;
+                          },
                           guestname: widget.guestname,
                           itemseq: widget.itemseq,
                           trno: widget.trno,
