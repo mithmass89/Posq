@@ -25,6 +25,7 @@ class PaymentDebitTabs extends StatefulWidget {
   late String pymtmthd;
   final List<String> paymentlist;
   late num? result;
+    final bool fromsplit;
   PaymentDebitTabs(
       {Key? key,
       required this.trno,
@@ -42,7 +43,7 @@ class PaymentDebitTabs extends StatefulWidget {
       this.insertIafjrnhd,
       required this.pymtmthd,
       required this.result,
-      required this.paymentlist})
+      required this.paymentlist, required this.fromsplit})
       : super(key: key);
 
   @override
@@ -183,8 +184,9 @@ class _PaymentDebitTabsState extends State<PaymentDebitTabs> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassPaymetSucsessTabs(
+                                                  fromsplit: widget.fromsplit,
                                                   fromsaved: widget.fromsaved,
-                                                  datatrans: widget.listdata,
+                                                  datatrans: widget.datatrans,
                                                   frombanktransfer: false,
                                                   cash: true,
                                                   outletinfo: widget.outletinfo,
@@ -207,8 +209,9 @@ class _PaymentDebitTabsState extends State<PaymentDebitTabs> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
-                                                datatrans: widget.listdata,
+                                                datatrans: widget.datatrans,
                                                 frombanktransfer: false,
                                                 cash: true,
                                                 outletinfo: widget.outletinfo,

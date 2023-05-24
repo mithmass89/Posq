@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, must_be_immutable
 
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -9,12 +10,18 @@ import 'package:posq/classui/payment/paymentmainmobilev2.dart';
 import 'package:posq/classui/payment/paymenttablet/dialogclasspayment.dart';
 import 'package:posq/classui/payment/paymenttablet/mainpaymenttab.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/retailmodul/productclass/classdialogsplitbilltab.dart';
+import 'package:posq/setting/printer/classmainprinter.dart';
+import 'package:posq/setting/printer/classtextprint.dart';
 import 'package:posq/setting/promo/classcreatepromomobile.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/selectdiscountmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
+
+typedef void StringCallback(IafjrndtClass val);
+PrintSmall? printing;
 
 class SummaryOrderSlideTabs extends StatefulWidget {
   final String trno;
@@ -48,14 +55,40 @@ class SummaryOrderSlideTabs extends StatefulWidget {
 
 class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
   Promo? result;
+  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
+  num? amounttotal = 0;
+  List<IafjrndtClass> summary = [];
+  bool connected = false;
 
   @override
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
+    print('listdata : summary ${widget.listdata}');
+    getSumm();
+  }
+
+  checkPrinter() async {
+    connected = await bluetooth.isConnected.then((value) => value!);
+    setState(() {});
+    print(connected);
+  }
+
+  getSumm() async {
+    await ClassApi.getSumTrans(widget.trno, dbname, '').then((value) {
+      print('ini summary : $value');
+      if (value.isNotEmpty) {
+        setState(() {
+          summary = value;
+          amounttotal = value.first.totalaftdisc;
+        });
+      } else {
+        amounttotal = 0;
+      }
+    });
   }
 
   @override
@@ -68,7 +101,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
           if (x.isNotEmpty) {
             return Container(
               width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 0.17,
+              height: MediaQuery.of(context).size.height * 0.18,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -237,18 +270,31 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                   //     ),
                   //   ],
                   // ),
-                  // Row(
-                  //   children: [
-                  //     Text(
-                  //       'Service',
-                  //       style: TextStyle(fontSize: 10),
-                  //     ),
-                  //     Text(
-                  //       CurrencyFormat.convertToIdr(x.first.serviceamt, 0),
-                  //       style: TextStyle(fontSize: 10),
-                  //     ),
-                  //   ],
-                  // ),
+               
+                  Row(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.09,
+                        child: Text(
+                          'Tax & Service',
+                          style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                        ),
+                      ),
+               
+                      Container(
+                        alignment: Alignment.centerRight,
+                            width: MediaQuery.of(context).size.width * 0.23,
+                        child: Text(
+                          CurrencyFormat.convertToIdr(
+                              x.first.serviceamt! + x.first.taxamt!, 0),
+                          style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                        SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.015,
+                  ),
                   Row(
                     children: [
                       Container(
@@ -328,7 +374,35 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                               backgroundColor:
                                   Colors.grey[200] // Background color
                               ),
-                          onPressed: () {},
+                          onPressed:
+                              accesslist.contains('settingprinter') == true
+                                  ? () async {
+                                      await getSumm();
+                                      if (connected == true) {
+                                        await printing!.prints(
+                                            widget.listdata,
+                                            summary,
+                                            widget.outletinfo.outletname!,
+                                            widget.outletinfo);
+                                      } else {
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ClassMainPrinter()));
+                                      }
+                                    }
+                                  : () {
+                                      Fluttertoast.showToast(
+                                          msg: "Tidak Punya Akses Printer",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              Color.fromARGB(255, 11, 12, 14),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    },
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -363,7 +437,25 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                             backgroundColor: Color.fromARGB(
                                 255, 0, 160, 147), // Background color
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            final result = await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    DialogSplitTab(
+                                      fromsaved: widget.fromsaved!,
+                                      datatrans: widget.listdata,
+                                      outletinfo: widget.outletinfo,
+                                      balance:
+                                          widget.summary.first.totalaftdisc!,
+                                      pscd: widget.outletinfo.outletcd,
+                                      trdt: formattedDate,
+                                      trno: widget.trno.toString(),
+                                      outletname: widget.outletinfo.outletname,
+                                    )).then((_) {
+                              setState(() {});
+                            });
+                          },
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -378,7 +470,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                         ),
                       ),
                       Container(
-                           width: MediaQuery.of(context).size.width * 0.22,
+                        width: MediaQuery.of(context).size.width * 0.22,
                         height: MediaQuery.of(context).size.height * 0.05,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -392,9 +484,11 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                           ),
                           onPressed: () async {
                             final result = await showDialog(
-                              barrierDismissible: false,
+                                barrierDismissible: false,
                                 context: context,
-                                builder: (_) => DialogPaymentTab(
+                                builder: (BuildContext context) =>
+                                    DialogPaymentTab(
+                                      fromsplit: false,
                                       fromsaved: widget.fromsaved!,
                                       datatrans: widget.listdata,
                                       outletinfo: widget.outletinfo,

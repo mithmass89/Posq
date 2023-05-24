@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
 import 'package:posq/setting/product_master/productmain.dart';
+import 'package:posq/setting/product_master/tabletclass/PaymentMasterTab.dart';
 import 'package:posq/setting/tablesettings/tablesettings.dart';
 import 'package:posq/setting/tipetransaksi/maintipetransaksi.dart';
 import 'package:posq/userinfo.dart';
@@ -24,7 +25,8 @@ class _MainMenuProductState extends State<MainMenuProduct> {
     "Tambah produk",
     "Condiment /  Topping",
     "Tipe Transaksi",
-    "Table / Order No"
+    "Table / Order No",
+    "Payment Master",
   ];
 
   @override
@@ -47,79 +49,75 @@ class _MainMenuProductState extends State<MainMenuProduct> {
             itemBuilder: (context, index) {
               return Card(
                 child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 24,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: menulist[index] == 'Tambah produk'
-                          ? Image.asset('addproduct.png')
-                          : menulist[index] == 'Condiment /  Topping'
-                              ? Image.asset('condiment.png')
-                              : menulist[index] == 'Tipe Transaksi'
-                                  ? Image.asset('transaction.png')
-                                  : menulist[index] == 'Table / Order No'
-                                      ? Image.asset('round-table.png')
-                                      : Container(),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 24,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: menulist[index] == 'Tambah produk'
+                            ? Image.asset('addproduct.png')
+                            : menulist[index] == 'Condiment /  Topping'
+                                ? Image.asset('condiment.png')
+                                : menulist[index] == 'Tipe Transaksi'
+                                    ? Image.asset('transaction.png')
+                                    : menulist[index] == 'Table / Order No'
+                                        ? Image.asset('round-table.png')
+                                        : menulist[index] == 'Payment Master'
+                                            ? Image.asset('settings.png')
+                                            : Container(),
+                      ),
                     ),
-                  ),
-                  title: Text(menulist[index]),
-                  onTap: () {
-                    if (menulist[index] == 'Tambah produk') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Productmain(
-                                  pscd: widget.outletinfo!.outletcd,
-                                )),
-                      );
-                    } else if (menulist[index] == 'Condiment /  Topping') {
-                      if (accesslist.contains('createcondiment') == true) {
+                    title: Text(menulist[index]),
+                    onTap: () {
+                      print(accesslist);
+                      if (menulist[index] == 'Tambah produk') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MainCondiment(
+                              builder: (context) => Productmain(
                                     pscd: widget.outletinfo!.outletcd,
                                   )),
                         );
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Tidak punya akses condiment",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    } else if (menulist[index] == 'Tipe Transaksi') {
-                      if (accesslist.contains('createtype') == true) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainTransaksiType(
-                                    pscd: widget.outletinfo!.outletcd,
-                                  )),
-                        );
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Tidak punya akses tipe transaksi",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    } else if (menulist[index] == 'Table / Order No') {
-                      if (accesslist.contains('createtable') == true) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SettingTableMain(
-                                    pscd: widget.outletinfo!.outletcd,
-                                  )),
-                        );
+                      } else if (menulist[index] == 'Condiment /  Topping') {
+                        if (accesslist.contains('createcondiment') == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainCondiment(
+                                      pscd: widget.outletinfo!.outletcd,
+                                    )),
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Tidak punya akses condiment",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                      } else if (menulist[index] == 'Tipe Transaksi') {
+                        if (accesslist.contains('createtype') == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainTransaksiType(
+                                      pscd: widget.outletinfo!.outletcd,
+                                    )),
+                          );
+                        }
+                      } else if (menulist[index] == 'Payment Master') {
+                        print(accesslist);
+                        if (accesslist.contains('paymentmaster') == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PaymentMasterTab(
+                                      pscd: widget.outletinfo!.outletcd,
+                                    )),
+                          );
+                        }
                       } else {
                         Fluttertoast.showToast(
                             msg: "Tidak punya akses tipe transaksi",
@@ -130,9 +128,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                       }
-                    }
-                  },
-                ),
+                    }),
               );
             }));
   }

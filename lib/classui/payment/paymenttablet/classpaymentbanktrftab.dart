@@ -25,6 +25,7 @@ class PaymentTrfTabs extends StatefulWidget {
   late String pymtmthd;
   final List<String> paymentlist;
   late num? result;
+    final bool fromsplit;
   PaymentTrfTabs(
       {Key? key,
       required this.trno,
@@ -42,7 +43,7 @@ class PaymentTrfTabs extends StatefulWidget {
       this.insertIafjrnhd,
       required this.pymtmthd,
       required this.result,
-      required this.paymentlist})
+      required this.paymentlist, required this.fromsplit})
       : super(key: key);
 
   @override
@@ -170,8 +171,9 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassPaymetSucsessTabs(
+                                                  fromsplit: widget.fromsplit,
                                                   fromsaved: widget.fromsaved,
-                                                  datatrans: widget.listdata,
+                                                  datatrans: widget.datatrans,
                                                   frombanktransfer: false,
                                                   cash: true,
                                                   outletinfo: widget.outletinfo,
@@ -194,6 +196,7 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
                                                 datatrans: widget.listdata,
                                                 frombanktransfer: false,

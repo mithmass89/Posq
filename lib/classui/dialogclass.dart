@@ -836,7 +836,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             trdt: formattedDate,
             pscd: widget.outletinfo.outletcd,
             transno: widget.trno,
-            split: 'A',
+            split: 1,
             transno1: 'trnobill',
             itemcode: widget.controller.text,
             itemdesc: widget.controller.text,
@@ -930,7 +930,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     trdt: formattedDate,
                     pscd: widget.outletinfo.outletcd,
                     transno: widget.trno,
-                    split: 'A',
+                    split: 1,
                     transno1: 'trnobill',
                     itemcode: widget.controller.text,
                     trno1: widget.trno,
@@ -1530,7 +1530,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
         trdt: formattedDate,
         transno: widget.trno,
         transno1: widget.trno,
-        split: 'A',
+        split: 1,
         pscd: widget.pscd,
         trtm: now.hour.toString() +
             ":" +
@@ -1704,7 +1704,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
       trdt: formattedDate,
       transno: widget.trno,
       transno1: widget.trno,
-      split: 'A',
+      split: 1,
       pscd: widget.pscd,
       trtm: now.hour.toString() +
           ":" +
@@ -1889,7 +1889,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
         trdt: formattedDate,
         transno: widget.trno,
         transno1: widget.trno,
-        split: 'A',
+        split: 1,
         pscd: widget.pscd,
         trtm: now.hour.toString() +
             ":" +

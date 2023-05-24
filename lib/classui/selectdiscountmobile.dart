@@ -52,7 +52,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: widget.trno!,
-        split: 'A',
+        split: 1,
         pscd: '${widget.pscd}',
         trtm: '00:00',
         disccd: data.promocd,

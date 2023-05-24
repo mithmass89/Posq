@@ -10,6 +10,7 @@ import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/detailtranstab.dart';
 import 'package:posq/retailmodul/productclass/classretailcondiment.dart';
+import 'package:posq/retailmodul/productclass/classretailcondimenttab.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
@@ -62,7 +63,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
           trdt: widget.trdt,
           pscd: pscd,
           transno: widget.trno,
-          split: 'A',
+          split: 1,
           transno1: 'trnobill',
           itemcode: widget.item.itemcode,
           itemdesc: widget.item.itemdesc,
@@ -115,7 +116,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
       trdt: widget.trdt,
       pscd: pscd,
       transno: widget.trno,
-      split: 'A',
+      split: 1,
       transno1: 'trnobill',
       itemcode: widget.item.itemcode,
       itemdesc: widget.item.itemdesc,
@@ -191,7 +192,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
           var result = await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ClassInputCondiment(
+                builder: (context) => ClassInputCondimentTab(
                       guestname: widget.guestname!,
                       fromedit: false,
                       itemseq: widget.itemseq,
@@ -218,37 +219,39 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 0.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 0.5,
+                  ),
                 ),
-              ),
-              // color: Colors.blue,
-              height: MediaQuery.of(context).size.height * 0.15,
-              width: MediaQuery.of(context).size.width * 0.2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.file(
-                  widget.image,
-                  fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                          child: Icon(
-                        Icons.image,
-                        size: MediaQuery.of(context).devicePixelRatio * 15,
-                      )),
-                    );
-                  },
-                ),
-              ),
-            ),
+                // color: Colors.blue,
+                height: MediaQuery.of(context).size.height * 0.157,
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: ClipRRect(
+                  borderRadius:  BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  child: Image.network(
+                    widget.item.pathimage!,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
+                )),
             Container(
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 0, 160, 147),
@@ -262,7 +265,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                 child: Column(
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.21,
                       child: Text(
                         widget.item.itemdesc!,
                         style: TextStyle(

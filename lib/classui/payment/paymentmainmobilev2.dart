@@ -114,7 +114,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: '${widget.trno}',
-        split: 'A',
+        split: 1,
         pscd: '${widget.pscd}',
         trtm: now.hour.toString() +
             ":" +

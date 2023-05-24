@@ -9,6 +9,7 @@ import 'package:posq/classui/payment/paymenttablet/classpaymentcashtab.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentdebitcard.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentewallet.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentlainlaintab.dart';
+import 'package:posq/classui/payment/paymenttablet/classpaymentpiutangtab.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentqristab.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/model.dart';
@@ -23,6 +24,7 @@ class DialogPaymentTab extends StatefulWidget {
   final Outlet? outletinfo;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   const DialogPaymentTab({
     Key? key,
@@ -34,6 +36,7 @@ class DialogPaymentTab extends StatefulWidget {
     this.outletname,
     required this.datatrans,
     required this.fromsaved,
+    required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -82,6 +85,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
   String pymtmthd = '';
   String compcode = '';
   String compdescription = '';
+  int lastsplit = 1;
+  List<PaymentMaster> companylist = [];
 
   @override
   void initState() {
@@ -93,6 +98,11 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     selectedpy = 'Cash';
     pymtmthd = 'Cash';
     formattedDate = formatter.format(now);
+    print('ini trno dari split ${widget.trno}');
+    ClassApi.checkLastSplit(dbname, widget.trno).then((value) {
+      lastsplit = value[0]['split'] + 1;
+    });
+    getPaymentMaster();
   }
 
   String _formatValue(double value) {
@@ -125,12 +135,21 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
   }
 
-  Future<Null> insertIafjrnhd() async {
+  getPaymentMaster() async {
+    await ClassApi.getPaymentMaster('').then((isi) {
+      print(List.generate(isi.length, (index) => isi[index].id));
+      setState(() {
+        companylist = isi;
+      });
+    });
+  }
+
+  Future<dynamic> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: '${widget.trno}',
-        split: 'A',
+        split: lastsplit,
         pscd: '${widget.pscd}',
         trtm: now.hour.toString() +
             ":" +
@@ -170,7 +189,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: '${widget.trno}',
-        split: 'A',
+        split: lastsplit,
         pscd: '${widget.pscd}',
         trtm: now.hour.toString() +
             ":" +
@@ -212,7 +231,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: '${widget.trno}',
-        split: 'A',
+        split: lastsplit,
         pscd: '${widget.pscd}',
         trtm: now.hour.toString() +
             ":" +
@@ -254,7 +273,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: widget.trno,
-        split: 'A',
+        split: lastsplit,
         pscd: '${widget.pscd}',
         trtm: '00:00',
         disccd: '',
@@ -548,6 +567,43 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             ),
                                             padding: EdgeInsets.zero,
                                             backgroundColor: selectedpy ==
+                                                    'Piutang'
+                                                ? Colors.white
+                                                : Colors
+                                                    .orange // Background color
+                                            ),
+                                        onPressed: () {
+                                          selectedpy = 'Piutang';
+                                          pymtmthd = 'Piutang';
+                                          compcode = pymtmthd;
+                                          setState(() {});
+                                        },
+                                        child: Text(
+                                          'Piutang',
+                                          style: TextStyle(
+                                              color: selectedpy == 'Piutang'
+                                                  ? Colors.orange
+                                                  : Colors.white),
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.02,
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.15,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.06,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      5), // <-- Radius
+                                            ),
+                                            padding: EdgeInsets.zero,
+                                            backgroundColor: selectedpy ==
                                                     'Lain lain'
                                                 ? Colors.white
                                                 : Colors
@@ -569,7 +625,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   ),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.1,
+                                        0.05,
                                   ),
                                   Container(
                                     width: MediaQuery.of(context).size.width *
@@ -593,9 +649,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ClassListIntegrasi(
-                                              
-                                                    )),
+                                                    ClassListIntegrasi()),
                                           );
                                         },
                                         child: Text(
@@ -618,6 +672,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                               switch (selectedpy) {
                                 case 'Cash':
                                   return PaymenCashTab(
+                                    fromsplit: widget.fromsplit,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
                                     insertIafjrnhd: insertIafjrnhd,
@@ -634,6 +689,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'EDC':
                                   return PaymentDebitTabs(
+                                    fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
                                     debitcontroller: debitcontroller,
@@ -686,6 +742,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'E-wallet':
                                   return PaymentEwalletTab(
+                                    fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
                                     debitcontroller: debitcontroller,
@@ -712,6 +769,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Bank transfer':
                                   return PaymentTrfTabs(
+                                    fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
                                     debitcontroller: debitcontroller,
@@ -736,8 +794,29 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                       'OTHER'
                                     ],
                                   );
+                                case 'Piutang':
+                                  return PaymentPiutangTabs(
+                                    fromsplit: widget.fromsplit,
+                                    cardno: cardno,
+                                    cardexp: cardexp,
+                                    debitcontroller: debitcontroller,
+                                    outletinfo: widget.outletinfo,
+                                    outletname: widget.outletname,
+                                    insertIafjrnhd: insertIafjrnhdEDC,
+                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    balance: widget.balance,
+                                    datatrans: widget.datatrans,
+                                    fromsaved: widget.fromsaved,
+                                    pscd: widget.pscd,
+                                    pymtmthd: pymtmthd,
+                                    result: result,
+                                    trdt: formattedDate,
+                                    trno: widget.trno,
+                                    paymentlist: companylist,
+                                  );
                                 case 'Lain lain':
                                   return PaymentLainLainTabs(
+                                    fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
                                     debitcontroller: debitcontroller,
@@ -887,7 +966,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Balance',
+                                      'Sisa',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),

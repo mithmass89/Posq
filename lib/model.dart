@@ -80,7 +80,7 @@ class Item {
   final String? costcoa;
   final String? ctg;
   final num? stock;
-  final String? pathimage;
+  late String? pathimage;
   final String? description;
   final int? trackstock;
   final String? barcode;
@@ -565,7 +565,7 @@ class IafjrndtClass {
   final String? trdt;
   final String? pscd;
   late final String? transno;
-  final String? split;
+  final int? split;
   final String? transno1;
   final String? itemdesc;
   final String? itemcode;
@@ -615,6 +615,7 @@ class IafjrndtClass {
   final int? multiprice;
   final String? salestype;
   final String? tablesid;
+  final String? note;
 
   IafjrndtClass(
       {this.salestype,
@@ -670,9 +671,8 @@ class IafjrndtClass {
       this.condimenttype,
       this.pricelist,
       this.multiprice,
-      this.tablesid
-      
-      });
+      this.tablesid,
+      this.note});
 
   IafjrndtClass.fromJson(
     Map<String, dynamic> res,
@@ -729,6 +729,7 @@ class IafjrndtClass {
         condimenttype = res['condimenttype'],
         multiprice = res["multiprice"],
         tablesid = res["tablesid"],
+        note = res["note"],
         pricelist = res['pricelist'] != null
             ? List<PriceList>.from(
                 jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)))
@@ -789,13 +790,14 @@ class IafjrndtClass {
       'pricelist': List<dynamic>.from(pricelist!.map((x) => x.toJson())),
       'multiprice': multiprice,
       'salestype': salestype,
-      'tablesid': tablesid
+      'tablesid': tablesid,
+      'note': note
     };
   }
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,note:$note}';
   }
 }
 
@@ -804,7 +806,7 @@ class IafjrnhdClass {
   final String? trdt;
   final String? transno;
   final String transno1;
-  final String? split;
+  final int? split;
   final String? pscd;
   final String? docno;
   final String? email;
@@ -1510,6 +1512,69 @@ class TableMaster {
       };
 }
 
+class PaymentMaster {
+  late String? paymentcd;
+  late String? paymentdesc;
+  final String? typ;
+  final String? coacomp;
+  final String? clactive;
+  final int? active;
+  final String? coapayment;
+  final String? email;
+  final String? telp;
+  final num? limits;
+  final String? pic;
+  final int? id;
+
+  PaymentMaster(
+      {this.paymentcd,
+      this.paymentdesc,
+      this.typ,
+      this.coacomp,
+      this.clactive,
+      this.active,
+      this.coapayment,
+      this.email,
+      this.telp,
+      this.limits,
+      this.pic,
+      this.id});
+
+  PaymentMaster.fromJson(Map<String, dynamic> res)
+      : paymentcd = res["paymentcd"],
+        paymentdesc = res["paymentdesc"],
+        typ = res["typ"],
+        coacomp = res["coacomp"],
+        active = res["active"],
+        coapayment = res["coapayment"],
+        email = res["email"],
+        telp = res["telp"],
+        limits = res["limits"],
+        pic = res["pic"],
+        id = res["id"],
+        clactive = res["clactive"];
+
+  @override
+  String toString() {
+    return '{"paymentcd": $paymentcd, "paymentdesc": $paymentdesc, "typ": $typ,"coacomp": $coacomp,"active": $active,"coapayment": $coapayment,"email": $email,"telp": $telp,"limits": $limits,"pic": $pic,"id": $id,"clactive": $clactive}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'paymentcd': paymentcd,
+        'paymentdesc': paymentdesc,
+        'typ': typ,
+        'coacomp': coacomp,
+        'active': active,
+        'coapayment': coapayment,
+        'email': email,
+        'telp': telp,
+        'limits': limits,
+        'pic': pic,
+        'clactive': clactive,
+        'id': id
+      };
+}
+
 class Ringkasan {
   final String trdesc;
   final num amount;
@@ -1644,3 +1709,7 @@ class UserInfoSys {
         'lastsignin': lastsignin,
       };
 }
+
+
+
+

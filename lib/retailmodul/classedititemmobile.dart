@@ -119,7 +119,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                         hasil = IafjrndtClass(
                             itemcode: value.first.itemcode,
                             trdt: value.first.trdt,
-                            split: 'A',
+                            split: 1,
                             rateamtitem: value.first.rateamtitem,
                             totalaftdisc: value.first.totalaftdisc,
                             transno: value.first.transno,

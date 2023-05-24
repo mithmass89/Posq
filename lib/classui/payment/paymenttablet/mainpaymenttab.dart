@@ -63,6 +63,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
   String pymtmthd = '';
   String compcode = '';
   String compdescription = '';
+  List<PaymentMaster> paymentlist = [];
 
   List payment = [
     'Cash',
@@ -102,6 +103,15 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
     });
   }
 
+  getPaymentMaster() async {
+    await ClassApi.getPaymentMaster('').then((isi) {
+      print(List.generate(isi.length, (index) => isi[index].id));
+      setState(() {
+        paymentlist = isi;
+      });
+    });
+  }
+
   Future<dynamic> checkbalance() async {
     await ClassApi.getSumPyTrno(widget.trno).then((value) {
       if (value[0]['totalamt'] != null) {
@@ -126,7 +136,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: '${widget.trno}',
-        split: 'A',
+        split: 1,
         pscd: '${widget.pscd}',
         trtm: now.hour.toString() +
             ":" +

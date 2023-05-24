@@ -16,11 +16,11 @@ class PaymenCashTab extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   late TextEditingController controller;
-  final List<IafjrndtClass> listdata = [];
   final Function? insertIafjrnhdRefund;
   final Function? insertIafjrnhd;
   final String pymtmthd;
   late num? result;
+  final bool fromsplit;
 
   PaymenCashTab(
       {Key? key,
@@ -36,7 +36,8 @@ class PaymenCashTab extends StatefulWidget {
       required this.result,
       this.insertIafjrnhdRefund,
       this.insertIafjrnhd,
-      required this.pymtmthd})
+      required this.pymtmthd,
+      required this.fromsplit})
       : super(key: key);
 
   @override
@@ -54,6 +55,12 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
     final formatter =
         NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
     return formatter.format(value);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('listdata from cashpayment ${widget.datatrans}');
   }
 
   @override
@@ -130,8 +137,9 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         ClassPaymetSucsessTabs(
+                                          fromsplit: widget.fromsplit,
                                           fromsaved: widget.fromsaved,
-                                          datatrans: widget.listdata,
+                                          datatrans: widget.datatrans,
                                           frombanktransfer: false,
                                           cash: true,
                                           outletinfo: widget.outletinfo,
@@ -146,6 +154,27 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                           trdt: formattedDate,
                                         )));
                           });
+                        } else {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ClassPaymetSucsessTabs(
+                                        fromsplit: widget.fromsplit,
+                                        fromsaved: widget.fromsaved,
+                                        datatrans: widget.datatrans,
+                                        frombanktransfer: false,
+                                        cash: true,
+                                        outletinfo: widget.outletinfo,
+                                        outletname: widget.outletname,
+                                        outletcd: widget.pscd,
+                                        amount: NumberFormat.currency(
+                                                locale: 'id_ID', symbol: 'Rp')
+                                            .parse(widget.controller.text)
+                                            .toInt(),
+                                        paymenttype: widget.pymtmthd,
+                                        trno: widget.trno.toString(),
+                                        trdt: formattedDate,
+                                      )));
                         }
                       });
                     });

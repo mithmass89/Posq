@@ -1,20 +1,64 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-// var api = 'http://192.168.1.17:3000';
-var api = 'http://147.139.163.18:3000';
+var api = 'http://192.168.234.2:3000';
+var apiimage = 'http://192.168.234.2:5000';
+// var api = 'http://147.139.163.18:3000';
 
 var serverkey = '';
-String username = 'massmith';
-String password = 'massmith';
+String username = 'mitro';
+String password = '@Mitro100689';
 var basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
 var basicAuthMID = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
 
 class ClassApi {
+ Future<Uint8List> fetchImage(String name) async {
+    final credentials = base64Encode(utf8.encode('$username:$password'));
+    final response = await http.get(Uri.parse('http://$api:3000/getfile/$name'), headers: {
+      'authorization': 'Basic $credentials',
+    });
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Failed to load image');
+    }
+  }
+
+
+
+
+  Future<dynamic> uploadFiles(selectedFile, String namefile) async {
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+    var url = Uri.parse("$apiimage/upload_files");
+    var request = http.MultipartRequest("POST", url);
+    request.headers.addAll({
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers":
+          "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      'Content-Type': 'application/json',
+      'Accept': '*/*',
+      'authorization': basicAuth,
+    });
+    request.files.add(
+        http.MultipartFile.fromBytes("file", selectedFile, filename: namefile));
+
+    request.send().then((response) {
+      if (response.statusCode == 200) {
+        print(response.request);
+        return 'upload complate';
+      }
+      print('status code: ${response.statusCode}');
+    });
+  }
+
   static Future<dynamic> sendMail(
       List<PaymentEmail> pembayaran,
       List<ItemMail> item,
@@ -311,6 +355,29 @@ class ClassApi {
       "data": data,
     };
     final url = Uri.parse('$api/addtrtpcd');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> createCompany(PaymentMaster data, String dbname) async {
+    // print(json.encode(pembayaran));
+    var body = {
+      "dbname": dbname,
+      "data": data,
+    };
+    final url = Uri.parse('$api/createCompany');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -657,6 +724,32 @@ class ClassApi {
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/updateTrno');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateSplit(
+      String dbname, String transno, int itemseq) async {
+    var body = {
+      "dbname": dbname,
+      "transno": transno,
+      "itemseq": itemseq,
+    };
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateSplit');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1163,7 +1256,6 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
-
       return body;
     } else {
       throw Exception();
@@ -1213,6 +1305,32 @@ class ClassApi {
       return bodyJson.map((json) => TableMaster.fromJson(json)).where((items) {
         final itemdescLower = items.tablecd!.toLowerCase();
         final itemcodes = items.tablecd!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<PaymentMaster>> getPaymentMaster(String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/getPaymentMaster');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => PaymentMaster.fromJson(json)).where((items) {
+        final itemdescLower = items.paymentdesc!.toLowerCase();
+        final itemcodes = items.pic!.toLowerCase();
         final searchLower = query.toLowerCase();
         return itemdescLower.contains(searchLower) ||
             itemcodes.contains(searchLower);
@@ -1530,7 +1648,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
-      print(bodyJson);
+      print('summary $bodyJson');
       return bodyJson
           .map((json) => IafjrndtClass.fromJson(json))
           .where((items) {
@@ -1725,6 +1843,29 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> checkLastSplit(String dbname, String transno) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "dbname": dbname,
+      "transno": transno,
+    };
+    final url = Uri.parse('$api/checkLastSplit');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> snapinMidtrans(
       num amount, String trno, String subscribetion) async {
     // print(json.encode(pembayaran));
@@ -1770,4 +1911,6 @@ class ClassApi {
       return response.statusCode;
     }
   }
+
+  
 }

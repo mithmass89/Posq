@@ -254,12 +254,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     checkTrno();
     _pc.isAttached;
     controller!.animateTo(1);
+    tabindex = 1;
     getTransaksiTipe();
     iafjrndt = IafjrndtClass(
       trdt: '',
       pscd: '',
       transno: trno,
-      split: '',
+      split: 1,
       transno1: '',
       itemcode: '',
       trno1: '',
@@ -297,6 +298,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     );
     if (widget.trno != null) {
       getDetailData();
+      getDataSlide();
     }
   }
 
@@ -357,7 +359,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
             trdt: formattedDate,
             pscd: pscd,
             transno: widget.trno,
-            split: 'A',
+            split: 1,
             transno1: widget.trno,
             itemcode: items.itemcode,
             itemdesc: items.itemdesc,
@@ -386,9 +388,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
             servicecoa: 'SERVICE',
             costcoa: 'COST',
             active: 1,
-            usercrt: 'Admin',
-            userupd: 'Admin',
-            userdel: 'Admin',
+            usercrt: usercd,
+            userupd: usercd,
+            userdel: usercd,
             prnkitchen: 0,
             prnkitchentm: '10:10',
             confirmed: '1',
@@ -822,51 +824,53 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
         return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(35.0), // here the desired height
-              child: AppBar(
-                // leading: IconButton(
-                //     icon: Icon(
-                //       Icons.list,
-                //       color: Colors.white,
-                //       size: 30,
-                //     ),
-                //     onPressed: () {
-                //       Scaffold.of(context).openDrawer();
-                //     }),
+              child: SafeArea(
+                child: AppBar(
+                  // leading: IconButton(
+                  //     icon: Icon(
+                  //       Icons.list,
+                  //       color: Colors.white,
+                  //       size: 30,
+                  //     ),
+                  //     onPressed: () {
+                  //       Scaffold.of(context).openDrawer();
+                  //     }),
 
-                backgroundColor: Colors.orange,
-                title: Text(
-                  'Transaksi',
-                  style: TextStyle(color: Colors.white),
+                  backgroundColor: Colors.orange,
+                  title: Text(
+                    'Transaksi',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  // actions: [
+
+                  //   // SizedBox(
+                  //   //   width: MediaQuery.of(context).size.width * 0.16,
+                  //   // ),
+                  //   // IconButton(
+                  //   //   icon: Image.asset(
+                  //   //     'icons8-barcode-100.png',
+                  //   //     height: 40,
+                  //   //     width: 40,
+                  //   //   ),
+                  //   //   iconSize: 40,
+                  //   //   color: Colors.white,
+                  //   //   splashColor: Colors.transparent,
+                  //   //   onPressed: () {
+                  //   //     scanBarcodeNormal();
+                  //   //   },
+                  //   // ),
+
+                  //   // Container(
+                  //   //     height: MediaQuery.of(context).size.height * 0.1,
+                  //   //     width: MediaQuery.of(context).size.width * 0.06,
+                  //   //     child: IconButton(
+                  //   //         onPressed: () {},
+                  //   //         icon: Icon(
+                  //   //           Icons.print,
+                  //   //           color: Colors.white,
+                  //   //         ))),
+                  // ],
                 ),
-                // actions: [
-
-                //   // SizedBox(
-                //   //   width: MediaQuery.of(context).size.width * 0.16,
-                //   // ),
-                //   // IconButton(
-                //   //   icon: Image.asset(
-                //   //     'icons8-barcode-100.png',
-                //   //     height: 40,
-                //   //     width: 40,
-                //   //   ),
-                //   //   iconSize: 40,
-                //   //   color: Colors.white,
-                //   //   splashColor: Colors.transparent,
-                //   //   onPressed: () {
-                //   //     scanBarcodeNormal();
-                //   //   },
-                //   // ),
-
-                //   // Container(
-                //   //     height: MediaQuery.of(context).size.height * 0.1,
-                //   //     width: MediaQuery.of(context).size.width * 0.06,
-                //   //     child: IconButton(
-                //   //         onPressed: () {},
-                //   //         icon: Icon(
-                //   //           Icons.print,
-                //   //           color: Colors.white,
-                //   //         ))),
-                // ],
               ),
             ),
             key: _scaffoldKey,
@@ -876,17 +880,17 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
               outletinfo: widget.outletinfo,
               outletname: widget.outletinfo.outletname,
             ),
-            body: WillPopScope(
-              onWillPop: () async {
-                return await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DialogClassWillPop(
-                        trno: trno.toString(),
-                      );
-                    });
-              },
-              child: SafeArea(
+            body: SafeArea(
+              child: WillPopScope(
+                onWillPop: () async {
+                  return await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DialogClassWillPop(
+                          trno: trno.toString(),
+                        );
+                      });
+                },
                 child: Row(
                   children: [
                     Column(
@@ -894,12 +898,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                         Row(
                           children: [
                             Container(
+                              color: Colors.white,
                               width: MediaQuery.of(context).size.width * 0.65,
                               // decoration: BoxDecoration(color: Colors.grey[200]),
                               child: Column(
                                 children: [
                                   TabBar(
-                                    indicatorColor: Colors.grey,
+                                    indicatorColor: Colors.white,
                                     onTap: (int i) {
                                       print(i);
                                       tabindex = i;
@@ -971,9 +976,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       ? randomNumber.toString()
                                       : guestname!,
                                   refreshdata: getDataSlide,
-                                  trno: widget.trno == null
-                                      ? trno
-                                      : widget.trno,
+                                  trno:
+                                      widget.trno == null ? trno : widget.trno,
                                   itemlenght: item,
                                   outletinfo: widget.outletinfo),
                               ClassRetailProductTabs(

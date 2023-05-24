@@ -72,8 +72,8 @@ class _ClassRetailProductTabsState extends State<ClassRetailProductTabs> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.blue,
-      height: MediaQuery.of(context).size.height * 0.60,
+      color: Colors.white,
+      height: MediaQuery.of(context).size.height * 0.65,
       width: MediaQuery.of(context).size.width * 1,
       child: FutureBuilder(
           future: ClassApi.getItemList(pscd, dbname, widget.controller.text),
@@ -104,37 +104,34 @@ class _ClassRetailProductTabsState extends State<ClassRetailProductTabs> {
                 ),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 170,
-                            childAspectRatio: 4 / 4,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      var _image = File(x[index].pathimage.toString());
-                      return ShimmerLoading(
-                        isLoading: isLoading,
-                        child: ClassitemRetailTabs(
-                          refreshdata: () {
-                            widget.refreshdata();
-                          },
-                          updatedata: (){
-                            widget.updatedata;
-                          },
-                          guestname: widget.guestname,
-                          itemseq: widget.itemseq,
-                          trno: widget.trno,
-                          trdt: formattedDate,
-                          item: snapshot.data![index],
-                          image: _image,
-                        ),
-                      );
-                    }),
-              );
+              return GridView.builder(
+                  gridDelegate:
+                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 170,
+                          childAspectRatio: 4 / 4,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    var _image = File(x[index].pathimage.toString());
+                    return ShimmerLoading(
+                      isLoading: isLoading,
+                      child: ClassitemRetailTabs(
+                        refreshdata: () {
+                          widget.refreshdata();
+                        },
+                        updatedata: () {
+                          widget.updatedata;
+                        },
+                        guestname: widget.guestname,
+                        itemseq: widget.itemseq,
+                        trno: widget.trno,
+                        trdt: formattedDate,
+                        item: snapshot.data![index],
+                        image: _image,
+                      ),
+                    );
+                  });
             }
           }),
     );

@@ -14,6 +14,7 @@ import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
 import 'package:posq/setting/classpromomobile.dart';
 import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
+import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/userinfo.dart';
 
 class DrawerRetailMainTabs extends StatefulWidget {
@@ -112,7 +113,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height*0.35,
+            height: MediaQuery.of(context).size.height * 0.35,
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
@@ -149,8 +150,8 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   title: Text('Kelola Promo'),
                   onTap: accesslist.contains('kelolapromo') == true
                       ? () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (BuildContext context) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
                             return ClassPromoMobile();
                           }));
                         }
@@ -172,8 +173,8 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   title: const Text('Riwayat Transaksi'),
                   onTap: accesslist.contains('riwayattrans') == true
                       ? () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (BuildContext context) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
                             return Listtransaction(
                               fromsaved: widget.fromsaved,
                               pscd: widget.outletinfo.outletcd,
@@ -199,8 +200,8 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   title: const Text('Laporan'),
                   onTap: accesslist.contains('laporan') == true
                       ? () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (BuildContext context) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
                             return ClassSummaryReport(user: 'Admin');
                           }));
                         }
@@ -219,13 +220,14 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   leading: Icon(
                     Icons.add_box,
                   ),
-                  title: const Text('Kelola Produk'),
+                  title: const Text('Kelola usaha'),
                   onTap: accesslist.contains('setting') == true
                       ? () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (BuildContext context) {
-                            return ClassAdjusmentType(
-                              pscd: widget.outletinfo,
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return MainMenuProduct(
+                              pscd: pscd,
+                              outletinfo: widget.outletinfo,
                             );
                           }));
                         }
@@ -272,8 +274,8 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   ),
                   title: const Text('Pelanggan'),
                   onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (BuildContext context) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
                       return ClassListCustomers();
                     }));
                   },

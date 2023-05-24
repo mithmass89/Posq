@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/setting/product_master/classeditproductmobile.dart';
 import 'package:posq/classui/searchwidget.dart';
+import 'package:posq/setting/product_master/classeditproducttab.dart';
 import 'package:posq/setting/product_master/classeditproductv2mob.dart';
 import 'package:posq/setting/product_master/tabletclass/createproducttab.dart';
 import 'package:posq/userinfo.dart';
@@ -33,6 +34,7 @@ class _ClassproductTabState extends State<ClassproductTab> {
   bool? hasitem = false;
   bool isloading = true;
   Timer? timer;
+  List<Item> data = [];
 
   @override
   void initState() {
@@ -44,11 +46,11 @@ class _ClassproductTabState extends State<ClassproductTab> {
     timer?.cancel();
     debouncer?.cancel();
     super.dispose();
+    getitemOutlet('');
   }
 
   Future<List<Item>> getitemOutlet(query) async {
-    List<Item> data =
-        await ClassApi.getItemList(widget.pscd, widget.pscd, query);
+    data = await ClassApi.getItemList(widget.pscd, widget.pscd, query);
     print("ini data : $data");
     return data;
   }
@@ -68,7 +70,7 @@ class _ClassproductTabState extends State<ClassproductTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
+        backgroundColor: Color.fromARGB(255, 0, 173, 150),
         foregroundColor: Colors.white,
         splashColor: Colors.yellow,
         hoverColor: Colors.red,
@@ -77,6 +79,10 @@ class _ClassproductTabState extends State<ClassproductTab> {
             context,
             MaterialPageRoute(
                 builder: (context) => Createproducttab(
+                      productcode: Item(
+                          pathimage:
+                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                          multiprice: 0),
                       pscd: widget.pscd,
                     )),
           ).then((_) {
@@ -97,17 +103,18 @@ class _ClassproductTabState extends State<ClassproductTab> {
           },
         ),
         title: Text(
-          'Product List',
+          'List produk',
           style: TextStyle(color: Colors.black),
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(5.0),
             child: TextFieldMobile(
-              hint: 'Example Menu Description',
-              label: 'Search',
+              maxline: 1,
+              label: 'Cari Produk',
               controller: search,
               onChanged: (value) async {
                 setState(() {
@@ -159,7 +166,7 @@ class _ClassproductTabState extends State<ClassproductTab> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      Editproduct(
+                                                      EditproductTab(
                                                         productcode: x[index],
                                                       )),
                                             ).then((_) {
@@ -242,113 +249,86 @@ class _ClassproductTabState extends State<ClassproductTab> {
                                     mainAxisSpacing: 10),
                             itemCount: x.length,
                             itemBuilder: (BuildContext context, int index) {
-                              var _image = File(x[index].pathimage.toString());
                               return Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Stack(
-                                  fit: StackFit.loose,
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditproductTab(
+                                                    productcode: x[index],
+                                                  )),
+                                        ).then((_) {
+                                          setState(() {});
+                                        });
+                                      },
                                       child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10)),
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 0.5,
+                                          ),
+                                        ),
                                         height:
                                             MediaQuery.of(context).size.height *
+                                                0.15,
+                                        width:
+                                            MediaQuery.of(context).size.width *
                                                 0.2,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Editproduct(
-                                                        productcode: x[index],
-                                                      )),
-                                            ).then((_) {
-                                              setState(() {});
-                                            });
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 0.5,
-                                              ),
-                                            ),
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.1,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.2,
-                                            child: Column(children: [
-                                              Image.file(
-                                                _image,
-                                                errorBuilder: (BuildContext
-                                                        context,
-                                                    Object exception,
-                                                    StackTrace? stackTrace) {
-                                                  return Container(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.1,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.2,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Center(
-                                                            child: Icon(
-                                                          Icons.image,
-                                                          size: MediaQuery.of(
-                                                                      context)
-                                                                  .devicePixelRatio *
-                                                              15,
-                                                        )),
-                                                      ));
-                                                },
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Text(
-                                                x[index].itemdesc!,
-                                                style: TextStyle(fontSize: 10),
-                                              ),
-                                            ]),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10)),
+                                          child: Image.network(
+                                            x[index].pathimage!,
+                                            fit: BoxFit.fill,
+                                            loadingBuilder:
+                                                (BuildContext context,
+                                                    Widget child,
+                                                    ImageChunkEvent?
+                                                        loadingProgress) {
+                                              if (loadingProgress == null)
+                                                return child;
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  value: loadingProgress
+                                                              .expectedTotalBytes !=
+                                                          null
+                                                      ? loadingProgress
+                                                              .cumulativeBytesLoaded /
+                                                          loadingProgress
+                                                              .expectedTotalBytes!
+                                                      : null,
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
                                       ),
                                     ),
-                                    Positioned(
-                                        top:
-                                            MediaQuery.of(context).size.height *
-                                                0.01,
-                                        left:
+                                    Container(
+                                        alignment: Alignment.center,
+                                        width:
                                             MediaQuery.of(context).size.width *
-                                                0.15,
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            await ClassApi.deleteItem(
-                                                pscd, x[index].id!);
-                                            setState(() {
-                                              x.remove(x[index]);
-                                            });
-                                          },
-                                          child: CircleAvatar(
-                                            radius: 10,
-                                            child: Icon(
-                                              Icons.close,
-                                              size: 15,
-                                              color: Colors.red,
-                                            ),
+                                                0.2,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 0.5,
                                           ),
-                                        ))
+                                        ),
+                                        child: Text(x[index].itemdesc!))
                                   ],
                                 ),
                               );

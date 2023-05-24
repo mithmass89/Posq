@@ -101,7 +101,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
         trdt: formattedDate,
         transno: widget.trno,
         transno1: widget.trno,
-        split: 'A',
+        split: 1,
         pscd: widget.pscd,
         trtm: '00:00',
         disccd: widget.discbyamount == true ? 'By Amount' : 'By Percent',

@@ -31,6 +31,7 @@ class ClassPaymetSucsessTabs extends StatefulWidget {
   final bool? cash;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   const ClassPaymetSucsessTabs({
     Key? key,
@@ -47,6 +48,7 @@ class ClassPaymetSucsessTabs extends StatefulWidget {
     required this.frombanktransfer,
     required this.datatrans,
     required this.fromsaved,
+    required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -79,6 +81,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   var formattedDate;
   bool loading = false;
   bool emailValid = false;
+  List<IafjrndtClass> datacheck = [];
 
   @override
   void initState() {
@@ -89,8 +92,9 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
     api = ClassApi();
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
-    getSummary();
-    getListPayament();
+    print('ini split  ${widget.datatrans[0].split}');
+    // getSummary();
+    // getListPayament();
     if (widget.cash == false) {
       PaymentGate.getStatusTransaction(widget.trno).then((value) {
         setState(() {
@@ -102,6 +106,13 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
         statustransaction = 'Settlement';
       });
     }
+  }
+
+  Future<List<IafjrndtClass>> getDetailTrnos() async {
+    datacheck = await ClassApi.getTrnoDetail(widget.trno, dbname, '');
+
+    setState(() {});
+    return datacheck;
   }
 
   Stream<String> _getstatus() async* {
@@ -350,7 +361,7 @@ ${payment.reduce((value, element) => value + element)}
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
-                          SizedBox(
+                        SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
                         Container(
@@ -367,23 +378,62 @@ ${payment.reduce((value, element) => value + element)}
                                   style: TextStyle(color: Colors.orange),
                                 )),
                             onPressed: () async {
-                              if (widget.fromsaved == true) {
-                                await checkTrno();
-                              } else {
-                                await updateTrno();
-                              }
-                              await ClassApi.cleartable(dbname, widget.trno);
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ClassRetailMainMobile(
-                                            fromsaved: widget.fromsaved,
-                                            pscd: widget.outletcd!,
-                                            trno: nexttrno,
-                                            outletinfo: widget.outletinfo!,
-                                            qty: 0,
-                                          )),
-                                  (Route<dynamic> route) => false);
+                              await getDetailTrnos().then((value) async {
+                                print('ini value : $value');
+                                if (value.isEmpty) {
+                                  await updateTrno();
+                                  await ClassApi.cleartable(
+                                      dbname, widget.trno);
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ClassRetailMainMobile(
+                                                fromsaved: widget.fromsaved,
+                                                pscd: widget.outletcd!,
+                                                trno: nexttrno,
+                                                outletinfo: widget.outletinfo!,
+                                                qty: 0,
+                                              )),
+                                      (Route<dynamic> route) => false);
+                                } else {
+                                  if (widget.fromsaved == true) {
+                                    await checkTrno();
+                                  } else if (widget.fromsplit == true) {
+                                    await ClassApi.updateSplit(
+                                        dbname,
+                                        widget.trno,
+                                        widget.datatrans[0].itemseq!);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ClassRetailMainMobile(
+                                                  fromsaved: widget.fromsaved,
+                                                  pscd: widget.outletcd!,
+                                                  trno: widget.trno,
+                                                  outletinfo:
+                                                      widget.outletinfo!,
+                                                  qty: 0,
+                                                )),
+                                        (Route<dynamic> route) => false);
+                                  } else {
+                                    await updateTrno();
+                                    await ClassApi.cleartable(
+                                        dbname, widget.trno);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ClassRetailMainMobile(
+                                                  fromsaved: widget.fromsaved,
+                                                  pscd: widget.outletcd!,
+                                                  trno: nexttrno,
+                                                  outletinfo:
+                                                      widget.outletinfo!,
+                                                  qty: 0,
+                                                )),
+                                        (Route<dynamic> route) => false);
+                                  }
+                                }
+                              });
                             },
                           ),
                         ),

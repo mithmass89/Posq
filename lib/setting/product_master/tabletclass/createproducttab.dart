@@ -78,6 +78,7 @@ class _CreateproducttabState extends State<Createproducttab>
   set string(String? value) {
     setState(() {
       pathimage = value;
+      widget.productcode!.pathimage = value;
     });
     print("ini value $value");
   }
@@ -189,6 +190,7 @@ class _CreateproducttabState extends State<Createproducttab>
                   controller: controller,
                   children: [
                     ClassTabCreateProducts(
+                      imageurl: widget.productcode!.pathimage!,
                       amounsales: SalesAmt,
                       productName: productName,
                       imagepath: pathimage,
