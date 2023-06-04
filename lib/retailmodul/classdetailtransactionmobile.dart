@@ -3,7 +3,7 @@ import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
-import 'package:posq/retailmodul/classtabdetailtrnomobile.dart';
+import 'package:posq/retailmodul/savedtransaction/classtabdetailtrnomobile.dart';
 
 class ClassDetailTransMobile extends StatefulWidget {
   final String trno;

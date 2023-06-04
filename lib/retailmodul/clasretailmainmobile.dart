@@ -24,7 +24,7 @@ import 'package:posq/retailmodul/savedtransaction/classsavedtransactionmobile.da
 import 'package:posq/retailmodul/classslideuppanel.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/collapsepanel.dart';
-import 'package:posq/retailmodul/savedtransaction/classsavedtransactiontab.dart';
+import 'package:posq/retailmodul/savedtransaction/classtablet/classsavedtransactiontab.dart';
 import 'package:posq/userinfo.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/material.dart';

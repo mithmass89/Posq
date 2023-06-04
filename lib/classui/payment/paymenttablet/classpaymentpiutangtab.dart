@@ -26,9 +26,12 @@ class PaymentPiutangTabs extends StatefulWidget {
   final List<PaymentMaster> paymentlist;
   late num? result;
   final bool fromsplit;
+  late String selectedpay;
+  final Function selectedpayment;
   PaymentPiutangTabs(
       {Key? key,
       required this.trno,
+      required this.selectedpay,
       required this.pscd,
       required this.trdt,
       required this.balance,
@@ -44,7 +47,8 @@ class PaymentPiutangTabs extends StatefulWidget {
       required this.pymtmthd,
       required this.result,
       required this.paymentlist,
-      required this.fromsplit})
+      required this.fromsplit,
+      required this.selectedpayment})
       : super(key: key);
 
   @override
@@ -84,20 +88,24 @@ class _PaymentPiutangTabsState extends State<PaymentPiutangTabs> {
                       selected = widget.paymentlist[index].paymentcd!;
                       widget.pymtmthd = selected;
                     });
+                    widget.selectedpayment(widget.paymentlist[index].paymentdesc!);
+                    print("ini selected $selected");
                   },
                   child: Card(
                     child: Container(
                         decoration: BoxDecoration(
-                            color: selected == widget.paymentlist[index].paymentcd!
-                                ? Color.fromARGB(255, 0, 147, 167)
-                                : Colors.white,
+                            color:
+                                selected == widget.paymentlist[index].paymentcd!
+                                    ? Color.fromARGB(255, 0, 147, 167)
+                                    : Colors.white,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
                         alignment: Alignment.center,
                         child: Text(
                           widget.paymentlist[index].paymentdesc!,
                           style: TextStyle(
-                              color: selected == widget.paymentlist[index].paymentcd!
+                              color: selected ==
+                                      widget.paymentlist[index].paymentcd!
                                   ? Colors.white
                                   : Colors.black),
                         )),
@@ -153,6 +161,9 @@ class _PaymentPiutangTabsState extends State<PaymentPiutangTabs> {
                               // Background color
                               ),
                           onPressed: () async {
+                            print(selected);
+                            widget.selectedpay = selected;
+                            // widget.selectedpayment(selected);
                             await widget.insertIafjrnhd!()
                                 .whenComplete(() async {
                               await ClassApi.getSumPyTrno(

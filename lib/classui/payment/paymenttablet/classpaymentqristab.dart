@@ -23,6 +23,8 @@ class ClassPaymentQrisTab extends StatefulWidget {
   late String pymtmthd;
   final List<String> paymentlist;
   late num? result;
+  late String selectedpay;
+  final Function? selectedpayment;
   ClassPaymentQrisTab(
       {Key? key,
       required this.trno,
@@ -39,8 +41,10 @@ class ClassPaymentQrisTab extends StatefulWidget {
       this.insertIafjrnhdRefund,
       this.insertIafjrnhd,
       required this.pymtmthd,
+      required this.selectedpay,
       required this.result,
-      required this.paymentlist})
+      required this.paymentlist,
+      required this.selectedpayment})
       : super(key: key);
 
   @override

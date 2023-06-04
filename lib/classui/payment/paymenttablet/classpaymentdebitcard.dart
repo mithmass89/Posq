@@ -22,10 +22,12 @@ class PaymentDebitTabs extends StatefulWidget {
   final List<IafjrndtClass> listdata = [];
   final Function? insertIafjrnhdRefund;
   final Function? insertIafjrnhd;
+  final Function? selectedpayment;
   late String pymtmthd;
   final List<String> paymentlist;
   late num? result;
-    final bool fromsplit;
+  final bool fromsplit;
+  late String selectedpay;
   PaymentDebitTabs(
       {Key? key,
       required this.trno,
@@ -39,11 +41,14 @@ class PaymentDebitTabs extends StatefulWidget {
       this.outletinfo,
       required this.datatrans,
       required this.fromsaved,
+      required this.selectedpay,
       this.insertIafjrnhdRefund,
       this.insertIafjrnhd,
       required this.pymtmthd,
       required this.result,
-      required this.paymentlist, required this.fromsplit})
+      required this.paymentlist,
+      required this.fromsplit,
+      required this.selectedpayment})
       : super(key: key);
 
   @override
@@ -166,6 +171,8 @@ class _PaymentDebitTabsState extends State<PaymentDebitTabs> {
                               // Background color
                               ),
                           onPressed: () async {
+                            widget.selectedpay = selected;
+                            widget.selectedpayment!(selected);
                             await widget.insertIafjrnhd!()
                                 .whenComplete(() async {
                               await ClassApi.getSumPyTrno(

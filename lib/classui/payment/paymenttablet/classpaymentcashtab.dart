@@ -126,9 +126,11 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                     await widget.insertIafjrnhd!().whenComplete(() async {
                       await ClassApi.getSumPyTrno(widget.trno.toString())
                           .then((value) {
+                            print('ini value summ $value');
                         setState(() {
                           widget.result = widget.balance - value[0]['totalamt'];
                         });
+                  
                       }).whenComplete(() {
                         if (widget.result!.isNegative) {
                           widget.insertIafjrnhdRefund!().whenComplete(() {

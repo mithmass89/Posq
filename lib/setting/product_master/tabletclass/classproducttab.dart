@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/setting/product_master/classeditproductmobile.dart';
 import 'package:posq/classui/searchwidget.dart';
-import 'package:posq/setting/product_master/classeditproducttab.dart';
+import 'package:posq/setting/product_master/tabletclass/classeditproducttab.dart';
 import 'package:posq/setting/product_master/classeditproductv2mob.dart';
 import 'package:posq/setting/product_master/tabletclass/createproducttab.dart';
 import 'package:posq/userinfo.dart';

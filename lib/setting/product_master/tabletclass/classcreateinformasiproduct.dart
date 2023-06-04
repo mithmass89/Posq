@@ -63,7 +63,8 @@ class ClassTabCreateProducts extends StatefulWidget {
     required this.multipriceSet,
     required this.multiflag,
     required this.productName,
-    required this.amounsales, required this.imageurl,
+    required this.amounsales,
+    required this.imageurl,
   }) : super(key: key);
 
   @override
@@ -350,15 +351,13 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
                           alignment: Alignment.center,
                           height: MediaQuery.of(context).size.height * 0.2,
                           width: MediaQuery.of(context).size.width * 0.9,
-                          child: ImageFromGalleryExTab
-                          (
-                      
+                          child: ImageFromGalleryExTab(
                             ImageSourceType.gallery,
                             savingimage: widget.imagepath,
                             fromedit: widget.fromedit,
                             imagepath: widget.imageurl,
                             height: MediaQuery.of(context).size.height * 0.2,
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.2,
                           ),
                         ),
                       ],

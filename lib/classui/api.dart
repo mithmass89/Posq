@@ -17,9 +17,10 @@ var basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
 var basicAuthMID = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
 
 class ClassApi {
- Future<Uint8List> fetchImage(String name) async {
+  Future<Uint8List> fetchImage(String name) async {
     final credentials = base64Encode(utf8.encode('$username:$password'));
-    final response = await http.get(Uri.parse('http://$api:3000/getfile/$name'), headers: {
+    final response =
+        await http.get(Uri.parse('http://$api:3000/getfile/$name'), headers: {
       'authorization': 'Basic $credentials',
     });
     if (response.statusCode == 200) {
@@ -28,9 +29,6 @@ class ClassApi {
       throw Exception('Failed to load image');
     }
   }
-
-
-
 
   Future<dynamic> uploadFiles(selectedFile, String namefile) async {
     String basicAuth =
@@ -371,7 +369,8 @@ class ClassApi {
     }
   }
 
-  static Future<dynamic> createCompany(PaymentMaster data, String dbname) async {
+  static Future<dynamic> createCompany(
+      PaymentMaster data, String dbname) async {
     // print(json.encode(pembayaran));
     var body = {
       "dbname": dbname,
@@ -1328,7 +1327,9 @@ class ClassApi {
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
       print(bodyJson);
-      return bodyJson.map((json) => PaymentMaster.fromJson(json)).where((items) {
+      return bodyJson
+          .map((json) => PaymentMaster.fromJson(json))
+          .where((items) {
         final itemdescLower = items.paymentdesc!.toLowerCase();
         final itemcodes = items.pic!.toLowerCase();
         final searchLower = query.toLowerCase();
@@ -1634,6 +1635,55 @@ class ClassApi {
     }
   }
 
+  static Future<List<IafjrnhdClass>> getCashierSummary(
+      String fromdate, String todate, String dbname) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
+    final url = Uri.parse('$api/getCashierSummary');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print("ini data json summary $bodyJson");
+      return bodyJson.map((json) => IafjrnhdClass.fromJson(json)).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrnhdClass>> getSummaryCashierDetail(
+      String fromdate, String todate, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
+    final url = Uri.parse('$api/getSummaryCashierDetail');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      return bodyJson
+          .map((json) => IafjrnhdClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final itemcodes = items.pymtmthd!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<IafjrndtClass>> getSumTrans(
       String trno, String dbname, String query) async {
     // print(json.encode(pembayaran));
@@ -1649,6 +1699,155 @@ class ClassApi {
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
       print('summary $bodyJson');
+      return bodyJson
+          .map((json) => IafjrndtClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrndtClass>> getAnalisaRingkasan(
+      String fromdate, String todate, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
+    final url = Uri.parse('$api/getAnalisaRingkasan');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      // print('ringkasan  $bodyJson');
+      return bodyJson
+          .map((json) => IafjrndtClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrndtClass>> getAnalisaRingkasanTopitem(
+      String fromdate, String todate, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
+    final url = Uri.parse('$api/getAnalisaRingkasanTopitem');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      // print('ringkasan  $bodyJson');
+      return bodyJson
+          .map((json) => IafjrndtClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrndtClass>> getReportDetailMenuSold(
+      String fromdate, String todate, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
+    final url = Uri.parse('$api/getReportDetailMenuSold');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      // print('ringkasan  $bodyJson');
+      return bodyJson
+          .map((json) => IafjrndtClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrndtClass>> getReportDetailMenuSoldDetail(
+      String fromdate,
+      String todate,
+      String dbname,
+      String itemcode,
+      String query) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "dbname": dbname,
+      "fromdate": fromdate,
+      "todate": todate,
+      "itemcode": itemcode
+    };
+    final url = Uri.parse('$api/getReportDetailMenuSoldDetail');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      // print('ringkasan  $bodyJson');
+      return bodyJson
+          .map((json) => IafjrndtClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<IafjrndtClass>> getAnalisaRingkasanItemKuranglaku(
+      String fromdate, String todate, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
+    final url = Uri.parse('$api/getAnalisaRingkasanItemKuranglaku');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      // print('ringkasan  $bodyJson');
       return bodyJson
           .map((json) => IafjrndtClass.fromJson(json))
           .where((items) {
@@ -1708,34 +1907,34 @@ class ClassApi {
     }
   }
 
-  static Future<List<IafjrnhdClass>> getCashierSummary(
-      String trdt, String pscd, String dbname, String query) async {
-    // print(json.encode(pembayaran));
-    var data = {"dbname": dbname, "trdt": trdt, "pscd": pscd};
-    final url = Uri.parse('$api/getcashiersummary');
-    final response = await http.post(url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          // 'authorization': basicAuth
-        },
-        body: json.encode(data));
+  // static Future<List<IafjrnhdClass>> getCashierSummary(
+  //     String trdt, String pscd, String dbname, String query) async {
+  //   // print(json.encode(pembayaran));
+  //   var data = {"dbname": dbname, "trdt": trdt, "pscd": pscd};
+  //   final url = Uri.parse('$api/getcashiersummary');
+  //   final response = await http.post(url,
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //         // 'authorization': basicAuth
+  //       },
+  //       body: json.encode(data));
 
-    if (response.statusCode == 200) {
-      List bodyJson = json.decode(response.body);
-      print(bodyJson);
-      return bodyJson
-          .map((json) => IafjrnhdClass.fromJson(json))
-          .where((items) {
-        final itemdescLower = items.transno!.toLowerCase();
-        final itemcodes = items.pymtmthd!.toLowerCase();
-        final searchLower = query.toLowerCase();
-        return itemdescLower.contains(searchLower) ||
-            itemcodes.contains(searchLower);
-      }).toList();
-    } else {
-      throw Exception();
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     List bodyJson = json.decode(response.body);
+  //     print(bodyJson);
+  //     return bodyJson
+  //         .map((json) => IafjrnhdClass.fromJson(json))
+  //         .where((items) {
+  //       final itemdescLower = items.transno!.toLowerCase();
+  //       final itemcodes = items.pymtmthd!.toLowerCase();
+  //       final searchLower = query.toLowerCase();
+  //       return itemdescLower.contains(searchLower) ||
+  //           itemcodes.contains(searchLower);
+  //     }).toList();
+  //   } else {
+  //     throw Exception();
+  //   }
+  // }
 
   static Future<List<TransactionTipe>> getTransactionTipe(
       String pscd, String dbname, String query) async {
@@ -1911,6 +2110,4 @@ class ClassApi {
       return response.statusCode;
     }
   }
-
-  
 }

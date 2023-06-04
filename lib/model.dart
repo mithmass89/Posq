@@ -797,7 +797,7 @@ class IafjrndtClass {
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,note:$note}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,note:$note,revenueamt:$revenueamt}';
   }
 }
 
@@ -925,7 +925,7 @@ class IafjrnhdClass {
 
   @override
   String toString() {
-    return '{ "transno": $transno,"transno1": $transno1,"pymtmthd": $pymtmthd,"ftotamt":"$ftotamt"}';
+    return '{ "transno": $transno,"transno1": $transno1,"pymtmthd": $pymtmthd,"ftotamt":"$ftotamt","totalamt":"$totalamt"}';
   }
 
   Map<String, Object?> toJson() {

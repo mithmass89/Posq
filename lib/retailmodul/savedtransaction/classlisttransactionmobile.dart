@@ -17,7 +17,8 @@ class Listtransaction extends StatefulWidget {
   const Listtransaction({
     Key? key,
     this.pscd,
-    required this.outletinfo, required this.fromsaved,
+    required this.outletinfo,
+    required this.fromsaved,
   }) : super(key: key);
 
   @override
@@ -39,7 +40,6 @@ class _ListtransactionState extends State<Listtransaction> {
     formattedDate = formatter.format(now);
     // checkPending();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +65,7 @@ class _ListtransactionState extends State<Listtransaction> {
             typekeyboard: TextInputType.text,
           ),
           FutureBuilder(
-              future: ClassApi.getCashierSummary(
-                  formattedDate, pscd, dbname, search.text),
+              future: ClassApi.getCashierSummary(formattedDate, pscd, dbname),
               builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
                 var x = snapshot.data ?? [];
                 if (x.isNotEmpty) {

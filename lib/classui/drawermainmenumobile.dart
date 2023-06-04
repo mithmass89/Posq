@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/login.dart';
-import 'package:posq/setting/classpromomobile.dart';
+import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/syncdatabase/syncdb.dart';
 import 'package:posq/userinfo.dart';
 
@@ -58,21 +58,7 @@ class DrawerWidgetMain extends StatelessWidget {
               icon: Icons.lock_clock,
               text: 'Tutup kasir',
               onTap: () => print('Tap Recent menu')),
-          _drawerItem(
-              icon: Icons.settings,
-              text: 'Setting',
-              onTap: accesslist.contains('setting') == true
-                  ? () => print('Tap Trash menu')
-                  : () {
-                      Fluttertoast.showToast(
-                          msg: "Tidak punya akses Kelola setting",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }),
+      
           Divider(height: 25, thickness: 1),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),

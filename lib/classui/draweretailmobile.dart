@@ -12,7 +12,7 @@ import 'package:posq/retailmodul/savedtransaction/classlisttransactionmobile.dar
 import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
-import 'package:posq/setting/classpromomobile.dart';
+import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
 import 'package:posq/userinfo.dart';
 

@@ -59,9 +59,9 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
               Icons.arrow_forward_ios_rounded,
             ),
             onTap: () {
-              pesanBelumReady();
+                  Navigator.of(context).pop('Detail Item Terjual');
             },
-            title: Text('Detail Item Sold'),
+            title: Text('Detail Item Terjual'),
           ),
           Divider(),
           ListTile(

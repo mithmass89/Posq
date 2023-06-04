@@ -54,6 +54,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
   num? result = 0;
   bool zerobill = false;
   List<IafjrnhdClass> data = [];
+  String selectedpay = '';
   List<double> paymentlist = [
     1000,
     2000,
@@ -99,9 +100,14 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     pymtmthd = 'Cash';
     formattedDate = formatter.format(now);
     print('ini trno dari split ${widget.trno}');
-    ClassApi.checkLastSplit(dbname, widget.trno).then((value) {
-      lastsplit = value[0]['split'] + 1;
-    });
+    if (widget.fromsplit == true) {
+      ClassApi.checkLastSplit(dbname, widget.trno).then((value) {
+        lastsplit = value[0]['split'] + 1;
+      });
+    } else {
+      lastsplit = 1;
+    }
+
     getPaymentMaster();
   }
 
@@ -133,6 +139,10 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
 
   getPaymentList() async {
     data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
+  }
+
+  setSelected(String value) {
+    selectedpay = value;
   }
 
   getPaymentMaster() async {
@@ -174,7 +184,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         trdesc: '$pymtmthd ${widget.trno}',
         trdesc2: '$pymtmthd ${widget.trno}',
         compcd: compcode,
-        compdesc: compdescription,
+        compdesc: selectedpay,
         active: 1,
         usercrt: usercd,
         slstp: '1',
@@ -214,7 +224,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         trdesc: '$pymtmthd ${widget.trno}',
         trdesc2: '$pymtmthd ${widget.trno}',
         compcd: compcode,
-        compdesc: compdescription,
+        compdesc: selectedpay,
         active: 1,
         usercrt: usercd,
         slstp: '1',
@@ -256,7 +266,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         trdesc: '$pymtmthd ${widget.trno}',
         trdesc2: '$pymtmthd ${widget.trno}',
         compcd: compcode,
-        compdesc: compdescription,
+        compdesc: selectedpay,
         active: 1,
         usercrt: usercd,
         slstp: '1',
@@ -269,6 +279,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
   }
 
   Future<dynamic> insertIafjrnhdRefund() async {
+    await checkbalance();
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
         transno: '${widget.trno}',
@@ -278,17 +289,17 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         trtm: '00:00',
         disccd: '',
         pax: '1',
-        pymtmthd: 'CASH',
+        pymtmthd: pymtmthd,
         ftotamt: result!.toDouble(),
         totalamt: result!.toDouble(),
         framtrmn: result!.toDouble(),
         amtrmn: result!.toDouble(),
-        compcd: 'CASH',
-        compdesc: 'REFUND',
+        compcd: compcode,
+        compdesc: pymtmthd,
         trdesc: 'Refund cash ${widget.trno}',
         trdesc2: 'Refund cash ${widget.trno}',
         active: 1,
-        usercrt: 'Admin',
+        usercrt: usercd,
         slstp: '1',
         currcd: 'IDR');
     IafjrnhdClass listiafjrnhd = iafjrnhd;
@@ -389,7 +400,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             ),
                                         onPressed: () {
                                           selectedpy = 'Cash';
-                                          pymtmthd = 'CS';
+                                          pymtmthd = 'Cash';
                                           compcode = pymtmthd;
                                           setState(() {});
                                         },
@@ -689,6 +700,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'EDC':
                                   return PaymentDebitTabs(
+                                    selectedpayment: setSelected,
+                                    selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
@@ -716,6 +729,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'QRIS':
                                   return ClassPaymentQrisTab(
+                                    selectedpayment: setSelected,
+                                    selectedpay: selectedpay,
                                     cardno: cardno,
                                     cardexp: cardexp,
                                     debitcontroller: debitcontroller,
@@ -742,6 +757,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'E-wallet':
                                   return PaymentEwalletTab(
+                                    selectedpayment: setSelected,
+                                    selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
@@ -769,6 +786,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Bank transfer':
                                   return PaymentTrfTabs(
+                                    selectedpayment: setSelected,
+                                    selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
@@ -796,6 +815,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Piutang':
                                   return PaymentPiutangTabs(
+                                    selectedpayment: setSelected,
+                                    selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,
@@ -816,6 +837,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Lain lain':
                                   return PaymentLainLainTabs(
+                                       selectedpayment: setSelected,
+                                    selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
                                     cardno: cardno,
                                     cardexp: cardexp,

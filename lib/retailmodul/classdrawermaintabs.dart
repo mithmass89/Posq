@@ -8,13 +8,16 @@ import 'package:posq/login.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
+import 'package:posq/reporting/reportingtablet/classsummaryreporttab.dart';
 import 'package:posq/retailmodul/savedtransaction/classlisttransactionmobile.dart';
 import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
-import 'package:posq/setting/classpromomobile.dart';
+import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
 import 'package:posq/setting/product_master/mainmenuproduct.dart';
+import 'package:posq/setting/promo/tablet/classcreatepromotab.dart';
+import 'package:posq/setting/promo/tablet/classpromotab.dart';
 import 'package:posq/userinfo.dart';
 
 class DrawerRetailMainTabs extends StatefulWidget {
@@ -152,7 +155,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                       ? () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return ClassPromoMobile();
+                            return ClassPromoTab();
                           }));
                         }
                       : () {
@@ -202,7 +205,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                       ? () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return ClassSummaryReport(user: 'Admin');
+                            return ClassSummaryReportTab(user: usercd);
                           }));
                         }
                       : () {

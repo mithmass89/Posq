@@ -25,10 +25,13 @@ class PaymentTrfTabs extends StatefulWidget {
   late String pymtmthd;
   final List<String> paymentlist;
   late num? result;
-    final bool fromsplit;
+  final bool fromsplit;
+  late String selectedpay;
+  final Function selectedpayment;
   PaymentTrfTabs(
       {Key? key,
       required this.trno,
+      required this.selectedpay,
       required this.pscd,
       required this.trdt,
       required this.balance,
@@ -43,7 +46,9 @@ class PaymentTrfTabs extends StatefulWidget {
       this.insertIafjrnhd,
       required this.pymtmthd,
       required this.result,
-      required this.paymentlist, required this.fromsplit})
+      required this.paymentlist,
+      required this.fromsplit,
+      required this.selectedpayment})
       : super(key: key);
 
   @override
@@ -134,7 +139,6 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                   )
                 ],
               ),
-          
               Row(
                 children: [
                   Padding(
@@ -153,6 +157,8 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                               // Background color
                               ),
                           onPressed: () async {
+                            widget.selectedpay = selected;
+                             widget.selectedpayment(selected);
                             await widget.insertIafjrnhd!()
                                 .whenComplete(() async {
                               await ClassApi.getSumPyTrno(

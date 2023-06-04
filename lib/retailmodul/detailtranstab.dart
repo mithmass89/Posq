@@ -873,11 +873,11 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                       Text(
                                                                           'Discount',
                                                                           style:
-                                                                              TextStyle(fontSize: 10)),
+                                                                              TextStyle(fontSize: 10,color: Colors.red)),
                                                                       Text(
                                                                           '-${CurrencyFormat.convertToIdr(widget.listdata[index].discamt, 0)}',
                                                                           style:
-                                                                              TextStyle(fontSize: 10)),
+                                                                              TextStyle(fontSize: 10,color: Colors.red)),
                                                                     ],
                                                                   ),
                                                                 )

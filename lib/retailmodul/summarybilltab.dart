@@ -9,6 +9,7 @@ import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/payment/paymentmainmobilev2.dart';
 import 'package:posq/classui/payment/paymenttablet/dialogclasspayment.dart';
 import 'package:posq/classui/payment/paymenttablet/mainpaymenttab.dart';
+import 'package:posq/classui/selectpromodiscounttab.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/productclass/classdialogsplitbilltab.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
@@ -138,7 +139,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                 var hasil = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SelectPromoMobile(
+                                        builder: (context) => SelectPromoTab(
                                               sum: widget.sum!,
                                               refreshdata: widget.refreshdata,
                                               updatedata: widget.updatedata,
@@ -172,90 +173,114 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                         ),
                       ),
                       x.first.discamt == 0
-                          ? Container(
-                              alignment: Alignment.centerRight,
-                              width: MediaQuery.of(context).size.width * 0.2,
-                              child: TextButton(
-                                  style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      minimumSize: Size(50, 30),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      alignment: Alignment.centerRight),
-                                  onPressed: () async {
-                                    Promo hasil = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SelectPromoMobile(
-                                                  sum: widget.sum!,
-                                                  refreshdata:
-                                                      widget.refreshdata,
-                                                  updatedata: widget.updatedata,
-                                                  databill: x.first,
-                                                  pscd: widget.pscd,
-                                                  trno: widget.trno,
-                                                ))).then((value) async {
-                                      await widget.refreshdata;
-                                      await widget.updatedata;
-                                      return value;
-                                    });
-                                    setState(() {
-                                      widget.sum = hasil.amount;
-                                    });
-                                    ClassRetailMainMobile.of(context)!
-                                        .discount = hasil.amount!;
-                                  },
-                                  child: Text(
-                                    '>',
-                                    style: TextStyle(fontSize: 20),
-                                  )))
-                          : Container(
-                              alignment: Alignment.centerRight,
-                              width: MediaQuery.of(context).size.width * 0.2,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    CurrencyFormat.convertToIdr(
-                                        x.first.discamt, 0),
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                  Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.065,
-                                      child: TextButton(
-                                          onPressed: () async {
-                                            await ClassApi.deactivePromoTrno(
-                                                    widget.trno, dbname)
-                                                .whenComplete(() {
-                                              setState(() {});
-                                            });
-                                            await ClassApi.getSumTrans(
-                                                    widget.trno.toString(),
-                                                    pscd,
-                                                    '')
-                                                .then((value) async {
-                                              setState(() {
-                                                widget.sum =
-                                                    value.first.totalaftdisc!;
+                          ? Row(
+                              children: [
+                                Container(
+                                    alignment: Alignment.centerRight,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.23,
+                                    child: TextButton(
+                                        style: TextButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            minimumSize: Size(50, 30),
+                                            tapTargetSize: MaterialTapTargetSize
+                                                .shrinkWrap,
+                                            alignment: Alignment.centerRight),
+                                        onPressed: () async {
+                                          Promo hasil = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SelectPromoTab(
+                                                        sum: widget.sum!,
+                                                        refreshdata:
+                                                            widget.refreshdata,
+                                                        updatedata:
+                                                            widget.updatedata,
+                                                        databill: x.first,
+                                                        pscd: widget.pscd,
+                                                        trno: widget.trno,
+                                                      ))).then((value) async {
+                                            await widget.refreshdata;
+                                            await widget.updatedata;
+                                            return value;
+                                          });
+                                          setState(() {
+                                            widget.sum = hasil.amount;
+                                          });
+                                          ClassRetailMainMobile.of(context)!
+                                              .discount = hasil.amount!;
+                                        },
+                                        child: Text(
+                                          '>',
+                                          style: TextStyle(fontSize: 20),
+                                        ))),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                               
+                                    alignment: Alignment.centerRight,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.23,
+                                    child: Row(
+                                      children: [
+                                        Spacer(),
+                                        Text(
+                                          CurrencyFormat.convertToIdr(
+                                              x.first.discamt, 0),
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        //  Spacer(),
+                                        TextButton(
+                                            style: TextButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                                minimumSize: Size(10, 30),
+                                                tapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                                alignment:
+                                                    Alignment.centerLeft),
+                                            onPressed: () async {
+                                              await ClassApi.deactivePromoTrno(
+                                                      widget.trno, dbname)
+                                                  .whenComplete(() {
+                                                setState(() {});
                                               });
-                                              await widget.updatedata;
-                                              await widget.refreshdata!;
-                                              ClassRetailMainMobile.of(context)!
-                                                  .string = value.first;
-                                              ClassRetailMainMobile.of(context)!
-                                                      .discount =
-                                                  value.first.discamt!;
-                                            });
-                                          },
-                                          child: Text(
-                                            'X',
-                                            style: TextStyle(fontSize: 10),
-                                          )))
-                                ],
-                              ))
+                                              await ClassApi.getSumTrans(
+                                                      widget.trno.toString(),
+                                                      pscd,
+                                                      '')
+                                                  .then((value) async {
+                                                setState(() {
+                                                  widget.sum =
+                                                      value.first.totalaftdisc!;
+                                                });
+                                                await widget.updatedata;
+                                                await widget.refreshdata!;
+                                                ClassRetailMainMobile.of(
+                                                        context)!
+                                                    .string = value.first;
+                                                ClassRetailMainMobile.of(
+                                                            context)!
+                                                        .discount =
+                                                    value.first.discamt!;
+                                              });
+                                            },
+                                            child: Text(
+                                              'X',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ))
+                                      ],
+                                    )),
+                              ],
+                            )
                     ],
                   ),
                   // Row(
@@ -270,29 +295,30 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                   //     ),
                   //   ],
                   // ),
-               
+
                   Row(
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width * 0.09,
                         child: Text(
                           'Tax & Service',
-                          style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                       ),
-               
                       Container(
                         alignment: Alignment.centerRight,
-                            width: MediaQuery.of(context).size.width * 0.23,
+                        width: MediaQuery.of(context).size.width * 0.23,
                         child: Text(
                           CurrencyFormat.convertToIdr(
                               x.first.serviceamt! + x.first.taxamt!, 0),
-                          style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
                   ),
-                        SizedBox(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 0.015,
                   ),
                   Row(

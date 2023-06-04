@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/menu.dart';
-import 'setting/product_master/classeditproducttab.dart';
+import 'setting/product_master/tabletclass/classeditproducttab.dart';
 import 'setting/product_master/tabletclass/createproducttab.dart';
 
 ClassApi? host;
@@ -17,8 +17,8 @@ class ImageFromGalleryExTab extends StatefulWidget {
   final double? height;
   final double? width;
   final bool? fromedit;
-  final String imagepath;
-  const ImageFromGalleryExTab(this.type,
+  late String imagepath;
+  ImageFromGalleryExTab(this.type,
       {Key? key,
       this.callback,
       this.savingimage,
@@ -46,12 +46,14 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
     print(outletname);
     Createproducttab.of(context)!.string = outletname;
   }
-String urlpic='';
+
+  String urlpic = '';
 
   @override
   void initState() {
     super.initState();
     host = ClassApi();
+    print(widget.imagepath);
     imagePicker = ImagePicker();
     if (widget.savingimage != null) {
       _image = File(widget.savingimage);
@@ -113,14 +115,23 @@ String urlpic='';
                     namefile = image.name;
                     _selectedFile = await image.readAsBytes();
                     print(_selectedFile);
-                    await host!.uploadFiles(_selectedFile, namefile).whenComplete(() {
-
+                    await host!
+                        .uploadFiles(_selectedFile, namefile)
+                        .whenComplete(() {
+                      widget.imagepath = '$api/getfile/$namefile';
+                      EditproductTab.of(context)!.string =
+                          '$api/getfile/$namefile';
+                        print('ini url barang : $api/getfile/$namefile');
+                      setState(() {});
                     });
                     if (widget.fromedit == true) {
-                      EditproductTab.of(context)!.string = image.path.toString();
-                      await host!.uploadFiles(_selectedFile, namefile);
+                      EditproductTab.of(context)!.string =
+                          '$api/getfile/$namefile';
+                      // await host!.uploadFiles(_selectedFile, namefile);
+
                     } else {
-                      Createproducttab.of(context)!.string ='$api/getfile/$namefile';
+                      Createproducttab.of(context)!.string =
+                          '$api/getfile/$namefile';
                     }
                     setState(() {});
                   },
