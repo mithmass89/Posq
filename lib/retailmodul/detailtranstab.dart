@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
+import 'package:posq/classui/dialogdeleteitemtab.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/classedititemmobile.dart';
 import 'package:posq/databasehandler.dart';
@@ -413,185 +415,55 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                   // widget.listdata = widget.listdata;
                                   return Column(
                                     children: [
-                                      Dismissible(
-                                        key: ValueKey<int>(
-                                            widget.listdata[index].id!),
-                                        direction:
-                                            accesslist.contains('deleteitem') ==
-                                                    true
-                                                ? DismissDirection.endToStart
-                                                : DismissDirection.none,
-                                        onDismissed: accesslist
-                                                    .contains('deleteitem') ==
-                                                true
-                                            ? (DismissDirection
-                                                direction) async {
-                                                if (widget
-                                                        .listdata[index].typ !=
-                                                    'condiment') {
-                                                  await ClassApi
-                                                      .deactivePoscondimentByALL(
-                                                          widget.listdata[index]
-                                                              .transno!,
-                                                          widget.listdata[index]
-                                                              .itemseq
-                                                              .toString(),
-                                                          dbname);
-                                                  await ClassApi
-                                                          .deactivePosdetail(
-                                                              widget
-                                                                  .listdata[
-                                                                      index]
-                                                                  .id!
-                                                                  .toInt(),
-                                                              dbname)
-                                                      .whenComplete(() async {
-                                                    setState(() {
-                                                      widget.listdata.remove(
-                                                          widget
-                                                              .listdata[index]);
-                                                    });
-                                                    await getSumm();
-                                                    widget.updatedata!();
-                                                    widget.refreshdata;
+                                      widget.listdata[index].qty != 0
+                                          ? GestureDetector(
+                                              onTap: () async {
+                                                if (widget.listdata[index]
+                                                            .typ !=
+                                                        'condiment' &&
+                                                    widget.listdata[index]
+                                                            .havecond! <=
+                                                        0) {
+                                                  final result =
+                                                      await showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return DialogEditTab(
+                                                              note: note,
+                                                              updatedata: //                       updatedata:
+                                                                  widget
+                                                                      .updatedata,
+                                                              data: widget
+                                                                      .listdata[
+                                                                  index],
+                                                              editamount:
+                                                                  editamount,
+                                                              editdesc:
+                                                                  editdesc,
+                                                              editqty: editqty,
+                                                            );
+                                                          });
 
-                                                    ClassRetailMainMobile.of(
-                                                                context)!
-                                                            .string =
-                                                        IafjrndtClass(
-                                                            trdt:
-                                                                widget.trnoinfo!
-                                                                    .trdt,
-                                                            pscd: widget
-                                                                .trnoinfo!.pscd,
-                                                            description: '',
-                                                            totalaftdisc: 0,
-                                                            transno: snapshot
-                                                                        .data!
-                                                                        .length ==
-                                                                    0
-                                                                ? null
-                                                                : widget
-                                                                    .trnoinfo!
-                                                                    .transno);
-                                                  });
-                                                  await getDetails!
-                                                      .then((value) {
-                                                    setState(() {});
-                                                  });
-                                                } else {
-                                                  await ClassApi
-                                                          .deactivePoscondimentByID(
-                                                              widget
-                                                                  .listdata[
-                                                                      index]
-                                                                  .transno!,
-                                                              widget
-                                                                  .listdata[
-                                                                      index]
-                                                                  .itemseq
-                                                                  .toString(),
-                                                              widget
-                                                                  .listdata[
-                                                                      index]
-                                                                  .optioncode!,
-                                                              dbname)
-                                                      .whenComplete(() {
-                                                    widget.listdata.remove(
-                                                        widget.listdata[index]);
-                                                  });
-                                                  widget.refreshdata;
-                                                  await getDetailTrnos()
-                                                      .then((value) {
-                                                    setState(() {});
-                                                  });
-                                                  await getSumm();
-                                                  ClassRetailMainMobile
-                                                              .of(context)!
+                                                  ClassRetailMainMobile.of(context)!
                                                           .string =
                                                       IafjrndtClass(
-                                                          trdt: widget
-                                                              .trnoinfo!.trdt,
+                                                          trdt: widget.trnoinfo!
+                                                              .transno,
                                                           pscd: widget
                                                               .trnoinfo!.pscd,
                                                           description: '',
                                                           totalaftdisc: 0,
                                                           transno: widget
-                                                                      .listdata
-                                                                      .length ==
-                                                                  0
-                                                              ? null
-                                                              : widget.trnoinfo!
-                                                                  .transno);
-                                                }
-                                              }
-                                            : (DismissDirection direction) {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "Tidak Dapat Akses delete",
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG,
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    timeInSecForIosWeb: 1,
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            255, 11, 12, 14),
-                                                    textColor: Colors.white,
-                                                    fontSize: 16.0);
-                                              },
-                                        child: widget.listdata[index].qty != 0
-                                            ? GestureDetector(
-                                                onTap: () async {
-                                                  if (widget.listdata[index]
-                                                              .typ !=
-                                                          'condiment' &&
-                                                      widget.listdata[index]
-                                                              .havecond! <=
-                                                          0) {
-                                                    final result =
-                                                        await showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return DialogEditTab(
-                                                                note: note,
-                                                                updatedata: //                       updatedata:
-                                                                    widget
-                                                                        .updatedata,
-                                                                data: widget
-                                                                        .listdata[
-                                                                    index],
-                                                                editamount:
-                                                                    editamount,
-                                                                editdesc:
-                                                                    editdesc,
-                                                                editqty:
-                                                                    editqty,
-                                                              );
-                                                            });
-                                                    //     await Navigator.push(
-                                                    //         context,
-                                                    //         MaterialPageRoute(
-                                                    //             builder:
-                                                    //                 (context) =>
-                                                    //                     ClassEditItemTab(
-                                                    //                       updatedata:
-                                                    //                           widget.updatedata,
-                                                    //                       data:
-                                                    //                           widget.listdata[index],
-                                                    //                       editamount:
-                                                    //                           editamount,
-                                                    //                       editdesc:
-                                                    //                           editdesc,
-                                                    //                       editqty:
-                                                    //                           editqty,
-                                                    //                     ))).then(
-                                                    //         (_) {
-                                                    //   widget.refreshdata;
-                                                    //   widget.updatedata!();
-                                                    // });
+                                                              .trnoinfo!
+                                                              .transno);
+                                                  await getDetailTrnos()
+                                                      .then((value) {
+                                                    setState(() {
+                                                      widget.listdata = value;
+                                                    });
+                                                  });
+                                                  if (result == null) {
                                                     ClassRetailMainMobile.of(context)!
                                                             .string =
                                                         IafjrndtClass(
@@ -605,88 +477,113 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                             transno: widget
                                                                 .trnoinfo!
                                                                 .transno);
-                                                    await getDetailTrnos()
-                                                        .then((value) {
-                                                      setState(() {
-                                                        widget.listdata = value;
-                                                      });
-                                                    });
-                                                    if (result == null) {
-                                                      ClassRetailMainMobile.of(context)!
-                                                              .string =
-                                                          IafjrndtClass(
-                                                              trdt: widget
-                                                                  .trnoinfo!
-                                                                  .transno,
-                                                              pscd: widget
-                                                                  .trnoinfo!
-                                                                  .pscd,
-                                                              description: '',
-                                                              totalaftdisc: 0,
-                                                              transno: widget
-                                                                  .trnoinfo!
-                                                                  .transno);
-                                                    } else {
-                                                      ClassRetailMainMobile.of(
-                                                              context)!
-                                                          .string = result;
-                                                      await getDetailTrnos()
-                                                          .then((value) {
-                                                        setState(() {
-                                                          widget.listdata =
-                                                              value;
-                                                        });
-                                                      });
-                                                    }
                                                   } else {
-                                                    ///edit condiment mode///
-                                                    final result = widget
-                                                                .listdata[index]
-                                                                .condimenttype ==
-                                                            ''
-                                                        ? await Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ClassInputCondiment(
-                                                                          guestname:
-                                                                              widget.guestname,
-                                                                          datatransaksi:
-                                                                              widget.listdata[index],
-                                                                          iditem: widget
-                                                                              .listdata[index]
-                                                                              .id,
-                                                                          fromedit:
-                                                                              true,
-                                                                          dataedit:
-                                                                              widget.listdata,
-                                                                          data: Item(
-                                                                              multiprice: multiprice,
-                                                                              itemcode: widget.listdata[index].itemcode,
-                                                                              itemdesc: widget.listdata[index].itemdesc,
-                                                                              outletcode: widget.listdata[index].pscd,
-                                                                              slsamt: widget.listdata[index].revenueamt! / widget.listdata[index].qty!,
-                                                                              costamt: 0,
-                                                                              slsnett: widget.listdata[index].totalaftdisc,
-                                                                              taxpct: widget.listdata[index].taxpct,
-                                                                              svchgpct: widget.listdata[index].svchgpct,
-                                                                              slsfl: 1),
-                                                                          itemseq: widget
-                                                                              .listdata[index]
-                                                                              .itemseq!,
-                                                                          outletcd: widget
-                                                                              .trnoinfo!
-                                                                              .pscd!,
-                                                                          transno:
-                                                                              widget.trno,
-                                                                        ))).then(
-                                                            (_) async {
-                                                            widget.refreshdata;
-                                                            widget
-                                                                .updatedata!();
-                                                          })
-                                                        : null;
+                                                    ClassRetailMainMobile.of(
+                                                            context)!
+                                                        .string = result;
+                                                    await getDetailTrnos()
+                                                        .then((value) {
+                                                      setState(() {
+                                                        widget.listdata = value;
+                                                      });
+                                                    });
+                                                  }
+                                                } else {
+                                                  ///edit condiment mode///
+                                                  final result = widget
+                                                              .listdata[index]
+                                                              .condimenttype ==
+                                                          ''
+                                                      ? await Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ClassInputCondiment(
+                                                                    guestname:
+                                                                        widget
+                                                                            .guestname,
+                                                                    datatransaksi:
+                                                                        widget.listdata[
+                                                                            index],
+                                                                    iditem: widget
+                                                                        .listdata[
+                                                                            index]
+                                                                        .id,
+                                                                    fromedit:
+                                                                        true,
+                                                                    dataedit: widget
+                                                                        .listdata,
+                                                                    data: Item(
+                                                                        multiprice:
+                                                                            multiprice,
+                                                                        itemcode: widget
+                                                                            .listdata[
+                                                                                index]
+                                                                            .itemcode,
+                                                                        itemdesc: widget
+                                                                            .listdata[
+                                                                                index]
+                                                                            .itemdesc,
+                                                                        outletcode: widget
+                                                                            .listdata[
+                                                                                index]
+                                                                            .pscd,
+                                                                        slsamt: widget.listdata[index].revenueamt! /
+                                                                            widget
+                                                                                .listdata[
+                                                                                    index]
+                                                                                .qty!,
+                                                                        costamt:
+                                                                            0,
+                                                                        slsnett: widget
+                                                                            .listdata[
+                                                                                index]
+                                                                            .totalaftdisc,
+                                                                        taxpct: widget
+                                                                            .listdata[
+                                                                                index]
+                                                                            .taxpct,
+                                                                        svchgpct: widget
+                                                                            .listdata[
+                                                                                index]
+                                                                            .svchgpct,
+                                                                        slsfl:
+                                                                            1),
+                                                                    itemseq: widget
+                                                                        .listdata[
+                                                                            index]
+                                                                        .itemseq!,
+                                                                    outletcd: widget
+                                                                        .trnoinfo!
+                                                                        .pscd!,
+                                                                    transno:
+                                                                        widget
+                                                                            .trno,
+                                                                  ))).then(
+                                                          (_) async {
+                                                          widget.refreshdata;
+                                                          widget.updatedata!();
+                                                        })
+                                                      : null;
+                                                  ClassRetailMainMobile.of(context)!
+                                                          .string =
+                                                      IafjrndtClass(
+                                                          trdt: widget.trnoinfo!
+                                                              .transno,
+                                                          pscd: widget
+                                                              .trnoinfo!.pscd,
+                                                          description: '',
+                                                          totalaftdisc: 0,
+                                                          transno: widget
+                                                              .trnoinfo!
+                                                              .transno);
+                                                  await getDetailTrnos()
+                                                      .then((value) {
+                                                    setState(() {
+                                                      widget.listdata = value;
+                                                    });
+                                                  });
+                                                  if (result == null) {
                                                     ClassRetailMainMobile.of(context)!
                                                             .string =
                                                         IafjrndtClass(
@@ -700,163 +597,68 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                             transno: widget
                                                                 .trnoinfo!
                                                                 .transno);
-                                                    await getDetailTrnos()
-                                                        .then((value) {
-                                                      setState(() {
-                                                        widget.listdata = value;
-                                                      });
-                                                    });
-                                                    if (result == null) {
-                                                      ClassRetailMainMobile.of(context)!
-                                                              .string =
-                                                          IafjrndtClass(
-                                                              trdt: widget
-                                                                  .trnoinfo!
-                                                                  .transno,
-                                                              pscd: widget
-                                                                  .trnoinfo!
-                                                                  .pscd,
-                                                              description: '',
-                                                              totalaftdisc: 0,
-                                                              transno: widget
-                                                                  .trnoinfo!
-                                                                  .transno);
-                                                    } else {
-                                                      ClassRetailMainMobile.of(
-                                                              context)!
-                                                          .string = result;
-                                                    }
+                                                  } else {
+                                                    ClassRetailMainMobile.of(
+                                                            context)!
+                                                        .string = result;
                                                   }
-                                                },
-                                                child: SafeArea(
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.05,
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.18,
-                                                              child: Text(
-                                                                  widget.listdata[index].typ !=
-                                                                          'condiment'
-                                                                      ? widget
-                                                                          .listdata[
-                                                                              index]
-                                                                          .itemdesc!
-                                                                      : ' *** ${widget.listdata[index].itemdesc!} ***',
-                                                                  style: widget
-                                                                              .listdata[
-                                                                                  index]
-                                                                              .typ !=
-                                                                          'condiment'
-                                                                      ? TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          fontWeight:
-                                                                              FontWeight.normal)
-                                                                      : TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                        )),
-                                                            ),
-                                                            Container(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.15,
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerRight,
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.1,
-                                                                    child: Text(
-                                                                        '${CurrencyFormat.convertToIdr(widget.listdata[index].revenueamt, 0)}',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                12,
-                                                                            color:
-                                                                                Colors.black54)),
-                                                                  ),
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerRight,
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.02,
-                                                                    child: Icon(
-                                                                      widget.listdata[index].typ !=
-                                                                              'condiment'
-                                                                          ? Icons
-                                                                              .edit
-                                                                          : null,
-                                                                      color: Color.fromARGB(255, 0, 168, 173),
-                                                                      size:
-                                                                          17.0,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Row(
+                                                }
+                                              },
+                                              child: SafeArea(
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.05,
+                                                      child: Row(
                                                         children: [
-                                                          Text(
-                                                              '${CurrencyFormat.convertToIdr(widget.listdata[index].rateamtitem, 0)},',
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      10)),
-                                                          SizedBox(
+                                                          Container(
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width *
-                                                                0.01,
+                                                                0.18,
+                                                            child: Text(
+                                                                widget.listdata[index].typ !=
+                                                                        'condiment'
+                                                                    ? widget
+                                                                        .listdata[
+                                                                            index]
+                                                                        .itemdesc!
+                                                                    : ' *** ${widget.listdata[index].itemdesc!} ***',
+                                                                style: widget
+                                                                            .listdata[
+                                                                                index]
+                                                                            .typ !=
+                                                                        'condiment'
+                                                                    ? TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.normal)
+                                                                    : TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                      )),
                                                           ),
-                                                          Text('x',
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      10)),
-                                                          Text(
-                                                              '${widget.listdata[index].qty}',
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      10)),
-                                                          SizedBox(
+                                                          Container(
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width *
-                                                                0.13,
-                                                          ),
-                                                          widget.listdata[index]
-                                                                      .discamt !=
-                                                                  0
-                                                              ? Container(
+                                                                0.15,
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Container(
                                                                   alignment:
                                                                       Alignment
                                                                           .centerRight,
@@ -864,32 +666,211 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                               context)
                                                                           .size
                                                                           .width *
-                                                                      0.11,
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .end,
-                                                                    children: [
-                                                                      Text(
-                                                                          'Discount',
-                                                                          style:
-                                                                              TextStyle(fontSize: 10,color: Colors.red)),
-                                                                      Text(
-                                                                          '-${CurrencyFormat.convertToIdr(widget.listdata[index].discamt, 0)}',
-                                                                          style:
-                                                                              TextStyle(fontSize: 10,color: Colors.red)),
-                                                                    ],
-                                                                  ),
-                                                                )
-                                                              : Container(),
+                                                                      0.1,
+                                                                  child: Text(
+                                                                      '${CurrencyFormat.convertToIdr(widget.listdata[index].revenueamt, 0)}',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.black54)),
+                                                                ),
+                                                                Container(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerRight,
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.02,
+                                                                  child: widget
+                                                                              .listdata[index]
+                                                                              .typ !=
+                                                                          'condiment'
+                                                                      ? IconButton(
+                                                                          iconSize:
+                                                                              17,
+                                                                          onPressed:
+                                                                              () async {
+                                                                            if (strictuser ==
+                                                                                '1') {
+                                                                              showDialog(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return PasswordDialog(
+                                                                                    frompaymentmobile: false,
+                                                                                    frompayment: false,
+                                                                                    dialogcancel: false,
+                                                                                    onPasswordEntered: (String password) async {
+                                                                                      print('Entered password: $password');
+                                                                                      await ClassApi.getAccessCodevoid(password).then((value) async {
+                                                                                        if (value.isEmpty) {
+                                                                                          await Fluttertoast.showToast(msg: "Kode yg anda masukan salah", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Color.fromARGB(255, 11, 12, 14), textColor: Colors.white, fontSize: 16.0);
+                                                                                        } else {
+                                                                                          print(value);
+                                                                                          if (widget.listdata[index].typ != 'condiment') {
+                                                                                            await ClassApi.deactivePoscondimentByALL(widget.listdata[index].transno!, widget.listdata[index].itemseq.toString(), dbname);
+                                                                                            await ClassApi.deactivePosdetail(widget.listdata[index].id!.toInt(), dbname).whenComplete(() async {
+                                                                                              setState(() {
+                                                                                                widget.listdata.remove(widget.listdata[index]);
+                                                                                              });
+                                                                                              await getSumm();
+                                                                                              widget.updatedata!();
+                                                                                              widget.refreshdata;
+
+                                                                                              ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                            });
+                                                                                            await getDetails!.then((value) {
+                                                                                              setState(() {});
+                                                                                            });
+                                                                                          } else {
+                                                                                            await ClassApi.deactivePoscondimentByID(widget.listdata[index].transno!, widget.listdata[index].itemseq.toString(), widget.listdata[index].optioncode!, dbname).whenComplete(() {
+                                                                                              widget.listdata.remove(widget.listdata[index]);
+                                                                                            });
+                                                                                            widget.refreshdata;
+                                                                                            await getDetailTrnos().then((value) {
+                                                                                              setState(() {});
+                                                                                            });
+                                                                                            await getSumm();
+                                                                                            ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: widget.listdata.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                          }
+                                                                                        }
+                                                                                      });
+                                                                                      // Lakukan sesuatu dengan password yang dimasukkan di sini
+                                                                                    },
+                                                                                  );
+                                                                                },
+                                                                              );
+                                                                            } else {
+                                                                              showDialog(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return DialogDeleteItem(
+                                                                                    itemdesc: widget.listdata[index].itemdesc!,
+                                                                                    onPasswordEntered: (String password) async {
+                                                                                      print('Entered password: $password');
+
+                                                                                      if (widget.listdata[index].typ != 'condiment') {
+                                                                                        await ClassApi.deactivePoscondimentByALL(widget.listdata[index].transno!, widget.listdata[index].itemseq.toString(), dbname);
+                                                                                        await ClassApi.deactivePosdetail(widget.listdata[index].id!.toInt(), dbname).whenComplete(() async {
+                                                                                          setState(() {
+                                                                                            widget.listdata.remove(widget.listdata[index]);
+                                                                                          });
+                                                                                          await getSumm();
+                                                                                          widget.updatedata!();
+                                                                                          widget.refreshdata;
+
+                                                                                          ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                        });
+                                                                                        await getDetails!.then((value) {
+                                                                                          setState(() {});
+                                                                                        });
+                                                                                      } else {
+                                                                                        await ClassApi.deactivePoscondimentByID(widget.listdata[index].transno!, widget.listdata[index].itemseq.toString(), widget.listdata[index].optioncode!, dbname).whenComplete(() {
+                                                                                          widget.listdata.remove(widget.listdata[index]);
+                                                                                        });
+                                                                                        widget.refreshdata;
+                                                                                        await getDetailTrnos().then((value) {
+                                                                                          setState(() {});
+                                                                                        });
+                                                                                        await getSumm();
+                                                                                        ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: widget.listdata.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                      }
+
+                                                                                      // Lakukan sesuatu dengan password yang dimasukkan di sini
+                                                                                    },
+                                                                                  );
+                                                                                },
+                                                                              );
+                                                                            }
+                                                                          },
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              0,
+                                                                              168,
+                                                                              173),
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.close,
+                                                                          ),
+                                                                        )
+                                                                      : null,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
                                                         ],
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                            '${CurrencyFormat.convertToIdr(widget.listdata[index].rateamtitem, 0)},',
+                                                            style: TextStyle(
+                                                                fontSize: 10)),
+                                                        SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.01,
+                                                        ),
+                                                        Text('x',
+                                                            style: TextStyle(
+                                                                fontSize: 10)),
+                                                        Text(
+                                                            '${widget.listdata[index].qty}',
+                                                            style: TextStyle(
+                                                                fontSize: 10)),
+                                                        SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.13,
+                                                        ),
+                                                        widget.listdata[index]
+                                                                    .discamt !=
+                                                                0
+                                                            ? Container(
+                                                                alignment: Alignment
+                                                                    .centerRight,
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.11,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Discount',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                10,
+                                                                            color:
+                                                                                Colors.red)),
+                                                                    Text(
+                                                                        '-${CurrencyFormat.convertToIdr(widget.listdata[index].discamt, 0)}',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                10,
+                                                                            color:
+                                                                                Colors.red)),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
-                                              )
-                                            : Container(),
-                                      ),
+                                              ),
+                                            )
+                                          : Container(),
                                       Divider(),
                                     ],
                                   );

@@ -31,6 +31,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
   final bool? cash;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   const ClassPaymetSucsessMobile({
     Key? key,
@@ -47,6 +48,7 @@ class ClassPaymetSucsessMobile extends StatefulWidget {
     required this.frombanktransfer,
     required this.datatrans,
     required this.fromsaved,
+    required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -80,6 +82,8 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   var formattedDate;
   bool loading = false;
   bool emailValid = false;
+  List<IafjrndtClass> datacheck = [];
+  int? pendings;
 
   @override
   void initState() {
@@ -105,6 +109,13 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     }
   }
 
+  Future<List<IafjrndtClass>> getDetailTrnos() async {
+    datacheck = await ClassApi.getTrnoDetail(widget.trno, dbname, '');
+
+    setState(() {});
+    return datacheck;
+  }
+
   Stream<String> _getstatus() async* {
     if (widget.cash == false) {
       await PaymentGate.getStatusTransaction(widget.trno).then((value) {
@@ -115,6 +126,14 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     }
 
     // This loop will run forever because _running is always true
+  }
+
+  checkPending() {
+    ClassApi.getOutstandingBillTransno(widget.trno, dbname, '').then((value) {
+      setState(() {
+        pendings = value.length;
+      });
+    });
   }
 
   checkTrno() async {
@@ -348,23 +367,96 @@ ${payment.reduce((value, element) => value + element)}
                               height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.18,
                               onpressed: () async {
-                                if (widget.fromsaved == true) {
-                                  await checkTrno();
-                                } else {
-                                  await updateTrno();
-                                }
-                                await ClassApi.cleartable(dbname, widget.trno);
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClassRetailMainMobile(
-                                              fromsaved: widget.fromsaved,
-                                              pscd: widget.outletcd!,
-                                              trno: nexttrno,
-                                              outletinfo: widget.outletinfo!,
-                                              qty: 0,
-                                            )),
-                                    (Route<dynamic> route) => false);
+                                await getDetailTrnos().then((value) async {
+                                  print('ini value : $value');
+                                  if (value.isEmpty) {
+                                    await updateTrno();
+                                    await ClassApi.cleartable(
+                                        dbname, widget.trno);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ClassRetailMainMobile(
+                                                  fromsaved: widget.fromsaved,
+                                                  pscd: widget.outletcd!,
+                                                  trno: nexttrno,
+                                                  outletinfo:
+                                                      widget.outletinfo!,
+                                                  qty: 0,
+                                                )),
+                                        (Route<dynamic> route) => false);
+                                  } else {
+                                    if (widget.fromsaved == true) {
+                                      await checkTrno();
+                                    } else if (widget.fromsplit == true) {
+                                      for (var x in widget.datatrans) {
+                                        await ClassApi.updateSplit(
+                                            dbname, widget.trno, x.itemseq!);
+                                      }
+                                      await ClassApi.getOutstandingBillTransno(
+                                              widget.trno, dbname, '')
+                                          .then((valued) async {
+                                        print('ini value success:  $valued');
+                                        if (valued.isEmpty) {
+                                          await updateTrno();
+                                          await ClassApi.cleartable(
+                                              dbname, widget.trno);
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ClassRetailMainMobile(
+                                                            fromsaved: widget
+                                                                .fromsaved,
+                                                            pscd: widget
+                                                                .outletcd!,
+                                                            trno: nexttrno,
+                                                            outletinfo: widget
+                                                                .outletinfo!,
+                                                            qty: 0,
+                                                          )),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        } else {
+                                          print('masih ada OT');
+
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ClassRetailMainMobile(
+                                                            fromsaved: widget
+                                                                .fromsaved,
+                                                            pscd: widget
+                                                                .outletcd!,
+                                                            trno: widget.trno,
+                                                            outletinfo: widget
+                                                                .outletinfo!,
+                                                            qty: 0,
+                                                          )),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        }
+                                      });
+                                    } else {
+                                      await updateTrno();
+                                      await ClassApi.cleartable(
+                                          dbname, widget.trno);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClassRetailMainMobile(
+                                                    fromsaved: widget.fromsaved,
+                                                    pscd: widget.outletcd!,
+                                                    trno: nexttrno,
+                                                    outletinfo:
+                                                        widget.outletinfo!,
+                                                    qty: 0,
+                                                  )),
+                                          (Route<dynamic> route) => false);
+                                    }
+                                  }
+                                });
                               },
                               name: 'TRANSAKSI BARU',
                             ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
@@ -14,6 +15,7 @@ import 'package:toast/toast.dart';
 class PaymentCashV2Mobile extends StatefulWidget {
   final TextEditingController amountcash;
   final num balance;
+  final int lastsplit;
   final String? trno;
   final String? pscd;
   final Outlet outletinfo;
@@ -22,6 +24,7 @@ class PaymentCashV2Mobile extends StatefulWidget {
   final Function callback;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   PaymentCashV2Mobile(
       {Key? key,
@@ -33,7 +36,10 @@ class PaymentCashV2Mobile extends StatefulWidget {
       required this.zerobill,
       required this.outletinfo,
       required this.callback,
-      required this.datatrans, required this.fromsaved})
+      required this.datatrans,
+      required this.fromsaved,
+      required this.lastsplit,
+      required this.fromsplit})
       : super(key: key);
 
   @override
@@ -69,6 +75,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
   void initState() {
     super.initState();
     widget.amountcash.addListener(() {});
+    print(widget.datatrans);
 
     print(widget.balance);
     if (widget.balance > 25000) {
@@ -119,7 +126,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: widget.trno!,
-        split: 1,
+        split: widget.lastsplit,
         pscd: '${widget.pscd}',
         trtm: '00:00',
         disccd: '',
@@ -147,7 +154,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         trdt: formattedDate,
         transno: '${widget.trno}',
         transno1: widget.trno!,
-        split: 1,
+        split: widget.lastsplit,
         pscd: '${widget.pscd}',
         trtm: '00:00',
         disccd: '',
@@ -207,7 +214,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 textcolor: Colors.white,
                 name: 'Uang Pas',
-        color: Colors.orange,
+                color: Colors.orange,
                 onpressed: () {
                   checkcontroller();
                   setState(() {
@@ -222,7 +229,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 textcolor: Colors.white,
                 name: 'Terima',
-               color: Colors.orange,
+                color: Colors.orange,
                 //// checking balance //////
                 onpressed: widget.result <= 0 || widget.result == 0
                     ? () async {
@@ -236,7 +243,8 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ClassPaymetSucsessMobile(
-                                  fromsaved: widget.fromsaved,
+                                      fromsplit: widget.fromsplit,
+                                      fromsaved: widget.fromsaved,
                                       datatrans: widget.datatrans,
                                       frombanktransfer: false,
                                       cash: true,
@@ -255,19 +263,48 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                         await widget.callback();
                         if (widget.result < 0) {
                           //// jika amount lebih kecil dari amount akan otomatsi refund
-                          await insertIafjrnhd().whenComplete(() async {
-                            await insertIafjrnhdRefund()
-                                .then((_) {})
-                                .then((_) async {
-                              await ClassApi.getSumPyTrno(
-                                      widget.trno.toString())
-                                  .then((value) {
-                                setState(() {
-                                  widget.result = value.first.totalamt!;
+
+                          if (strictuser == '1') {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Builder(builder: (context) {
+                                  return PasswordDialog(
+                                    frompaymentmobile: true,
+                                    outletcd: pscd,
+                                    outletinfo: widget.outletinfo,
+                                    outletname: widget.outletinfo.outletname,
+                                    datatrans: widget.datatrans,
+                                    fromsaved: widget.fromsaved,
+                                    fromsplit: widget.fromsplit,
+                                    trno: widget.trno,
+                                    balance: widget.balance,
+                                    result: widget.result,
+                                    insertIafjrnhd: insertIafjrnhd,
+                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    frompayment: true,
+                                    dialogcancel: false,
+                                    pymtmthd: 'Cash',
+                                    controller: widget.amountcash,
+                                    onPasswordEntered: (String password) async {
+                                      print('Entered password: $password');
+                                      // await insertIafjrnhdRefund()
+                                      //     .then((_) async {});
+                                      await ClassApi.getSumPyTrno(
+                                              widget.trno.toString())
+                                          .then((value) {
+                                        setState(() {
+                                          widget.result = value[0]['totalamt'];
+                                        });
+                                      });
+                                      // Lakukan sesuatu dengan password yang dimasukkan di sini
+                                    },
+                                  );
                                 });
-                              });
-                            });
-                          });
+                              },
+                            );
+                          }
+
                           await widget.callback();
                           setState(() {});
                         }
@@ -294,7 +331,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                     style: TextStyle(color: Colors.white),
                   ),
                   decoration: BoxDecoration(
-                         color: Colors.orange,
+                      color: Colors.orange,
                       borderRadius: BorderRadius.circular(15)),
                 );
               }),

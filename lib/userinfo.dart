@@ -4,5 +4,7 @@ String pscd = '';
 String dbname = '';
 List<String> listoutlets = [];
 List<String> accesslist = [];
+List<String> outlet_settings = [];
+String strictuser='0';
 String imageurl = '';
 String emaillogin = '';

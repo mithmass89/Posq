@@ -27,6 +27,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
     "Tipe Transaksi",
     "Table / Order No",
     "Payment Master",
+    "General setting",
   ];
 
   @override
@@ -63,8 +64,11 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                                     : menulist[index] == 'Table / Order No'
                                         ? Image.asset('round-table.png')
                                         : menulist[index] == 'Payment Master'
-                                            ? Image.asset('settings.png')
-                                            : Container(),
+                                            ? Image.asset('wallet.png')
+                                            : menulist[index] ==
+                                                    'General setting'
+                                                ? Image.asset('settings.png')
+                                                : Container(),
                       ),
                     ),
                     title: Text(menulist[index]),

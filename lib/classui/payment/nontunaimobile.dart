@@ -30,7 +30,9 @@ class NonTunaiMobile extends StatefulWidget {
   final void Function(String compcd, String compdesc, String methode)
       checkselected;
   final bool fromsaved;
-
+  final int lastsplit;
+  final bool fromsplit;
+  
   NonTunaiMobile({
     Key? key,
     required this.amountcash,
@@ -47,7 +49,7 @@ class NonTunaiMobile extends StatefulWidget {
     this.compdescription,
     required this.checkselected,
     required this.pymtmthd,
-    required this.fromsaved,
+    required this.fromsaved, required this.lastsplit, required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -74,6 +76,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
       shrinkWrap: true,
       children: [
         EWalletClassNonTunai(
+                 fromsplit: widget.fromsplit,
           fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
@@ -90,6 +93,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           amountcash: widget.amountcash,
         ),
         NonTunaiMobileTransfer(
+                 fromsplit: widget.fromsplit,
           fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
@@ -105,6 +109,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentMobileCreditCard(
+                 fromsplit: widget.fromsplit,
           fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
@@ -120,6 +125,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentDebitCardMobile(
+                 fromsplit: widget.fromsplit,
                fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,

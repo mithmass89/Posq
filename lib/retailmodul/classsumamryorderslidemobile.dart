@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/retailmodul/productclass/classdialogsplitbilltab.dart';
 import 'package:posq/setting/promo/classcreatepromomobile.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/selectdiscountmobile.dart';
@@ -21,6 +23,7 @@ class SummaryOrderSlidemobile extends StatefulWidget {
   final Outlet outletinfo;
   final bool? fromsaved;
   late List<IafjrndtClass> summary;
+  final List<IafjrndtClass> datatransaksi;
 
   SummaryOrderSlidemobile(
       {Key? key,
@@ -31,7 +34,8 @@ class SummaryOrderSlidemobile extends StatefulWidget {
       required this.refreshdata,
       required this.outletinfo,
       required this.summary,
-      this.fromsaved})
+      this.fromsaved,
+      required this.datatransaksi})
       : super(key: key);
 
   @override
@@ -193,31 +197,80 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                     trailing: Text(
                         CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0)),
                   ),
-                  TextButton(
-                      onPressed: accesslist.contains('canceltrans') == true
-                          ? () async {
-                              await showDialog(
-                                  context: context,
-                                  builder: (_) => DialogClassCancelorder(
-                                      fromsaved: widget.fromsaved,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                          onPressed: accesslist.contains('canceltrans') == true
+                              ? () async {
+                                  if (strictuser == '1') {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return PasswordDialog(
+                                            frompaymentmobile: false,
+                                            frompayment: false,
+                                            trno: x.first.transno!,
+                                            outletcd: pscd,
+                                            outletinfo: widget.outletinfo,
+                                            fromsaved: widget.fromsaved,
+                                            dialogcancel: true,
+                                            onPasswordEntered:
+                                                (String password) async {
+                                              print(
+                                                  'Entered password: $password');
+
+                                              // Lakukan sesuatu dengan password yang dimasukkan di sini
+                                            });
+                                      },
+                                    );
+                                  } else {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (_) => DialogClassCancelorder(
+                                            fromsaved: widget.fromsaved,
+                                            outletinfo: widget.outletinfo,
+                                            outletcd: widget.pscd!,
+                                            trno: x.first.transno!)).then((_) {
+                                      setState(() {});
+                                    });
+                                  }
+                                }
+                              : () {
+                                  Fluttertoast.showToast(
+                                      msg: "Tidak Punya Akses Cancel Order",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 11, 12, 14),
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                },
+                          child: Text('Batalkan transaksi')),
+                      TextButton(
+                          onPressed: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (_) => DialogSplitTab(
+                                      balance: x.first.totalaftdisc!,
+                                      datatrans: widget.datatransaksi,
+                                      fromsaved: widget.fromsaved!,
                                       outletinfo: widget.outletinfo,
-                                      outletcd: widget.pscd!,
-                                      trno: x.first.transno!)).then((_) {
-                                setState(() {});
-                              });
-                            }
-                          : () {
-                              Fluttertoast.showToast(
-                                  msg: "Tidak Punya Akses Cancel Order",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(255, 11, 12, 14),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            },
-                      child: Text('Batalkan transaksi'))
+                                      pscd: pscd,
+                                      trdt: widget.datatransaksi.first.trdt!,
+                                      trno: widget.trno,
+                                    )).then((_) {
+                              setState(() {});
+                            });
+                          },
+                          child: Text(
+                            'Split bill',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 0, 162, 184)),
+                          )),
+                    ],
+                  )
                 ],
               ),
             );

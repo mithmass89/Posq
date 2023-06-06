@@ -24,6 +24,7 @@ class PaymentTransferMobile extends StatefulWidget {
   final bool? discbyamount;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   PaymentTransferMobile(
       {Key? key,
@@ -35,7 +36,8 @@ class PaymentTransferMobile extends StatefulWidget {
       this.outletinfo,
       this.discbyamount,
       required this.datatrans,
-      required this.fromsaved})
+      required this.fromsaved,
+      required this.fromsplit})
       : super(key: key);
 
   @override
@@ -166,6 +168,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
                                 paymenttype: 'Account',
@@ -233,6 +236,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
                                 paymenttype: 'Account',
@@ -289,6 +293,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
                                 paymenttype: 'Account',
@@ -351,6 +356,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassMandiribiller(
+                                fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
                                 paymenttype: 'Account',
@@ -405,6 +411,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
                                 paymenttype: 'Account',

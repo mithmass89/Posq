@@ -212,18 +212,22 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
             // color: Colors.blue,
             height: MediaQuery.of(context).size.height * 0.20,
             width: MediaQuery.of(context).size.width * 0.19,
-            child: Image.file(
-              widget.image,
-              fit: BoxFit.cover,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                return Center(
-                    child: Icon(
-                  Icons.image,
-                  size: MediaQuery.of(context).devicePixelRatio * 21,
-                ));
-              },
-            ),
+            child: Image.network(
+                    widget.item.pathimage!,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
           ),
           // contentPadding: EdgeInsets.all(8.0),
           title: Text(widget.item.itemdesc!),

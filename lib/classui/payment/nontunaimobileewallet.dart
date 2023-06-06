@@ -27,6 +27,7 @@ class EWalletClassNonTunai extends StatefulWidget {
   late String? compdescription;
   late String? pymtmthd;
   final bool fromsaved;
+  final bool fromsplit;
   final void Function(String compcd, String compdesc, String methode)
       checkselected;
   EWalletClassNonTunai(
@@ -45,7 +46,7 @@ class EWalletClassNonTunai extends StatefulWidget {
       this.compdescription,
       this.pymtmthd,
       required this.checkselected,
-      required this.fromsaved})
+      required this.fromsaved, required this.fromsplit})
       : super(key: key);
 
   @override
@@ -158,6 +159,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
+                                           fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -223,6 +225,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
+                                           fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -295,6 +298,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
+                                           fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -361,6 +365,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
+                                           fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -429,6 +434,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
+                                           fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     compcd: compcd,
@@ -494,6 +500,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
+                                           fromsplit: widget.fromsplit,
                                          fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     compcd: compcd,

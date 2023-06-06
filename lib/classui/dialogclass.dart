@@ -1487,6 +1487,7 @@ class DialogClassEwallet extends StatefulWidget {
   final bool? fromtrfbank;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   DialogClassEwallet({
     Key? key,
@@ -1502,7 +1503,7 @@ class DialogClassEwallet extends StatefulWidget {
     this.url,
     this.fromtrfbank,
     required this.datatrans,
-    required this.fromsaved,
+    required this.fromsaved, required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -1618,6 +1619,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                               fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: false,
@@ -1657,6 +1659,7 @@ class DialogClassBankTransfer extends StatefulWidget {
   final String? paymenttype;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   DialogClassBankTransfer({
     Key? key,
@@ -1675,7 +1678,7 @@ class DialogClassBankTransfer extends StatefulWidget {
     this.grossmaount,
     required this.paymenttype,
     required this.datatrans,
-    required this.fromsaved,
+    required this.fromsaved, required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -1802,6 +1805,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                               fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: true,
@@ -1842,6 +1846,7 @@ class DialogClassMandiribiller extends StatefulWidget {
   final String? paymenttype;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final bool fromsplit;
 
   DialogClassMandiribiller({
     Key? key,
@@ -1860,7 +1865,7 @@ class DialogClassMandiribiller extends StatefulWidget {
     this.grossmaount,
     required this.paymenttype,
     required this.datatrans,
-    required this.fromsaved,
+    required this.fromsaved, required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -2013,6 +2018,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                               fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: true,

@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
+import 'package:posq/classui/payment/paymentmainmobilev2.dart';
 import 'package:posq/classui/payment/paymenttablet/dialogclasspayment.dart';
 import 'package:posq/model.dart';
 
@@ -58,135 +59,290 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    return StatefulBuilder(builder: (context, setState) {
-      return AlertDialog(
-        title: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: Icon(Icons.arrow_back_ios_new)),
-            Text('Split bill'),
-            Spacer(),
-            Text(
-              CurrencyFormat.convertToIdr(totalSlsNett, 0),
-            ),
-          ],
-        ),
-        content: Column(
-          children: [
-            Row(
+    return LayoutBuilder(builder: (context, BoxConstraints constraints) {
+      if (constraints.maxWidth >= 820) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            title: Row(
               children: [
-                SizedBox(width: MediaQuery.of(context).size.width*0.015,),
-                Text('Item yg akan di split',style: TextStyle(fontWeight: FontWeight.bold),),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.arrow_back_ios_new)),
+                Text('Split bill'),
+                Spacer(),
+                Text(
+                  CurrencyFormat.convertToIdr(totalSlsNett, 0),
+                ),
               ],
             ),
-                   SizedBox(height: MediaQuery.of(context).size.height*0.015,),
-            Form(
-                key: _formKeys,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.48,
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: ListView.builder(
-                    itemCount: widget.datatrans.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          CheckboxListTile(
-                            dense: true,
-                            subtitle: Row(
-                              children: [
-                                Text(widget.datatrans[index].qty.toString()),
-                                Text('X  '),
-                                Text(
-                                  CurrencyFormat.convertToIdr(
-                                      widget.datatrans[index].totalaftdisc, 0),
+            content: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.015,
+                    ),
+                    Text(
+                      'Item yg akan di split',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.015,
+                ),
+                Form(
+                    key: _formKeys,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.48,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: ListView.builder(
+                        itemCount: widget.datatrans.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              CheckboxListTile(
+                                dense: true,
+                                subtitle: Row(
+                                  children: [
+                                    Text(
+                                        widget.datatrans[index].qty.toString()),
+                                    Text('X  '),
+                                    Text(
+                                      CurrencyFormat.convertToIdr(
+                                          widget.datatrans[index].totalaftdisc,
+                                          0),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            title: Text(widget.datatrans[index].itemdesc!),
-                            value: checkedValues[index],
-                            onChanged: (newValue) {
-                              setState(() {
-                                checkedValues[index] = newValue!;
-                              });
-                              if (checkedValues[index] == true) {
-                                selected.add(widget.datatrans[index]);
-                                print(selected);
-                                getSum(selected);
-                              } else {
-                                selected.removeWhere((element) =>
-                                    element == widget.datatrans[index]);
-                                print(selected);
-                                getSum(selected);
-                              }
-                            },
-                          ),
-                          Divider(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          )
-                        ],
-                      );
+                                title: Text(widget.datatrans[index].itemdesc!),
+                                value: checkedValues[index],
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkedValues[index] = newValue!;
+                                  });
+                                  if (checkedValues[index] == true) {
+                                    selected.add(widget.datatrans[index]);
+                                    print(selected);
+                                    getSum(selected);
+                                  } else {
+                                    selected.removeWhere((element) =>
+                                        element == widget.datatrans[index]);
+                                    print(selected);
+                                    getSum(selected);
+                                  }
+                                },
+                              ),
+                              Divider(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    )),
+              ],
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5), // <-- Radius
+                      ),
+                      padding: EdgeInsets.zero,
+                      backgroundColor: Colors.white // Background color
+                      ),
+                  onPressed: () async {},
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    child: Text(
+                      'Print',
+                      style: TextStyle(color: Colors.orange),
+                    ),
+                  )),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5), // <-- Radius
+                      ),
+                      padding: EdgeInsets.zero,
+                      backgroundColor: Colors.orange // Background color
+                      ),
+                  onPressed: () async {
+                    final result = await showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) => DialogPaymentTab(
+                              fromsplit: true,
+                              fromsaved: widget.fromsaved,
+                              datatrans: selected,
+                              outletinfo: widget.outletinfo,
+                              balance: totalSlsNett,
+                              pscd: widget.outletinfo!.outletcd,
+                              trdt: formattedDate,
+                              trno: widget.trno.toString(),
+                              outletname: widget.outletinfo!.outletname,
+                            )).then((_) {
+                      setState(() {});
+                    });
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    child: Text(
+                      'Split',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ))
+            ],
+          );
+        });
+      } else if (constraints.maxWidth <= 480) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
                     },
-                  ),
-                )),
-          ],
-        ),
-        actions: <Widget>[
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5), // <-- Radius
-                  ),
-                  padding: EdgeInsets.zero,
-                  backgroundColor: Colors.white // Background color
-                  ),
-              onPressed: () async {},
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.1,
-                child: Text(
-                  'Print',
-                  style: TextStyle(color: Colors.orange),
+                    icon: Icon(Icons.arrow_back_ios_new)),
+                Text('Split bill'),
+                Spacer(),
+                Text(
+                  CurrencyFormat.convertToIdr(totalSlsNett, 0),
                 ),
-              )),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5), // <-- Radius
-                  ),
-                  padding: EdgeInsets.zero,
-                  backgroundColor: Colors.orange // Background color
-                  ),
-              onPressed: () async {
-                final result = await showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext context) => DialogPaymentTab(
-                          fromsplit: true,
-                          fromsaved: widget.fromsaved,
-                          datatrans: selected,
-                          outletinfo: widget.outletinfo,
-                          balance: totalSlsNett,
-                          pscd: widget.outletinfo!.outletcd,
-                          trdt: formattedDate,
-                          trno: widget.trno.toString(),
-                          outletname: widget.outletinfo!.outletname,
-                        )).then((_) {
-                  setState(() {});
-                });
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.1,
-                child: Text(
-                  'Split',
-                  style: TextStyle(color: Colors.white),
+              ],
+            ),
+            content: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.015,
+                    ),
+                    Text(
+                      'Item yg akan di split',
+                      style: TextStyle(),
+                    ),
+                  ],
                 ),
-              ))
-        ],
-      );
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.015,
+                ),
+                Form(
+                    key: _formKeys,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.48,
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: ListView.builder(
+                        itemCount: widget.datatrans.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              CheckboxListTile(
+                                dense: true,
+                                subtitle: Row(
+                                  children: [
+                                    Text(
+                                        widget.datatrans[index].qty.toString()),
+                                    Text('X  '),
+                                    Text(
+                                      CurrencyFormat.convertToIdr(
+                                          widget.datatrans[index].totalaftdisc,
+                                          0),
+                                    ),
+                                  ],
+                                ),
+                                title: Text(widget.datatrans[index].itemdesc!),
+                                value: checkedValues[index],
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkedValues[index] = newValue!;
+                                  });
+                                  if (checkedValues[index] == true) {
+                                    selected.add(widget.datatrans[index]);
+                                    print(selected);
+                                    getSum(selected);
+                                  } else {
+                                    selected.removeWhere((element) =>
+                                        element == widget.datatrans[index]);
+                                    print(selected);
+                                    getSum(selected);
+                                  }
+                                },
+                              ),
+                              Divider(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    )),
+              ],
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5), // <-- Radius
+                      ),
+                      padding: EdgeInsets.zero,
+                      backgroundColor: Colors.white // Background color
+                      ),
+                  onPressed: () async {},
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    child: Text(
+                      'Print',
+                      style: TextStyle(color: Colors.orange),
+                    ),
+                  )),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5), // <-- Radius
+                      ),
+                      padding: EdgeInsets.zero,
+                      backgroundColor: Colors.orange // Background color
+                      ),
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PaymentV2MobileClass(
+                                fromsplit: true,
+                                fromsaved: widget.fromsaved,
+                                datatrans: selected,
+                                outletinfo: widget.outletinfo,
+                                balance: totalSlsNett.toInt(),
+                                pscd: widget.outletinfo!.outletcd,
+                                trdt: formattedDate,
+                                trno: widget.trno.toString(),
+                                outletname: widget.outletinfo!.outletname,
+                              )),
+                    );
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    child: Text(
+                      'Split',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ))
+            ],
+          );
+        });
+      }
+      return Container();
     });
   }
 }

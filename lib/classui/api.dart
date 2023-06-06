@@ -6,8 +6,8 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var api = 'http://192.168.234.2:3000';
-var apiimage = 'http://192.168.234.2:5000';
+var api = 'http://192.168.1.13:3000';
+var apiimage = 'http://192.168.1.13:5000';
 // var api = 'http://147.139.163.18:3000';
 
 var serverkey = '';
@@ -1261,6 +1261,50 @@ class ClassApi {
     }
   }
 
+  static Future<List<dynamic>> getAccessSettingsUser() async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+
+    final url = Uri.parse('$api/getAccessSettingsUser');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      print(body);
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<dynamic>> getAccessCodevoid(String accesscode) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "accesscode": accesscode};
+
+    final url = Uri.parse('$api/getAccessCodevoid');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      print(body);
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<TableMaster>> getTableList(String query) async {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname};
@@ -1991,6 +2035,35 @@ class ClassApi {
       throw Exception();
     }
   }
+
+
+    static Future<List<IafjrndtClass>> getOutstandingBillTransno(
+      String transno, String dbname,String query ) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "transno": transno};
+    final url = Uri.parse('$api/getOutstandingBillTransno');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print('value : checkoutstanding : $bodyJson');
+      return bodyJson
+          .map((json) => IafjrndtClass.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.transno!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
 
   static Future<dynamic> updatePaymentFirst(String subsrcription,
       String pytransaction, String paymentcheck, String email) async {

@@ -31,6 +31,7 @@ class PaymentDebitCardMobile extends StatefulWidget {
   final bool fromsaved;
   final void Function(String compcd, String compdesc, String methode)
       checkselected;
+  final bool fromsplit;
 
   PaymentDebitCardMobile({
     Key? key,
@@ -47,7 +48,9 @@ class PaymentDebitCardMobile extends StatefulWidget {
     required this.callback,
     this.compcode,
     this.compdescription,
-    required this.checkselected, required this.fromsaved,
+    required this.checkselected,
+    required this.fromsaved,
+    required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -179,6 +182,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Debit Card',
@@ -206,8 +210,10 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'DBTBCA',
-                            widget.compdescription = 'Debit Card BCA', 'Debit Card');
+                        widget.checkselected(
+                            widget.compcode = 'DBTBCA',
+                            widget.compdescription = 'Debit Card BCA',
+                            'Debit Card');
                       }
                     },
                   ),
@@ -256,7 +262,8 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                      fromsaved: widget.fromsaved,
+                                    fromsplit: widget.fromsplit,
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -279,8 +286,10 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'DBTBNI',
-                            widget.compdescription = 'Debit Card BNI', 'Debit Card');
+                        widget.checkselected(
+                            widget.compcode = 'DBTBNI',
+                            widget.compdescription = 'Debit Card BNI',
+                            'Debit Card');
                       }
                     },
                   ),
@@ -323,7 +332,8 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                      fromsaved: widget.fromsaved,
+                                    fromsplit: widget.fromsplit,
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -350,8 +360,10 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'DBTBRI',
-                            widget.compdescription = 'Debit Card BRI', 'Debit Card');
+                        widget.checkselected(
+                            widget.compcode = 'DBTBRI',
+                            widget.compdescription = 'Debit Card BRI',
+                            'Debit Card');
                       }
                     },
                   ),
@@ -396,7 +408,8 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
-                                      fromsaved: widget.fromsaved,
+                                    fromsplit: widget.fromsplit,
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Debit Card',
                                     bill_key: bill_key,
@@ -463,7 +476,8 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                      fromsaved: widget.fromsaved,
+                                    fromsplit: widget.fromsplit,
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Debit Card',
                                     virtualaccount: virtualaccount,
@@ -533,7 +547,8 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
-                                      fromsaved: widget.fromsaved,
+                                    fromsplit: widget.fromsplit,
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     paymenttype: 'Account',
                                     virtualaccount: virtualaccount,
@@ -560,8 +575,10 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                               gravity: Toast.center);
                         });
                       } else {
-                        widget.checkselected(widget.compcode = 'DBTOTHERS',
-                            widget.compdescription = 'Debit Card OTHERS', 'Debit Card');
+                        widget.checkselected(
+                            widget.compcode = 'DBTOTHERS',
+                            widget.compdescription = 'Debit Card OTHERS',
+                            'Debit Card');
                       }
                     },
                   ),

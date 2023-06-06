@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/payment/paymenttablet/paymentsuccesstab.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class PaymenCashTab extends StatefulWidget {
   final String trno;
@@ -61,6 +63,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
   void initState() {
     super.initState();
     print('listdata from cashpayment ${widget.datatrans}');
+    widget.controller.clear();
   }
 
   @override
@@ -121,69 +124,126 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                       ),
                       padding: EdgeInsets.zero,
                       backgroundColor: Colors.orange),
-                  onPressed: () async {
-                    //// jika amount lebih kecil dari amount akan otomatsi refund
-                    await widget.insertIafjrnhd!().whenComplete(() async {
-                      await ClassApi.getSumPyTrno(widget.trno.toString())
-                          .then((value) {
-                            print('ini value summ $value');
-                        setState(() {
-                          widget.result = widget.balance - value[0]['totalamt'];
-                        });
-                  
-                      }).whenComplete(() {
-                        if (widget.result!.isNegative) {
-                          widget.insertIafjrnhdRefund!().whenComplete(() {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ClassPaymetSucsessTabs(
-                                          fromsplit: widget.fromsplit,
-                                          fromsaved: widget.fromsaved,
-                                          datatrans: widget.datatrans,
-                                          frombanktransfer: false,
-                                          cash: true,
-                                          outletinfo: widget.outletinfo,
-                                          outletname: widget.outletname,
-                                          outletcd: widget.pscd,
-                                          amount: NumberFormat.currency(
-                                                  locale: 'id_ID', symbol: 'Rp')
-                                              .parse(widget.controller.text)
-                                              .toInt(),
-                                          paymenttype: widget.pymtmthd,
-                                          trno: widget.trno.toString(),
-                                          trdt: formattedDate,
-                                        )));
+                  onPressed: strictuser == '0'
+                      ? () async {
+                          //// jika amount lebih kecil dari amount akan otomatsi refund
+                          await widget.insertIafjrnhd!().whenComplete(() async {
+                            await ClassApi.getSumPyTrno(widget.trno.toString())
+                                .then((value) {
+                              print('ini value summ $value');
+                              setState(() {
+                                widget.result =
+                                    widget.balance - value[0]['totalamt'];
+                              });
+                            }).whenComplete(() {
+                              if (widget.result!.isNegative) {
+                                widget.insertIafjrnhdRefund!().whenComplete(() {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ClassPaymetSucsessTabs(
+                                                fromsplit: widget.fromsplit,
+                                                fromsaved: widget.fromsaved,
+                                                datatrans: widget.datatrans,
+                                                frombanktransfer: false,
+                                                cash: true,
+                                                outletinfo: widget.outletinfo,
+                                                outletname: widget.outletname,
+                                                outletcd: widget.pscd,
+                                                amount: NumberFormat.currency(
+                                                        locale: 'id_ID',
+                                                        symbol: 'Rp')
+                                                    .parse(
+                                                        widget.controller.text)
+                                                    .toInt(),
+                                                paymenttype: widget.pymtmthd,
+                                                trno: widget.trno.toString(),
+                                                trdt: formattedDate,
+                                              )));
+                                });
+                              } else {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassPaymetSucsessTabs(
+                                              fromsplit: widget.fromsplit,
+                                              fromsaved: widget.fromsaved,
+                                              datatrans: widget.datatrans,
+                                              frombanktransfer: false,
+                                              cash: true,
+                                              outletinfo: widget.outletinfo,
+                                              outletname: widget.outletname,
+                                              outletcd: widget.pscd,
+                                              amount: NumberFormat.currency(
+                                                      locale: 'id_ID',
+                                                      symbol: 'Rp')
+                                                  .parse(widget.controller.text)
+                                                  .toInt(),
+                                              paymenttype: widget.pymtmthd,
+                                              trno: widget.trno.toString(),
+                                              trdt: formattedDate,
+                                            )));
+                              }
+                            });
                           });
-                        } else {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ClassPaymetSucsessTabs(
-                                        fromsplit: widget.fromsplit,
-                                        fromsaved: widget.fromsaved,
-                                        datatrans: widget.datatrans,
-                                        frombanktransfer: false,
-                                        cash: true,
-                                        outletinfo: widget.outletinfo,
-                                        outletname: widget.outletname,
-                                        outletcd: widget.pscd,
-                                        amount: NumberFormat.currency(
-                                                locale: 'id_ID', symbol: 'Rp')
-                                            .parse(widget.controller.text)
-                                            .toInt(),
-                                        paymenttype: widget.pymtmthd,
-                                        trno: widget.trno.toString(),
-                                        trdt: formattedDate,
-                                      )));
-                        }
-                      });
-                    });
-                    // await widget.callback();
+                          // await widget.callback();
 
-                    setState(() {});
-                  },
+                          setState(() {});
+                        }
+                      : () async {
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return PasswordDialog(
+                                frompaymentmobile: false,
+                                insertIafjrnhd: widget.insertIafjrnhd,
+                                insertIafjrnhdRefund: widget.insertIafjrnhdRefund,
+                                  controller: widget.controller,
+                                  fromsplit: widget.fromsplit,
+                                  fromsaved: widget.fromsaved,
+                                  datatrans: widget.datatrans,
+                                  outletinfo: widget.outletinfo,
+                                  outletname: widget.outletname,
+                                  outletcd: widget.pscd,
+                                  balance: widget.balance,
+                                  result: widget.result,
+                                  pymtmthd: widget.pymtmthd,
+                                  trno: widget.trno.toString(),
+                                  frompayment: true,
+                                  dialogcancel: false,
+                                  onPasswordEntered: (String password) async {
+                                    print('Entered password: $password');
+
+                                    // Lakukan sesuatu dengan password yang dimasukkan di sini
+                                  });
+                                  
+                            },
+                          );
+                           Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassPaymetSucsessTabs(
+                                              fromsplit: widget.fromsplit,
+                                              fromsaved: widget.fromsaved,
+                                              datatrans: widget.datatrans,
+                                              frombanktransfer: false,
+                                              cash: true,
+                                              outletinfo: widget.outletinfo,
+                                              outletname: widget.outletname,
+                                              outletcd: widget.pscd,
+                                              amount: NumberFormat.currency(
+                                                      locale: 'id_ID',
+                                                      symbol: 'Rp')
+                                                  .parse(widget.controller.text)
+                                                  .toInt(),
+                                              paymenttype: widget.pymtmthd,
+                                              trno: widget.trno.toString(),
+                                              trdt: formattedDate,
+                                            )));
+                        },
                   child: Text(
                     'Simpan',
                     style: TextStyle(color: Colors.white),
