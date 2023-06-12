@@ -71,9 +71,13 @@ class _EditproductState extends State<Editproduct>
   List<TransactionTipe> transtp = [];
   List<PriceList> pricelist = [];
   List<TextEditingController> controllerMulti = [];
-  set string(String value) => setState(() => pathimage = value);
+  set string(String value) => setState(() {
+        pathimage = value;
+        print('ganti ke $pathimage');
+      });
   int multiprice = 0;
   bool multiflag = false;
+
   @override
   void initState() {
     super.initState();
@@ -165,14 +169,13 @@ class _EditproductState extends State<Editproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
-                      
                       multiflag: multiflag,
                       multipriceSet: changeValueMultiPrice,
                       multiprice: multiprice,
                       fromedit: true,
                       pricelist: pricelist,
                       controllerMulti: controllerMulti,
-                      imagepath: widget.productcode!.pathimage,
+                      imagepath: pathimage,
                       barcode: barcode,
                       sku: sku,
                       callbackctg: getCtg,
@@ -186,7 +189,6 @@ class _EditproductState extends State<Editproduct>
                       pctservice: pctservice,
                       description: description,
                       selectedctg: selectedctg,
-                      
                     ),
                     ClassKelolaStockMobile(
                       trackstockcallback: updateStockTrack,

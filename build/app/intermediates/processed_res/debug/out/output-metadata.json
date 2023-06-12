@@ -4,7 +4,7 @@
     "type": "PROCESSED_RES",
     "kind": "Directory"
   },
-  "applicationId": "com.example.posq",
+  "applicationId": "com.project.aovipos",
   "variantName": "processDebugResources",
   "elements": [
     {

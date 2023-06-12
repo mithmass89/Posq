@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\blue_thermal_printer\\intermediates\\res\\merged\\release\\animator\\fragment_open_enter.xml",
+        "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\63ea0b1a4d83386f6f06d45a5c28367a\\fragment-1.3.6\\res\\animator\\fragment_open_enter.xml"
+    },
+    {
+        "merged": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\blue_thermal_printer\\intermediates\\res\\merged\\release\\animator\\fragment_open_exit.xml",
+        "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\63ea0b1a4d83386f6f06d45a5c28367a\\fragment-1.3.6\\res\\animator\\fragment_open_exit.xml"
+    },
+    {
+        "merged": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\blue_thermal_printer\\intermediates\\res\\merged\\release\\animator\\fragment_close_enter.xml",
+        "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\63ea0b1a4d83386f6f06d45a5c28367a\\fragment-1.3.6\\res\\animator\\fragment_close_enter.xml"
+    },
+    {
+        "merged": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\blue_thermal_printer\\intermediates\\res\\merged\\release\\animator\\fragment_fade_exit.xml",
+        "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\63ea0b1a4d83386f6f06d45a5c28367a\\fragment-1.3.6\\res\\animator\\fragment_fade_exit.xml"
+    },
+    {
+        "merged": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\blue_thermal_printer\\intermediates\\res\\merged\\release\\animator\\fragment_close_exit.xml",
+        "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\63ea0b1a4d83386f6f06d45a5c28367a\\fragment-1.3.6\\res\\animator\\fragment_close_exit.xml"
+    },
+    {
+        "merged": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\blue_thermal_printer\\intermediates\\res\\merged\\release\\animator\\fragment_fade_enter.xml",
+        "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\63ea0b1a4d83386f6f06d45a5c28367a\\fragment-1.3.6\\res\\animator\\fragment_fade_enter.xml"
+    }
+]

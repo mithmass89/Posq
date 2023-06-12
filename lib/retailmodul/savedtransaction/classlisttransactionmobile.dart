@@ -65,7 +65,7 @@ class _ListtransactionState extends State<Listtransaction> {
             typekeyboard: TextInputType.text,
           ),
           FutureBuilder(
-              future: ClassApi.getCashierSummary(formattedDate, pscd, dbname),
+              future: ClassApi.getSummaryCashierDetail(formattedDate,formattedDate, dbname,query! ),
               builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
                 var x = snapshot.data ?? [];
                 if (x.isNotEmpty) {

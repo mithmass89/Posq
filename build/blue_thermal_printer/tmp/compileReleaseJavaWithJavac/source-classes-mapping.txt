@@ -1,0 +1,13 @@
+id/kakzaki/blue_thermal_printer/Utils.java
+ id.kakzaki.blue_thermal_printer.Utils
+id/kakzaki/blue_thermal_printer/BuildConfig.java
+ id.kakzaki.blue_thermal_printer.BuildConfig
+id/kakzaki/blue_thermal_printer/PrinterCommands.java
+ id.kakzaki.blue_thermal_printer.PrinterCommands
+id/kakzaki/blue_thermal_printer/BlueThermalPrinterPlugin.java
+ id.kakzaki.blue_thermal_printer.BlueThermalPrinterPlugin
+ id.kakzaki.blue_thermal_printer.BlueThermalPrinterPlugin$1
+ id.kakzaki.blue_thermal_printer.BlueThermalPrinterPlugin$1$1
+ id.kakzaki.blue_thermal_printer.BlueThermalPrinterPlugin$2
+ id.kakzaki.blue_thermal_printer.BlueThermalPrinterPlugin$ConnectedThread
+ id.kakzaki.blue_thermal_printer.BlueThermalPrinterPlugin$MethodResultWrapper

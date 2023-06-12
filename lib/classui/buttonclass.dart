@@ -108,10 +108,13 @@ class _ButtonNoIconState extends State<ButtonNoIcon> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      //  elevation: 2,
+      borderRadius: BorderRadius.circular(10),
+       elevation: 2,
       child: InkWell(
+        borderRadius:BorderRadius.circular(10) ,
         onTap: widget.onpressed,
         child: Container(
+          
           alignment: Alignment.center,
           child: Text(
             widget.name.toString(),

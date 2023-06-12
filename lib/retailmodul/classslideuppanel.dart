@@ -93,7 +93,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   @override
   void initState() {
     super.initState();
-
+    print('ini listdata ${widget.listdata}');
     trno = widget.trno;
     formattedDate = formatter.format(now);
     getDataSlide();
@@ -672,7 +672,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                               builder:
                                                                   (context) {
                                                             return PasswordDialog(
-                                                              frompaymentmobile: false,
+                                                              frompaymentmobile:
+                                                                  false,
                                                               frompayment:
                                                                   false,
                                                               dialogcancel:

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/firebase_options.dart';
 import 'package:posq/login.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       title: 'POS Demo',
+      builder: EasyLoading.init(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           // <-- SEE HERE

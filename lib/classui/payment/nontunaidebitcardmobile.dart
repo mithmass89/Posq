@@ -154,7 +154,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'bca.png',
+                    iconasset: 'assets/bca.png',
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
@@ -228,7 +228,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'bni.png',
+                    iconasset: 'assets/bni.png',
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
@@ -304,7 +304,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'bri.png',
+                    iconasset: 'assets/bri.png',
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
@@ -378,7 +378,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'mandiri.png',
+                    iconasset: 'assets/mandiri.png',
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
@@ -450,7 +450,7 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'permatabank.png',
+                    iconasset: 'assets/permatabank.png',
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {

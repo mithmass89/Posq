@@ -68,7 +68,9 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
 
   @override
   void initState() {
+    listdata=widget.datatrans;
     super.initState();
+    print('ini data transaksi : ${widget.datatrans}');
     if (widget.fromsplit == true) {
       ClassApi.checkLastSplit(dbname, widget.trno).then((value) {
         lastsplit = value[0]['split'] + 1;

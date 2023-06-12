@@ -114,7 +114,7 @@ class _MainappsState extends State<Mainapps> {
             return Scaffold(
               body: Center(
                 child: Container(
-                  alignment: Alignment.center,
+                    alignment: Alignment.center,
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     child: CircularProgressIndicator()),
@@ -131,7 +131,9 @@ class _MainappsState extends State<Mainapps> {
                     if (constraints.maxWidth <= 480) {
                       switch (hasoutlet) {
                         case false:
-                          return ClassSetupProfileMobile();
+                          return ClassSetupProfileMobile(
+                            username: '',
+                          );
                         case true:
                           // do something else
                           return AppsMobile(
@@ -155,7 +157,9 @@ class _MainappsState extends State<Mainapps> {
                     }
                     switch (hasoutlet) {
                       case false:
-                        return ClassSetupProfileMobile();
+                        return ClassSetupProfileMobile(
+                          username: '',
+                        );
                       case true:
                         // do something else
                         return AppsMobile(

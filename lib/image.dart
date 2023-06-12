@@ -2,9 +2,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:posq/classimagetab.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/menu.dart';
 import 'package:posq/setting/product_master/classeditproductv2mob.dart';
+
+import 'setting/printer/templateprinter.dart';
+
+ClassApi? hosts;
 
 class ImageFromGalleryEx extends StatefulWidget {
   final type;
@@ -12,13 +18,17 @@ class ImageFromGalleryEx extends StatefulWidget {
   final double? height;
   final double? width;
   final bool? fromedit;
-  const ImageFromGalleryEx(this.type,
+  late String? imagepath;
+  final bool fromtemplateprint;
+  ImageFromGalleryEx(this.type,
       {Key? key,
       this.callback,
       this.savingimage,
       this.height,
       this.width,
-      this.fromedit})
+      this.imagepath,
+      this.fromedit,
+      required this.fromtemplateprint})
       : super(key: key);
   final StringCallback? callback;
   @override
@@ -31,6 +41,8 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
   var _image;
   var imagePicker;
   var type;
+  List<int>? _selectedFile;
+  String namefile = '';
   callbackTitle(outletname) {
     // ignore: avoid_print
     print(outletname);
@@ -42,10 +54,12 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
   @override
   void initState() {
     super.initState();
+    hosts = ClassApi();
     imagePicker = ImagePicker();
     if (widget.savingimage != null) {
       _image = File(widget.savingimage);
     }
+    print(widget.fromedit);
   }
 
   @override
@@ -57,15 +71,31 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
+                // color: Colors.blue,
                 width: widget.width,
                 height: widget.height,
                 // decoration: BoxDecoration(color: Colors.red[200]),
-                child: _image != null
-                    ? Image.file(
-                        _image,
+                child: widget.imagepath != null
+                    ? Container(
                         width: widget.width,
                         height: widget.height,
-                        fit: BoxFit.fill,
+                        child: Image.network(
+                          widget.imagepath!,
+                          fit: BoxFit.fill,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
                       )
                     : Container(
                         // decoration: BoxDecoration(color: Colors.grey[200]),
@@ -87,17 +117,34 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                         source: source,
                         imageQuality: 50,
                         preferredCameraDevice: CameraDevice.front);
-                    setState(() {
-                      _image = File(image.path);
-                      print('ini imagepath ${image.path}');
 
-                      if (widget.fromedit == true) {
-                        Editproduct.of(context)!.string = image.path.toString();
-                      } else {
-                        Createproduct.of(context)!.string =
-                            image.path.toString();
-                      }
+                    setState(() {
+                      // _image = File(image.path);
+                      // print('ini imagepath ${image.path}');
                     });
+                    namefile = image.name;
+                    _selectedFile = await image.readAsBytes();
+                    print(_selectedFile);
+                    await hosts!
+                        .uploadFiles(_selectedFile, namefile)
+                        .whenComplete(() {
+                      widget.imagepath = '$api/getfile/$namefile';
+                      // Editproduct.of(context)!.string =
+                      //     '$api/getfile/$namefile';
+                      print('ini url barang : $api/getfile/$namefile');
+                      setState(() {});
+                    });
+
+                    if (widget.fromedit == true) {
+                      Editproduct.of(context)!.string =
+                          '$api/getfile/$namefile';
+                    } else if (widget.fromtemplateprint == true) {
+                      TemplatePrinter.of(context)!.string =
+                          '$api/getfile/$namefile';
+                    } else {
+                      Createproduct.of(context)!.string =
+                          '$api/getfile/$namefile';
+                    }
                   },
                   child: Text('Pilih Foto'))
             ],

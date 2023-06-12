@@ -4,7 +4,7 @@
     "type": "COMPATIBLE_SCREEN_MANIFEST",
     "kind": "Directory"
   },
-  "applicationId": "com.example.posq",
+  "applicationId": "com.project.aovipos",
   "variantName": "debug",
   "elements": []
 }

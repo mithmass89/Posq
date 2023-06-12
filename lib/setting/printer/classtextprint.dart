@@ -13,7 +13,7 @@ class PrintSmall {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   prints(List<IafjrndtClass> detail, List<IafjrndtClass> summary,
       String outletname, Outlet outletinfo) async {
-    print(summary);
+    print('detail from printer : $detail');
     var formatter = NumberFormat('#,##,000');
     //image max 300px X 300px
 
@@ -50,7 +50,7 @@ class PrintSmall {
         List.generate(
             detail.length,
             (index) => bluetooth.printCustom(
-                '${detail[index].description!.padRight(15)}\n' +
+                '${detail[index].itemdesc!.padRight(15)}\n' +
                     '${detail[index].qty.toString().padLeft(3)} X ' +
                     '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
                         '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}',

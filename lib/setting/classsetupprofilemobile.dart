@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -17,7 +18,8 @@ import 'package:toast/toast.dart';
 ClassApi? apicloud;
 
 class ClassSetupProfileMobile extends StatefulWidget {
-  const ClassSetupProfileMobile({Key? key}) : super(key: key);
+  final String username;
+  const ClassSetupProfileMobile({Key? key,required this.username}) : super(key: key);
 
   @override
   State<ClassSetupProfileMobile> createState() =>
@@ -231,52 +233,63 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                           ),
                           LoadingButton(
                             isLoading: _isloading,
-                            color: Colors.blue,
+                            color: Colors.orange,
                             textcolor: Colors.white,
                             height: MediaQuery.of(context).size.height * 0.05,
                             width: MediaQuery.of(context).size.width * 0.9,
-                            onpressed: () async {
+                            onpressed: _isloading==false?() async {
                               if (formKey.currentState!.validate()) {
+                                usercd=widget.username;
                                 setState(() {
                                   _isloading = true;
                                 });
-                                await _createProfile(Outlet(
-                                    outletname: namaoutlet.toString(),
-                                    telp: num.parse(telp.toString()),
-                                    kodepos: kodepos.toString(),
-                                    alamat: controllerDetail.text,
-                                    outletcd: outletcd.text,
-                                    profile: outletcd.text));
-                                await ClassApi.insertOutletUser(outletcd.text);
-                                // await _insertGntrantp(outletcd.text);
-                                setState(() {
-                                  _isloading = false;
-                                  pscd = outletcd.text;
-                                  dbname = outletcd.text;
-                                });
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AppsMobile(
-                                        chartdata: [],
-                                            monthlysales: [],
-                                            todaysale: [],
-                                            profileusaha: Outlet(
-                                              outletname: namaoutlet.toString(),
-                                              telp: num.parse(telp.toString()),
-                                              kodepos: kodepos.toString(),
-                                              alamat: detail.toString(),
-                                              outletcd: outletcd.text,
-                                              trnonext: 1,
-                                              trnopynext: 1,
-                                            ),
-                                          )),
-                                );
+                                if (outletcd.text == '') {
+                                  print('Empty code outlet');
+                                } else {
+                                  EasyLoading.show(status: 'loading...');
+                                  await _createProfile(Outlet(
+                                      outletname: namaoutlet.toString(),
+                                      telp: num.parse(telp.toString()),
+                                      kodepos: kodepos.toString(),
+                                      alamat: controllerDetail.text,
+                                      outletcd: outletcd.text,
+                                      profile: outletcd.text));
+                                  await ClassApi.insertOutletUser(
+                                      outletcd.text);
+                                  // await _insertGntrantp(outletcd.text);
+                                  setState(() {
+                                    _isloading = false;
+                                    pscd = outletcd.text;
+                                    dbname = outletcd.text;
+                                  });
+                                  EasyLoading.dismiss();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AppsMobile(
+                                              chartdata: [],
+                                              monthlysales: [],
+                                              todaysale: [],
+                                              profileusaha: Outlet(
+                                                outletname:
+                                                    namaoutlet.toString(),
+                                                telp:
+                                                    num.parse(telp.toString()),
+                                                kodepos: kodepos.toString(),
+                                                alamat: detail.toString(),
+                                                outletcd: outletcd.text,
+                                                trnonext: 1,
+                                                trnopynext: 1,
+                                              ),
+                                            )),
+                                  );
+                                      
+                                }
 
-                                print('sudah terlaksana');
+                           
                               }
-                            },
-                            name: 'Save',
+                            }:null,
+                            name: 'Simpan',
                           )
                         ],
                       ),

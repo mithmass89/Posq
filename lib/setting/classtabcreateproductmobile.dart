@@ -36,6 +36,7 @@ class ClassTabCreateProducr extends StatefulWidget {
   final bool fromedit;
   final bool multiflag;
 
+
   ClassTabCreateProducr({
     Key? key,
     required this.productcd,
@@ -57,7 +58,7 @@ class ClassTabCreateProducr extends StatefulWidget {
     this.controllerMulti,
     required this.fromedit,
     required this.multipriceSet,
-    required this.multiflag,
+    required this.multiflag, 
   }) : super(key: key);
 
   @override
@@ -338,6 +339,8 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                             ImageSourceType.gallery,
                             savingimage: widget.imagepath,
                             fromedit: widget.fromedit,
+                            imagepath: widget.imagepath,
+                            fromtemplateprint: false,
                             height: MediaQuery.of(context).size.height * 0.1,
                             width: MediaQuery.of(context).size.width * 0.3,
                           ),

@@ -195,8 +195,10 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   }
 
   getDetailData() async {
+    print('sampe getdata');
     await ClassApi.getTrnoDetail(widget.trno!, dbname, query!).then((isi) {
       if (isi.isNotEmpty) {
+        print(isi);
         num totalSlsNett = isi.fold(
             0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
 
@@ -208,7 +210,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
               .length;
           sum = totalSlsNett + discount;
         });
-        print('ini length item${isi.length}');
+        print('ini length item${itemlength}');
       } else {
         setState(() {
           item = 0;
@@ -500,7 +502,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       )),
                                   IconButton(
                                     icon: Image.asset(
-                                      'icons8-barcode-100.png',
+                                      'assets/icons8-barcode-100.png',
                                       height: 30,
                                       width: 30,
                                     ),
@@ -515,7 +517,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     children: [
                                       IconButton(
                                         icon: Image.asset(
-                                            'icons8-checklist-100.png',
+                                            'assets/icons8-checklist-100.png',
                                             height: 20,
                                             width: 20),
                                         iconSize: 30,
@@ -702,7 +704,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           Expanded(
                                               flex: 4,
                                               child: Text(
-                                                'BARANG : ${itemlength} ',
+                                                'BARANG : ${itemlength}',
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -795,6 +797,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               context,
                               MaterialPageRoute(
                                   builder: (context) => PaymentV2MobileClass(
+                                    
                                         fromsplit: false,
                                         fromsaved: widget.fromsaved!,
                                         datatrans: listdata!,
@@ -915,7 +918,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       Container(
                                         alignment: Alignment.center,
                                         height: 30,
-                                        width: 100,
+                                        width: 200,
                                         child: Text(
                                           'Manual',
                                         ),

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print
 
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
@@ -9,6 +10,8 @@ import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/setting/printer/classmainprinter.dart';
+import 'package:posq/setting/printer/classprinterbillpayment.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +19,7 @@ import 'package:uuid/uuid.dart';
 
 PaymentGate? paymentapi;
 ClassApi? api;
+PrintSmallPayment? printing;
 
 class ClassPaymetSucsessMobile extends StatefulWidget {
   final bool frombanktransfer;
@@ -84,18 +88,36 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   bool emailValid = false;
   List<IafjrndtClass> datacheck = [];
   int? pendings;
+  PrintSmallPayment printing = PrintSmallPayment();
+  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  bool connected = false;
+  List<IafjrndtClass>? summarybill;
+  List<IafjrnhdClass> data = [];
+  String logourl = '';
+  String header = '';
+  String footer = '';
+
+  checkPrinter() async {
+    connected = await bluetooth.isConnected.then((value) => value!);
+    setState(() {});
+    print(connected);
+  }
 
   @override
   void initState() {
     super.initState();
+    checkPrinter();
+    getSumm();
     formattedDate = formatter.format(now);
     generateDataWA();
     removeDiscount();
     api = ClassApi();
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
-    getSummary();
+    // getSummary();
     getListPayament();
+    getPaymentList();
+    getTemplatePrinter();
     if (widget.cash == false) {
       PaymentGate.getStatusTransaction(widget.trno).then((value) {
         setState(() {
@@ -107,6 +129,18 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
         statustransaction = 'Settlement';
       });
     }
+  }
+
+  getTemplatePrinter() {
+    ClassApi.getTemplatePrinter().then((value) {
+      if (value.isNotEmpty) {
+        logourl = value[0]['logourl'];
+        header = value[0]['header'];
+        footer = value[0]['footer'];
+      }
+      ;
+    });
+    setState(() {});
   }
 
   Future<List<IafjrndtClass>> getDetailTrnos() async {
@@ -163,25 +197,36 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     string.removeWhere((element) => element.contains('Discount'));
   }
 
-  getSummary() async {
-    await handler.summarybill(widget.datatrans.first.transno!).then((value) {
-      List.generate(value.length, (index) {
-        summary.add('total'.padRight(16, '  ') +
-            ':'.padRight(2) +
-            '${value[index].revenueamt.toString().padLeft(20)}\n' +
-            'discount'.padRight(14, '  ') +
-            ':'.padRight(2) +
-            '${value[index].discamt.toString().padLeft(20)}\n' +
-            'pajak'.padRight(15, '  ') +
-            ':'.padRight(2) +
-            '${value[index].taxamt.toString().padLeft(20)}\n' +
-            'service'.padRight(15, '  ') +
-            ':'.padRight(2) +
-            '${value[index].serviceamt.toString().padLeft(20)}\n' +
-            'grand total'.padRight(15, '  ') +
-            ':'.padRight(2) +
-            '${value[index].totalaftdisc.toString().padLeft(20)}\n');
-      });
+  // getSummary() async {
+  //   await handler.summarybill(widget.datatrans.first.transno!).then((value) {
+  //     List.generate(value.length, (index) {
+  //       summary.add('total'.padRight(16, '  ') +
+  //           ':'.padRight(2) +
+  //           '${value[index].revenueamt.toString().padLeft(20)}\n' +
+  //           'discount'.padRight(14, '  ') +
+  //           ':'.padRight(2) +
+  //           '${value[index].discamt.toString().padLeft(20)}\n' +
+  //           'pajak'.padRight(15, '  ') +
+  //           ':'.padRight(2) +
+  //           '${value[index].taxamt.toString().padLeft(20)}\n' +
+  //           'service'.padRight(15, '  ') +
+  //           ':'.padRight(2) +
+  //           '${value[index].serviceamt.toString().padLeft(20)}\n' +
+  //           'grand total'.padRight(15, '  ') +
+  //           ':'.padRight(2) +
+  //           '${value[index].totalaftdisc.toString().padLeft(20)}\n');
+  //     });
+  //   });
+  // }
+
+  getSumm() async {
+    await ClassApi.getSumTrans(widget.trno, dbname, '').then((value) {
+      print('ini summary : $value');
+      if (value.isNotEmpty) {
+        setState(() {
+          summarybill = value;
+        });
+      } else {}
     });
   }
 
@@ -200,6 +245,10 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
             metode: value[index].trdesc!, jumlah: value[index].ftotamt!));
       });
     });
+  }
+
+  getPaymentList() async {
+    data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
   }
 
   @override
@@ -233,7 +282,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                           width: MediaQuery.of(context).size.height * 0.14,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                            image: AssetImage('correct.png'),
+                            image: AssetImage('assets/check.png'),
                             fit: BoxFit.fill,
                           )),
                         ),
@@ -354,16 +403,45 @@ ${payment.reduce((value, element) => value + element)}
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ButtonNoIcon(
-                              textcolor: Colors.white,
-                              color: Colors.blue,
+                              textcolor: connected == true
+                                  ? Colors.orange
+                                  : Colors.red,
+                              color: Colors.white,
                               height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.18,
-                              onpressed: () async {},
+                              onpressed:
+                                  accesslist.contains('settingprinter') == true
+                                      ? () async {
+                                          await getSumm();
+                                          if (connected == true) {
+                                            await printing.prints(
+                                                widget.datatrans,
+                                                summarybill!,
+                                                data,
+                                                widget.outletinfo!.outletname!,
+                                                header,
+                                                footer,
+                                                logourl,
+                                                widget.outletinfo!);
+                                          } else {
+                                            await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ClassMainPrinter()));
+                                          }
+                                        }
+                                      : () {
+                                          Toast.show(
+                                              "Tidak Punya access printer",
+                                              duration: Toast.lengthLong,
+                                              gravity: Toast.center);
+                                        },
                               name: 'Print',
                             ),
                             ButtonNoIcon(
                               textcolor: Colors.white,
-                              color: Colors.blue,
+                              color: Colors.orange,
                               height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.18,
                               onpressed: () async {
@@ -458,7 +536,7 @@ ${payment.reduce((value, element) => value + element)}
                                   }
                                 });
                               },
-                              name: 'TRANSAKSI BARU',
+                              name: 'Transaksi baru',
                             ),
                           ],
                         ),

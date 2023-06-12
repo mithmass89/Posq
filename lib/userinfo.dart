@@ -1,5 +1,5 @@
-String usercd = 'mitro';
-String passcode = '1234';
+String usercd = '';
+String passcode = '';
 String pscd = '';
 String dbname = '';
 List<String> listoutlets = [];

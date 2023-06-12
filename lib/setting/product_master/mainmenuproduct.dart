@@ -56,18 +56,18 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: menulist[index] == 'Tambah produk'
-                            ? Image.asset('addproduct.png')
+                            ? Image.asset('assets/addproduct.png')
                             : menulist[index] == 'Condiment /  Topping'
-                                ? Image.asset('condiment.png')
+                                ? Image.asset('assets/condiment.png')
                                 : menulist[index] == 'Tipe Transaksi'
-                                    ? Image.asset('transaction.png')
+                                    ? Image.asset('assets/transaction.png')
                                     : menulist[index] == 'Table / Order No'
-                                        ? Image.asset('round-table.png')
+                                        ? Image.asset('assets/round-table.png')
                                         : menulist[index] == 'Payment Master'
-                                            ? Image.asset('wallet.png')
+                                            ? Image.asset('assets/wallet.png')
                                             : menulist[index] ==
                                                     'General setting'
-                                                ? Image.asset('settings.png')
+                                                ? Image.asset('assets/settings.png')
                                                 : Container(),
                       ),
                     ),

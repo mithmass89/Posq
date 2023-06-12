@@ -25,7 +25,7 @@ class _ClassMainPrinterState extends State<ClassMainPrinter> {
               return Card(
                 child: ListTile(
                   onTap: () {
-                    if (printer[index] == 'bluetooth') {
+                    if (printer[index] == 'Bluetooth') {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
                         return ClassBluetoothPrinter();

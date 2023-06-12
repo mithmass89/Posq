@@ -4,6 +4,23 @@
             "outputFile": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ro\\values-ro.xml",
             "map": [
                 {
+                    "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\7f12e1c7fae5665479920c5b11554793\\jetified-zxing-android-embedded-3.6.0\\res\\values-ro\\values-ro.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,114,166,275",
+                        "endColumns": "58,51,108,116",
+                        "endOffsets": "109,161,270,387"
+                    },
+                    "to": {
+                        "startLines": "112,113,114,115",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "10366,10425,10477,10586",
+                        "endColumns": "58,51,108,116",
+                        "endOffsets": "10420,10472,10581,10698"
+                    }
+                },
+                {
                     "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\6ad2882e70130260d46e79cbdbdd7320\\browser-1.4.0\\res\\values-ro\\values-ro.xml",
                     "from": {
                         "startLines": "2,3,4,5",
@@ -52,23 +69,6 @@
                         "startOffsets": "326,447,551,664,748,852,973,1058,1138,1229,1322,1417,1511,1611,1704,1799,1893,1984,2076,2159,2271,2379,2479,2593,2699,2805,2969,10181",
                         "endColumns": "120,103,112,83,103,120,84,79,90,92,94,93,99,92,94,93,90,91,82,111,107,99,113,105,105,163,102,83",
                         "endOffsets": "442,546,659,743,847,968,1053,1133,1224,1317,1412,1506,1606,1699,1794,1888,1979,2071,2154,2266,2374,2474,2588,2694,2800,2964,3067,10260"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\5eb3d6a8492fd2f1973ce8ba1587f289\\jetified-zxing-android-embedded-3.6.0\\res\\values-ro\\values-ro.xml",
-                    "from": {
-                        "startLines": "2,3,4,5",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,114,166,275",
-                        "endColumns": "58,51,108,116",
-                        "endOffsets": "109,161,270,387"
-                    },
-                    "to": {
-                        "startLines": "112,113,114,115",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "10366,10425,10477,10586",
-                        "endColumns": "58,51,108,116",
-                        "endOffsets": "10420,10472,10581,10698"
                     }
                 },
                 {

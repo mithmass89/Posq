@@ -32,7 +32,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
   bool? hasitem = false;
   bool isloading = true;
   Timer? timer;
-
+  List<Item>? data;
   @override
   void initState() {
     super.initState();
@@ -46,10 +46,9 @@ class _ClassproductmobileState extends State<Classproductmobile> {
   }
 
   Future<List<Item>> getitemOutlet(query) async {
-    List<Item> data =
-        await ClassApi.getItemList(widget.pscd, widget.pscd, query);
+    data = await ClassApi.getItemList(widget.pscd, widget.pscd, query);
     print("ini data : $data");
-    return data;
+    return data!;
   }
 
   void debounce(
@@ -154,33 +153,45 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                             });
                                           },
                                           leading: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 0.5,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 0.5,
+                                                ),
                                               ),
-                                            ),
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.1,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.2,
-                                            child: Image.file(
-                                              _image,
-                                              errorBuilder:
-                                                  (BuildContext context,
-                                                      Object exception,
-                                                      StackTrace? stackTrace) {
-                                                return Center(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.1,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.2,
+                                              child: Image.network(
+                                               data![index].pathimage!,
+                                                fit: BoxFit.fill,
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Center(
                                                     child:
-                                                        const Text('No Image'));
-                                              },
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                          : null,
+                                                    ),
+                                                  );
+                                                },
+                                              )),
                                           contentPadding: EdgeInsets.all(8.0),
                                           title: Text(x[index].itemdesc!),
                                           subtitle:
@@ -273,17 +284,31 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                                   .size
                                                   .width *
                                               0.2,
-                                          child: Image.file(
-                                            _image,
-                                            errorBuilder: (BuildContext context,
-                                                Object exception,
-                                                StackTrace? stackTrace) {
-                                              return Center(
-                                                  child:
-                                                      const Text('No Image'));
-                                            },
-                                            fit: BoxFit.cover,
-                                          ),
+                                          child:  Image.network(
+                                               data![index].pathimage!,
+                                                fit: BoxFit.fill,
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                          : null,
+                                                    ),
+                                                  );
+                                                },
+                                              )
                                         ),
                                         contentPadding: EdgeInsets.all(8.0),
                                         title: Text(x[index].itemdesc!),

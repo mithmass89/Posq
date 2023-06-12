@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -25,6 +26,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  String username = '';
   Color color1 = HexColor("b74093");
   Color color2 = HexColor("#b74093");
   Color color3 = HexColor("#88b74093"); // If you wish to use ARGB format
@@ -36,9 +38,9 @@ class _LoginState extends State<Login> {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.text,
-        password: password.text,
+        password: 'Mitro100689',
       );
-      print('User ${userCredential.user!.uid} logged in');
+      print('User Firebase ${userCredential.user!} logged in');
       // Navigate to home page
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -94,7 +96,7 @@ class _LoginState extends State<Login> {
                         alignment: Alignment.center,
                         child: Text(
                           'AOVI POS',
-                          style: TextStyle(fontSize: 24, color: Colors.white),
+                          style: TextStyle(fontSize: 32, color: Colors.white),
                         ),
                       ),
                       SizedBox(
@@ -154,6 +156,7 @@ class _LoginState extends State<Login> {
                       ElevatedButton(
                           onPressed: () async {
                             // await _lo
+                            EasyLoading.show(status: 'loading...');
                             await ClassApi.getUserinfofromManual(
                                     email.text, password.text)
                                 .then((value) async {
@@ -189,6 +192,8 @@ class _LoginState extends State<Login> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   PaymentChecks(
+                                                    username: values[0]
+                                                        ['usercd'],
                                                     email: emaillogin,
                                                     trno: value[0]
                                                         ['pytransaction'],
@@ -196,33 +201,46 @@ class _LoginState extends State<Login> {
                                         );
                                       } else {
                                         await ClassApi.getOutlets(usercd)
-                                            .then((valued) {
-                                          dbname = valued[0]['outletcode'];
-                                          pscd = valued[0]['outletcode'];
-                                          for (var x in valued) {
-                                            listoutlets.add(x['outletcode']);
+                                            .then((valued) async {
+                                          if (valued.length != 0) {
+                                            dbname = valued[0]['outletcode'];
+                                            pscd = valued[0]['outletcode'];
+                                            for (var x in valued) {
+                                              listoutlets.add(x['outletcode']);
+                                            }
+                                            await ClassApi.getAccessUser(usercd)
+                                                .then((valueds) {
+                                              for (var x in valueds) {
+                                                accesslist.add(x['access']);
+                                              }
+                                            });
+                                            await ClassApi
+                                                    .getAccessSettingsUser()
+                                                .then((valuess) {
+                                              for (var x in valuess) {
+                                                strictuser = valuess[0]
+                                                        ['strictuser']
+                                                    .toString();
+                                              }
+                                            });
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Mainapps()),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                          } else {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ClassSetupProfileMobile(
+                                                        username: username,
+                                                      )),
+                                            );
                                           }
                                         });
-                                        await ClassApi.getAccessUser(usercd)
-                                            .then((valueds) {
-                                          for (var x in valueds) {
-                                            accesslist.add(x['access']);
-                                          }
-                                        });
-                                        await ClassApi.getAccessSettingsUser()
-                                            .then((valuess) {
-                                          for (var x in valuess) {
-                                            accesslist.add(x['access']);
-                                          }
-                                        });
-
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Mainapps()),
-                                                (Route<dynamic> route) =>
-                                                    false);
                                       }
                                     });
                                   } else {
@@ -240,6 +258,7 @@ class _LoginState extends State<Login> {
                                 print(value);
                               }
                             });
+                            EasyLoading.dismiss();
                           },
                           child: Container(
                               padding: EdgeInsets.all(10),
@@ -250,7 +269,9 @@ class _LoginState extends State<Login> {
                                 style: TextStyle(color: Colors.orange),
                               ))),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await _login();
+                          },
                           child: Text('Lupa Password ?',
                               style: TextStyle(color: Colors.white)))
                     ],
@@ -313,6 +334,7 @@ class _LoginState extends State<Login> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => PaymentChecks(
+                                                  username: username,
                                                   email: emaillogin,
                                                   trno: value[0]
                                                       ['pytransaction'],
@@ -344,8 +366,9 @@ class _LoginState extends State<Login> {
                                           });
                                           await ClassApi.getAccessSettingsUser()
                                               .then((valuess) {
-                                            strictuser =
-                                              valuess[0]['strictuser'].toString();
+                                            strictuser = valuess[0]
+                                                    ['strictuser']
+                                                .toString();
                                           });
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(
@@ -359,7 +382,9 @@ class _LoginState extends State<Login> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ClassSetupProfileMobile()),
+                                                    ClassSetupProfileMobile(
+                                                      username: username,
+                                                    )),
                                           );
                                         }
                                       });
@@ -387,7 +412,7 @@ class _LoginState extends State<Login> {
                           child: Wrap(
                             children: <Widget>[
                               ImageIcon(
-                                AssetImage("google.png"),
+                                AssetImage("assets/google.png"),
                                 color: Colors.white,
                               ),
                               SizedBox(
@@ -524,6 +549,7 @@ class _LoginState extends State<Login> {
                             ),
                             onPressed: () async {
                               // await _lo
+                               EasyLoading.show(status: 'loading...');
                               await ClassApi.getUserinfofromManual(
                                       email.text, password.text)
                                   .then((value) async {
@@ -543,6 +569,8 @@ class _LoginState extends State<Login> {
                                       .then((values) async {
                                     if (values.isNotEmpty) {
                                       print(values);
+
+                                      usercd = values[0]['usercd'];
                                       setState(() {
                                         usercd = values[0]['usercd'];
                                         imageurl = values[0]['urlpict'];
@@ -559,6 +587,7 @@ class _LoginState extends State<Login> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     PaymentChecks(
+                                                      username: username,
                                                       email: emaillogin,
                                                       trno: value[0]
                                                           ['pytransaction'],
@@ -581,8 +610,9 @@ class _LoginState extends State<Login> {
                                           });
                                           await ClassApi.getAccessSettingsUser()
                                               .then((valuess) {
-                                            strictuser =
-                                                  valuess[0]['strictuser'].toString();
+                                            strictuser = valuess[0]
+                                                    ['strictuser']
+                                                .toString();
                                           });
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(
@@ -608,6 +638,7 @@ class _LoginState extends State<Login> {
                                   print(value);
                                 }
                               });
+                                 EasyLoading.dismiss();
                             },
                             child: Container(
                                 padding: EdgeInsets.all(10),
@@ -667,6 +698,7 @@ class _LoginState extends State<Login> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => PaymentChecks(
+                                                  username: username,
                                                   email: emaillogin,
                                                   trno: value[0]
                                                       ['pytransaction'],
@@ -698,8 +730,9 @@ class _LoginState extends State<Login> {
                                           });
                                           await ClassApi.getAccessSettingsUser()
                                               .then((valuess) {
-                                            strictuser =
-                                                valuess[0]['strictuser'].toString();
+                                            strictuser = valuess[0]
+                                                    ['strictuser']
+                                                .toString();
                                           });
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(
@@ -713,7 +746,9 @@ class _LoginState extends State<Login> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ClassSetupProfileMobile()),
+                                                    ClassSetupProfileMobile(
+                                                      username: username,
+                                                    )),
                                           );
                                         }
                                       });
@@ -742,7 +777,7 @@ class _LoginState extends State<Login> {
                           child: Wrap(
                             children: <Widget>[
                               ImageIcon(
-                                AssetImage("google.png"),
+                                AssetImage("assets/google.png"),
                               ),
                               SizedBox(
                                 width: 10,

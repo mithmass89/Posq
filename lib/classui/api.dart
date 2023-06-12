@@ -6,8 +6,8 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var api = 'http://192.168.1.13:3000';
-var apiimage = 'http://192.168.1.13:5000';
+var api = 'http://147.139.163.18:3000';
+var apiimage = 'http://147.139.163.18:5000';
 // var api = 'http://147.139.163.18:3000';
 
 var serverkey = '';
@@ -35,6 +35,33 @@ class ClassApi {
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
     var url = Uri.parse("$apiimage/upload_files");
+    var request = http.MultipartRequest("POST", url);
+    request.headers.addAll({
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers":
+          "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      'Content-Type': 'application/json',
+      'Accept': '*/*',
+      'authorization': basicAuth,
+    });
+    request.files.add(
+        http.MultipartFile.fromBytes("file", selectedFile, filename: namefile));
+
+    request.send().then((response) {
+      if (response.statusCode == 200) {
+        print(response.request);
+        return 'upload complate';
+      }
+      print('status code: ${response.statusCode}');
+    });
+  }
+
+    Future<dynamic> uploadFilesLogo(selectedFile, String namefile) async {
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+    var url = Uri.parse("$apiimage/uploadlogo");
     var request = http.MultipartRequest("POST", url);
     request.headers.addAll({
       "Access-Control-Allow-Origin": "*",
@@ -573,6 +600,34 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> updateTemplatePrinter(String logourl, String header,
+      String footer, int headerbold, int footerbold, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "logourl": logourl,
+      "header": header,
+      "footer": footer,
+      "headerbold": headerbold,
+      "footerbold": footerbold,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateTemplatePrinter');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> checkUserFromOauth(String email, String dbname) async {
     var body = {
       "dbname": dbname,
@@ -580,6 +635,28 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/checkUserFromOauth');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List user = json.decode(response.body);
+
+      return user;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getTemplatePrinter() async {
+    var body = {
+      "dbname": dbname,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/getTemplatePrinter');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -749,6 +826,31 @@ class ClassApi {
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/updateSplit');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateStrictUser(
+      String dbname, String strictuser) async {
+    var body = {
+      "dbname": dbname,
+      "strictuser": strictuser,
+    };
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateStrictUser');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1240,6 +1342,28 @@ class ClassApi {
     }
   }
 
+   static Future<List<dynamic>> checkEmailExist(String email) async {
+    // print(json.encode(pembayaran));
+    var data = {"email": email};
+
+    final url = Uri.parse('$api/checkEmailExist');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<dynamic>> getAccessUser(String usercd) async {
     // print(json.encode(pembayaran));
     var data = {"usercd": usercd};
@@ -1664,6 +1788,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
+      print(bodyJson);
       return bodyJson
           .map((json) => IafjrndtClass.fromJson(json))
           .where((items) {
@@ -2036,9 +2161,8 @@ class ClassApi {
     }
   }
 
-
-    static Future<List<IafjrndtClass>> getOutstandingBillTransno(
-      String transno, String dbname,String query ) async {
+  static Future<List<IafjrndtClass>> getOutstandingBillTransno(
+      String transno, String dbname, String query) async {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname, "transno": transno};
     final url = Uri.parse('$api/getOutstandingBillTransno');
@@ -2063,7 +2187,6 @@ class ClassApi {
       throw Exception();
     }
   }
-
 
   static Future<dynamic> updatePaymentFirst(String subsrcription,
       String pytransaction, String paymentcheck, String email) async {

@@ -120,6 +120,7 @@ int multiprice  = 0;
                   child: ImageFromGalleryEx(
                     ImageSourceType.gallery,
                     savingimage: pathimage,
+                    fromtemplateprint: false,
                   )),
               SizedBox(
                 height: 20,

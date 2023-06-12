@@ -82,7 +82,7 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 splash: selected,
-                iconasset: 'cart1.png',
+                iconasset: 'assets/cart1.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () {
@@ -109,7 +109,7 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 splash: selected,
-                iconasset: 'outlet1.png',
+                iconasset: 'assets/outlet1.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: accesslist.contains('selectoutlet') == true
@@ -145,7 +145,7 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 splash: selected,
-                iconasset: 'investor.png',
+                iconasset: 'assets/investor.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: accesslist.contains('createcostumer') == true
@@ -176,7 +176,7 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 splash: selected,
-                iconasset: 'settings.png',
+                iconasset: 'assets/settings.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: accesslist.contains('setting') == true
@@ -210,7 +210,7 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 splash: selected,
-                iconasset: 'staff.png',
+                iconasset: 'assets/staff.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: accesslist.contains('pegawai') == true
@@ -236,7 +236,7 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 splash: selected,
-                iconasset: 'support.png',
+                iconasset: 'assets/support.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () async {
@@ -266,7 +266,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'cart1.png',
+                iconasset: 'assets/cart1.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {
@@ -289,7 +289,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'outlet1.png',
+                iconasset: 'assets/outlet1.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
@@ -310,7 +310,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'investor.png',
+                iconasset: 'assets/investor.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {
@@ -327,7 +327,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'settings.png',
+                iconasset: 'assets/settings.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {
@@ -347,7 +347,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'staff.png',
+                iconasset: 'assets/staff.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {},
@@ -358,7 +358,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'support.png',
+                iconasset: 'assets/support.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
@@ -372,7 +372,7 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'support.png',
+                iconasset: 'assets/support.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {

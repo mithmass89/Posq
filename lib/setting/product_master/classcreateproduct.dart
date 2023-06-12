@@ -179,6 +179,7 @@ class _CreateproductState extends State<Createproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      
                       imagepath: pathimage,
                       multiflag: multiflag,
                       multipriceSet: changeValueMultiPrice,

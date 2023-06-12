@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print
 
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
@@ -9,6 +10,8 @@ import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/setting/printer/classmainprinter.dart';
+import 'package:posq/setting/printer/classprinterbillpayment.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +19,7 @@ import 'package:uuid/uuid.dart';
 
 PaymentGate? paymentapi;
 ClassApi? api;
+PrintSmallPayment? printing;
 
 class ClassPaymetSucsessTabs extends StatefulWidget {
   final bool frombanktransfer;
@@ -82,6 +86,16 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   bool loading = false;
   bool emailValid = false;
   List<IafjrndtClass> datacheck = [];
+  String logourl = '';
+  String header = '';
+  String footer = '';
+  bool connected = false;
+  PrintSmallPayment printing = PrintSmallPayment();
+  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  List<IafjrndtClass>? summarybill;
+    List<IafjrnhdClass> data = [];
+
+
 
   @override
   void initState() {
@@ -89,9 +103,12 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
     formattedDate = formatter.format(now);
     generateDataWA();
     removeDiscount();
+    checkPrinter();
+    getTemplatePrinter();
     api = ClassApi();
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
+     getPaymentList();
     print('ini split  ${widget.datatrans[0].split}');
     // getSummary();
     // getListPayament();
@@ -106,6 +123,28 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
         statustransaction = 'Settlement';
       });
     }
+  }
+
+    getPaymentList() async {
+    data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
+  }
+
+  checkPrinter() async {
+    connected = await bluetooth.isConnected.then((value) => value!);
+    setState(() {});
+    print(connected);
+  }
+
+  getTemplatePrinter() {
+    ClassApi.getTemplatePrinter().then((value) {
+      if (value.isNotEmpty) {
+        logourl = value[0]['logourl'];
+        header = value[0]['header'];
+        footer = value[0]['footer'];
+      }
+      ;
+    });
+    setState(() {});
   }
 
   Future<List<IafjrndtClass>> getDetailTrnos() async {
@@ -173,6 +212,18 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
             ':'.padRight(2) +
             '${value[index].totalaftdisc.toString().padLeft(20)}\n');
       });
+    });
+  }
+
+
+    getSumm() async {
+    await ClassApi.getSumTrans(widget.trno, dbname, '').then((value) {
+      print('ini summary : $value');
+      if (value.isNotEmpty) {
+        setState(() {
+          summarybill = value;
+        });
+      } else {}
     });
   }
 
@@ -351,7 +402,33 @@ ${payment.reduce((value, element) => value + element)}
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange, // Background color
                           ),
-                          onPressed: () async {},
+                          onPressed: accesslist.contains('settingprinter') == true
+                                      ? () async {
+                                          await getSumm();
+                                          if (connected == true) {
+                                            await printing.prints(
+                                                widget.datatrans,
+                                                summarybill!,
+                                                data,
+                                                widget.outletinfo!.outletname!,
+                                                header,
+                                                footer,
+                                                logourl,
+                                                widget.outletinfo!);
+                                          } else {
+                                            await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ClassMainPrinter()));
+                                          }
+                                        }
+                                      : () {
+                                          Toast.show(
+                                              "Tidak Punya access printer",
+                                              duration: Toast.lengthLong,
+                                              gravity: Toast.center);
+                                        },
                           child: Container(
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.center,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/subscriptionpage.dart';
@@ -48,7 +49,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.85,
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.04,
                     child: Text(
                       'Segera gabung !',
                       style:
@@ -84,7 +85,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       return null;
                     },
                     hint: 'Nama Lengkap',
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: Icon(Icons.contact_mail),
                     controller: namalengkap,
                     onChanged: (String value) {},
                     typekeyboard: null,
@@ -103,7 +104,6 @@ class _RegisterFormState extends State<RegisterForm> {
                       if (!emailRegex.hasMatch(email.text)) {
                         return 'E-mail tidak valid';
                         // Email address is invalid, do something
-
                       } else {
                         print(value);
                       }
@@ -112,7 +112,22 @@ class _RegisterFormState extends State<RegisterForm> {
                     hint: 'E-mail',
                     prefixIcon: Icon(Icons.email),
                     controller: email,
-                    onChanged: (String value) {},
+                    onChanged: (String value) async {
+                      await ClassApi.checkEmailExist(email.text).then((value) {
+                        if (value.isNotEmpty) {
+                          Fluttertoast.showToast(
+                              msg: "Email sudah terdaftar",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }else{
+
+                        }
+                      });
+                    },
                     typekeyboard: null,
                   ),
                 ),
@@ -195,6 +210,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => SubScribetionPage(
+                                    username: namalengkap.text,
                                         email: email.text,
                                       )),
                               (Route<dynamic> route) => false);

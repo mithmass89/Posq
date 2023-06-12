@@ -75,7 +75,7 @@ class _DetailTrnoState extends State<DetailTrno> {
                       child: Text(widget.datatransaksi!.pymtmthd == null
                           ? ' NT'
                           : widget.datatransaksi!.pymtmthd.toString())),
-                  title: Text(widget.trno!.substring(1,8).toString()),
+                  title: Text(widget.trno!),
                   subtitle: Text(widget.datatransaksi!.totalamt == null
                       ? '0'
                       : CurrencyFormat.convertToIdr(widget.datatransaksi!.totalamt,0)),

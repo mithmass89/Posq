@@ -4,23 +4,6 @@
             "outputFile": "E:\\posplay2\\posplay2\\posplay\\posplay\\posq\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-zh-rCN\\values-zh-rCN.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\5eb3d6a8492fd2f1973ce8ba1587f289\\jetified-zxing-android-embedded-3.6.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
-                    "from": {
-                        "startLines": "2,3,4,5",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,104,151,238",
-                        "endColumns": "48,46,86,68",
-                        "endOffsets": "99,146,233,302"
-                    },
-                    "to": {
-                        "startLines": "111,112,113,114",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "8953,9002,9049,9136",
-                        "endColumns": "48,46,86,68",
-                        "endOffsets": "8997,9044,9131,9200"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\371e697bd847b8f0299b1a4e3e0b40ec\\jetified-play-services-basement-18.1.0\\res\\values-zh-rCN\\values.xml",
                     "from": {
                         "startLines": "4",
@@ -71,6 +54,23 @@
                         "endLines": "5,33,34,35,36,56,57,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108",
                         "endColumns": "12,69,90,105,72,61,76,58,58,77,56,55,58,57,53,84,55,57,53,64,91,73,75,91,61,61,78,66,65,63,68,77,60,70,66,59,78,66,82,84,73,64,75,47,63,75,77,61,63,62,79,75,77,76,68",
                         "endOffsets": "247,2874,2965,3071,3144,5103,5180,5525,5584,5662,5719,5775,5834,5892,5946,6031,6087,6145,6199,6264,6356,6430,6506,6598,6660,6722,6801,6868,6934,6998,7067,7145,7206,7277,7344,7404,7483,7550,7633,7718,7792,7857,7933,7981,8045,8121,8199,8261,8325,8388,8468,8544,8622,8699,8768"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Mitro\\.gradle\\caches\\transforms-2\\files-2.1\\7f12e1c7fae5665479920c5b11554793\\jetified-zxing-android-embedded-3.6.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,104,151,238",
+                        "endColumns": "48,46,86,68",
+                        "endOffsets": "99,146,233,302"
+                    },
+                    "to": {
+                        "startLines": "111,112,113,114",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "8953,9002,9049,9136",
+                        "endColumns": "48,46,86,68",
+                        "endOffsets": "8997,9044,9131,9200"
                     }
                 },
                 {

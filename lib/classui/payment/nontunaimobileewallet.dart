@@ -130,7 +130,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'gopay.jpg',
+                    iconasset: 'assets/gopay.jpg',
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
@@ -201,7 +201,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                   child: ButtonClassPayment(
                     styleasset: BoxFit.fitWidth,
                     name: '',
-                    iconasset: 'ovo.png',
+                    iconasset: 'assets/ovo.png',
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
@@ -271,7 +271,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'logo-dana-indonesia.jpg',
+                    iconasset: 'assets/logo-dana-indonesia.jpg',
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
@@ -338,7 +338,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'logo-shopeepay.png',
+                    iconasset: 'assets/logo-shopeepay.png',
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
@@ -406,7 +406,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                   ),
                   child: ButtonClassPayment(
                     name: '',
-                    iconasset: 'link.png',
+                    iconasset: 'assets/link.png',
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {

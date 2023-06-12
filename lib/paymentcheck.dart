@@ -6,7 +6,12 @@ import 'package:posq/subscriptionpage.dart';
 class PaymentChecks extends StatefulWidget {
   final String trno;
   final String email;
-  const PaymentChecks({Key? key, required this.trno, required this.email})
+  final String username;
+  const PaymentChecks(
+      {Key? key,
+      required this.trno,
+      required this.email,
+      required this.username})
       : super(key: key);
 
   @override
@@ -42,6 +47,7 @@ class _PaymentChecksState extends State<PaymentChecks> {
           context,
           MaterialPageRoute(
               builder: (context) => SubScribetionPage(
+                    username: widget.username,
                     email: widget.email,
                   )),
         );

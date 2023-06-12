@@ -51,69 +51,69 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                     Container(
                       alignment: Alignment.topLeft,
                       height: MediaQuery.of(context).size.height * 0.04,
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      decoration: BoxDecoration(
-                        // border: Border.all(
-                        //   color: Colors.white,
-                        //   width: 2,
-                        // ),
-                        // borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            widget.outletname.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 24),
-                          ),
-                          Icon(
-                            Icons.arrow_right_outlined,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Text(
+                        widget.outletname.toString(),
+                        style: TextStyle(
                             color: Colors.white,
-                            size: 30.0,
-                          ),
-                        ],
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
+                  height: MediaQuery.of(context).size.height * 0.01,
                   width: MediaQuery.of(context).size.width * 0.3,
                 ),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage(
-                        'assets/sheryl.png',
+                Container(
+             
+                  alignment: Alignment.topLeft,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.white,
+                        // backgroundImage: AssetImage(
+                        //   'assets/sheryl.png',
+                        // ),
+                        child: Text(
+                          usercd.substring(0, 1),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.03,
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          child: Text(
-                            usercd,
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.03,
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: Text(
+                              usercd,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          child: Text(
-                            'SHIFT 1 ',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width * 0.2,
+                          //   child: Text(
+                          //     'SHIFT 1 ',
+                          //     style: TextStyle(color: Colors.white, fontSize: 12),
+                          //   ),
+                          // ),
+                        ],
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
@@ -242,7 +242,8 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         fontSize: 16.0);
                   },
           ),
-          ListTile(       trailing: SizedBox(
+          ListTile(
+            trailing: SizedBox(
               width: 40.0,
               child: DefaultTextStyle(
                 style: const TextStyle(
@@ -280,7 +281,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             },
           ),
           ListTile(
-                   trailing: SizedBox(
+            trailing: SizedBox(
               width: 40.0,
               child: DefaultTextStyle(
                 style: const TextStyle(
@@ -352,32 +353,32 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         height: MediaQuery.of(context).size.height * 0.03,
                       ),
                       ListTile(
-                               trailing: SizedBox(
-              width: 40.0,
-              child: DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.black,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 7.0,
-                      color: Colors.pink,
-                      offset: Offset(0, 0),
-                    ),
-                  ],
-                ),
-                child: AnimatedTextKit(
-                  repeatForever: true,
-                  animatedTexts: [
-                    FlickerAnimatedText('Pro'),
-                    FlickerAnimatedText('New !!'),
-                  ],
-                  onTap: () {
-                    print("Tap Event");
-                  },
-                ),
-              ),
-            ),
+                        trailing: SizedBox(
+                          width: 40.0,
+                          child: DefaultTextStyle(
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.black,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 7.0,
+                                  color: Colors.pink,
+                                  offset: Offset(0, 0),
+                                ),
+                              ],
+                            ),
+                            child: AnimatedTextKit(
+                              repeatForever: true,
+                              animatedTexts: [
+                                FlickerAnimatedText('Pro'),
+                                FlickerAnimatedText('New !!'),
+                              ],
+                              onTap: () {
+                                print("Tap Event");
+                              },
+                            ),
+                          ),
+                        ),
                         leading: Icon(Icons.settings),
                         title: Text('Integrasi '),
                         onTap: accesslist.contains('integrasi') == true

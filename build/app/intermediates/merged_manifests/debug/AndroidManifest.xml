@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.posq"
+    package="com.project.aovipos"
     android:versionCode="1"
     android:versionName="0.1.0" >
 
@@ -23,6 +23,19 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+
+            <data android:mimeType="*/*" />
+        </intent>
+        <intent>
+            <action android:name="com.android.vending.billing.InAppBillingService.BIND" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -43,15 +56,6 @@
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    <!--
-    This has been added to conform with requirement from Android 11 (API level 30) onwards
-    (http://screen/9iGdBMRWDmVbRJ6), after getting confirmation in http://yaqs/995038231927980032#a1
-    -->
-    <queries>
-        <intent>
-            <action android:name="com.android.vending.billing.InAppBillingService.BIND" />
-        </intent>
-    </queries>
 
     <uses-feature
         android:name="android.hardware.camera.front"
@@ -70,12 +74,13 @@
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="posq"
+        android:label="Aovi"
         android:largeHeap="true"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
         <activity
-            android:name="com.example.posq.MainActivity"
+            android:name="com.project.aovipos.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -140,7 +145,7 @@
 
         <provider
             android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-            android:authorities="com.example.posq.flutter.image_provider"
+            android:authorities="com.project.aovipos.flutter.image_provider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -155,7 +160,7 @@
 
         <provider
             android:name="net.nfet.flutter.printing.PrintFileProvider"
-            android:authorities="com.example.posq.flutter.printing"
+            android:authorities="com.project.aovipos.flutter.printing"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -216,7 +221,7 @@
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.example.posq.firebaseinitprovider"
+            android:authorities="com.project.aovipos.firebaseinitprovider"
             android:directBootAware="true"
             android:exported="false"
             android:initOrder="100" />
@@ -255,7 +260,7 @@
 
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.example.posq.androidx-startup"
+            android:authorities="com.project.aovipos.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"

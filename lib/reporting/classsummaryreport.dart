@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -9,6 +10,7 @@ import 'package:posq/reporting/cashiersummary.dart';
 import 'package:posq/reporting/classkirimlaporan.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
 import 'package:posq/reporting/classringkasan.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
 typedef MyBuilder = void Function(
@@ -101,9 +103,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     getDataReport();
   }
 
-  getDataReport() {
+  getDataReport() async{
     //mengambil data list payment cashier summary//
-    handler.cashierSummaryDetail(query, fromdate!, todate!).then((value) {
+   await ClassApi.getCashierSummary(fromdate!, todate!,dbname).then((value) {
       setState(() {
         listdatapayment = value;
       });
@@ -158,9 +160,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    color: selected == 'Hari ini' ? Colors.white : Colors.blue,
+                    color: selected == 'Hari ini' ? Colors.white : Color.fromARGB(255, 0, 116, 131),
                     textcolor:
-                        selected == 'Hari ini' ? Colors.blue : Colors.white,
+                        selected == 'Hari ini' ? Color.fromARGB(255, 0, 116, 131) : Colors.white,
                     name: 'Hari ini',
                     onpressed: () {
                       setState(() {
@@ -182,9 +184,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    color: selected == '7 Hari' ? Colors.white : Colors.blue,
+                    color: selected == '7 Hari' ? Colors.white : Color.fromARGB(255, 0, 116, 131),
                     textcolor:
-                        selected == '7 Hari' ? Colors.blue : Colors.white,
+                        selected == '7 Hari' ? Color.fromARGB(255, 0, 116, 131) : Colors.white,
                     name: '7 Hari',
                     onpressed: () {
                       var weeks;
@@ -212,9 +214,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    color: selected == '30 Hari' ? Colors.white : Colors.blue,
+                    color: selected == '30 Hari' ? Colors.white :Color.fromARGB(255, 0, 116, 131),
                     textcolor:
-                        selected == '30 Hari' ? Colors.blue : Colors.white,
+                        selected == '30 Hari' ? Color.fromARGB(255, 0, 116, 131) : Colors.white,
                     name: '30 Hari',
                     onpressed: () {
                       var month;
@@ -276,14 +278,14 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                     width: MediaQuery.of(context).size.width * 0.35,
                     height: MediaQuery.of(context).size.height * 0.05,
                     color: Colors.white,
-                    textcolor: Colors.blue,
+                    textcolor: Colors.orange,
                     name: 'Print',
                     onpressed: () {},
                   ),
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.35,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    color: Colors.blue,
+                    color: Colors.orange,
                     textcolor: Colors.white,
                     name: 'Kirim Laporan',
                     onpressed: () {
