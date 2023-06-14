@@ -158,7 +158,7 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                               ),
                           onPressed: () async {
                             widget.selectedpay = selected;
-                             widget.selectedpayment(selected);
+                            widget.selectedpayment(selected);
                             await widget.insertIafjrnhd!()
                                 .whenComplete(() async {
                               await ClassApi.getSumPyTrno(
@@ -204,7 +204,7 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                                               ClassPaymetSucsessTabs(
                                                 fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
-                                                datatrans: widget.listdata,
+                                                     datatrans: widget.datatrans,
                                                 frombanktransfer: false,
                                                 cash: true,
                                                 outletinfo: widget.outletinfo,

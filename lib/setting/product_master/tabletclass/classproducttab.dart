@@ -289,6 +289,13 @@ class _ClassproductTabState extends State<ClassproductTab> {
                                           child: Image.network(
                                             x[index].pathimage!,
                                             fit: BoxFit.fill,
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
+                                              return Image.network(
+                                           'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                                            fit: BoxFit.fill,);
+                                            },
                                             loadingBuilder:
                                                 (BuildContext context,
                                                     Widget child,

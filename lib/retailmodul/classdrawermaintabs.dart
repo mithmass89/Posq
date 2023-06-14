@@ -82,9 +82,10 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                     CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.white,
-                      backgroundImage: AssetImage(
-                        'assets/sheryl.png',
-                      ),
+                      // backgroundImage: AssetImage(
+                      //   'assets/sheryl.png',
+                      // ),
+                      child: Text(usercd.substring(0,1)),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.01,

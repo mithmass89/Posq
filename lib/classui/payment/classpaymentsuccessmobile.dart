@@ -466,6 +466,20 @@ ${payment.reduce((value, element) => value + element)}
                                   } else {
                                     if (widget.fromsaved == true) {
                                       await checkTrno();
+                                         await ClassApi.cleartable(
+                                          dbname, widget.trno);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClassRetailMainMobile(
+                                                    fromsaved: widget.fromsaved,
+                                                    pscd: widget.outletcd!,
+                                                    trno: nexttrno,
+                                                    outletinfo:
+                                                        widget.outletinfo!,
+                                                    qty: 0,
+                                                  )),
+                                          (Route<dynamic> route) => false);
                                     } else if (widget.fromsplit == true) {
                                       for (var x in widget.datatrans) {
                                         await ClassApi.updateSplit(

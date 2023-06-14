@@ -99,7 +99,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     selectedpy = 'Cash';
     pymtmthd = 'Cash';
     formattedDate = formatter.format(now);
-    print('ini trno dari split ${widget.trno}');
+
     if (widget.fromsplit == true) {
       ClassApi.checkLastSplit(dbname, widget.trno).then((value) {
         lastsplit = value[0]['split'] + 1;
@@ -837,7 +837,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Lain lain':
                                   return PaymentLainLainTabs(
-                                       selectedpayment: setSelected,
+                                    selectedpayment: setSelected,
                                     selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
                                     cardno: cardno,

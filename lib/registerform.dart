@@ -18,6 +18,7 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmationpass = TextEditingController();
   bool passwordlock = false;
+  bool isRegistered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +116,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     onChanged: (String value) async {
                       await ClassApi.checkEmailExist(email.text).then((value) {
                         if (value.isNotEmpty) {
+                          isRegistered = true;
                           Fluttertoast.showToast(
                               msg: "Email sudah terdaftar",
                               toastLength: Toast.LENGTH_LONG,
@@ -123,9 +125,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               backgroundColor: Color.fromARGB(255, 11, 12, 14),
                               textColor: Colors.white,
                               fontSize: 16.0);
-                        }else{
-
-                        }
+                        } else {}
                       });
                     },
                     typekeyboard: null,
@@ -203,18 +203,29 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        print('sukses');
-                        await ClassApi.insertRegisterUser(
-                                email.text, namalengkap.text, password.text)
-                            .then((_) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => SubScribetionPage(
-                                    username: namalengkap.text,
-                                        email: email.text,
-                                      )),
-                              (Route<dynamic> route) => false);
-                        });
+                        if (isRegistered == true) {
+                          Fluttertoast.showToast(
+                              msg: "Email sudah terdaftar",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          print('sukses');
+                          await ClassApi.insertRegisterUser(
+                                  email.text, namalengkap.text, password.text)
+                              .then((_) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => SubScribetionPage(
+                                          username: namalengkap.text,
+                                          email: email.text,
+                                        )),
+                                (Route<dynamic> route) => false);
+                          });
+                        }
                       }
                     },
                     child: Container(

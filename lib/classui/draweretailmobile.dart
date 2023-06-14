@@ -12,6 +12,7 @@ import 'package:posq/retailmodul/savedtransaction/classlisttransactionmobile.dar
 import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
+import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
 import 'package:posq/userinfo.dart';
@@ -203,7 +204,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                 ? () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return ClassSummaryReport(user: 'Admin');
+                      return ClassSummaryReport(user: usercd);
                     }));
                   }
                 : () {
@@ -226,8 +227,8 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                 ? () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return ClassAdjusmentType(
-                        pscd: widget.outletinfo,
+                      return MainMenuProduct(
+                        pscd:pscd , outletinfo: widget.outletinfo,
                       );
                     }));
                   }

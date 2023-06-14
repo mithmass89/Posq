@@ -918,13 +918,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       Container(
                                         alignment: Alignment.center,
                                         height: 30,
-                                        width: 200,
+                                        width: 450,
                                         child: Text(
                                           'Manual',
                                         ),
                                       ),
                                       Container(
-                                        width: 200,
+                                        width: 450,
                                         alignment: Alignment.center,
                                         height: 30,
                                         child: Text(

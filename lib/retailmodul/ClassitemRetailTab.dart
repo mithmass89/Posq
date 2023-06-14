@@ -232,12 +232,19 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                 height: MediaQuery.of(context).size.height * 0.157,
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: ClipRRect(
-                  borderRadius:  BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   child: Image.network(
                     widget.item.pathimage!,
                     fit: BoxFit.fill,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Image.network(
+                        'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                        fit: BoxFit.fill,
+                      );
+                    },
                     loadingBuilder: (BuildContext context, Widget child,
                         ImageChunkEvent? loadingProgress) {
                       if (loadingProgress == null) return child;

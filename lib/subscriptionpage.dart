@@ -551,10 +551,10 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                         children: [
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.85,
-                            height: MediaQuery.of(context).size.height * 0.02,
+                            height: MediaQuery.of(context).size.height * 0.01,
                           ),
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.80,
+                            height: MediaQuery.of(context).size.height * 0.83,
                             width: MediaQuery.of(context).size.width * 1,
                             child: ListView(
                               // shrinkWrap: true,
@@ -570,7 +570,7 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                           MediaQuery.of(context).size.height *
                                               0.80,
                                       width: MediaQuery.of(context).size.width *
-                                          0.7,
+                                          0.5,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
@@ -602,29 +602,24 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                                 0.80,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.all(20.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          'Basic Rp 150.000',
-                                                          style: TextStyle(
-                                                              fontSize: 24,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Basic Rp 150.000',
+                                                        style: TextStyle(
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
                                                   ),
                                                   Padding(
                                                     padding:
@@ -764,7 +759,7 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                           MediaQuery.of(context).size.height *
                                               0.80,
                                       width: MediaQuery.of(context).size.width *
-                                          0.7,
+                                          0.5,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
@@ -794,29 +789,24 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                                 0.7,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.all(20.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          'Pro Rp 250.000',
-                                                          style: TextStyle(
-                                                              fontSize: 24,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Pro Rp 250.000',
+                                                        style: TextStyle(
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
                                                   ),
                                                   Padding(
                                                     padding:
@@ -837,21 +827,16 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                                       ],
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          'Paket Pro , Tingkatkan effesiensi\n usaha anda dan bawa bisnis anda\n kelevel lebih tinggi',
-                                                          style: TextStyle(
-                                                              fontSize: 11,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Paket Pro , Tingkatkan effesiensi usaha anda dan bawa bisnis anda\n kelevel lebih tinggi',
+                                                        style: TextStyle(
+                                                            fontSize: 11,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),

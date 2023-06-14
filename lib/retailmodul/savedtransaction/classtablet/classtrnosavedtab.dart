@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/savedtransaction/classdetailsavedmobile.dart';
@@ -30,16 +31,28 @@ class _ClassListSavedTabState extends State<ClassListSavedTab> {
   @override
   void initState() {
     super.initState();
-    timestamp = DateTime.parse(widget.datatransaksi!.createdt!);
-    times = timeAgo(
-        timestamp!); // 'just now' (or a different value depending on the actual time difference)
-    valueTime = timesInt(timestamp!);
+    if (widget.datatransaksi!.active == null) {
+      print(widget.datatransaksi!.createdt!);
+      // timestamp = DateTime.parse(widget.datatransaksi!.createdt!);
+      String utcTimeString = widget.datatransaksi!.createdt!;
+      DateTime utcTime = DateTime.parse(utcTimeString).toUtc();
+      DateTime localTime = utcTime.toLocal();
+
+      String formattedLocalTime =
+          DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS').format(localTime);
+      print(formattedLocalTime);
+
+      times = timeAgo(utcTime
+          .toLocal()); // 'just now' (or a different value depending on the actual time difference)
+      // valueTime = timesInt(timestamp!);
+      print('ini times :${utcTime}');
+    }
   }
 
   String timeAgo(DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
-    print(difference.inMinutes);
+    print('ini now ${now}');
 
     if (difference.inDays >= 365) {
       return '${(difference.inDays / 365).floor()} years ago';

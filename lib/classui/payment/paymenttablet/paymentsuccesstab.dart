@@ -93,12 +93,11 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   PrintSmallPayment printing = PrintSmallPayment();
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   List<IafjrndtClass>? summarybill;
-    List<IafjrnhdClass> data = [];
-
-
+  List<IafjrnhdClass> data = [];
 
   @override
   void initState() {
+    print(widget.fromsaved);
     super.initState();
     formattedDate = formatter.format(now);
     generateDataWA();
@@ -106,9 +105,10 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
     checkPrinter();
     getTemplatePrinter();
     api = ClassApi();
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
-     getPaymentList();
+    // handler = DatabaseHandler();
+    // handler.initializeDB(databasename);
+    getPaymentList();
+    print('ini from saved ${widget.fromsaved}');
     print('ini split  ${widget.datatrans[0].split}');
     // getSummary();
     // getListPayament();
@@ -125,7 +125,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
     }
   }
 
-    getPaymentList() async {
+  getPaymentList() async {
     data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
   }
 
@@ -169,7 +169,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   checkTrno() async {
     var transno = await ClassApi.checkTrno();
     nexttrno = widget.outletcd! + '-' + transno[0]['transnonext'].toString();
-    print(trno);
+    print('ini trno dari saved : $trno');
   }
 
   updateTrno() async {
@@ -215,8 +215,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
     });
   }
 
-
-    getSumm() async {
+  getSumm() async {
     await ClassApi.getSumTrans(widget.trno, dbname, '').then((value) {
       print('ini summary : $value');
       if (value.isNotEmpty) {
@@ -275,7 +274,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                           width: MediaQuery.of(context).size.height * 0.14,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                            image: AssetImage('correct.png'),
+                            image: AssetImage('assets/check.png'),
                             fit: BoxFit.fill,
                           )),
                         ),
@@ -402,33 +401,33 @@ ${payment.reduce((value, element) => value + element)}
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange, // Background color
                           ),
-                          onPressed: accesslist.contains('settingprinter') == true
-                                      ? () async {
-                                          await getSumm();
-                                          if (connected == true) {
-                                            await printing.prints(
-                                                widget.datatrans,
-                                                summarybill!,
-                                                data,
-                                                widget.outletinfo!.outletname!,
-                                                header,
-                                                footer,
-                                                logourl,
-                                                widget.outletinfo!);
-                                          } else {
-                                            await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ClassMainPrinter()));
-                                          }
-                                        }
-                                      : () {
-                                          Toast.show(
-                                              "Tidak Punya access printer",
-                                              duration: Toast.lengthLong,
-                                              gravity: Toast.center);
-                                        },
+                          onPressed:
+                              accesslist.contains('settingprinter') == true
+                                  ? () async {
+                                      await getSumm();
+                                      if (connected == true) {
+                                        await printing.prints(
+                                            widget.datatrans,
+                                            summarybill!,
+                                            data,
+                                            widget.outletinfo!.outletname!,
+                                            header,
+                                            footer,
+                                            logourl,
+                                            widget.outletinfo!);
+                                      } else {
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ClassMainPrinter()));
+                                      }
+                                    }
+                                  : () {
+                                      Toast.show("Tidak Punya access printer",
+                                          duration: Toast.lengthLong,
+                                          gravity: Toast.center);
+                                    },
                           child: Container(
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.center,
@@ -475,6 +474,20 @@ ${payment.reduce((value, element) => value + element)}
                                 } else {
                                   if (widget.fromsaved == true) {
                                     await checkTrno();
+                                    await ClassApi.cleartable(
+                                        dbname, widget.trno);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ClassRetailMainMobile(
+                                                  fromsaved: false,
+                                                  pscd: widget.outletcd!,
+                                                  trno: nexttrno,
+                                                  outletinfo:
+                                                      widget.outletinfo!,
+                                                  qty: 0,
+                                                )),
+                                        (Route<dynamic> route) => false);
                                   } else if (widget.fromsplit == true) {
                                     await ClassApi.updateSplit(
                                         dbname,
