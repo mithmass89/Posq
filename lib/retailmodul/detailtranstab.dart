@@ -514,6 +514,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                     dataedit: widget
                                                                         .listdata,
                                                                     data: Item(
+                                                                        packageflag:
+                                                                            0,
                                                                         multiprice:
                                                                             multiprice,
                                                                         itemcode: widget

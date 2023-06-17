@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
+import 'package:posq/setting/generalsetting/generalsettingmobile.dart';
+import 'package:posq/setting/menupackage/menupackagemainmobile.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/product_master/tabletclass/PaymentMasterTab.dart';
 import 'package:posq/setting/tablesettings/tablesettings.dart';
@@ -24,6 +26,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
   List<String> menulist = [
     "Tambah produk",
     "Condiment /  Topping",
+    "Menu Paket",
     "Tipe Transaksi",
     "Table / Order No",
     "Payment Master",
@@ -67,8 +70,13 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                                             ? Image.asset('assets/wallet.png')
                                             : menulist[index] ==
                                                     'General setting'
-                                                ? Image.asset('assets/settings.png')
-                                                : Container(),
+                                                ? Image.asset(
+                                                    'assets/settings.png')
+                                                : menulist[index] ==
+                                                        'Menu Paket'
+                                                    ? Image.asset(
+                                                        'assets/package.png')
+                                                    : Container(),
                       ),
                     ),
                     title: Text(menulist[index]),
@@ -121,6 +129,53 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                                       pscd: widget.outletinfo!.outletcd,
                                     )),
                           );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Tidak punya akses Payment Master",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                      } else if (menulist[index] == 'General setting') {
+                        print(accesslist);
+                        if (accesslist.contains('generalsetting') == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GeneralSettingMobile(
+                                      pscd: widget.outletinfo!.outletcd,
+                                    )),
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Tidak punya akses General Setting",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                      } else if (menulist[index] == 'Menu Paket') {
+                        print(accesslist);
+                        if (accesslist.contains('itempackage') == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainMenuPackageMobile()),
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Tidak punya akses General Setting",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         }
                       } else {
                         Fluttertoast.showToast(

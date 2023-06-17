@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/subscriptionpage.dart';
+import 'package:posq/userinfo.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key? key}) : super(key: key);
@@ -85,7 +86,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       }
                       return null;
                     },
-                    hint: 'Nama Lengkap',
+                    hint: 'User name',
                     prefixIcon: Icon(Icons.contact_mail),
                     controller: namalengkap,
                     onChanged: (String value) {},
@@ -116,6 +117,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     onChanged: (String value) async {
                       await ClassApi.checkEmailExist(email.text).then((value) {
                         if (value.isNotEmpty) {
+                          print(value);
                           isRegistered = true;
                           Fluttertoast.showToast(
                               msg: "Email sudah terdaftar",
@@ -125,7 +127,10 @@ class _RegisterFormState extends State<RegisterForm> {
                               backgroundColor: Color.fromARGB(255, 11, 12, 14),
                               textColor: Colors.white,
                               fontSize: 16.0);
-                        } else {}
+                        } else {
+                          print(value);
+                          isRegistered = false;
+                        }
                       });
                     },
                     typekeyboard: null,
@@ -213,10 +218,11 @@ class _RegisterFormState extends State<RegisterForm> {
                               textColor: Colors.white,
                               fontSize: 16.0);
                         } else {
-                          print('sukses');
-                          await ClassApi.insertRegisterUser(
-                                  email.text, namalengkap.text, password.text)
-                              .then((_) {
+                          await ClassApi.insertRegisterUserNew(email.text,
+                                  namalengkap.text, password.text, 'Owner')
+                              .then((_) async {
+                            usercd = namalengkap.text;
+                            print('ini usercode $usercd');
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => SubScribetionPage(

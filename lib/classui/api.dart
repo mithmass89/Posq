@@ -6,8 +6,8 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var api = 'http://147.139.163.18:3000';
-var apiimage = 'http://147.139.163.18:5000';
+var api = 'http://192.168.1.10:3000';
+var apiimage = 'http://192.168.1.10:5000';
 // var api = 'http://147.139.163.18:3000';
 
 var serverkey = '';
@@ -57,7 +57,7 @@ class ClassApi {
     });
   }
 
-    Future<dynamic> uploadFilesLogo(selectedFile, String namefile) async {
+  Future<dynamic> uploadFilesLogo(selectedFile, String namefile) async {
     String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
@@ -179,14 +179,49 @@ class ClassApi {
   }
 
   static Future<dynamic> insertRegisterUser(
-      String email, String usercd, String password) async {
+    String email,
+    String usercd,
+    String password,
+    String level,
+    String subscription,
+    String paymentcheck,
+  ) async {
     var body = {
       "email": email,
       "usercd": usercd,
       "password": password,
+      "level": level,
+      "subscription": subscription,
+      "paymentcheck": paymentcheck
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/insertRegisterUser');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertRegisterUserNew(
+      String email, String usercd, String password, String level) async {
+    var body = {
+      "email": email,
+      "usercd": usercd,
+      "password": password,
+      "level": level
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertRegisterUserNew');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -286,6 +321,27 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> createPackageMenu(
+      String dbname, List<Package> paket) async {
+    var body = {"dbname": dbname, "data": paket};
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/createPackageMenu');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> insert_Poscondiment(
       String dbname, List<PosCondiment> condiment) async {
     var body = {"dbname": dbname, "data": condiment};
@@ -349,7 +405,7 @@ class ClassApi {
     }
   }
 
-  static Future<dynamic> insertOutletUser(String data) async {
+  static Future<dynamic> insertOutletUser(String data,String usercd) async {
     var body = {
       "dbname": data,
       "usercode": usercd,
@@ -404,6 +460,31 @@ class ClassApi {
       "data": data,
     };
     final url = Uri.parse('$api/createCompany');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertAccessOutlet(
+      String outletcode, String usercode, String dbname) async {
+    // print(json.encode(pembayaran));
+    var body = {
+      "dbname": dbname,
+      "outletcode": outletcode,
+      "usercode": usercode,
+    };
+    final url = Uri.parse('$api/insertAccessOutlet');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -999,6 +1080,28 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> deActivePackageMenu(
+      String itemcode, String dbname) async {
+    var body = {"dbname": dbname, "itemcode": itemcode};
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deActivePackageMenu');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> deactiveTableAll() async {
     var body = {"dbname": dbname};
 
@@ -1342,7 +1445,7 @@ class ClassApi {
     }
   }
 
-   static Future<List<dynamic>> checkEmailExist(String email) async {
+  static Future<List<dynamic>> checkEmailExist(String email) async {
     // print(json.encode(pembayaran));
     var data = {"email": email};
 
@@ -1598,7 +1701,6 @@ class ClassApi {
       }).toList();
       // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
       // return data;
-
     } else {
       throw Exception();
     }
@@ -1670,6 +1772,97 @@ class ClassApi {
       return bodyJson.map((json) => Item.fromJson(json)).where((items) {
         final itemdescLower = items.itemdesc!.toLowerCase();
         final itemcodes = items.itemcode!.toLowerCase();
+        final searchLower = query.toLowerCase();
+
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<Pegawai>> getRoleStaff(String query) async {
+    // print(json.encode(pembayaran));
+
+    final url = Uri.parse('$api/getRoleStaff');
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        // 'authorization': basicAuth
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      return bodyJson.map((json) => Pegawai.fromJson(json)).where((items) {
+        final itemdescLower = items.joblevel.toLowerCase();
+        final itemcodes = items.note!.toLowerCase();
+        final searchLower = query.toLowerCase();
+
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<ListUser>> getListUser(String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"outletcode": pscd,};
+    final url = Uri.parse('$api/getListUser');
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        // 'authorization': basicAuth
+      },
+        body: json.encode(data)
+    );
+   
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      return bodyJson.map((json) => ListUser.fromJson(json)).where((items) {
+        final itemdescLower = items.usercd!.toLowerCase();
+        final itemcodes = items.level!.toLowerCase();
+        final searchLower = query.toLowerCase();
+
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<Package>> getPackageMenu(
+      String pscd, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "data": pscd};
+    final url = Uri.parse('$api/getPackageMenu');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => Package.fromJson(json)).where((items) {
+        final itemdescLower = items.itemcode.toLowerCase();
+        final itemcodes = items.packagedesc.toLowerCase();
         final searchLower = query.toLowerCase();
 
         return itemdescLower.contains(searchLower) ||

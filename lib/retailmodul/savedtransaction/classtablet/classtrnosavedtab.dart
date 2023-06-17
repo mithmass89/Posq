@@ -33,19 +33,12 @@ class _ClassListSavedTabState extends State<ClassListSavedTab> {
     super.initState();
     if (widget.datatransaksi!.active == null) {
       print(widget.datatransaksi!.createdt!);
-      // timestamp = DateTime.parse(widget.datatransaksi!.createdt!);
-      String utcTimeString = widget.datatransaksi!.createdt!;
-      DateTime utcTime = DateTime.parse(utcTimeString).toUtc();
-      DateTime localTime = utcTime.toLocal();
+      timestamp = DateTime.parse(widget.datatransaksi!.createdt!);
 
-      String formattedLocalTime =
-          DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS').format(localTime);
-      print(formattedLocalTime);
-
-      times = timeAgo(utcTime
-          .toLocal()); // 'just now' (or a different value depending on the actual time difference)
+      times = timeAgo(
+          timestamp!); // 'just now' (or a different value depending on the actual time difference)
       // valueTime = timesInt(timestamp!);
-      print('ini times :${utcTime}');
+      print('ini times :${timestamp}');
     }
   }
 

@@ -77,11 +77,26 @@ class _TabDetailTrnoTabState extends State<TabDetailTrnoTab> {
                               ListTile(
                                 dense: true,
                                 visualDensity: VisualDensity(vertical: -2), // t
-                                leading: Text('${x[index].qty.toString()} X'),
+                                leading: Text(
+                                  '${x[index].qty.toString()} X',
+                                  style: TextStyle(
+                                      color: x[index].split == 1
+                                          ? Colors.red
+                                          : Colors.black),
+                                ),
                                 title: Text(x[index].itemdesc.toString(),
-                                    style: TextStyle(fontSize: 14)),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: x[index].split == 1
+                                            ? Colors.red
+                                            : Colors.black)),
                                 trailing: Text(
-                                    '${CurrencyFormat.convertToIdr(x[index].totalaftdisc, 0)}'),
+                                  '${CurrencyFormat.convertToIdr(x[index].totalaftdisc, 0)}',
+                                  style: TextStyle(
+                                      color: x[index].split == 1
+                                          ? Colors.red
+                                          : Colors.black),
+                                ),
                               ),
                               Divider(
                                 height: 2,
@@ -92,80 +107,82 @@ class _TabDetailTrnoTabState extends State<TabDetailTrnoTab> {
                           );
                         }),
                   ),
-                  Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      child: FutureBuilder(
-                          future: ClassApi.getSumTrans(widget.trno, pscd, ''),
-                          builder: (context,
-                              AsyncSnapshot<List<IafjrndtClass>> snapshot) {
-                            var x = snapshot.data ?? [];
-
-                            if (x.isNotEmpty) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width * 1,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    ListTile(
-                                      minVerticalPadding: 0,
-                                      contentPadding: EdgeInsets.zero,
-                                      visualDensity: VisualDensity(
-                                          vertical: -4), // to compact
-                                      dense: true,
-                                      title: Text('Total'),
-                                      trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.revenueamt, 0)}'),
-                                    ),
-                                    ListTile(
-                                      minVerticalPadding: 0,
-                                      contentPadding: EdgeInsets.zero,
-                                      visualDensity: VisualDensity(
-                                          vertical: -4), // to compact
-                                      dense: true,
-                                      title: Text('Discount'),
-                                      trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.discamt, 0)}'),
-                                    ),
-                                    ListTile(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 0.0, right: 0.0),
-                                      visualDensity: VisualDensity(
-                                          vertical: -4), // to compact
-                                      dense: true,
-                                      title: Text('Pajak'),
-                                      trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.taxamt, 0)}'),
-                                    ),
-                                    ListTile(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 0.0, right: 0.0),
-                                      visualDensity: VisualDensity(
-                                          vertical: -4), // to compact
-                                      dense: true,
-                                      title: Text('Service'),
-                                      trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.serviceamt, 0)}'),
-                                    ),
-                                    ListTile(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 0.0, right: 0.0),
-                                      visualDensity: VisualDensity(
-                                          vertical: -4), // to compact
-                                      dense: true,
-                                      title: Text('Grand total'),
-                                      trailing: Text(
-                                          '${CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0)}'),
-                                    ),
-                                  
-                                  ],
-                                ),
-                              );
-                            }
-                            return Container();
-                          })),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: FutureBuilder(
+                            future: ClassApi.getSumTrans(widget.trno, pscd, ''),
+                            builder: (context,
+                                AsyncSnapshot<List<IafjrndtClass>> snapshot) {
+                              var x = snapshot.data ?? [];
+                  
+                              if (x.isNotEmpty) {
+                                return SizedBox(
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.25,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ListTile(
+                                        minVerticalPadding: 0,
+                                        contentPadding: EdgeInsets.zero,
+                                        visualDensity: VisualDensity(
+                                            vertical: -4), // to compact
+                                        dense: true,
+                                        title: Text('Total'),
+                                        trailing: Text(
+                                            '${CurrencyFormat.convertToIdr(x.first.revenueamt, 0)}'),
+                                      ),
+                                      ListTile(
+                                        minVerticalPadding: 0,
+                                        contentPadding: EdgeInsets.zero,
+                                        visualDensity: VisualDensity(
+                                            vertical: -4), // to compact
+                                        dense: true,
+                                        title: Text('Discount'),
+                                        trailing: Text(
+                                            '${CurrencyFormat.convertToIdr(x.first.discamt, 0)}'),
+                                      ),
+                                      ListTile(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 0.0, right: 0.0),
+                                        visualDensity: VisualDensity(
+                                            vertical: -4), // to compact
+                                        dense: true,
+                                        title: Text('Pajak'),
+                                        trailing: Text(
+                                            '${CurrencyFormat.convertToIdr(x.first.taxamt, 0)}'),
+                                      ),
+                                      ListTile(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 0.0, right: 0.0),
+                                        visualDensity: VisualDensity(
+                                            vertical: -4), // to compact
+                                        dense: true,
+                                        title: Text('Service'),
+                                        trailing: Text(
+                                            '${CurrencyFormat.convertToIdr(x.first.serviceamt, 0)}'),
+                                      ),
+                                      ListTile(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 0.0, right: 0.0),
+                                        visualDensity: VisualDensity(
+                                            vertical: -4), // to compact
+                                        dense: true,
+                                        title: Text('Grand total'),
+                                        trailing: Text(
+                                            '${CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0)}'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                              return Container();
+                            })),
+                  ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   //   children: [

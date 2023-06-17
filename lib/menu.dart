@@ -14,12 +14,16 @@ import 'package:posq/setting/customer/classcustomersmobile.dart';
 import 'package:posq/setting/classselectoutletmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/setting/pegawai/listpegawai.dart';
+import 'package:posq/setting/pegawai/pegawaimainmobile.dart';
 import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
 import 'package:posq/userinfo.dart';
 import 'package:uuid/uuid.dart';
 import 'package:posq/classui/api.dart';
+
+import 'setting/pegawai/pegawaimaintab.dart';
 
 typedef void StringCallback(Outlet val);
 
@@ -215,6 +219,11 @@ class _MenuMainState extends State<MenuMain> {
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: accesslist.contains('pegawai') == true
                     ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PegawaiMainMobile()),
+                        );
                         selected = !selected;
                         setState(() {});
                       }
@@ -350,7 +359,26 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/staff.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
-                onpressed: () {},
+                onpressed: accesslist.contains('pegawai') == true
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListPegawaiClass()),
+                        );
+                        selected = !selected;
+                        setState(() {});
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses pegawai",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
                 name: 'Pegawai',
               ),
               SizedBox(

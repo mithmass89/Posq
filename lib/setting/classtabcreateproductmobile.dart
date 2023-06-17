@@ -340,6 +340,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                             savingimage: widget.imagepath,
                             fromedit: widget.fromedit,
                             imagepath: widget.imagepath,
+                            frompaket: false,
                             fromtemplateprint: false,
                             height: MediaQuery.of(context).size.height * 0.1,
                             width: MediaQuery.of(context).size.width * 0.3,

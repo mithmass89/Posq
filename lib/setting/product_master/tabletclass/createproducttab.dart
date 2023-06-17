@@ -132,6 +132,7 @@ class _CreateproducttabState extends State<Createproducttab>
     print(data);
     await ClassApi.insertProduct(
         Item(
+              packageflag: 0,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
           itemdesc: data.itemdesc.toString(),
@@ -261,6 +262,7 @@ class _CreateproducttabState extends State<Createproducttab>
                             var random = uuid.v4();
                             await _createProduct(
                                 Item(
+                                      packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,
                                   itemcode: random,

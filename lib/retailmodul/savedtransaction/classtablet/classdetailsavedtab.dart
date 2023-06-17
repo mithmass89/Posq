@@ -38,8 +38,8 @@ class _DetailSavedTransactionTabState extends State<DetailSavedTransactionTab>
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
+    // handler = DatabaseHandler();
+    // handler.initializeDB(databasename);
     _controller = TabController(length: 2, vsync: this);
   }
 
@@ -47,6 +47,21 @@ class _DetailSavedTransactionTabState extends State<DetailSavedTransactionTab>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.print)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.send)),
+          ButtonNoIcon(
+            onpressed: () async {},
+            textcolor: Colors.white,
+            color: Colors.orange,
+            name: haspayment == true ? 'Reopen' : 'Selesaikan',
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.width * 0.1,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.02,
+          )
+        ],
         title: Column(
           children: [
             Text(widget.trno),
@@ -56,76 +71,48 @@ class _DetailSavedTransactionTabState extends State<DetailSavedTransactionTab>
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.95,
-            height: MediaQuery.of(context).size.height * 0.08,
-            child: TabBar(
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.grey,
-                controller: _controller,
-                tabs: [
-                  Text('Detail Transaksi'),
-                  Text('Detail Pelanggan'),
-                ]),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.95,
-            height: MediaQuery.of(context).size.width * 0.01,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.95,
-            height: MediaQuery.of(context).size.height * 0.70,
-            child: TabBarView(controller: _controller, children: [
-              TabDetailTrnoTab(
-                status: 'Belum Lunas',
-                trno: widget.trno,
-                outletinfo: widget.outletinfo,
-                pscd: widget.pscd,
-              ),
-              ClassDetailPelanggan(
-                trno: widget.trno,
-              ),
-            ]),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ButtonNoIcon(
-                onpressed: () async {
-                  await Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ClassRetailMainMobile(
-                                fromsaved: true,
-                                outletinfo: widget.outletinfo,
-                                pscd: widget.pscd,
-                                qty: 0,
-                                trno: widget.trno,
-                              )));
-                },
-                textcolor: Colors.white,
-                color: Colors.orange,
-                name: haspayment == true ? 'Reopen' : 'Selesaikan',
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.3,
-              ),
-              ButtonNoIcon(
-                onpressed: () {},
-                textcolor: Colors.white,
-                color: Colors.orange,
-                name: 'Print',
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.3,
-              ),
-              ButtonNoIcon(
-                onpressed: () {},
-                textcolor: Colors.white,
-                color: Colors.orange,
-                name: 'Kirim',
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.3,
-              ),
-            ],
+          // SizedBox(
+          //   width: MediaQuery.of(context).size.width * 0.95,
+          //   height: MediaQuery.of(context).size.width * 0.01,
+          // ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.95,
+              height: MediaQuery.of(context).size.height * 0.82,
+              child: Row(children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.74,
+                  child: Column(
+                    children: [
+                      Text('Detail Transaksi'),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.03,
+                      ),
+                      TabDetailTrnoTab(
+                        status: 'Belum Lunas',
+                        trno: widget.trno,
+                        outletinfo: widget.outletinfo,
+                        pscd: widget.pscd,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.70,
+                  child: Column(
+                    children: [
+                      Text('Detail Info Pelanggan'),
+                      ClassDetailPelanggan(
+                        trno: widget.trno,
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+            ),
           ),
         ],
       ),

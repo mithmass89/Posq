@@ -225,6 +225,7 @@ class _EditproductState extends State<Editproduct>
 
                   await ClassApi.updateProduct(
                       Item(
+                            packageflag: 0,
                         multiprice: multiprice,
                         trackstock: widget.productcode!.trackstock,
                         outletcode: widget.productcode!.outletcode,

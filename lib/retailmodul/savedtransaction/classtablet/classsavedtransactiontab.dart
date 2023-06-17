@@ -58,7 +58,7 @@ class _ClassSavedTransactionTabState extends State<ClassSavedTransactionTab> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width * 0.95,
-              height: MediaQuery.of(context).size.height * 0.08,
+              height: MediaQuery.of(context).size.height * 0.1,
               child: TextFieldMobile2(
                   label: 'Search',
                   suffixIcon: search.text.length != 0

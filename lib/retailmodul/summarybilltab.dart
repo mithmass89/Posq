@@ -469,7 +469,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                 context: context,
                                 builder: (BuildContext context) =>
                                     DialogSplitTab(
-                                      fromsaved: widget.fromsaved!,
+                                      fromsaved: false,
                                       datatrans: widget.listdata,
                                       outletinfo: widget.outletinfo,
                                       balance:

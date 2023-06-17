@@ -560,6 +560,231 @@ class _DialogSetMenuState extends State<DialogSetMenu>
   }
 }
 
+class DialogSetPackage extends StatefulWidget {
+  final TextEditingController controllerpackage;
+  final String packagecode;
+  final String note;
+  // final String imagepath;
+  DialogSetPackage({
+    Key? key,
+    required this.controllerpackage,
+    required this.packagecode,
+    required this.note,
+    // required this.imagepath,
+  }) : super(key: key);
+
+  @override
+  State<DialogSetPackage> createState() => _DialogSetPackageState();
+}
+
+class _DialogSetPackageState extends State<DialogSetPackage>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController search = TextEditingController();
+  TabController? controller;
+  int? index = 0;
+  String query = '';
+  List<Package> selecteditem = [];
+  var selectedindex;
+  List<bool> _value = [];
+  bool selected = false;
+  List<Item> data = [];
+  Future<List<Item>> getitemOutlet(query) async {
+    data = await ClassApi.getItemList(pscd, dbname, search.text);
+    setState(() {});
+    return data;
+  }
+
+  searching() {
+    data = data
+        .where(
+            (element) => element.itemdesc!.toLowerCase().contains(search.text))
+        .toList();
+    setState(() {});
+    print(data.length);
+  }
+
+  bool isloading = true;
+
+  @override
+  void initState() {
+    controller =
+        TabController(vsync: this, length: 2, initialIndex: index!.toInt());
+    super.initState();
+    getitemOutlet(query);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          title: Text('Pilih Set Menu'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(selecteditem);
+                },
+                child: Text('Oke'))
+          ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFieldMobile2(
+                    suffixIcon: search.text.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              search.clear();
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.close),
+                          )
+                        : null,
+                    controller: search,
+                    onChanged: (value) {
+                      searching();
+                      setState(() {});
+                      if (value == '' || value.isEmpty) {
+                        getitemOutlet(value);
+                        setState(() {});
+                      }
+                    },
+                    typekeyboard: TextInputType.text),
+                Container(
+                    height: 300,
+                    width: 300,
+                    child: ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              onTap: () {
+                                print(selecteditem.where((element) =>
+                                    element.itemcode == data[index].itemcode));
+                                if (selecteditem.any((item) =>
+                                        item.itemcode ==
+                                        data[index].itemcode) ==
+                                    true) {
+                                  selecteditem.removeWhere((element) =>
+                                      element.itemcode == data[index].itemcode);
+                                  setState(() {});
+                                } else {
+                                  selecteditem.add(Package(
+                                      slsfl: 1,
+                                      active: 1,
+                                      packagecd: widget.packagecode,
+                                      packagedesc:
+                                          widget.controllerpackage.text,
+                                      packagenote: widget.note,
+                                      itemcode: data[index].itemcode!,
+                                      itemdesc: data[index].itemdesc!,
+                                      qty: 1));
+                                  setState(() {});
+                                }
+
+                                print(selecteditem);
+                              },
+                              dense: true,
+                              title: Text(
+                                data[index].itemdesc!,
+                                style: TextStyle(
+                                  color: selecteditem.any((item) =>
+                                          item.itemcode == data[index].itemcode)
+                                      ? Colors.blue
+                                      : Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+                        })),
+              ],
+            ),
+          ));
+    });
+  }
+}
+
+class DialogRoleStaff extends StatefulWidget {
+  DialogRoleStaff({
+    Key? key,
+
+    // required this.imagepath,
+  }) : super(key: key);
+
+  @override
+  State<DialogRoleStaff> createState() => _DialogRoleStaffState();
+}
+
+class _DialogRoleStaffState extends State<DialogRoleStaff>
+    with SingleTickerProviderStateMixin {
+  TabController? controller;
+  int? index = 0;
+  String query = '';
+  List<Pegawai> selectedRole = [];
+  var selectedindex;
+  List<bool> _value = [];
+  bool selected = false;
+  List<Pegawai> data = [];
+  Future<List<Pegawai>> getRoleStaff(query) async {
+    data = await ClassApi.getRoleStaff('');
+    setState(() {});
+    return data;
+  }
+
+  bool isloading = true;
+
+  @override
+  void initState() {
+    controller =
+        TabController(vsync: this, length: 2, initialIndex: index!.toInt());
+    super.initState();
+    getRoleStaff(query);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          title: Text('Pilih staff role'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+          ],
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(data[index].joblevel),
+                  onTap: () {
+                    selectedRole.add(data[index]);
+                    Navigator.of(context).pop(selectedRole);
+                  },
+                );
+              },
+            ),
+          ));
+    });
+  }
+}
+
 class DialogTipeCondiment extends StatefulWidget {
   const DialogTipeCondiment({
     Key? key,
@@ -1211,6 +1436,66 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
   }
 }
 
+class DialogDeactivePackage extends StatefulWidget {
+  final String itemcode;
+
+  const DialogDeactivePackage({
+    Key? key,
+    required this.itemcode,
+  }) : super(key: key);
+
+  @override
+  State<DialogDeactivePackage> createState() => _DialogDeactivePackageState();
+}
+
+class _DialogDeactivePackageState extends State<DialogDeactivePackage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [Text('Batalkan transaksi?')],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                  width: MediaQuery.of(context).size.width * 0.02,
+                ),
+                Row(
+                  children: [],
+                )
+              ],
+            )),
+        title: Text('Deactive Paket'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Batal')),
+          TextButton(
+              onPressed: () async {
+                ClassApi.deActivePackageMenu(widget.itemcode, dbname);
+                Navigator.of(context).pop();
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
 ////payment class  ////
 
 /// end dialogpayment ///
@@ -1503,7 +1788,8 @@ class DialogClassEwallet extends StatefulWidget {
     this.url,
     this.fromtrfbank,
     required this.datatrans,
-    required this.fromsaved, required this.fromsplit,
+    required this.fromsaved,
+    required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -1619,7 +1905,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                               fromsplit: widget.fromsplit,
+                              fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: false,
@@ -1678,7 +1964,8 @@ class DialogClassBankTransfer extends StatefulWidget {
     this.grossmaount,
     required this.paymenttype,
     required this.datatrans,
-    required this.fromsaved, required this.fromsplit,
+    required this.fromsaved,
+    required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -1805,7 +2092,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                               fromsplit: widget.fromsplit,
+                              fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: true,
@@ -1865,7 +2152,8 @@ class DialogClassMandiribiller extends StatefulWidget {
     this.grossmaount,
     required this.paymenttype,
     required this.datatrans,
-    required this.fromsaved, required this.fromsplit,
+    required this.fromsaved,
+    required this.fromsplit,
   }) : super(key: key);
 
   @override
@@ -2018,7 +2306,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
-                               fromsplit: widget.fromsplit,
+                              fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
                               frombanktransfer: true,

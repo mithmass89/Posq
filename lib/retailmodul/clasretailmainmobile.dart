@@ -714,7 +714,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                               flex: 1,
                                               child: IconButton(
                                                 icon: Icon(
-                                                  Icons.table_bar,
+                                                  Icons.people,
                                                 ),
                                                 iconSize: 25,
                                                 color: Colors.blueGrey,
@@ -762,7 +762,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                   builder: (BuildContext context) {
                                     return DialogClassSimpan(
                                       datatrans: listdata!.first,
-                                      fromsaved: widget.fromsaved!,
+                                      fromsaved: false,
                                       outletinfo: widget.outletinfo,
                                       pscd: widget.outletinfo.outletcd,
                                       trno: trno == ''

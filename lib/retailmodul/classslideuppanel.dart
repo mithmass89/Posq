@@ -256,23 +256,23 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                             });
                       },
                     )),
-                Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.table_bar,
-                      ),
-                      iconSize: 25,
-                      color: Colors.blueGrey,
-                      splashColor: Colors.blueGrey,
-                      onPressed: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogCustomerList();
-                            });
-                      },
-                    )),
+                // Expanded(
+                //     flex: 1,
+                //     child: IconButton(
+                //       icon: Icon(
+                //         Icons.table_bar,
+                //       ),
+                //       iconSize: 25,
+                //       color: Colors.blueGrey,
+                //       splashColor: Colors.blueGrey,
+                //       onPressed: () async {
+                //         await showDialog(
+                //             context: context,
+                //             builder: (BuildContext context) {
+                //               return DialogCustomerList();
+                //             });
+                //       },
+                //     )),
               ],
             ),
           ),
@@ -504,6 +504,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                 dataedit:
                                                                     datadetail,
                                                                 data: Item(
+                                                                      packageflag: 0,
                                                                     multiprice:
                                                                         multiprice,
                                                                     itemcode: datadetail[index]

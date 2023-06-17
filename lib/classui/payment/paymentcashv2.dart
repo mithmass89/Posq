@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
+import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
@@ -136,12 +137,12 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         totalamt: double.parse(widget.amountcash.text),
         framtrmn: double.parse(widget.amountcash.text),
         amtrmn: double.parse(widget.amountcash.text),
-        trdesc: 'Payment cash ${widget.trno}',
-        trdesc2: 'Payment cash ${widget.trno}',
+        trdesc: 'Payment cash ',
+        trdesc2: 'Payment cash',
         compcd: 'CASH',
         compdesc: 'CASH',
         active: 1,
-        usercrt: 'Admin',
+        usercrt: usercd,
         slstp: '1',
         currcd: 'IDR');
     IafjrnhdClass listiafjrnhd = iafjrnhd;
@@ -159,22 +160,38 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         trtm: '00:00',
         disccd: '',
         pax: '1',
-        pymtmthd: 'CASH',
+        pymtmthd: 'REFUND',
         ftotamt: widget.result.toDouble(),
         totalamt: widget.result.toDouble(),
         framtrmn: widget.result.toDouble(),
         amtrmn: widget.result.toDouble(),
-        compcd: 'CASH',
+        compcd: 'REFUND',
         compdesc: 'REFUND',
-        trdesc: 'Refund cash ${widget.trno}',
-        trdesc2: 'Refund cash ${widget.trno}',
+        trdesc: 'Refund cash ',
+        trdesc2: 'Refund cash ',
         active: 1,
-        usercrt: 'Admin',
+        usercrt: usercd,
         slstp: '1',
         currcd: 'IDR');
     IafjrnhdClass listiafjrnhd = iafjrnhd;
     print(iafjrnhd);
     return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
+  }
+
+ String formatToIDR(String value) {
+    var amount = double.tryParse(value);
+    if (amount != null) {
+      var formatter = NumberFormat.currency(
+        locale: 'id_IDR',
+        symbol: 'Rp',
+        decimalDigits: 0,
+      );
+
+      formatter = NumberFormat('#,###', 'id_IDR');
+
+      return formatter.format(amount);
+    }
+    return value;
   }
 
   @override
@@ -198,6 +215,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
               checkcontroller();
               setState(() {
                 widget.result = widget.balance - num.parse(value);
+       
               });
               print(widget.result);
               pesanResult();

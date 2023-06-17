@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/login.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
+import 'package:posq/userinfo.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -312,6 +313,23 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                                             '${widget.email}$randomNumber',
                                                             'pending',
                                                             widget.email);
+                                                    await ClassApi
+                                                            .getAccessUser(
+                                                                usercd)
+                                                        .then((valueds) {
+                                                      print(valueds);
+                                                      for (var x in valueds) {
+                                                        accesslist
+                                                            .add(x['access']);
+                                                      }
+                                                    });
+                                                    await ClassApi
+                                                            .getAccessSettingsUser()
+                                                        .then((valuess) {
+                                                      strictuser = valuess[0]
+                                                              ['strictuser']
+                                                          .toString();
+                                                    });
                                                     print(value);
                                                   });
                                                 },
@@ -614,8 +632,7 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                                         style: TextStyle(
                                                             fontSize: 24,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold,
+                                                                FontWeight.bold,
                                                             color:
                                                                 Colors.white),
                                                       ),
@@ -801,8 +818,7 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                                         style: TextStyle(
                                                             fontSize: 24,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold,
+                                                                FontWeight.bold,
                                                             color:
                                                                 Colors.white),
                                                       ),
@@ -946,7 +962,8 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                         ],
                       ),
                     );
-                  } return Container();
+                  }
+                  return Container();
                 }),
               );
             }

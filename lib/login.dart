@@ -162,7 +162,7 @@ class _LoginState extends State<Login> {
                                 .then((value) async {
                               if (value.isEmpty) {
                                 Fluttertoast.showToast(
-                                    msg: "User Not Found",
+                                    msg: "Username / password salah",
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.CENTER,
                                     timeInSecForIosWeb: 1,
@@ -171,15 +171,19 @@ class _LoginState extends State<Login> {
                                     textColor: Colors.white,
                                     fontSize: 16.0);
                               } else {
+                                usercd = value[0]['usercd'];
                                 await ClassApi.checkUserFromOauth(
                                         email.text, 'profiler')
                                     .then((values) async {
                                   if (values.isNotEmpty) {
                                     print(values);
+
                                     setState(() {
                                       usercd = values[0]['usercd'];
                                       imageurl = values[0]['urlpict'];
                                       emaillogin = email.text;
+                                      subscribtion = value[0]['subscription'];
+                                      paymentcheck = value[0]['paymentcheck'];
                                     });
                                     await ClassApi.checkVerifiedPayment(
                                             emaillogin)
@@ -245,7 +249,7 @@ class _LoginState extends State<Login> {
                                     });
                                   } else {
                                     Fluttertoast.showToast(
-                                        msg: "User Not Found",
+                                        msg: "Username / password salah",
                                         toastLength: Toast.LENGTH_LONG,
                                         gravity: ToastGravity.CENTER,
                                         timeInSecForIosWeb: 1,
@@ -392,7 +396,7 @@ class _LoginState extends State<Login> {
                                   });
                                 } else {
                                   Fluttertoast.showToast(
-                                      msg: "User Not Found",
+                                      msg: "Username / password salah",
                                       toastLength: Toast.LENGTH_LONG,
                                       gravity: ToastGravity.CENTER,
                                       timeInSecForIosWeb: 1,
@@ -555,7 +559,7 @@ class _LoginState extends State<Login> {
                                   .then((value) async {
                                 if (value.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "User Not Found",
+                                      msg: "Username / password salah",
                                       toastLength: Toast.LENGTH_LONG,
                                       gravity: ToastGravity.CENTER,
                                       timeInSecForIosWeb: 1,
@@ -564,17 +568,20 @@ class _LoginState extends State<Login> {
                                       textColor: Colors.white,
                                       fontSize: 16.0);
                                 } else {
+                                  usercd = value[0]['usercd'];
                                   await ClassApi.checkUserFromOauth(
                                           email.text, 'profiler')
                                       .then((values) async {
                                     if (values.isNotEmpty) {
                                       print(values);
 
-                                      usercd = values[0]['usercd'];
+                                      // usercd = value[0]['usercd'];
                                       setState(() {
                                         usercd = values[0]['usercd'];
                                         imageurl = values[0]['urlpict'];
                                         emaillogin = email.text;
+                                        subscribtion = value[0]['subscription'];
+                                        paymentcheck = value[0]['paymentcheck'];
                                       });
                                       await ClassApi.checkVerifiedPayment(
                                               emaillogin)
@@ -598,40 +605,44 @@ class _LoginState extends State<Login> {
                                           await ClassApi.getOutlets(usercd)
                                               .then((value) async {
                                             if (value.isNotEmpty) {
-                                                await ClassApi.getOutlets(usercd)
-                                              .then((valued) {
-                                            dbname = valued[0]['outletcode'];
-                                            pscd = valued[0]['outletcode'];
-                                            for (var x in valued) {
-                                              listoutlets.add(x['outletcode']);
-                                            }
-                                          });
-                                          await ClassApi.getAccessUser(usercd)
-                                              .then((valueds) {
-                                            for (var x in valueds) {
-                                              accesslist.add(x['access']);
-                                            }
-                                          });
-                                          await ClassApi.getAccessSettingsUser()
-                                              .then((valuess) {
-                                            strictuser = valuess[0]
-                                                    ['strictuser']
-                                                .toString();
-                                          });
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Mainapps()),
-                                                  (Route<dynamic> route) =>
-                                                      false);
+                                              await ClassApi.getOutlets(usercd)
+                                                  .then((valued) {
+                                                dbname =
+                                                    valued[0]['outletcode'];
+                                                pscd = valued[0]['outletcode'];
+                                                for (var x in valued) {
+                                                  listoutlets
+                                                      .add(x['outletcode']);
+                                                }
+                                              });
+                                              await ClassApi.getAccessUser(
+                                                      usercd)
+                                                  .then((valueds) {
+                                                for (var x in valueds) {
+                                                  accesslist.add(x['access']);
+                                                }
+                                              });
+                                              await ClassApi
+                                                      .getAccessSettingsUser()
+                                                  .then((valuess) {
+                                                strictuser = valuess[0]
+                                                        ['strictuser']
+                                                    .toString();
+                                              });
+                                              Navigator.of(context)
+                                                  .pushAndRemoveUntil(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Mainapps()),
+                                                      (Route<dynamic> route) =>
+                                                          false);
                                             } else {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         ClassSetupProfileMobile(
-                                                          username: username,
+                                                          username: usercd,
                                                         )),
                                               );
                                             }
@@ -668,7 +679,7 @@ class _LoginState extends State<Login> {
                                       });
                                     } else {
                                       Fluttertoast.showToast(
-                                          msg: "User Not Found",
+                                          msg: "Username / password salah",
                                           toastLength: Toast.LENGTH_LONG,
                                           gravity: ToastGravity.CENTER,
                                           timeInSecForIosWeb: 1,

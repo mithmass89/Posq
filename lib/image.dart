@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:posq/classimagetab.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/setting/menupackage/createpackagemobile.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/menu.dart';
 import 'package:posq/setting/product_master/classeditproductv2mob.dart';
 
+import 'setting/menupackage/classtab/createpackagetab.dart';
 import 'setting/printer/templateprinter.dart';
 
 ClassApi? hosts;
@@ -18,6 +20,8 @@ class ImageFromGalleryEx extends StatefulWidget {
   final double? height;
   final double? width;
   final bool? fromedit;
+  final bool? frompaket;
+  final bool? frompakettab;
   late String? imagepath;
   final bool fromtemplateprint;
   ImageFromGalleryEx(this.type,
@@ -28,7 +32,9 @@ class ImageFromGalleryEx extends StatefulWidget {
       this.width,
       this.imagepath,
       this.fromedit,
-      required this.fromtemplateprint})
+      required this.fromtemplateprint,
+      required this.frompaket,
+      this.frompakettab})
       : super(key: key);
   final StringCallback? callback;
   @override
@@ -82,6 +88,14 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                         child: Image.network(
                           widget.imagepath!,
                           fit: BoxFit.fill,
+                          filterQuality: FilterQuality.low,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return Image.network(
+                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                              fit: BoxFit.fill,
+                            );
+                          },
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -124,14 +138,14 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                     });
                     namefile = image.name;
                     _selectedFile = await image.readAsBytes();
-                    print(_selectedFile);
+                    // print(_selectedFile);
                     await hosts!
                         .uploadFiles(_selectedFile, namefile)
                         .whenComplete(() {
                       widget.imagepath = '$api/getfile/$namefile';
                       // Editproduct.of(context)!.string =
                       //     '$api/getfile/$namefile';
-                      print('ini url barang : $api/getfile/$namefile');
+                      // print('ini url barang : $api/getfile/$namefile');
                       setState(() {});
                     });
 
@@ -140,6 +154,12 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                           '$api/getfile/$namefile';
                     } else if (widget.fromtemplateprint == true) {
                       TemplatePrinter.of(context)!.string =
+                          '$api/getfile/$namefile';
+                    } else if (widget.frompaket == true) {
+                      BuatPaketMobile.of(context)!.string =
+                          '$api/getfile/$namefile';
+                    } else if (widget.frompakettab == true) {
+                      BuatPaketTab.of(context)!.string =
                           '$api/getfile/$namefile';
                     } else {
                       Createproduct.of(context)!.string =

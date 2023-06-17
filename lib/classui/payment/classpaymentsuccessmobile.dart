@@ -466,7 +466,7 @@ ${payment.reduce((value, element) => value + element)}
                                   } else {
                                     if (widget.fromsaved == true) {
                                       await checkTrno();
-                                         await ClassApi.cleartable(
+                                      await ClassApi.cleartable(
                                           dbname, widget.trno);
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
@@ -530,6 +530,7 @@ ${payment.reduce((value, element) => value + element)}
                                                       false);
                                         }
                                       });
+                                    
                                     } else {
                                       await updateTrno();
                                       await ClassApi.cleartable(

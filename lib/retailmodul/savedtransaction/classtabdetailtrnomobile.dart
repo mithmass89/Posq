@@ -77,11 +77,11 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
                               ListTile(
                                 dense: true,
                                 visualDensity: VisualDensity(vertical: -2), // t
-                                leading: Text('${x[index].qty.toString()} X'),
+                                leading: Text('${x[index].qty.toString()} X',style: TextStyle(color: x[index].split==1?Colors.black:Colors.red),),
                                 title: Text(x[index].itemdesc.toString(),
-                                    style: TextStyle(fontSize: 14)),
+                                    style: TextStyle(fontSize: 14,color: x[index].split==1?Colors.black:Colors.red)),
                                 trailing: Text(
-                                    '${CurrencyFormat.convertToIdr(x[index].totalaftdisc, 0)}'),
+                                    '${CurrencyFormat.convertToIdr(x[index].totalaftdisc, 0)}',style: TextStyle(color: x[index].split==1?Colors.black:Colors.red)),
                               ),
                               Divider(
                                 height: 2,

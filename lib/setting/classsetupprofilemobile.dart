@@ -109,7 +109,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Buat Usahamu',
+          title: Text('Buat Usahamu $usercd',
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
       body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
@@ -265,12 +265,25 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                 outletcd: outletcd.text,
                                                 profile: outletcd.text));
                                             await ClassApi.insertOutletUser(
-                                                outletcd.text);
+                                                outletcd.text, usercd);
                                             // await _insertGntrantp(outletcd.text);
                                             setState(() {
                                               _isloading = false;
                                               pscd = outletcd.text;
                                               dbname = outletcd.text;
+                                            });
+                                            await ClassApi.getAccessUser(usercd)
+                                                .then((valueds) {
+                                              for (var x in valueds) {
+                                                accesslist.add(x['access']);
+                                              }
+                                            });
+                                            await ClassApi
+                                                    .getAccessSettingsUser()
+                                                .then((valuess) {
+                                              strictuser = valuess[0]
+                                                      ['strictuser']
+                                                  .toString();
                                             });
                                             EasyLoading.dismiss();
                                             Navigator.pushReplacement(
@@ -319,7 +332,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
             children: [
               Container(
                 alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width*0.65,
+                width: MediaQuery.of(context).size.width * 0.65,
                 child: Form(
                   key: formKey,
                   child: Stack(
@@ -342,8 +355,8 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                       padding: EdgeInsets.all(15),
                                       alignment: Alignment.centerLeft,
                                       child: const Text('Informasi Usaha',
-                                          style:
-                                              TextStyle(fontWeight: FontWeight.bold)),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
                                     ),
                                     TextFieldMobile2(
                                       validator: (value) {
@@ -398,7 +411,8 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
                                         'Alamat Usaha',
-                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     TextFieldMobile2(
@@ -440,18 +454,22 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                   children: [
                                     SizedBox(
                                       height:
-                                          MediaQuery.of(context).size.height * 0.05,
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                     ),
                                     LoadingButton(
                                       isLoading: _isloading,
                                       color: Colors.orange,
                                       textcolor: Colors.white,
                                       height:
-                                          MediaQuery.of(context).size.height * 0.05,
-                                      width: MediaQuery.of(context).size.width * 0.9,
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
                                       onpressed: _isloading == false
                                           ? () async {
-                                              if (formKey.currentState!.validate()) {
+                                              if (formKey.currentState!
+                                                  .validate()) {
                                                 usercd = widget.username;
                                                 setState(() {
                                                   _isloading = true;
@@ -464,19 +482,38 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                   await _createProfile(Outlet(
                                                       outletname:
                                                           namaoutlet.toString(),
-                                                      telp:
-                                                          num.parse(telp.toString()),
-                                                      kodepos: kodepos.toString(),
-                                                      alamat: controllerDetail.text,
+                                                      telp: num.parse(
+                                                          telp.toString()),
+                                                      kodepos:
+                                                          kodepos.toString(),
+                                                      alamat:
+                                                          controllerDetail.text,
                                                       outletcd: outletcd.text,
                                                       profile: outletcd.text));
-                                                  await ClassApi.insertOutletUser(
-                                                      outletcd.text);
+                                                  await ClassApi
+                                                      .insertOutletUser(
+                                                          outletcd.text,
+                                                          usercd);
                                                   // await _insertGntrantp(outletcd.text);
                                                   setState(() {
                                                     _isloading = false;
                                                     pscd = outletcd.text;
                                                     dbname = outletcd.text;
+                                                  });
+                                                  await ClassApi.getAccessUser(
+                                                          usercd)
+                                                      .then((valueds) {
+                                                    for (var x in valueds) {
+                                                      accesslist
+                                                          .add(x['access']);
+                                                    }
+                                                  });
+                                                  await ClassApi
+                                                          .getAccessSettingsUser()
+                                                      .then((valuess) {
+                                                    strictuser = valuess[0]
+                                                            ['strictuser']
+                                                        .toString();
                                                   });
                                                   EasyLoading.dismiss();
                                                   Navigator.pushReplacement(
@@ -487,17 +524,20 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                               chartdata: [],
                                                               monthlysales: [],
                                                               todaysale: [],
-                                                              profileusaha: Outlet(
-                                                                outletname: namaoutlet
-                                                                    .toString(),
+                                                              profileusaha:
+                                                                  Outlet(
+                                                                outletname:
+                                                                    namaoutlet
+                                                                        .toString(),
                                                                 telp: num.parse(
                                                                     telp.toString()),
                                                                 kodepos: kodepos
                                                                     .toString(),
-                                                                alamat:
-                                                                    detail.toString(),
+                                                                alamat: detail
+                                                                    .toString(),
                                                                 outletcd:
-                                                                    outletcd.text,
+                                                                    outletcd
+                                                                        .text,
                                                                 trnonext: 1,
                                                                 trnopynext: 1,
                                                               ),

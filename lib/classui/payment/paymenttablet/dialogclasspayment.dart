@@ -295,7 +295,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         framtrmn: result!.toDouble(),
         amtrmn: result!.toDouble(),
         compcd: compcode,
-        compdesc: pymtmthd,
+        compdesc: 'REFUND',
         trdesc: 'Refund cash ${widget.trno}',
         trdesc2: 'Refund cash ${widget.trno}',
         active: 1,

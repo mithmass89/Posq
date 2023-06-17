@@ -168,7 +168,9 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                                       .width *
                                                   0.2,
                                               child: Image.network(
-                                               data![index].pathimage!,
+                                                data![index].pathimage!,
+                                                filterQuality:
+                                                    FilterQuality.medium,
                                                 fit: BoxFit.fill,
                                                 loadingBuilder:
                                                     (BuildContext context,
@@ -234,7 +236,6 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                           child: ListView.builder(
                             itemCount: x.length,
                             itemBuilder: (BuildContext context, int index) {
-                              var _image = File(x[index].pathimage.toString());
                               return Column(
                                 children: [
                                   Dismissible(
@@ -270,46 +271,56 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                           });
                                         },
                                         leading: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                              width: 0.5,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 0.5,
+                                              ),
                                             ),
-                                          ),
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.1,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.2,
-                                          child:  Image.network(
-                                               data![index].pathimage!,
-                                                fit: BoxFit.fill,
-                                                loadingBuilder:
-                                                    (BuildContext context,
-                                                        Widget child,
-                                                        ImageChunkEvent?
-                                                            loadingProgress) {
-                                                  if (loadingProgress == null)
-                                                    return child;
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      value: loadingProgress
-                                                                  .expectedTotalBytes !=
-                                                              null
-                                                          ? loadingProgress
-                                                                  .cumulativeBytesLoaded /
-                                                              loadingProgress
-                                                                  .expectedTotalBytes!
-                                                          : null,
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                        ),
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.1,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.2,
+                                            child: Image.network(
+                                              data![index].pathimage!,
+                                              fit: BoxFit.fill,
+                                              filterQuality:
+                                                  FilterQuality.medium,
+                                              errorBuilder:
+                                                  (BuildContext context,
+                                                      Object exception,
+                                                      StackTrace? stackTrace) {
+                                                return Image.network(
+                                                  'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                                                  fit: BoxFit.fill,
+                                                );
+                                              },
+                                              loadingBuilder:
+                                                  (BuildContext context,
+                                                      Widget child,
+                                                      ImageChunkEvent?
+                                                          loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                        ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                            loadingProgress
+                                                                .expectedTotalBytes!
+                                                        : null,
+                                                  ),
+                                                );
+                                              },
+                                            )),
                                         contentPadding: EdgeInsets.all(8.0),
                                         title: Text(x[index].itemdesc!),
                                         subtitle:
@@ -376,9 +387,9 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                 bottom: MediaQuery.of(context).size.height * 0.01,
                 left: MediaQuery.of(context).size.height * 0.02,
                 child: ButtonNoIcon2(
-                  color: Colors.blue,
+                  color: Colors.orange,
                   textcolor: Colors.white,
-                  name: 'Add Product',
+                  name: 'Buat Produk',
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.9,
                   onpressed: () {

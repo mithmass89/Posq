@@ -32659,8 +32659,8 @@ com.google.android.gms.internal.vision.zzma:
     private static final long zzv
     private static final int zzw
 androidx.lifecycle.ViewModelProvider$NewInstanceFactory:
-    public synthetic androidx.lifecycle.ViewModel create(java.lang.Class,androidx.lifecycle.viewmodel.CreationExtras)
     public synthetic androidx.lifecycle.ViewModel create(java.lang.Class)
+    public synthetic androidx.lifecycle.ViewModel create(java.lang.Class,androidx.lifecycle.viewmodel.CreationExtras)
     public static final androidx.lifecycle.ViewModelProvider$NewInstanceFactory$Companion Companion
 com.google.android.gms.internal.measurement.zzln
 com.google.android.gms.measurement.internal.zzjn:
@@ -33846,12 +33846,12 @@ com.google.android.gms.internal.firebase-auth-api.zzfu:
     final synthetic com.google.android.gms.internal.firebase-auth-api.zzfv zza
 androidx.appcompat.view.StandaloneActionMode:
     private boolean mFocusable
-io.flutter.plugin.platform.PlatformView$-CC
+io.flutter.view.TextureRegistry$SurfaceTextureEntry$-CC
 androidx.lifecycle.DefaultLifecycleObserver$-CC:
     public static void $default$onResume(androidx.lifecycle.DefaultLifecycleObserver,androidx.lifecycle.LifecycleOwner)
-io.flutter.view.TextureRegistry$SurfaceTextureEntry$-CC
-androidx.lifecycle.LifecycleRegistryOwner$-CC
-androidx.core.view.MenuProvider$-CC
 io.flutter.plugin.common.BinaryMessenger$-CC:
     public static io.flutter.plugin.common.BinaryMessenger$TaskQueue $default$makeBackgroundTaskQueue(io.flutter.plugin.common.BinaryMessenger,io.flutter.plugin.common.BinaryMessenger$TaskQueueOptions)
     public static void $default$setMessageHandler(io.flutter.plugin.common.BinaryMessenger,java.lang.String,io.flutter.plugin.common.BinaryMessenger$BinaryMessageHandler,io.flutter.plugin.common.BinaryMessenger$TaskQueue)
+io.flutter.plugin.platform.PlatformView$-CC
+androidx.core.view.MenuProvider$-CC
+androidx.lifecycle.LifecycleRegistryOwner$-CC

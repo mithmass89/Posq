@@ -113,6 +113,7 @@ class _Createproductv3State extends State<Createproductv3>
     print(data);
     await ClassApi.insertProduct(
         Item(
+              packageflag: 0,
           multiprice: multiprice,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
@@ -236,6 +237,7 @@ class _Createproductv3State extends State<Createproductv3>
                             var random = uuid.v4();
                             await _createProduct(
                                 Item(
+                                      packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,
                                   itemcode: random,

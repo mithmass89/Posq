@@ -62,6 +62,74 @@ class Outlet {
   }
 }
 
+class Pegawai {
+  final String? jobcode;
+  final String joblevel;
+  final String? note;
+
+  Pegawai({
+    this.jobcode,
+    required this.joblevel,
+    this.note,
+  });
+
+  Pegawai.fromJson(Map<String, dynamic> res)
+      : jobcode = res["jobcode"],
+        joblevel = res["joblevel"],
+        note = res['note'];
+
+  @override
+  String toString() {
+    return '{"jobcode": $jobcode, "joblevel": $joblevel,"note": $note}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'jobcode': jobcode,
+      'joblevel': joblevel,
+      'note': note,
+    };
+  }
+}
+
+class ListUser {
+  final String? usercd;
+  final String? fullname;
+  final String? email;
+  final String? level;
+  final String? expireddate;
+
+  ListUser({
+    this.usercd,
+    this.fullname,
+    this.email,
+    this.level,
+    this.expireddate,
+  });
+
+  ListUser.fromJson(Map<String, dynamic> res)
+      : usercd = res["usercd"],
+        fullname = res["fullname"],
+        email = res["email"],
+        level = res['level'],
+        expireddate = res['expireddate'];
+
+  @override
+  String toString() {
+    return '{"usercd": $usercd, "fullname": $fullname,"email": $email,"level": $level,"expireddate": $expireddate}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'usercd': usercd,
+      'fullname': fullname,
+      'email': email,
+      'level': level,
+      'expireddate': expireddate,
+    };
+  }
+}
+
 class Item {
   final int? id;
   final String? outletcode;
@@ -90,9 +158,11 @@ class Item {
   final int? modifiers;
   final List<PriceList>? pricelist;
   final int multiprice;
+  final int packageflag;
 
   Item({
     required this.multiprice,
+    required this.packageflag,
     this.id,
     this.outletcode,
     this.itemcode,
@@ -149,12 +219,13 @@ class Item {
         modifiers = res["modifiers"],
         sku = res["sku"],
         multiprice = res["multiprice"],
+        packageflag = res["packageflag"],
         pricelist = List<PriceList>.from(
             jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)));
 
   @override
   String toString() {
-    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers,"pricelist":$pricelist,"multiprice":$multiprice}';
+    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers,"pricelist":$pricelist,"multiprice":$multiprice,packageflag:$packageflag}';
   }
 
   Map<String, Object?> toJson() {
@@ -185,7 +256,8 @@ class Item {
       'slsamt2': slsamt2,
       'modifiers': modifiers,
       'pricelist': List<dynamic>.from(pricelist!.map((x) => x.toJson())),
-      'multiprice': multiprice
+      'multiprice': multiprice,
+      'packageflag': packageflag
     };
   }
 }
@@ -277,6 +349,57 @@ class Ctg {
       'id': id,
       'ctgcd': ctgcd,
       'ctgdesc': ctgdesc,
+    };
+  }
+}
+
+class Package {
+  final String? packagecd;
+  final String packagedesc;
+  final String? packagenote;
+  final String itemcode;
+  final String itemdesc;
+  final int active;
+  final int slsfl;
+  late int qty;
+
+  Package({
+    required this.packagecd,
+    required this.packagedesc,
+    required this.slsfl,
+    this.packagenote,
+    required this.itemcode,
+    required this.itemdesc,
+    required this.active,
+    required this.qty,
+  });
+
+  Package.fromJson(
+    Map<String, dynamic> res,
+  )   : packagecd = res["packagecd"],
+        packagedesc = res["packagedesc"],
+        slsfl = res["slsfl"],
+        packagenote = res["packagenote"],
+        itemcode = res["itemcode"],
+        itemdesc = res["itemdesc"],
+        active = res["active"],
+        qty = res["qty"];
+
+  @override
+  String toString() {
+    return '{"packagecd": $packagecd, "packagedesc": $packagedesc,"packagenote": $packagenote,"itemcode": $itemcode,"itemdesc": $itemdesc,"qty": $qty,"active": $active,"slsfl": $slsfl}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'packagecd': packagecd,
+      'packagedesc': packagedesc,
+      'packagenote': packagenote,
+      'itemcode': itemcode,
+      'itemdesc': itemdesc,
+      'active': active,
+      'slsfl': slsfl,
+      'qty': qty,
     };
   }
 }
@@ -1709,7 +1832,3 @@ class UserInfoSys {
         'lastsignin': lastsignin,
       };
 }
-
-
-
-

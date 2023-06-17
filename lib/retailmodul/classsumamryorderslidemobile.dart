@@ -255,7 +255,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                 builder: (_) => DialogSplitTab(
                                       balance: x.first.totalaftdisc!,
                                       datatrans: widget.datatransaksi,
-                                      fromsaved: widget.fromsaved!,
+                                      fromsaved: false,
                                       outletinfo: widget.outletinfo,
                                       pscd: pscd,
                                       trdt: widget.datatransaksi.first.trdt!,

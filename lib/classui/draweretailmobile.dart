@@ -158,6 +158,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                     }));
                   }
                 : () {
+                  print(accesslist);
                     Fluttertoast.showToast(
                         msg: "Tidak punya akses kelola promo",
                         toastLength: Toast.LENGTH_LONG,
