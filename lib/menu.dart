@@ -251,8 +251,14 @@ class _MenuMainState extends State<MenuMain> {
                 onpressed: () async {
                   selected = !selected;
                   setState(() {});
-                  // handler = DatabaseHandler();
-                  // await handler.upgradeDB();
+                  Fluttertoast.showToast(
+                      msg: "Cooming soon",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                 },
                 name: 'Help',
               ),
@@ -390,8 +396,14 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
-                  // handler = DatabaseHandler();
-                  // await handler.upgradeDB();
+                  Fluttertoast.showToast(
+                      msg: "Cooming soon",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                 },
                 name: 'Help',
               ),
@@ -404,8 +416,14 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
-                  // handler = DatabaseHandler();
-                  // await handler.upgradeDB();
+                  Fluttertoast.showToast(
+                      msg: "Cooming soon",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                 },
                 name: 'Updgrade',
               ),

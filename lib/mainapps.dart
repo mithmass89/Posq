@@ -39,6 +39,9 @@ class _MainappsState extends State<Mainapps> {
   List monthlysales = [
     {'totalaftdisc': 0}
   ];
+  List penjualanratarata = [
+    {'totalaftdisc': 0}
+  ];
   List chartdata = [];
   Future<dynamic>? checkapps;
 
@@ -102,6 +105,7 @@ class _MainappsState extends State<Mainapps> {
     todaysales = await ClassApi.getTodaySales(date1!, dbname);
     monthlysales = await ClassApi.monthlysales(date1!, dbname);
     chartdata = await ClassApi.listdataChart(date1!, dbname);
+    penjualanratarata = await ClassApi.getPenjualanRataRata(date1!, dbname);
     setState(() {});
   }
 
@@ -137,6 +141,7 @@ class _MainappsState extends State<Mainapps> {
                         case true:
                           // do something else
                           return AppsMobile(
+                            penjualanratarata: penjualanratarata,
                             todaysale: todaysales.isNotEmpty
                                 ? todaysales
                                 : [
@@ -163,6 +168,7 @@ class _MainappsState extends State<Mainapps> {
                       case true:
                         // do something else
                         return AppsMobile(
+                          penjualanratarata: penjualanratarata,
                           chartdata: chartdata,
                           todaysale: todaysales,
                           monthlysales: monthlysales,

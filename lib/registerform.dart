@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -218,6 +220,10 @@ class _RegisterFormState extends State<RegisterForm> {
                               textColor: Colors.white,
                               fontSize: 16.0);
                         } else {
+                          EasyLoading.show(status: 'loading...');
+                          await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                                  email: email.text, password: password.text);
                           await ClassApi.insertRegisterUserNew(email.text,
                                   namalengkap.text, password.text, 'Owner')
                               .then((_) async {
@@ -231,6 +237,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                         )),
                                 (Route<dynamic> route) => false);
                           });
+                          EasyLoading.dismiss();
                         }
                       }
                     },

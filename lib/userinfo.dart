@@ -10,3 +10,4 @@ String imageurl = '';
 String emaillogin = '';
 String subscribtion = '';
 String paymentcheck = '';
+String level = '';

@@ -82,7 +82,6 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
                                 var rng = Random();
                                 for (var i = 0; i < 10; i++) {
                                   // print(rng.nextInt(1000));
-
                                 }
                                 listtipe[index].transtype =
                                     rng.nextInt(1000).toString();
@@ -153,15 +152,44 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
             actions: [
               Container(
                 child: IconButton(
+                  onPressed: () async {
+                    await ClassApi.insert_TransactionType(dbname, listtipe);
+                    setState(() {});
+
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    Icons.save,
+                    size: 40,
+                  ),
+                  color: Colors.orange,
+                ),
+              ),
+              Container(
+                child: IconButton(
                   onPressed: () {
                     descriptionlist = [];
                     setState(() {});
                   },
-                  icon: Icon(Icons.delete),
+                  icon: Icon(
+                    Icons.delete,
+                    size: 40,
+                  ),
                   color: Colors.red,
                 ),
-              )
+              ),
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            splashColor: Colors.yellow,
+            hoverColor: Colors.red,
+            onPressed: () {
+              _addWidget();
+              setState(() {});
+            },
+            child: Icon(Icons.add),
           ),
           body: Column(
             children: [
@@ -184,7 +212,6 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
                                 var rng = Random();
                                 for (var i = 0; i < 10; i++) {
                                   // print(rng.nextInt(1000));
-
                                 }
                                 listtipe[index].transtype =
                                     rng.nextInt(1000).toString();
@@ -210,37 +237,8 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    LoadingButton(
-                        isLoading: _isloading,
-                        color: Colors.orange,
-                        textcolor: Colors.white,
-                        name: 'Simpan',
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        onpressed: _isloading == false
-                            ? () async {
-                                _isloading = true;
-                                await ClassApi.insert_TransactionType(
-                                    dbname, listtipe);
-                                setState(() {});
-                                _isloading = false;
-                                Navigator.of(context).pop();
-                              }
-                            : null),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                    LoadingButton(
-                      isLoading: false,
-                      textcolor: Colors.orange,
-                      color: Colors.white,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      name: 'Tambah Tipe',
-                      onpressed: () async {
-                        _addWidget();
-                        setState(() {});
-                      },
                     ),
                   ],
                 ),

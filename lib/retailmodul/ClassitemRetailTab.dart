@@ -276,7 +276,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                       child: Text(
                         widget.item.itemdesc!,
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 11,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),

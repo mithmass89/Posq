@@ -264,7 +264,7 @@ print('ganti $pathimage');
                         id: widget.productcode!.id,
                         barcode: barcode.text,
                         sku: sku.text,
-                        pricelist: widget.productcode!.pricelist!,
+                        pricelist:pricelist,
                       ),
                       pscd);
                   Navigator.of(context).pop(context);

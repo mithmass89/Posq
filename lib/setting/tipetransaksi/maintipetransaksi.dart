@@ -193,7 +193,7 @@ class _MainTransaksiTypeState extends State<MainTransaksiType> {
                             ConnectionState.waiting) {
                           print(snapshot);
                           return ListView.builder(
-                              itemCount: 10,
+                              itemCount: data.length,
                               itemBuilder: (context, index) {
                                 return ShimmerLoading(
                                   isLoading: true,

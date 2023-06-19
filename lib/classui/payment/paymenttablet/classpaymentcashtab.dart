@@ -1,9 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/payment/paymenttablet/paymentsuccesstab.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';

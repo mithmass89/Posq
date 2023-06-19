@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
-import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';

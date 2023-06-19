@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -60,8 +61,10 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
                   fontSize: 16.0);
             } else {
               EasyLoading.show(status: 'Registered Please wait...');
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                  email: email.text, password: password.text);
               await ClassApi.insertRegisterUser(email.text, fullname.text,
-                  password.text, jabatan.text, subscribtion,paymentcheck);
+                  password.text, jabatan.text, subscribtion, paymentcheck);
               await ClassApi.insertAccessOutlet(pscd, fullname.text, dbname);
               EasyLoading.dismiss();
               Navigator.of(context).pop();

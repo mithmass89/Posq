@@ -497,7 +497,7 @@ ${payment.reduce((value, element) => value + element)}
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassRetailMainMobile(
-                                                  fromsaved: widget.fromsaved,
+                                                  fromsaved: false,
                                                   pscd: widget.outletcd!,
                                                   trno: widget.trno,
                                                   outletinfo:
@@ -513,7 +513,7 @@ ${payment.reduce((value, element) => value + element)}
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassRetailMainMobile(
-                                                  fromsaved: widget.fromsaved,
+                                                  fromsaved: false,
                                                   pscd: widget.outletcd!,
                                                   trno: nexttrno,
                                                   outletinfo:

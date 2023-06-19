@@ -1,16 +1,12 @@
-// ignore_for_file: no_logic_in_create_state, prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this
-import 'dart:io';
+// ignore_for_file: no_logic_in_create_state, prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this, must_be_immutable
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:posq/classimagetab.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/setting/printer/templateprinter.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/menu.dart';
-import 'package:posq/setting/product_master/classeditproductv2mob.dart';
 
 ClassApi? hosts;
 
@@ -41,10 +37,8 @@ class ImageFromGalleryExPrinter extends StatefulWidget {
 }
 
 class ImageFromGalleryExPrinterState extends State<ImageFromGalleryExPrinter> {
-  var _image;
   var imagePicker;
   var type;
-  List<int>? _selectedFile;
   String namefile = '';
   callbackTitle(outletname) {
     // ignore: avoid_print
@@ -60,7 +54,6 @@ class ImageFromGalleryExPrinterState extends State<ImageFromGalleryExPrinter> {
     hosts = ClassApi();
     imagePicker = ImagePicker();
     if (widget.savingimage != null) {
-      _image = File(widget.savingimage);
     }
     print(widget.fromedit);
   }

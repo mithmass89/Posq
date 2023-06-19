@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/login.dart';
-import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/setting/promo/tablet/classpromotab.dart';
-import 'package:posq/syncdatabase/syncdb.dart';
 import 'package:posq/userinfo.dart';
 
 class DrawerWidgetMainTab extends StatelessWidget {

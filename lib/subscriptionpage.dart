@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/classui/api.dart';
@@ -56,9 +57,23 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
     setState(() {});
   }
 
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+
+  Future<void> initDynamicLinks() async {
+
+    dynamicLinks.onLink.listen((dynamicLinkData) {
+      Navigator.pushNamed(context, dynamicLinkData.link.path);
+      print('ini dynamic link $dynamicLinkData');
+    }).onError((error) {
+      print('onLink error');
+      print(error.message);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    initDynamicLinks();
     _streamController = StreamController<String>();
     _timer = Timer.periodic(
         Duration(seconds: 3),
@@ -523,15 +538,15 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                                                       '${widget.email}$randomNumber',
                                                       'pending',
                                                       widget.email);
-                                                  Navigator.of(context)
-                                                      .pushAndRemoveUntil(
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      Login()),
-                                                          (Route<dynamic>
-                                                                  route) =>
-                                                              false);
+                                                  // Navigator.of(context)
+                                                  //     .pushAndRemoveUntil(
+                                                  //         MaterialPageRoute(
+                                                  //             builder:
+                                                  //                 (context) =>
+                                                  //                     Login()),
+                                                  //         (Route<dynamic>
+                                                  //                 route) =>
+                                                  //             false);
                                                 },
                                                 child: Container(
                                                     alignment: Alignment.center,

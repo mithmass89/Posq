@@ -1,3 +1,6 @@
+
+// ignore_for_file: unused_field, unused_element, unused_local_variable
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +12,9 @@ import 'package:posq/classui/color.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
+import 'package:posq/pageresetpassword.dart';
 import 'package:posq/paymentcheck.dart';
 import 'package:posq/registerform.dart';
-import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/userinfo.dart';
 
@@ -35,6 +38,12 @@ class _LoginState extends State<Login> {
 
   Future<void> _login() async {
     try {
+      FirebaseAuth.instance
+          .sendPasswordResetEmail(email: 'mithmass89@gmail.com');
+      // AuthCredential credential = EmailAuthProvider.credential(
+      //     email: 'mithmass89@gmail.com', password: '123456');
+      // await FirebaseAuth.instance.currentUser!
+      //     .reauthenticateWithCredential(credential);
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.text,
@@ -184,6 +193,7 @@ class _LoginState extends State<Login> {
                                       emaillogin = email.text;
                                       subscribtion = value[0]['subscription'];
                                       paymentcheck = value[0]['paymentcheck'];
+                                      level = value[0]['level'];
                                     });
                                     await ClassApi.checkVerifiedPayment(
                                             emaillogin)
@@ -274,7 +284,11 @@ class _LoginState extends State<Login> {
                               ))),
                       TextButton(
                           onPressed: () async {
-                            await _login();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResetPasswordClass()),
+                            );
                           },
                           child: Text('Lupa Password ?',
                               style: TextStyle(color: Colors.white)))
@@ -315,7 +329,8 @@ class _LoginState extends State<Login> {
                                       token: '',
                                       lastsignin: '',
                                       urlpic: value.photoURL!,
-                                      uuid: value.uid),
+                                      uuid: value.uid,
+                                      email: value.email),
                                   'profiler');
                               await ClassApi.checkUserFromOauth(
                                       value.email!, 'profiler')
@@ -327,6 +342,7 @@ class _LoginState extends State<Login> {
                                     imageurl = value.photoURL!;
                                     emaillogin = value.email!;
                                     print('ini urlpics : $imageurl');
+                                    level = values[0]['level'];
                                   });
                                   await ClassApi.checkVerifiedPayment(
                                           emaillogin)
@@ -705,7 +721,13 @@ class _LoginState extends State<Login> {
                       ),
 
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResetPasswordClass()),
+                            );
+                          },
                           child: Text('Lupa Password ?',
                               style: TextStyle(color: Colors.orange)))
                     ],

@@ -385,21 +385,20 @@ class _DialogTabClassState extends State<DialogTabClass>
           borderRadius: BorderRadius.circular(12),
         ),
         content: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
+          width: MediaQuery.of(context).size.width * 0.5,
           height: MediaQuery.of(context).size.height * 0.5,
-          child: Scaffold(
-              body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          child:  Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.9,
+                width: MediaQuery.of(context).size.width * 0.5,
                 height: MediaQuery.of(context).size.height * 0.05,
                 child: TabBar(
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20), // Creates border
-                      color: Colors.blue), //Change background color from here
-                  labelColor: Colors.white,
+                  // indicator: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(20), // Creates border
+                  //     color: Colors.orange), //Change background color from here
+                  labelColor: Colors.orange,
                   unselectedLabelColor: Colors.blue,
                   controller: controller,
                   tabs: <Widget>[
@@ -415,7 +414,7 @@ class _DialogTabClassState extends State<DialogTabClass>
               Form(
                 key: _formKey,
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   height: MediaQuery.of(context).size.height * 0.45,
                   child: TabBarView(
                     controller: controller,
@@ -431,7 +430,7 @@ class _DialogTabClassState extends State<DialogTabClass>
               ),
             ],
           )),
-        ),
+        
       );
     });
   }

@@ -6,8 +6,9 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var api = 'http://192.168.1.10:3000';
-var apiimage = 'http://192.168.1.10:5000';
+var api = 'http://153.92.5.25:3000';
+var apiimage = 'http://153.92.5.25:5000';
+var apiemail = 'http://153.92.5.25:4000';
 // var api = 'http://147.139.163.18:3000';
 
 var serverkey = '';
@@ -26,6 +27,7 @@ class ClassApi {
     if (response.statusCode == 200) {
       return response.bodyBytes;
     } else {
+      
       throw Exception('Failed to load image');
     }
   }
@@ -171,6 +173,29 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> resetPassword(String email) async {
+    Map<String, String>  body = {
+      "email": email,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$apiemail/reset-password');
+    final response = await http.post(url,
+        headers: <String, String>{
+          // 'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: body);
+
+    if (response.statusCode == 200) {
+      var status = response.body;
 
       return status;
     } else {
@@ -405,7 +430,7 @@ class ClassApi {
     }
   }
 
-  static Future<dynamic> insertOutletUser(String data,String usercd) async {
+  static Future<dynamic> insertOutletUser(String data, String usercd) async {
     var body = {
       "dbname": data,
       "usercode": usercd,
@@ -681,6 +706,30 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> passwordreset(
+      UserInfoSys password, String email) async {
+    var body = {
+      "password": password,
+      "email": email,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/passwordreset');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> updateTemplatePrinter(String logourl, String header,
       String footer, int headerbold, int footerbold, String dbname) async {
     var body = {
@@ -761,6 +810,35 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/salestoday');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List status = json.decode(response.body);
+
+      return status.isNotEmpty
+          ? status
+          : [
+              {'trdt': '2023-01-01'},
+              {'totalaftdisc': 0}
+            ];
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getPenjualanRataRata(
+      String date, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": date,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/getPenjualanRataRata');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1816,17 +1894,17 @@ class ClassApi {
 
   static Future<List<ListUser>> getListUser(String query) async {
     // print(json.encode(pembayaran));
-    var data = {"outletcode": pscd,};
+    var data = {
+      "outletcode": pscd,
+    };
     final url = Uri.parse('$api/getListUser');
-    final response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        // 'authorization': basicAuth
-      },
-        body: json.encode(data)
-    );
-   
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
       // print(bodyJson);

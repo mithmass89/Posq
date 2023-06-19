@@ -291,6 +291,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       AppsMobile(
+                                                        penjualanratarata: [],
                                                         chartdata: [],
                                                         monthlysales: [],
                                                         todaysale: [],
@@ -521,6 +522,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             AppsMobile(
+                                                              penjualanratarata: [],
                                                               chartdata: [],
                                                               monthlysales: [],
                                                               todaysale: [],

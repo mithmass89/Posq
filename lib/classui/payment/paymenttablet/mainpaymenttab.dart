@@ -1,12 +1,8 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/classui/classformat.dart';
-import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
-import 'package:posq/classui/payment/nontunaimobile.dart';
-import 'package:posq/classui/payment/paymentcashv2.dart';
-import 'package:posq/classui/payment/paymenttablet/paymentcashtab.dart';
-import 'package:posq/classui/payment/slideuppanelpaymentmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';

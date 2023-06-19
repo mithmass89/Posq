@@ -6,8 +6,12 @@ import 'package:posq/classui/classformat.dart';
 class Summarytoday extends StatefulWidget {
   final List todaysale;
   final List monthlysales;
+  final List rataratapenjualan;
   const Summarytoday(
-      {Key? key, required this.todaysale, required this.monthlysales})
+      {Key? key,
+      required this.todaysale,
+      required this.monthlysales,
+      required this.rataratapenjualan})
       : super(key: key);
 
   @override
@@ -19,7 +23,7 @@ class _SummarytodayState extends State<Summarytoday> {
   void initState() {
     print(widget.todaysale);
     super.initState();
-    print(widget.todaysale == null);
+   
   }
 
   @override
@@ -106,7 +110,7 @@ class _SummarytodayState extends State<Summarytoday> {
                       dense: true,
                       title: Text('Penjualan Rata Rata'),
                       trailing: Text(
-                        '10',
+                     '${CurrencyFormat.convertToIdr(widget.rataratapenjualan[0]['totalaftdisc'],0)}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -116,8 +120,6 @@ class _SummarytodayState extends State<Summarytoday> {
             ],
           ),
         );
-
-
       }
       return Container();
     });

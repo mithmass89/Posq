@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/chart.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/drawermainmenumobile.dart';
 import 'package:posq/classui/drawermaintab.dart';
@@ -20,12 +19,14 @@ class AppsMobile extends StatefulWidget {
   final List todaysale;
   final List monthlysales;
   final List chartdata;
+  final List penjualanratarata;
   const AppsMobile(
       {Key? key,
       this.profileusaha,
       required this.todaysale,
       required this.monthlysales,
-      required this.chartdata})
+      required this.chartdata,
+      required this.penjualanratarata})
       : super(key: key);
 
   @override
@@ -225,6 +226,7 @@ class _AppsMobileState extends State<AppsMobile> {
                       height: MediaQuery.of(context).size.height * 0.30,
                       width: MediaQuery.of(context).size.width * 1,
                       child: Summarytoday(
+                        rataratapenjualan: widget.penjualanratarata,
                         monthlysales: widget.monthlysales,
                         todaysale: widget.todaysale,
                       )),
@@ -280,8 +282,8 @@ class _AppsMobileState extends State<AppsMobile> {
                                       MediaQuery.of(context).size.width * 0.70,
                                   child: Text('0')),
                           ButtonNoIcon(
-                            height: MediaQuery.of(context).size.height*0.05,
-                              width: MediaQuery.of(context).size.width*0.2,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            width: MediaQuery.of(context).size.width * 0.2,
                             color: Colors.transparent,
                             textcolor: Colors.orange,
                             name: '1 Minggu',
@@ -342,10 +344,23 @@ class _AppsMobileState extends State<AppsMobile> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.03,
                                 ),
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: const Text('?'),
-                                ),
+                               imageurl == ''
+                                  ? CircleAvatar(
+                                      radius: 20,
+                                      // backgroundImage: AssetImage(
+                                      //   'assets/sheryl.png',
+                                      // ),
+                                      child: Text(
+                                        usercd.substring(0, 1),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 20,
+                                      backgroundImage: NetworkImage(imageurl),
+                                    ),
                                 SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.05,
@@ -438,6 +453,7 @@ class _AppsMobileState extends State<AppsMobile> {
                             height: MediaQuery.of(context).size.height * 0.5,
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: SummaryTodayTabs(
+                              penjualanratarata: widget.penjualanratarata,
                               monthlysales: widget.monthlysales,
                               todaysale: widget.todaysale,
                             ),

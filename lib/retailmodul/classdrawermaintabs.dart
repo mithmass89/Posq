@@ -79,14 +79,23 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                 ),
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      // backgroundImage: AssetImage(
-                      //   'assets/sheryl.png',
-                      // ),
-                      child: Text(usercd.substring(0,1)),
-                    ),
+                 imageurl == ''
+                                  ? CircleAvatar(
+                                      radius: 30,
+                                      // backgroundImage: AssetImage(
+                                      //   'assets/sheryl.png',
+                                      // ),
+                                      child: Text(
+                                        usercd.substring(0, 1),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(imageurl),
+                                    ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.01,
                     ),
@@ -104,10 +113,10 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.17,
-                          child: Text(
-                            'SHIFT 1 ',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
+                          // child: Text(
+                          //   'SHIFT 1 ',
+                          //   style: TextStyle(color: Colors.white, fontSize: 12),
+                          // ),
                         ),
                       ],
                     )

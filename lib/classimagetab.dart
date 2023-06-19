@@ -1,7 +1,4 @@
-// ignore_for_file: no_logic_in_create_state, prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
+// ignore_for_file: no_logic_in_create_state, prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:posq/classui/api.dart';
@@ -35,7 +32,6 @@ class ImageFromGalleryExTab extends StatefulWidget {
 }
 
 class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
-  var _image;
   var imagePicker;
   var type;
   List<int>? _selectedFile;
@@ -56,7 +52,6 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
     print(widget.imagepath);
     imagePicker = ImagePicker();
     if (widget.savingimage != null) {
-      _image = File(widget.savingimage);
     }
   }
 
@@ -76,6 +71,14 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
                     ? Image.network(
                         widget.imagepath,
                         fit: BoxFit.fill,
+                             filterQuality: FilterQuality.low,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return Image.network(
+                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                              fit: BoxFit.fill,
+                            );
+                          },
                         loadingBuilder: (BuildContext context, Widget child,
                             ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) return child;
@@ -109,7 +112,6 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
                         source: source,
                         imageQuality: 50,
                         preferredCameraDevice: CameraDevice.front);
-                    _image = File(image.path);
                     print('ini imagepath ${image.path}');
 
                     namefile = image.name;

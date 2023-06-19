@@ -255,7 +255,7 @@
 -keep class androidx.lifecycle.DefaultLifecycleObserver
 
 # End of content from E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\consumer_proguard_dir\release\lib0\proguard.txt
-# The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\58dfd4cdc2715089d75cee18444bd32d\jetified-firebase-auth-22.0.0\proguard.txt
 -dontwarn com.google.appengine.api.**
 -dontwarn okio.**
 -dontwarn org.apache.**
@@ -279,8 +279,8 @@
   <fields>;
 }
 
-# End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ab190dd004340e5c22f26d49b524b445\jetified-firebase-auth-21.3.0\proguard.txt
-# The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\9cf3ab573b8145fafc23fd6f853f593f\jetified-recaptcha-18.0.1\proguard.txt
+# End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\58dfd4cdc2715089d75cee18444bd32d\jetified-firebase-auth-22.0.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4de36ce71286781e228ebe35811813b4\jetified-recaptcha-18.1.2\proguard.txt
 # Proguard cannot process META-INF/versions/9.
 # See https://discuss.gradle.org/t/meta-inf-version-duplicate-error-when-using-proguard/31380
 -dontwarn module-info
@@ -297,14 +297,19 @@
 
 # This prevents the SDK to be obfuscated again when building the android app.
 -keep class com.google.android.recaptcha.** { *; }
+
+# This is required for recaptcha mobile to function properly.
+# See: https://cloud.google.com/recaptcha-enterprise/docs/instrument-android-apps
+-keep class com.google.android.play.core.integrity.** { *; }
+-keep class com.google.android.gms.tasks.** {*;}
 # We keep all fields for every generated proto file as the runtime uses
 # reflection over them that ProGuard cannot detect. Without this keep
 # rule, fields may be removed that would cause runtime failures.
--keepclassmembers class * extends com.google.android.recaptcha.internal.zzeq {
+-keepclassmembers class * extends com.google.android.recaptcha.internal.zzgo {
   <fields>;
 }
 
-# End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\9cf3ab573b8145fafc23fd6f853f593f\jetified-recaptcha-18.0.1\proguard.txt
+# End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4de36ce71286781e228ebe35811813b4\jetified-recaptcha-18.1.2\proguard.txt
 # The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f9bfe5e36b9518abf2bf7b7ac1b238d\material-1.3.0\proguard.txt
 # Copyright (C) 2015 The Android Open Source Project
 #

@@ -357,20 +357,20 @@ class _ClassproductTabState extends State<ClassproductTab> {
                               alignment: Alignment.center,
                               height: MediaQuery.of(context).size.height * 0.65,
                               child: Text('Tidak ada produk')),
-                          Container(
-                              child: TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Createproduct(
-                                                pscd: widget.pscd,
-                                              )),
-                                    ).then((_) {
-                                      setState(() {});
-                                    });
-                                  },
-                                  child: Text('Buat Produk'))),
+                          // Container(
+                          //     child: TextButton(
+                          //         onPressed: () {
+                          //           Navigator.push(
+                          //             context,
+                          //             MaterialPageRoute(
+                          //                 builder: (context) => Createproduct(
+                          //                       pscd: widget.pscd,
+                          //                     )),
+                          //           ).then((_) {
+                          //             setState(() {});
+                          //           });
+                          //         },
+                          //         child: Text('Buat Produk'))),
                         ],
                       ),
                     );

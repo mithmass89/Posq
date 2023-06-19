@@ -797,7 +797,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               context,
                               MaterialPageRoute(
                                   builder: (context) => PaymentV2MobileClass(
-                                    
                                         fromsplit: false,
                                         fromsaved: widget.fromsaved!,
                                         datatrans: listdata!,
@@ -1069,7 +1068,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                 builder:
                                                     (BuildContext context) {
                                                   return PasswordDialog(
-                                                    frompaymentmobile: false,
+                                                      frompaymentmobile: false,
                                                       frompayment: false,
                                                       trno: widget.trno,
                                                       outletcd: pscd,

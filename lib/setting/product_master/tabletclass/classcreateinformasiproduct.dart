@@ -122,6 +122,9 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
       if (widget.fromedit == false) {
         widget.pricelist!.add(PriceList(
             transtype: x.transtype!, transdesc: x.transdesc!, amount: 0));
+      }else{
+         widget.pricelist!.add(PriceList(
+            transtype: x.transtype!, transdesc: x.transdesc!, amount: 0));
       }
     }
     multiharga = widget.multiflag;
@@ -214,10 +217,6 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
             ),
           ],
         ),
-        Divider(
-          indent: 20,
-          endIndent: 20,
-        ),
         ListTile(
             title: Text(
               'Multiple Harga',
@@ -245,6 +244,7 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
                       } else {
                         widget.multiprice = 0;
                         print(widget.multiprice);
+                        setState(() {});
                         widget.multipriceSet!(widget.multiprice);
                       }
                     } else {
@@ -259,8 +259,10 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
                           fontSize: 16.0);
                     }
                   } else {
+                    multiharga = value!;
+                    setState(() {});
+                    print('ini pricelist ${widget.pricelist} ');
                     for (var x in widget.controllerMulti!) {
-                      multiharga = value!;
                       x.text = widget
                           .pricelist![widget.controllerMulti!.indexOf(x)].amount
                           .toString();
@@ -274,18 +276,26 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
                       widget.multiprice = 0;
                       widget.multipriceSet!(widget.multiprice);
                     }
+                        print(widget.pricelist);
                   }
                 })),
         multiharga == true
             ? Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: ListView.builder(
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 3 / 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
                     controller: _controllerscroll,
                     itemCount: transtp.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        dense: true,
-                        subtitle: TextFieldMobile2(
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        width: MediaQuery.of(context).size.height * 0.1,
+                        child: TextFieldMobile2(
                           label: transtp[index].transdesc!,
                           controller: widget.controllerMulti![index],
                           typekeyboard: TextInputType.number,
