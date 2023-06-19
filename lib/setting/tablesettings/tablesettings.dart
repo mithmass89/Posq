@@ -16,7 +16,6 @@ class SettingTableMain extends StatefulWidget {
 class _SettingTableMainState extends State<SettingTableMain> {
   List<TableMaster> table = [];
   List<TextEditingController> controller = [];
-  TextEditingController _controller = TextEditingController();
   bool isLoading = false;
   int startindex = 0;
 

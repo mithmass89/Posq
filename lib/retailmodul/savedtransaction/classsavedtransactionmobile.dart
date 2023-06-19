@@ -9,11 +9,12 @@ import 'package:posq/userinfo.dart';
 class ClassSavedTransactionMobile extends StatefulWidget {
   final String? pscd;
   final Outlet outletinfo;
+  final String? trno;
 
   const ClassSavedTransactionMobile({
     Key? key,
     this.pscd,
-    required this.outletinfo,
+    required this.outletinfo, this.trno,
   }) : super(key: key);
 
   @override
@@ -106,6 +107,7 @@ class _ClassSavedTransactionMobileState
                                 child: Column(
                                   children: [
                                     ClassListSavedMobile(
+                                      trnoopen: widget.trno,
                                       datatransaksi: snapshot.data![index],
                                       trno: x[index].transno,
                                       outletinfo: widget.outletinfo,

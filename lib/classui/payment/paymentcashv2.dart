@@ -177,7 +177,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
     return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
   }
 
- String formatToIDR(String value) {
+  String formatToIDR(String value) {
     var amount = double.tryParse(value);
     if (amount != null) {
       var formatter = NumberFormat.currency(
@@ -214,7 +214,6 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
               checkcontroller();
               setState(() {
                 widget.result = widget.balance - num.parse(value);
-       
               });
               print(widget.result);
               pesanResult();
@@ -250,10 +249,9 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 //// checking balance //////
                 onpressed: widget.result <= 0 || widget.result == 0
                     ? () async {
-                        if (widget.result == 0)
-                          await insertIafjrnhd().whenComplete(() {
-                            setState(() {});
-                          });
+                        await insertIafjrnhd().whenComplete(() {
+                          setState(() {});
+                        });
                         pesanPaymentTersimpan();
                         if (widget.result == 0) {
                           Navigator.pushReplacement(
@@ -320,6 +318,29 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                                 });
                               },
                             );
+                          } else {
+                            insertIafjrnhdRefund();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ClassPaymetSucsessMobile(
+                                        fromsplit: widget.fromsplit,
+                                        fromsaved: widget.fromsaved,
+                                        datatrans: widget.datatrans,
+                                        frombanktransfer: false,
+                                        cash: true,
+                                        outletinfo: widget.outletinfo,
+                                        outletname:
+                                            widget.outletinfo.outletname,
+                                        outletcd: widget.pscd,
+                                        amount: double.parse(
+                                            widget.amountcash.text),
+                                        paymenttype: 'Cash',
+                                        trno: widget.trno.toString(),
+                                        trdt: formattedDate,
+                                      )),
+                            );
                           }
 
                           await widget.callback();
@@ -330,29 +351,29 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                       }
                     : null,
               ),
-        Container(
-          height: MediaQuery.of(context).size.height * 0.2,
-          width: MediaQuery.of(context).size.width * 0.80,
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 80,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5),
-              itemCount: amount.length,
-              itemBuilder: (BuildContext ctx, index) {
-                return Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    amount[index].toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(15)),
-                );
-              }),
-        ),
+        // Container(
+        //   height: MediaQuery.of(context).size.height * 0.2,
+        //   width: MediaQuery.of(context).size.width * 0.80,
+        //   child: GridView.builder(
+        //       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        //           maxCrossAxisExtent: 80,
+        //           childAspectRatio: 3 / 2,
+        //           crossAxisSpacing: 5,
+        //           mainAxisSpacing: 5),
+        //       itemCount: amount.length,
+        //       itemBuilder: (BuildContext ctx, index) {
+        //         return Container(
+        //           alignment: Alignment.center,
+        //           child: Text(
+        //             amount[index].toString(),
+        //             style: TextStyle(color: Colors.white),
+        //           ),
+        //           decoration: BoxDecoration(
+        //               color: Colors.orange,
+        //               borderRadius: BorderRadius.circular(15)),
+        //         );
+        //       }),
+        // ),
       ],
     );
   }

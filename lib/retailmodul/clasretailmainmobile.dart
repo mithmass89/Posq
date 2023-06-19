@@ -530,6 +530,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       ClassSavedTransactionMobile(
+                                                        trno: widget.trno,
                                                         pscd: widget
                                                             .outletinfo.alamat,
                                                         outletinfo:

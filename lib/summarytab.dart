@@ -21,7 +21,7 @@ class _SummaryTodayTabsState extends State<SummaryTodayTabs> {
   void initState() {
     print(widget.todaysale);
     super.initState();
-    print(widget.todaysale == null);
+   
   }
 
   @override

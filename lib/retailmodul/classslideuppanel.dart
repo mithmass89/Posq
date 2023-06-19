@@ -336,7 +336,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                 discpct: element.discpct,
                                 taxpct: element.taxpct,
                                 revenueamt: amountprice.isNotEmpty
-                                    ? element.qty! * amountprice.first.amount
+                                    ? element.qty! * amountprice.first.amount-element.discamt!
                                     : element.revenueamt,
                                 taxamt: amountprice.isNotEmpty
                                     ? (element.qty! *
@@ -360,7 +360,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                         ((element.qty! *
                                                 amountprice.first.amount) *
                                             element.svchgpct! /
-                                            100)
+                                            100)-element.discamt!
                                     : element.totalaftdisc,
                                 id: element.id);
 
@@ -649,7 +649,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                         .width *
                                                     0.3,
                                                 child: Text(
-                                                    '${CurrencyFormat.convertToIdr(datadetail[index].revenueamt, 0)}',
+                                                    '${CurrencyFormat.convertToIdr(datadetail[index].revenueamt!-datadetail[index].discamt!, 0)}',
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.black54)),

@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/login.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/userinfo.dart';
-import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SubScribetionPage extends StatefulWidget {
@@ -137,7 +134,7 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
               return Scaffold(
                 appBar: AppBar(
                   title: Text(
-                    'Berlangganan',
+                    'Berlangganan (Demo Free)',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 ),
