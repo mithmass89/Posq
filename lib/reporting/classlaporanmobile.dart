@@ -29,10 +29,9 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
       ),
       body: ListView(
         children: [
-            ListTile(
+          ListTile(
             title: Text('Ringkasan'),
-            subtitle: Text(
-                'Ringkasan penjualan dan pengeluaran'),
+            subtitle: Text('Ringkasan penjualan Semua Outlet'),
             trailing: Icon(
               Icons.arrow_forward_ios_rounded,
             ),
@@ -40,7 +39,7 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
               Navigator.of(context).pop('Ringkasan');
             },
           ),
-                Divider(),
+          Divider(),
           ListTile(
             title: Text('Summary Cashier'),
             subtitle: Text(
@@ -59,7 +58,7 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
               Icons.arrow_forward_ios_rounded,
             ),
             onTap: () {
-                  Navigator.of(context).pop('Detail Item Terjual');
+              Navigator.of(context).pop('Detail Item Terjual');
             },
             title: Text('Detail Item Terjual'),
           ),
@@ -76,25 +75,25 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
           ),
           Divider(),
           ListTile(
-            subtitle: Text('Summary setiap Penjualan outlet'),
+            subtitle: Text('Ringkasan setiap Penjualan outlet'),
             trailing: Icon(
               Icons.arrow_forward_ios_rounded,
             ),
             onTap: () {
               pesanBelumReady();
             },
-            title: Text('Daily Sales Summary'),
+            title: Text('Laporan Penjualan Harian'),
           ),
           Divider(),
           ListTile(
-            subtitle: Text('Detail setiap Penjualan outlet'),
+            subtitle: Text('Analisa antara penjualan dan HPP setiap product'),
             trailing: Icon(
               Icons.arrow_forward_ios_rounded,
             ),
             onTap: () {
               pesanBelumReady();
             },
-            title: Text('Daily Sales Detail'),
+            title: Text('Analisa Menu/product'),
           ),
           Divider(),
           ListTile(

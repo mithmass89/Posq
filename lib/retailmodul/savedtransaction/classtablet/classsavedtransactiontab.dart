@@ -10,11 +10,13 @@ import 'package:posq/userinfo.dart';
 class ClassSavedTransactionTab extends StatefulWidget {
   final String? pscd;
   final Outlet outletinfo;
+  final String trno;
 
   const ClassSavedTransactionTab({
     Key? key,
     this.pscd,
     required this.outletinfo,
+    required this.trno,
   }) : super(key: key);
 
   @override
@@ -107,6 +109,7 @@ class _ClassSavedTransactionTabState extends State<ClassSavedTransactionTab> {
                                   child: Column(
                                     children: [
                                       ClassListSavedTab(
+                                        trnoopen: widget.trno,
                                         datatransaksi: snapshot.data![index],
                                         trno: x[index].transno,
                                         outletinfo: widget.outletinfo,

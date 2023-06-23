@@ -6365,8 +6365,6 @@ androidx.core.view.accessibility.AccessibilityManagerCompat$AccessibilityStateCh
 com.google.zxing.client.android.DecodeFormatManager:
     private void <init>()
 com.google.common.collect.TreeRangeMap$SubRangeMap$SubRangeMapAsMap$2
-androidx.lifecycle.LifecycleRegistryOwner:
-    public synthetic bridge androidx.lifecycle.Lifecycle getLifecycle()
 kotlin.reflect.KParameter$Kind
 androidx.appcompat.app.ToolbarActionBar$ActionMenuPresenterCallback
 org.checkerframework.checker.lock.qual.EnsuresLockHeldIf$List
@@ -33819,11 +33817,12 @@ com.google.android.gms.internal.firebase-auth-api.zzfu:
     private final java.lang.Integer zzd
 androidx.appcompat.view.StandaloneActionMode:
     private boolean mFocusable
-androidx.lifecycle.DefaultLifecycleObserver$-CC:
-    public static void $default$onResume(androidx.lifecycle.DefaultLifecycleObserver,androidx.lifecycle.LifecycleOwner)
 io.flutter.view.TextureRegistry$SurfaceTextureEntry$-CC
-io.flutter.plugin.platform.PlatformView$-CC
 io.flutter.plugin.common.BinaryMessenger$-CC:
     public static io.flutter.plugin.common.BinaryMessenger$TaskQueue $default$makeBackgroundTaskQueue(io.flutter.plugin.common.BinaryMessenger,io.flutter.plugin.common.BinaryMessenger$TaskQueueOptions)
     public static void $default$setMessageHandler(io.flutter.plugin.common.BinaryMessenger,java.lang.String,io.flutter.plugin.common.BinaryMessenger$BinaryMessageHandler,io.flutter.plugin.common.BinaryMessenger$TaskQueue)
 androidx.core.view.MenuProvider$-CC
+androidx.lifecycle.LifecycleRegistryOwner$-CC
+io.flutter.plugin.platform.PlatformView$-CC
+androidx.lifecycle.DefaultLifecycleObserver$-CC:
+    public static void $default$onResume(androidx.lifecycle.DefaultLifecycleObserver,androidx.lifecycle.LifecycleOwner)

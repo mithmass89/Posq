@@ -29,6 +29,7 @@ class LineChartSample1State extends State<LineChartSample1> {
 
   @override
   Widget build(BuildContext context) {
+    chartData=[];
     List.generate(
         widget.chartdata.length,
         (index) => chartData.add(SalesData(

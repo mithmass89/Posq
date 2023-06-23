@@ -649,7 +649,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                         .width *
                                                     0.3,
                                                 child: Text(
-                                                    '${CurrencyFormat.convertToIdr(datadetail[index].revenueamt!-datadetail[index].discamt!, 0)}',
+                                                    '${CurrencyFormat.convertToIdr(datadetail[index].revenueamt!, 0)}',
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.black54)),

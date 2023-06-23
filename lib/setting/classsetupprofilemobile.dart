@@ -285,6 +285,10 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                       ['strictuser']
                                                   .toString();
                                             });
+                                            dbname = outletcd.text;
+                                            pscd = outletcd.text;
+                                            outletdesc = namaoutlet.toString();
+
                                             EasyLoading.dismiss();
                                             Navigator.pushReplacement(
                                               context,
@@ -516,6 +520,10 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                             ['strictuser']
                                                         .toString();
                                                   });
+                                                  dbname = outletcd.text;
+                                                  pscd = outletcd.text;
+                                                  outletdesc =
+                                                      namaoutlet.toString();
                                                   EasyLoading.dismiss();
                                                   Navigator.pushReplacement(
                                                     context,

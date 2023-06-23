@@ -130,6 +130,44 @@ class ListUser {
   }
 }
 
+class CombineDataRingkasan {
+  final num? revenuegross;
+  final num? pajak;
+  final num? service;
+  final num? totalnett;
+  final num? totalpayment;
+
+  CombineDataRingkasan({
+    this.revenuegross,
+    this.pajak,
+    this.service,
+    this.totalnett,
+    this.totalpayment,
+  });
+
+  CombineDataRingkasan.fromJson(Map<String, dynamic> res)
+      : revenuegross = res["revenuegross"],
+        pajak = res["pajak"],
+        service = res["service"],
+        totalnett = res['totalnett'],
+        totalpayment = res['totalpayment'];
+
+  @override
+  String toString() {
+    return '{"revenuegross": $revenuegross, "pajak": $pajak,"service": $service,"totalnett": $totalnett,"totalpayment": $totalpayment}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'revenuegross': revenuegross,
+      'pajak': pajak,
+      'service': service,
+      'totalnett': totalnett,
+      'totalpayment': totalpayment,
+    };
+  }
+}
+
 class Item {
   final int? id;
   final String? outletcode;

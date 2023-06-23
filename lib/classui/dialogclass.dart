@@ -385,52 +385,51 @@ class _DialogTabClassState extends State<DialogTabClass>
           borderRadius: BorderRadius.circular(12),
         ),
         content: Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          height: MediaQuery.of(context).size.height * 0.5,
-          child:  Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.05,
-                child: TabBar(
-                  // indicator: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(20), // Creates border
-                  //     color: Colors.orange), //Change background color from here
-                  labelColor: Colors.orange,
-                  unselectedLabelColor: Colors.blue,
-                  controller: controller,
-                  tabs: <Widget>[
-                    Tab(
-                      text: 'Kategori',
-                    ),
-                    Tab(
-                      text: 'Buat Kategori',
-                    ),
-                  ],
-                ),
-              ),
-              Form(
-                key: _formKey,
-                child: Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
                   width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  child: TabBarView(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: TabBar(
+                    // indicator: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(20), // Creates border
+                    //     color: Colors.orange), //Change background color from here
+                    labelColor: Colors.orange,
+                    unselectedLabelColor: Colors.blue,
                     controller: controller,
-                    children: [
-                      CategoryList(
-                        controller: controller,
-                        index: index,
+                    tabs: <Widget>[
+                      Tab(
+                        text: 'Kategori',
                       ),
-                      Createctg()
+                      Tab(
+                        text: 'Buat Kategori',
+                      ),
                     ],
                   ),
                 ),
-              ),
-            ],
-          )),
-        
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    child: TabBarView(
+                      controller: controller,
+                      children: [
+                        CategoryList(
+                          controller: controller,
+                          index: index,
+                        ),
+                        Createctg()
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )),
       );
     });
   }
@@ -1336,6 +1335,71 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
   }
 }
 
+class DialogClassWillPopExit extends StatefulWidget {
+  const DialogClassWillPopExit({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<DialogClassWillPopExit> createState() => _DialogClassWillPopExitState();
+}
+
+class _DialogClassWillPopExitState extends State<DialogClassWillPopExit> {
+  late DatabaseHandler handler;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                  width: MediaQuery.of(context).size.width * 0.02,
+                ),
+                Row(
+                  children: [],
+                )
+              ],
+            )),
+        title: Text('Anda ingin logout'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () async {
+                // await handler.activeZeroiafjrndttrno(
+                //     IafjrndtClass(active: 1, transno: widget.trno));
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //     '/', (Route<dynamic> route) => false);
+                Navigator.of(context).pop();
+              },
+              child: Text('Batal')),
+          TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
 class DialogClassCancelorder extends StatefulWidget {
   final String trno;
   final String outletcd;
@@ -1807,8 +1871,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
+
   }
 
   Future<int> insertIafjrnhd() async {
@@ -1856,46 +1919,46 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.5,
                       child: QrImage(
-                        size: MediaQuery.of(context).size.height * 0.6,
+                        size: MediaQuery.of(context).size.height * 0.7,
                         version: QrVersions.auto,
                         data: widget.url.toString(),
                       ),
                     ),
                   ],
                 ),
-                Container(
+              
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text('copy Text'),
+                //     IconButton(
+                //       icon: Icon(Icons.copy),
+                //       iconSize: 20,
+                //       color: Colors.green,
+                //       splashColor: Colors.purple,
+                //       onPressed: () {
+                //         Clipboard.setData(
+                //             ClipboardData(text: widget.url.toString()));
+                //       },
+                //     ),
+                //   ],
+                // ),
+              ],
+            )),
+        title:  Container(
                   alignment: Alignment.topCenter,
-                  height: MediaQuery.of(context).size.height * 0.04,
+                  height: MediaQuery.of(context).size.height * 0.07,
                   width: MediaQuery.of(context).size.width * 0.4,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('assets/qris.png'),
-                        fit: BoxFit.cover),
+                        fit: BoxFit.fitHeight),
                     // shape: BoxShape.circle,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('copy Text'),
-                    IconButton(
-                      icon: Icon(Icons.copy),
-                      iconSize: 20,
-                      color: Colors.green,
-                      splashColor: Colors.purple,
-                      onPressed: () {
-                        Clipboard.setData(
-                            ClipboardData(text: widget.url.toString()));
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            )),
-        title: Text('Pembayaran QRIS '),
         actions: <Widget>[
           TextButton(
               onPressed: () async {

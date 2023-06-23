@@ -53,7 +53,7 @@ class _TabDetailTrnoTabState extends State<TabDetailTrnoTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.85,
+      height: MediaQuery.of(context).size.height * 0.80,
       child: FutureBuilder(
           future: ClassApi.getTrnoDetail(widget.trno, pscd, ''),
           builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {

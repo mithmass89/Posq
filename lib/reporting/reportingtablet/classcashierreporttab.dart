@@ -8,17 +8,20 @@ import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/reporting/reportingtablet/cashiersummarydetailtab.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
+import 'package:collection/collection.dart';
 
 class CashierSummaryTab extends StatefulWidget {
   late String fromdate;
   late String todate;
   final MyBuilder builder;
+  late List<String> listoutlets;
 
   CashierSummaryTab(
       {Key? key,
       required this.fromdate,
       required this.todate,
-      required this.builder})
+      required this.builder,
+      required this.listoutlets})
       : super(key: key);
 
   @override
@@ -28,24 +31,56 @@ class CashierSummaryTab extends StatefulWidget {
 class _CashierSummaryTabState extends State<CashierSummaryTab> {
   String? query = '';
   List<IafjrnhdClass> data = [];
+  List<IafjrnhdClass> datatemp = [];
+  Map<String, int> sumByPymtmthd = {};
 
   void initState() {
     super.initState();
     ToastContext().init(context);
-    getSummary();
+    data = [];
+    datatemp = [];
+    sumByPymtmthd = {};
   }
 
   void methodA() {
-    setState(() {
-      print(widget.fromdate);
-      print(widget.todate);
-    });
+    data = [];
+    datatemp = [];
+    sumByPymtmthd = {};
+    setState(() {});
+    print('from voidmethod ${widget.listoutlets}');
   }
 
-  Future<dynamic> getSummary() async {
-    data = await ClassApi.getCashierSummary(
-        widget.fromdate, widget.todate, dbname);
-        print(data);
+  Future<List<IafjrnhdClass>> olahData() async {
+    for (var x in widget.listoutlets) {
+      await ClassApi.getCashierSummary(
+        widget.fromdate,
+        widget.todate,
+        x,
+      ).then((value) {
+        datatemp.addAll(value);
+      });
+    }
+    ;
+    // Grouping transactions by 'pymtmthd'
+    Map<String, List<IafjrnhdClass>> groupedTransactions =
+        groupBy(datatemp, (transaction) => transaction.pymtmthd!);
+
+    // Calculating the sum of transaction amounts for each 'pymtmthd'
+
+    groupedTransactions.forEach((key, value) {
+      int sum = value.fold(0, (previousValue, transaction) {
+        return previousValue + (transaction.ftotamt as int);
+      });
+      sumByPymtmthd[key] = sum;
+    });
+
+    // Printing the sums by 'pymtmthd'
+    sumByPymtmthd.forEach((key, value) {
+      print('pymtmthd: $key, sum: $value');
+      data.add(IafjrnhdClass(transno1: '', pymtmthd: key, ftotamt: value));
+    });
+    print(data);
+    return data;
   }
 
   @override
@@ -62,19 +97,21 @@ class _CashierSummaryTabState extends State<CashierSummaryTab> {
       width: MediaQuery.of(context).size.width * 0.95,
       height: MediaQuery.of(context).size.height * 0.6,
       child: FutureBuilder(
-          future: ClassApi.getCashierSummary(
-              widget.fromdate, widget.todate, dbname),
-          builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
-            var x = snapshot.data ?? [];
+          future: olahData(),
+          builder: (context, snapshot) {
             print('ini ${snapshot.data}');
-            if (x.isNotEmpty) {
+            if (data.isNotEmpty) {
               return Column(
                 children: [
                   Container(
                     margin: EdgeInsets.all(10),
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: MediaQuery.of(context).size.height * 0.04,
-                    child: Text('Ringkasan',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                    child: Text(
+                      'Cashier summary',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -86,13 +123,17 @@ class _CashierSummaryTabState extends State<CashierSummaryTab> {
                                 childAspectRatio: 5 / 2,
                                 crossAxisSpacing: 1,
                                 mainAxisSpacing: 1),
-                        itemCount: x.length,
+                        itemCount: data.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             dense: true,
-                            title: Text(x[index].pymtmthd!,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
+                            title: Text(
+                              data[index].pymtmthd!,
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
                             subtitle: Text(CurrencyFormat.convertToIdr(
-                                x[index].ftotamt, 0)),
+                                data[index].ftotamt, 0)),
                           );
                         }),
                   ),
@@ -110,7 +151,13 @@ class _CashierSummaryTabState extends State<CashierSummaryTab> {
                             );
                           }));
                         },
-                        child: Text('lihat detail',style: TextStyle(fontWeight: FontWeight.bold,color: Color.fromARGB(255, 0, 155, 160),),)),
+                        child: Text(
+                          'lihat detail',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 0, 155, 160),
+                          ),
+                        )),
                   ),
                 ],
               );

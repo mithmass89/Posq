@@ -53,9 +53,14 @@ class _ClassDetailPelangganState extends State<ClassDetailPelanggan> {
             );
           }
           return Center(
-              child: Container(
-            child: Text('Tidak ada data'),
-          ));
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+            child: Text('Tidak ada data pelanggan'),
+          ),
+                ],
+              ));
         });
   }
 }

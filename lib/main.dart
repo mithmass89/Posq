@@ -63,7 +63,9 @@ class MyApp extends StatelessWidget {
               pscd: '',
               qty: 0,
             ),
-        '/Dashboard': (context) => Mainapps(),
+        '/Dashboard': (context) => Mainapps(
+               fromretailmain: true,
+        ),
       },
     );
 

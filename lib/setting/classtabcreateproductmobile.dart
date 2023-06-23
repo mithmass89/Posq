@@ -198,10 +198,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
             onChanged: (value) {},
           ),
         ),
-        Divider(
-          indent: 20,
-          endIndent: 20,
-        ),
+ 
         ListTile(
             title: Text(
               'Multiple Harga',

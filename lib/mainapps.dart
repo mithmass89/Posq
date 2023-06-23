@@ -15,10 +15,12 @@ ClassApi? apicloud;
 
 class Mainapps extends StatefulWidget {
   final String? title;
+  final bool fromretailmain;
   // final bool? newinstall;
   const Mainapps({
     Key? key,
     this.title,
+    required this.fromretailmain,
     // this.newinstall,
   }) : super(key: key);
 
@@ -51,6 +53,7 @@ class _MainappsState extends State<Mainapps> {
     loadKey();
     checkapps = checkingApps();
     // checkNewApp();
+    print(widget.fromretailmain);
   }
 
   loadKey() async {
@@ -61,8 +64,14 @@ class _MainappsState extends State<Mainapps> {
   }
 
   Future<dynamic> checkNewApp() async {
-    await getOutlet(usercd);
-    await getSelesToday();
+    if (widget.fromretailmain == true) {
+      hasoutlet = true;
+      await getOutletSelected();
+      await getSelesToday();
+    } else {
+      await getOutlet(usercd);
+      await getSelesToday();
+    }
   }
 
   checkingApps() async {
@@ -75,6 +84,7 @@ class _MainappsState extends State<Mainapps> {
         setState(() {
           pscd = value.first['outletcd'];
           dbname = value.first['outletcd'];
+          outletdesc = value.first['outletdesc'];
           hasoutlet = true;
           outletinfo = Outlet(
               outletcd: value.first['outletcd'],
@@ -89,18 +99,41 @@ class _MainappsState extends State<Mainapps> {
     });
   }
 
-  todayDate() {
-    setState(() {
-      var now = new DateTime.now();
-      var formatter = new DateFormat('dd-MM-yyyy');
-      var formatter1 = new DateFormat('yyyy-MM-dd');
-      time = DateFormat('kk:mm:a').format(now);
-      date = formatter.format(now);
-      date1 = formatter1.format(now);
+  getOutletSelected() async {
+    print('check selected outlet');
+    await ClassApi.getOutletUserSelected(usercd, pscd).then((value) {
+      if (value.isNotEmpty) {
+        setState(() {
+          pscd = value.first['outletcd'];
+          dbname = value.first['outletcd'];
+          outletdesc = value.first['outletdesc'];
+          hasoutlet = true;
+          outletinfo = Outlet(
+              outletcd: value.first['outletcd'],
+              outletname: value.first['outletdesc'],
+              alamat: value.first['alamat'],
+              telp: num.parse(value.first['telp']),
+              kodepos: value.first['kodepos'].toString(),
+              profile: value.first['profile'],
+              trnonext: value.first['billnext']);
+              print(outletinfo);
+        });
+      }
     });
   }
 
+  todayDate() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('dd-MM-yyyy');
+    var formatter1 = new DateFormat('yyyy-MM-dd');
+    time = DateFormat('kk:mm:a').format(now);
+    date = formatter.format(now);
+    date1 = formatter1.format(now);
+    setState(() {});
+  }
+
   getSelesToday() async {
+    chartdata = [];
     todayDate();
     todaysales = await ClassApi.getTodaySales(date1!, dbname);
     monthlysales = await ClassApi.monthlysales(date1!, dbname);
@@ -141,6 +174,8 @@ class _MainappsState extends State<Mainapps> {
                         case true:
                           // do something else
                           return AppsMobile(
+                            getSales: todayDate,
+                            chartreload: getSelesToday,
                             penjualanratarata: penjualanratarata,
                             todaysale: todaysales.isNotEmpty
                                 ? todaysales
@@ -168,6 +203,8 @@ class _MainappsState extends State<Mainapps> {
                       case true:
                         // do something else
                         return AppsMobile(
+                          getSales: todayDate,
+                          chartreload: getSelesToday,
                           penjualanratarata: penjualanratarata,
                           chartdata: chartdata,
                           todaysale: todaysales,

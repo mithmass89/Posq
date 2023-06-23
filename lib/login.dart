@@ -1,4 +1,3 @@
-
 // ignore_for_file: unused_field, unused_element, unused_local_variable
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -104,7 +103,7 @@ class _LoginState extends State<Login> {
                       Container(
                         alignment: Alignment.center,
                         child: Text(
-                          'AOVI POS',
+                          'AOVIPOS',
                           style: TextStyle(fontSize: 32, color: Colors.white),
                         ),
                       ),
@@ -219,6 +218,7 @@ class _LoginState extends State<Login> {
                                           if (valued.length != 0) {
                                             dbname = valued[0]['outletcode'];
                                             pscd = valued[0]['outletcode'];
+                                            outletdesc = valued[0]['outletdesc'];
                                             for (var x in valued) {
                                               listoutlets.add(x['outletcode']);
                                             }
@@ -241,7 +241,9 @@ class _LoginState extends State<Login> {
                                                 .pushAndRemoveUntil(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            Mainapps()),
+                                                            Mainapps(
+                                                                   fromretailmain: false,
+                                                            )),
                                                     (Route<dynamic> route) =>
                                                         false);
                                           } else {
@@ -375,6 +377,7 @@ class _LoginState extends State<Login> {
                                         if (valued.length != 0) {
                                           dbname = valued[0]['outletcode'];
                                           pscd = valued[0]['outletcode'];
+                                          outletdesc = valued[0]['outletdesc'];
                                           for (var x in valued) {
                                             listoutlets.add(x['outletcode']);
                                           }
@@ -394,7 +397,9 @@ class _LoginState extends State<Login> {
                                               .pushAndRemoveUntil(
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          Mainapps()),
+                                                          Mainapps(
+                                                                 fromretailmain: false,
+                                                          )),
                                                   (Route<dynamic> route) =>
                                                       false);
                                         } else {
@@ -502,7 +507,7 @@ class _LoginState extends State<Login> {
                       Container(
                         alignment: Alignment.center,
                         child: Text(
-                          'AOVI POS',
+                          'AOVIPOS',
                           style: TextStyle(fontSize: 24, color: Colors.orange),
                         ),
                       ),
@@ -626,6 +631,7 @@ class _LoginState extends State<Login> {
                                                 dbname =
                                                     valued[0]['outletcode'];
                                                 pscd = valued[0]['outletcode'];
+                                                outletdesc = valued[0]['outletdesc'];
                                                 for (var x in valued) {
                                                   listoutlets
                                                       .add(x['outletcode']);
@@ -649,7 +655,9 @@ class _LoginState extends State<Login> {
                                                   .pushAndRemoveUntil(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              Mainapps()),
+                                                              Mainapps(
+                                                                fromretailmain: false,
+                                                              )),
                                                       (Route<dynamic> route) =>
                                                           false);
                                             } else {
@@ -668,6 +676,7 @@ class _LoginState extends State<Login> {
                                               .then((valued) {
                                             dbname = valued[0]['outletcode'];
                                             pscd = valued[0]['outletcode'];
+                                            outletdesc = valued[0]['outletdesc'];
                                             for (var x in valued) {
                                               listoutlets.add(x['outletcode']);
                                             }
@@ -688,7 +697,9 @@ class _LoginState extends State<Login> {
                                               .pushAndRemoveUntil(
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          Mainapps()),
+                                                          Mainapps(
+                                                                 fromretailmain: false,
+                                                          )),
                                                   (Route<dynamic> route) =>
                                                       false);
                                         }

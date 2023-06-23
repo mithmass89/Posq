@@ -51,7 +51,18 @@ class _DetailSavedTransactionTabState extends State<DetailSavedTransactionTab>
           IconButton(onPressed: () {}, icon: Icon(Icons.print)),
           IconButton(onPressed: () {}, icon: Icon(Icons.send)),
           ButtonNoIcon(
-            onpressed: () async {},
+            onpressed: () async {
+              await Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ClassRetailMainMobile(
+                            fromsaved: true,
+                            outletinfo: widget.outletinfo,
+                            pscd: widget.pscd,
+                            qty: 0,
+                            trno: widget.trno,
+                          )));
+            },
             textcolor: Colors.white,
             color: Colors.orange,
             name: haspayment == true ? 'Reopen' : 'Selesaikan',
@@ -71,48 +82,37 @@ class _DetailSavedTransactionTabState extends State<DetailSavedTransactionTab>
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // SizedBox(
-          //   width: MediaQuery.of(context).size.width * 0.95,
-          //   height: MediaQuery.of(context).size.width * 0.01,
-          // ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.95,
-              height: MediaQuery.of(context).size.height * 0.82,
-              child: Row(children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.45,
-                  height: MediaQuery.of(context).size.height * 0.74,
-                  child: Column(
-                    children: [
-                      Text('Detail Transaksi'),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.03,
-                      ),
-                      TabDetailTrnoTab(
-                        status: 'Belum Lunas',
-                        trno: widget.trno,
-                        outletinfo: widget.outletinfo,
-                        pscd: widget.pscd,
-                      ),
-                    ],
-                  ),
+      
+          Container(
+            width: MediaQuery.of(context).size.width * 0.95,
+            height: MediaQuery.of(context).size.height * 0.80,
+            child: Row(children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: MediaQuery.of(context).size.height * 0.80,
+                child: Column(
+                  children: [
+                    TabDetailTrnoTab(
+                      status: 'Belum Lunas',
+                      trno: widget.trno,
+                      outletinfo: widget.outletinfo,
+                      pscd: widget.pscd,
+                    ),
+                  ],
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.45,
-                  height: MediaQuery.of(context).size.height * 0.70,
-                  child: Column(
-                    children: [
-                      Text('Detail Info Pelanggan'),
-                      ClassDetailPelanggan(
-                        trno: widget.trno,
-                      ),
-                    ],
-                  ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: MediaQuery.of(context).size.height * 0.80,
+                child: Column(
+                  children: [
+                    ClassDetailPelanggan(
+                      trno: widget.trno,
+                    ),
+                  ],
                 ),
-              ]),
-            ),
+              ),
+            ]),
           ),
         ],
       ),

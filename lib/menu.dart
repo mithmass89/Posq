@@ -121,12 +121,11 @@ class _MenuMainState extends State<MenuMain> {
                         setState(() {
                           selected = !selected;
                         });
-                        final Outlet result = await Navigator.push(
+                        final Outlet? result = await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Selectoutletmobile()),
                         );
-
                         // callbackTitle(result);
                         AppsMobile.of(context)!.string = result;
                         print(result);
@@ -308,7 +307,7 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
-                  final Outlet result = await Navigator.push(
+                  final Outlet? result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const Selectoutletmobile()),
@@ -316,6 +315,7 @@ class _MenuMainState extends State<MenuMain> {
                   setState(() {});
                   // callbackTitle(result);
                   AppsMobile.of(context)!.string = result;
+                  
                   print(result);
                 },
                 name: 'Outlet',

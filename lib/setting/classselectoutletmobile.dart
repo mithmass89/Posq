@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_this
 
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/setting/profilemain.dart';
+import 'package:posq/userinfo.dart';
 
 class Selectoutletmobile extends StatefulWidget {
   const Selectoutletmobile({Key? key}) : super(key: key);
@@ -31,46 +34,33 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
         ),
       ),
       body: FutureBuilder(
-        future: this.handler.retrieveUsers(),
-        builder: (BuildContext context, AsyncSnapshot<List<Outlet>> snapshot) {
+        future: ClassApi.getOutlets(usercd),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
               itemCount: snapshot.data?.length,
               itemBuilder: (BuildContext context, int index) {
-                return Dismissible(
-                  direction: DismissDirection.endToStart,
-                  background: Container(
-                    color: Colors.red,
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Icon(Icons.delete_forever),
-                  ),
-                  key: ValueKey<int>(snapshot.data![index].id!),
-                  onDismissed: (DismissDirection direction) async {
-                    await this.handler.deleteUser(snapshot.data![index].id!);
-                    setState(() {
-                      snapshot.data!.remove(snapshot.data![index]);
-                    });
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop(Outlet(
+                      outletcd: snapshot.data![index]['outletcode'],
+                      outletname: snapshot.data![index]['outletdesc'],
+                      alamat: snapshot.data![index]['alamat'],
+                      kodepos: snapshot.data![index]['kodepos'],
+                      telp: num.parse(snapshot.data![index]['telp']),
+                    ));
+
+                    dbname = snapshot.data![index]['outletcode'];
+                    pscd = snapshot.data![index]['outletcode'];
+                    outletdesc = snapshot.data![index]['outletdesc'];
+                    setState(() {});
                   },
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop(Outlet(
-                        outletcd: snapshot.data![index].outletcd,
-                        outletname: snapshot.data![index].outletname,
-                        alamat: snapshot.data![index].alamat,
-                        kodepos: snapshot.data![index].kodepos,
-                        telp: snapshot.data![index].telp,
-                        trnonext: snapshot.data![index].trnonext,
-                        trnopynext: snapshot.data![index].trnopynext,
-                      ));
-                    },
-                    child: Card(
-                        child: ListTile(
-                      contentPadding: EdgeInsets.all(8.0),
-                      title: Text(snapshot.data![index].outletname!),
-                      subtitle: Text(snapshot.data![index].alamat.toString()),
-                    )),
-                  ),
+                  child: Card(
+                      child: ListTile(
+                    contentPadding: EdgeInsets.all(8.0),
+                    title: Text(snapshot.data![index]['outletdesc']!),
+                    subtitle: Text(snapshot.data![index]['alamat'].toString()),
+                  )),
                 );
               },
             );
@@ -84,7 +74,10 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Profile()),
+            MaterialPageRoute(
+                builder: (context) => ClassSetupProfileMobile(
+                      username: usercd,
+                    )),
           ).then((_) {
             setState(() {});
           });

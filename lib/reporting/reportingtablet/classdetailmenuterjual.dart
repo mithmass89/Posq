@@ -9,17 +9,20 @@ import 'package:posq/reporting/reportingtablet/cashiersummarydetailtab.dart';
 import 'package:posq/reporting/reportingtablet/classdetailitemmenusoldtab.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
+import 'package:collection/collection.dart';
 
 class ClasMeuTerjualtab extends StatefulWidget {
   late String fromdate;
   late String todate;
   final MyBuilder builder;
+  final List<String> listoutlets;
 
   ClasMeuTerjualtab(
       {Key? key,
       required this.fromdate,
       required this.todate,
-      required this.builder})
+      required this.builder,
+      required this.listoutlets})
       : super(key: key);
 
   @override
@@ -28,25 +31,72 @@ class ClasMeuTerjualtab extends StatefulWidget {
 
 class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
   String? query = '';
-  List<IafjrnhdClass> data = [];
+  List<dynamic> data = [];
+  List<dynamic> datatemp = [];
+  Map<String, Map<String, dynamic>> sumsByItem = {};
 
   void initState() {
     super.initState();
     ToastContext().init(context);
-    getSummary();
+    data = [];
+    datatemp = [];
+    sumsByItem = {};
   }
 
   void methodA() {
-    setState(() {
-      print(widget.fromdate);
-      print(widget.todate);
-    });
+    data = [];
+    datatemp = [];
+    sumsByItem = {};
+    setState(() {});
   }
 
-  Future<dynamic> getSummary() async {
-    data = await ClassApi.getCashierSummary(
-        widget.fromdate, widget.todate, dbname);
+  Future<List<dynamic>> olahData() async {
+    for (var x in widget.listoutlets) {
+      await ClassApi.DetailMenuItemTerjual(
+        widget.fromdate,
+        widget.todate,
+        x,
+      ).then((value) {
+        datatemp.addAll(value);
+      });
+    }
+    ;
+    Map<String, List<dynamic>> groupedData =
+        groupBy(datatemp, (item) => item['itemdesc']);
+
+    // Calculating the sum of 'qty' and 'nettrevenue' for each group
+
+    groupedData.forEach((key, value) {
+      int sumQty = value.fold(0, (previousValue, item) {
+        return previousValue + (item['qty'] as int);
+      });
+
+      int sumNetRevenue = value.fold(0, (previousValue, item) {
+        return previousValue + (item['nettrevenue'] as int);
+      });
+
+      sumsByItem[key] = {
+        'itemdesc': key,
+        'sumQty': sumQty,
+        'sumNetRevenue': sumNetRevenue,
+      };
+    });
+
+    // Printing the sums for each item
+    sumsByItem.forEach((key, value) {
+      // print('Item: ${value['itemdesc']}');
+      // print('Sum of qty: ${value['sumQty']}');
+      // print('Sum of net revenue: ${value['sumNetRevenue']}');
+      // print('------');
+      data.add({
+        "itemdesc": value['itemdesc'],
+        "qty": value['sumQty'],
+        "nettrevenue": value["sumNetRevenue"]
+      });
+    });
+
     print(data);
+    return data;
   }
 
   @override
@@ -63,12 +113,10 @@ class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
       width: MediaQuery.of(context).size.width * 0.95,
       height: MediaQuery.of(context).size.height * 0.6,
       child: FutureBuilder(
-          future: ClassApi.getReportDetailMenuSold(
-              widget.fromdate, widget.todate, dbname, ''),
-          builder: (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
-            var x = snapshot.data ?? [];
+          future: olahData(),
+          builder: (context, AsyncSnapshot snapshot) {
             print('ini ${snapshot.data}');
-            if (x.isNotEmpty) {
+            if (data.isNotEmpty) {
               return Column(
                 children: [
                   Container(
@@ -91,7 +139,7 @@ class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
                                 childAspectRatio: 5 / 2,
                                 crossAxisSpacing: 1,
                                 mainAxisSpacing: 1),
-                        itemCount: x.length,
+                        itemCount: data.length,
                         itemBuilder: (context, index) {
                           return Card(
                             child: ListTile(
@@ -101,19 +149,20 @@ class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
                                   return ClassCashierMenuSoldDetailTab(
                                     fromdate: widget.fromdate,
                                     todate: widget.todate,
-                                    itemcode: x[index].itemcode!,
+                                    itemcode: data[index]['itemcode']!,
                                   );
                                 }));
                               },
-                              leading: Text('QTY : ${x[index].qty.toString()}'),
+                              leading: Text(
+                                  'QTY : ${data[index]['qty'].toString()}'),
                               dense: true,
                               title: Text(
-                                x[index].itemdesc!,
+                                data[index]['itemdesc']!,
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(CurrencyFormat.convertToIdr(
-                                  x[index].revenueamt, 0)),
+                                  data[index]['nettrevenue'], 0)),
                             ),
                           );
                         }),

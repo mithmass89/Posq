@@ -82,6 +82,7 @@ class PaymentGate {
       print(response);
       return _responsemidtrans;
     } else {
+      print(json.decode(response.body));
       return response;
     }
   }

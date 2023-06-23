@@ -918,13 +918,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       Container(
                                         alignment: Alignment.center,
                                         height: 30,
-                                        width: 450,
+                                        width: MediaQuery.of(context).size.width*0.4,
                                         child: Text(
                                           'Manual',
                                         ),
                                       ),
                                       Container(
-                                        width: 450,
+                                       width: MediaQuery.of(context).size.width*0.4,
                                         alignment: Alignment.center,
                                         height: 30,
                                         child: Text(
@@ -1026,6 +1026,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ClassSavedTransactionTab(
+                                                    trno: widget.trno!,
                                                     pscd: widget
                                                         .outletinfo.alamat,
                                                     outletinfo:

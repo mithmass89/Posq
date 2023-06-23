@@ -218,6 +218,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
               filterQuality: FilterQuality.medium,
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
+                    print(exception);
                 return Image.network(
                   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
                   fit: BoxFit.fill,

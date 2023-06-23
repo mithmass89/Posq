@@ -11,9 +11,11 @@ import 'package:posq/model.dart';
 import 'package:posq/reporting/cashiersummary.dart';
 import 'package:posq/reporting/classkirimlaporan.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
+import 'package:posq/reporting/classlistoutlet.dart';
 import 'package:posq/reporting/classringkasan.dart';
 import 'package:posq/reporting/reportingtablet/classcashierreporttab.dart';
 import 'package:posq/reporting/reportingtablet/classdetailmenuterjual.dart';
+import 'package:posq/reporting/reportingtablet/classringkasancombinetab.dart';
 import 'package:posq/reporting/reportingtablet/classringkasanreporttab.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
@@ -52,6 +54,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   String selected = '';
   late void Function() myMethod;
   late void Function() ringkasan;
+  late void Function() ringkasancombine;
+  late void Function() detailmenu;
   List<IafjrnhdClass> listdatapayment = [];
   List<IafjrndtClass> data = [];
   List<IafjrndtClass> topMenu = [];
@@ -62,6 +66,10 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   String? fromdateringkasan;
   bool todayringkasan = false;
   late Future<Null> initialDatas;
+  List<dynamic>? outletdata = [];
+  final TextEditingController outlet =
+      TextEditingController(text: "All Outlet");
+  List<CombineDataRingkasan> datax = [];
 
   void initState() {
     super.initState();
@@ -191,39 +199,46 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           print(type);
                           if (type == 'Summary Cashier') {
                             myMethod.call();
-                            setState(() {});
-                          }
-                          if (type == 'Ringkasan') {
-                            // ringkasan.call();
-                            await getDataRingkasan();
+                          } else if (type == 'Ringkasan') {
+                            ringkasan.call();
+                          } else if (type == 'Ringkasan Combine') {
+                            ringkasancombine.call();
                           }
                           setState(() {});
                         },
                         typekeyboard: TextInputType.text,
                       ),
                     ),
-                    ButtonNoIcon2(
-                      width: MediaQuery.of(context).size.width * 0.15,
-                      height: MediaQuery.of(context).size.height * 0.08,
-                      color: Colors.white,
-                      textcolor: Color.fromARGB(255, 0, 155, 160),
-                      name: 'Print',
-                      onpressed: () {},
-                    ),
-                    ButtonNoIcon2(
-                      width: MediaQuery.of(context).size.width * 0.15,
-                      height: MediaQuery.of(context).size.height * 0.08,
-                      color: Color.fromARGB(255, 0, 155, 160),
-                      textcolor: Colors.white,
-                      name: 'Kirim Laporan',
-                      onpressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return ClassKirimLaporan(
-                            datapayment: listdatapayment,
-                          );
-                        }));
-                      },
+                    Expanded(
+                      child: TextFieldMobileButton(
+                        suffixicone: Icon(Icons.arrow_circle_right),
+                        controller: outlet,
+                        onChanged: (value) {},
+                        ontap: () async {
+                          outletdata = [];
+                          outletdata = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return ClassPilihOutletMobile();
+                          }));
+                          outlet.text = outletdata![0]['outletdesc'];
+                          if (type == 'Summary Cashier') {
+                            myMethod.call();
+                          } else if (type == 'Ringkasan') {
+                            ringkasan.call();
+                          } else if (type == 'Ringkasan Combine') {
+                            ringkasancombine.call();
+                          } else if (type == 'Detail Item Terjual') {
+                            detailmenu.call();
+                          }
+                          if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                            outletdata = [];
+                          }
+                          print('ini selcted outlet $outletdata');
+                          setState(() {});
+                        },
+                        typekeyboard: TextInputType.text,
+                      ),
                     ),
                   ],
                 ),
@@ -234,8 +249,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ButtonNoIcon2(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.20,
+                      height: MediaQuery.of(context).size.height * 0.07,
                       color:
                           selected == 'Hari ini' ? Colors.white : Colors.orange,
                       textcolor:
@@ -251,23 +266,20 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                         _controllerdate.text = '$fromdatenamed - $todatenamed';
 
                         print(todayringkasan);
-                        if (type == 'Ringkasan') {
-                          ringkasan.call();
-                          await getDataRingkasan();
-
-                          setState(() {});
-                        }
                         if (type == 'Summary Cashier') {
                           myMethod.call();
-                          setState(() {});
+                        } else if (type == 'Ringkasan') {
+                          ringkasan.call();
+                        } else if (type == 'Ringkasan Combine') {
+                          ringkasancombine.call();
                         }
 
                         setState(() {});
                       },
                     ),
                     ButtonNoIcon2(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.20,
+                      height: MediaQuery.of(context).size.height * 0.07,
                       color:
                           selected == '7 Hari' ? Colors.white : Colors.orange,
                       textcolor:
@@ -296,18 +308,17 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
 
                         if (type == 'Summary Cashier') {
                           myMethod.call();
-                          setState(() {});
-                        }
-                        if (type == 'Ringkasan') {
+                        } else if (type == 'Ringkasan') {
                           ringkasan.call();
-                          await getDataRingkasan();
+                        } else if (type == 'Ringkasan Combine') {
+                          ringkasancombine.call();
                         }
                         setState(() {});
                       },
                     ),
                     ButtonNoIcon2(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.20,
+                      height: MediaQuery.of(context).size.height * 0.07,
                       color:
                           selected == '30 Hari' ? Colors.white : Colors.orange,
                       textcolor:
@@ -331,81 +342,96 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
 
                         if (type == 'Summary Cashier') {
                           myMethod.call();
-                          setState(() {});
-                        }
-                        if (type == 'Ringkasan') {
+                        } else if (type == 'Ringkasan') {
                           ringkasan.call();
-                          await getDataRingkasan();
-                          setState(() {});
+                        } else if (type == 'Ringkasan Combine') {
+                          ringkasancombine.call();
                         }
 
                         setState(() {});
                       },
+                    ),
+                    ButtonNoIcon2(
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      color: Color.fromARGB(255, 0, 155, 160),
+                      textcolor: Colors.white,
+                      name: 'Kirim Laporan',
+                      onpressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return ClassKirimLaporan(
+                            datapayment: listdatapayment,
+                          );
+                        }));
+                      },
+                    ),
+                    ButtonNoIcon2(
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      color: Colors.white,
+                      textcolor: Color.fromARGB(255, 0, 155, 160),
+                      name: 'Print',
+                      onpressed: () {},
                     ),
                   ],
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
-                Builder(builder: (context) {
-                  // print(type);
-                  switch (type) {
-                    case 'Summary Cashier':
-                      return CashierSummaryTab(
+                type == 'Summary Cashier'
+                    ? CashierSummaryTab(
+                        listoutlets: outletdata!.isEmpty
+                            ? listoutlets
+                            : List.generate(outletdata!.length,
+                                (index) => outletdata![index]['outletcode']),
                         builder:
                             (BuildContext context, void Function() methodA) {
                           myMethod = methodA;
                         },
                         fromdate: fromdate!,
                         todate: todate!,
-                      );
-                    case 'Detail Item Terjual':
-                      return ClasMeuTerjualtab(
-                        builder:
-                            (BuildContext context, void Function() methodA) {
-                          myMethod = methodA;
-                        },
-                        fromdate: fromdate!,
-                        todate: todate!,
-                      );
-                    case 'Ringkasan':
-                      ClassRingkasantab(
-                        topMenu: topMenu,
-                        menukuranglaku: menukuranglaku,
+                      )
+                    : Container(),
+                type == 'Ringkasan'
+                    ? ClassRingkasantab(
+                        listoutlets: outletdata!.isEmpty
+                            ? listoutlets
+                            : List.generate(outletdata!.length,
+                                (index) => outletdata![index]['outletcode']),
+                        data: datax,
                         builder:
                             (BuildContext context, void Function() methodA) {
                           ringkasan = methodA;
                         },
-                        datasales: data,
                         fromdate: fromdate!,
                         todate: todate!,
-                      );
-                      break;
-                    default:
-                      return ClassRingkasantab(
-                        topMenu: topMenu,
-                        menukuranglaku: menukuranglaku,
+                      )
+                    : Container(),
+                type == 'Ringkasan Combine'
+                    ? ClassRingkasanAllTab(
                         builder:
                             (BuildContext context, void Function() methodA) {
-                          ringkasan = methodA;
+                          ringkasancombine = methodA;
                         },
-                        datasales: data,
                         fromdate: fromdate!,
                         todate: todate!,
-                      );
-                  }
-                  return ClassRingkasantab(
-                    topMenu: topMenu,
-                    menukuranglaku: menukuranglaku,
-                    builder: (BuildContext context, void Function() methodA) {
-                      ringkasan = methodA;
-                    },
-                    datasales: data,
-                    fromdate: fromdate!,
-                    todate: todate!,
-                  );
-                  ;
-                })
+                      )
+                    : Container(),
+                type == 'Detail Item Terjual'
+                    ? ClasMeuTerjualtab(
+                        listoutlets: outletdata!.isEmpty
+                            ? listoutlets
+                            : List.generate(outletdata!.length,
+                                (index) => outletdata![index]['outletcode']),
+                        builder:
+                            (BuildContext context, void Function() methodA) {
+                          detailmenu = methodA;
+                        },
+                        fromdate: fromdate!,
+                        todate: todate!,
+                      )
+                    : Container()
               ],
             ),
           ],

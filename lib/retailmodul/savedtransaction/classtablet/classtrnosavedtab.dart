@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
@@ -10,6 +11,7 @@ class ClassListSavedTab extends StatefulWidget {
   final String pscd;
   final String? trno;
   final IafjrndtClass? datatransaksi;
+  final String? trnoopen;
 
   const ClassListSavedTab({
     Key? key,
@@ -17,6 +19,7 @@ class ClassListSavedTab extends StatefulWidget {
     required this.pscd,
     this.trno,
     this.datatransaksi,
+    required this.trnoopen,
   }) : super(key: key);
 
   @override
@@ -88,18 +91,29 @@ class _ClassListSavedTabState extends State<ClassListSavedTab> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => DetailSavedTransactionTab(
-                    outletinfo: widget.outletinfo,
-                    pscd: widget.outletinfo.outletcd,
-                    status: 'Pending',
-                    trno: widget.trno!,
-                  )),
-        );
-      },
+      onTap: widget.trnoopen != widget.trno
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailSavedTransactionTab(
+                          outletinfo: widget.outletinfo,
+                          pscd: widget.outletinfo.outletcd,
+                          status: 'Pending',
+                          trno: widget.trno!,
+                        )),
+              );
+            }
+          : () async {
+              await Fluttertoast.showToast(
+                  msg: "Transaksi sudah teropen",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            },
       leading: CircleAvatar(
         child: Text(widget.datatransaksi!.guestname!.substring(0, 1)),
       ),

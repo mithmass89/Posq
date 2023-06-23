@@ -100,14 +100,14 @@ class _OptionCreateState extends State<OptionCreate> {
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     LoadingButton(
                       isLoading: false,
                       textcolor: Colors.white,
-                      color: Colors.cyan,
+                      color: Colors.orange,
                       height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.6,
+                      width: MediaQuery.of(context).size.width * 0.55,
                       name: 'Simpan',
                       onpressed: () async {
                         print(descriptionlist!.map((e) => e.text));
@@ -128,7 +128,7 @@ class _OptionCreateState extends State<OptionCreate> {
                     LoadingButton(
                       isLoading: false,
                       textcolor: Colors.white,
-                      color: Colors.blue,
+                      color: Color.fromARGB(255, 0, 164, 185),
                       height: MediaQuery.of(context).size.height * 0.05,
                       width: MediaQuery.of(context).size.width * 0.35,
                       name: 'Tambah Opsi',

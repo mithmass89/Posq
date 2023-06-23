@@ -1,21 +1,26 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
-import 'package:posq/reporting/classcahsiersummarydetail.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
 class ClassRingkasan extends StatefulWidget {
   late String fromdate;
   late String todate;
   final MyBuilder builder;
+  late List<String> listoutlets;
 
   ClassRingkasan(
       {Key? key,
       required this.fromdate,
       required this.todate,
-      required this.builder})
+      required this.builder,
+      required this.listoutlets})
       : super(key: key);
 
   @override
@@ -23,12 +28,13 @@ class ClassRingkasan extends StatefulWidget {
 }
 
 class _ClassRingkasanState extends State<ClassRingkasan> {
-  late DatabaseHandler handler;
   String? query = '';
+  List<IafjrnhdClass> data = [];
+  List<IafjrnhdClass> datatemp = [];
+  Map<String, int> sumByPymtmthd = {};
 
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
     ToastContext().init(context);
   }
 
@@ -53,8 +59,10 @@ class _ClassRingkasanState extends State<ClassRingkasan> {
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height * 0.50,
       child: FutureBuilder(
-          future: handler.ringkasanPenjualan(widget.fromdate, widget.todate),
-          builder: (context, AsyncSnapshot<List<Ringkasan>> snapshot) {
+          future: ClassApi.getReportRingkasan(
+              widget.fromdate, widget.todate, dbname, ''),
+          builder:
+              (context, AsyncSnapshot<List<CombineDataRingkasan>> snapshot) {
             print(snapshot.data);
             var x = snapshot.data ?? [];
             if (x.isNotEmpty) {
@@ -75,40 +83,58 @@ class _ClassRingkasanState extends State<ClassRingkasan> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                childAspectRatio: 5 / 2,
-                                crossAxisSpacing: 1,
-                                mainAxisSpacing: 1),
-                        itemCount: x.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            dense: true,
-                            title: Text(x[index].trdesc),
-                            subtitle: Text(CurrencyFormat.convertToIdr(
-                                x[index].amount, 0)),
-                          );
-                        }),
-                  ),
-                  // Container(
-                  //   margin: EdgeInsets.all(10),
-                  //   width: MediaQuery.of(context).size.width * 0.9,
-                  //   height: MediaQuery.of(context).size.height * 0.05,
-                  //   child: TextButton(
-                  //       onPressed: () {
-                  //         Navigator.of(context).push(MaterialPageRoute(
-                  //             builder: (BuildContext context) {
-                  //           return ClassCashierSummaryDetail(
-                  //             fromdate: widget.fromdate,
-                  //             todate: widget.todate,
-                  //           );
-                  //         }));
-                  //       },
-                  //       child: Text('lihat detail')),
-                  // ),
+                    height: MediaQuery.of(context).size.height * 0.44,
+                    child: Column(
+                      children: [
+                        ListTile(
+                          dense: true,
+                          title: Text('Pendapatan Bersih'),
+                          subtitle: Text(CurrencyFormat.convertToIdr(
+                              x[0].revenuegross, 0)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text('Pajak'),
+                          subtitle:
+                              Text(CurrencyFormat.convertToIdr(x[0].pajak, 0)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text('Service / gratitude'),
+                          subtitle: Text(
+                              CurrencyFormat.convertToIdr(x[0].service, 0)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text('Pendapatan kotor'),
+                          subtitle: Text(
+                              CurrencyFormat.convertToIdr(x[0].totalnett, 0)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text('Total pembayaran di terima'),
+                          subtitle: Text(CurrencyFormat.convertToIdr(
+                              x[0].totalpayment, 0)),
+                        ),
+                      ],
+                    ),
+                    // Container(
+                    //   margin: EdgeInsets.all(10),
+                    //   width: MediaQuery.of(context).size.width * 0.9,
+                    //   height: MediaQuery.of(context).size.height * 0.05,
+                    //   child: TextButton(
+                    //       onPressed: () {
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (BuildContext context) {
+                    //           return ClassCashierSummaryDetail(
+                    //             fromdate: widget.fromdate,
+                    //             todate: widget.todate,
+                    //           );
+                    //         }));
+                    //       },
+                    //       child: Text('lihat detail')),
+                    // ),
+                  )
                 ],
               );
             }

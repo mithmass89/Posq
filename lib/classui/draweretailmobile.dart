@@ -203,6 +203,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             title: const Text('Laporan'),
             onTap: accesslist.contains('laporan') == true
                 ? () {
+                  print(listoutlets);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
                       return ClassSummaryReport(user: usercd);

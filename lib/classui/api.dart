@@ -6,9 +6,10 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var api = 'http://153.92.5.25:3000';
-var apiimage = 'http://153.92.5.25:5000';
-var apiemail = 'http://153.92.5.25:4000';
+var ip = '192.168.56.1';
+var api = 'http://$ip:3000';
+var apiimage = 'http://$ip:5000';
+var apiemail = 'http://$ip:4000';
 // var api = 'http://147.139.163.18:3000';
 
 var serverkey = '';
@@ -27,7 +28,6 @@ class ClassApi {
     if (response.statusCode == 200) {
       return response.bodyBytes;
     } else {
-      
       throw Exception('Failed to load image');
     }
   }
@@ -181,7 +181,7 @@ class ClassApi {
   }
 
   static Future<dynamic> resetPassword(String email) async {
-    Map<String, String>  body = {
+    Map<String, String> body = {
       "email": email,
     };
     // print(json.encode(pembayaran));
@@ -1501,6 +1501,29 @@ class ClassApi {
     }
   }
 
+  static Future<List<dynamic>> getOutletUserSelected(
+      String usercd, String outletcode) async {
+    // print(json.encode(pembayaran));
+    var data = {"usercd": usercd, "outletcode": outletcode};
+
+    final url = Uri.parse('$api/getOutletUserSelected');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<dynamic>> checkVerifiedPayment(String email) async {
     // print(json.encode(pembayaran));
     var data = {"email": email};
@@ -2469,6 +2492,58 @@ class ClassApi {
       "email": email,
     };
     final url = Uri.parse('$api/updatePaymentFirst');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<CombineDataRingkasan>> getReportRingkasan(
+      String fromdate, String todate, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"fromdate": fromdate, "todate": todate, "dbname": dbname};
+    final url = Uri.parse('$api/getReportRingkasan');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print('value : checkoutstanding : $bodyJson');
+      return bodyJson
+          .map((json) => CombineDataRingkasan.fromJson(json))
+          .where((items) {
+        final itemdescLower = items.revenuegross.toString().toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> DetailMenuItemTerjual(
+      String fromdate, String todate, String dbname) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "fromdate": fromdate,
+      "todate": todate,
+      "dbname": dbname,
+    };
+    final url = Uri.parse('$api/DetailMenuItemTerjual');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

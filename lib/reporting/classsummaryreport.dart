@@ -9,7 +9,10 @@ import 'package:posq/model.dart';
 import 'package:posq/reporting/cashiersummary.dart';
 import 'package:posq/reporting/classkirimlaporan.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
+import 'package:posq/reporting/classlistoutlet.dart';
 import 'package:posq/reporting/classringkasan.dart';
+import 'package:posq/reporting/classringkasancombine.dart';
+import 'package:posq/reporting/detailitemterjaulmobile.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
@@ -40,14 +43,19 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   final TextEditingController _controllerdate = TextEditingController();
   final TextEditingController _controllerpilihan =
       TextEditingController(text: "Pilih tipe report");
-  DateTimeRange? _selectedDateRange;
+  final TextEditingController outlet =
+      TextEditingController(text: "All Outlet");
   String query = '';
   String type = '';
+  List<dynamic>? outletdata = [];
   int myIndex = 0;
   String selected = '';
   late void Function() myMethod;
   late void Function() ringkasan;
+  late void Function() ringkasancombine;
+  late void Function() detailmenu;
   List<IafjrnhdClass> listdatapayment = [];
+  List<CombineDataRingkasan> data = [];
 
   void initState() {
     super.initState();
@@ -88,8 +96,6 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
       // print(result.start.toString());
 
       setState(() {
-        _selectedDateRange = result;
-
         ///tanggal dan nama
         fromdatenamed = formatter2.format(result.start);
         todatenamed = formatter2.format(result.end);
@@ -103,9 +109,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     getDataReport();
   }
 
-  getDataReport() async{
+  getDataReport() async {
     //mengambil data list payment cashier summary//
-   await ClassApi.getCashierSummary(fromdate!, todate!,dbname).then((value) {
+    await ClassApi.getCashierSummary(fromdate!, todate!, dbname).then((value) {
       setState(() {
         listdatapayment = value;
       });
@@ -116,21 +122,71 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Laporan'),
       ),
       body: Stack(
-        clipBehavior: Clip.none, children: [
+        clipBehavior: Clip.none,
+        children: [
           Column(
             children: [
-              TextFieldMobileButton(
-                suffixicone: Icon(Icons.date_range),
-                controller: _controllerdate,
-                onChanged: (value) {},
-                ontap: () async {
-                  await _selectDate(context);
-                },
-                typekeyboard: TextInputType.text,
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFieldMobileButton(
+                      suffixicone: Icon(Icons.date_range),
+                      controller: _controllerdate,
+                      onChanged: (value) {},
+                      ontap: () async {
+                        await _selectDate(context);
+                         if (type == 'Summary Cashier') {
+                          myMethod.call();
+                        } else if (type == 'Ringkasan') {
+                          ringkasan.call();
+                        } else if (type == 'Ringkasan Combine') {
+                          ringkasancombine.call();
+                        } else if (type == 'Detail Item Terjual') {
+                          detailmenu.call();
+                        }
+                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                          outletdata = [];
+                        }
+                      },
+                      typekeyboard: TextInputType.text,
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFieldMobileButton(
+                      suffixicone: Icon(Icons.arrow_circle_right),
+                      controller: outlet,
+                      onChanged: (value) {},
+                      ontap: () async {
+                        outletdata = [];
+                        outletdata = await Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return ClassPilihOutletMobile();
+                        }));
+                        outlet.text = outletdata![0]['outletdesc'];
+                        if (type == 'Summary Cashier') {
+                          myMethod.call();
+                        } else if (type == 'Ringkasan') {
+                          ringkasan.call();
+                        } else if (type == 'Ringkasan Combine') {
+                          ringkasancombine.call();
+                        } else if (type == 'Detail Item Terjual') {
+                          detailmenu.call();
+                        }
+                        if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                          outletdata = [];
+                        }
+                        print('ini selcted outlet $outletdata');
+                        setState(() {});
+                      },
+                      typekeyboard: TextInputType.text,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.01,
@@ -144,10 +200,22 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                       .push(MaterialPageRoute(builder: (BuildContext context) {
                     return ClassLaporanMobile();
                   }));
-                  setState(() {
-                    _controllerpilihan.text = type;
-                  });
+                  _controllerpilihan.text = type;
                   getDataReport();
+                  print(type);
+                  if (type == 'Summary Cashier') {
+                    myMethod.call();
+                  } else if (type == 'Ringkasan') {
+                    ringkasan.call();
+                  } else if (type == 'Ringkasan Combine') {
+                    ringkasancombine.call();
+                  } else if (type == 'Detail Item Terjual') {
+                    detailmenu.call();
+                  }
+                  if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                    outletdata = [];
+                  }
+                  setState(() {});
                 },
                 typekeyboard: TextInputType.text,
               ),
@@ -160,84 +228,115 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    color: selected == 'Hari ini' ? Colors.white : Color.fromARGB(255, 0, 116, 131),
-                    textcolor:
-                        selected == 'Hari ini' ? Color.fromARGB(255, 0, 116, 131) : Colors.white,
+                    color: selected == 'Hari ini'
+                        ? Colors.white
+                        : Color.fromARGB(255, 0, 116, 131),
+                    textcolor: selected == 'Hari ini'
+                        ? Color.fromARGB(255, 0, 116, 131)
+                        : Colors.white,
                     name: 'Hari ini',
                     onpressed: () {
-                      setState(() {
-                        selected = 'Hari ini';
-                        fromdatenamed = formatter2.format(now);
-                        todatenamed = formatter2.format(now);
-                        formatdate = formatter.format(now);
-                        fromdate = formatdate;
-                        todate = formatdate;
-                        _controllerdate.text = '$fromdatenamed - $todatenamed';
-                      });
-
-                      myMethod.call();
-                      if (type == 'Ringkasan') {
+                      selected = 'Hari ini';
+                      fromdatenamed = formatter2.format(now);
+                      todatenamed = formatter2.format(now);
+                      formatdate = formatter.format(now);
+                      fromdate = formatdate;
+                      todate = formatdate;
+                      _controllerdate.text = '$fromdatenamed - $todatenamed';
+                      setState(() {});
+                      if (type == 'Summary Cashier') {
+                        myMethod.call();
+                      } else if (type == 'Ringkasan') {
                         ringkasan.call();
+                      } else if (type == 'Ringkasan Combine') {
+                        ringkasancombine.call();
+                      } else if (type == 'Detail Item Terjual') {
+                        detailmenu.call();
                       }
+                      if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                        outletdata = [];
+                      }
+
+                      setState(() {});
                     },
                   ),
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    color: selected == '7 Hari' ? Colors.white : Color.fromARGB(255, 0, 116, 131),
-                    textcolor:
-                        selected == '7 Hari' ? Color.fromARGB(255, 0, 116, 131) : Colors.white,
+                    color: selected == '7 Hari'
+                        ? Colors.white
+                        : Color.fromARGB(255, 0, 116, 131),
+                    textcolor: selected == '7 Hari'
+                        ? Color.fromARGB(255, 0, 116, 131)
+                        : Colors.white,
                     name: '7 Hari',
                     onpressed: () {
                       var weeks;
-                      setState(() {
-                        selected = '7 Hari';
+                      selected = '7 Hari';
+                      formatdate = formatter.format(now);
+                      weeks = formatter.format(now.add((Duration(days: -6))));
+                      fromdate = weeks;
+                      todate = formatdate;
+                      fromdatenamed =
+                          formatter2.format(now.add((Duration(days: -6))));
+                      todatenamed = formatter2.format(now);
+                      formatdate =
+                          formatter.format(now.add((Duration(days: -6))));
 
-                        formatdate = formatter.format(now);
-                        weeks = formatter.format(now.add((Duration(days: -6))));
-                        fromdate = weeks;
-                        todate = formatdate;
-                        fromdatenamed =
-                            formatter2.format(now.add((Duration(days: -6))));
-                        todatenamed = formatter2.format(now);
-                        formatdate =
-                            formatter.format(now.add((Duration(days: -6))));
-
-                        _controllerdate.text = '$fromdatenamed - $todatenamed';
-                      });
-                      myMethod.call();
-                      if (type == 'Ringkasan') {
+                      _controllerdate.text = '$fromdatenamed - $todatenamed';
+                      setState(() {});
+                      if (type == 'Summary Cashier') {
+                        myMethod.call();
+                      } else if (type == 'Ringkasan') {
                         ringkasan.call();
+                      } else if (type == 'Ringkasan Combine') {
+                        ringkasancombine.call();
+                      } else if (type == 'Detail Item Terjual') {
+                        detailmenu.call();
                       }
+                      if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                        outletdata = [];
+                      }
+
+                      setState(() {});
                     },
                   ),
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    color: selected == '30 Hari' ? Colors.white :Color.fromARGB(255, 0, 116, 131),
-                    textcolor:
-                        selected == '30 Hari' ? Color.fromARGB(255, 0, 116, 131) : Colors.white,
+                    color: selected == '30 Hari'
+                        ? Colors.white
+                        : Color.fromARGB(255, 0, 116, 131),
+                    textcolor: selected == '30 Hari'
+                        ? Color.fromARGB(255, 0, 116, 131)
+                        : Colors.white,
                     name: '30 Hari',
                     onpressed: () {
                       var month;
-                      setState(() {
-                        selected = '30 Hari';
-                        formatdate = formatter.format(now);
-                        month =
-                            formatter.format(now.add((Duration(days: -30))));
-                        fromdate = month;
-                        todate = formatdate;
-                        fromdatenamed =
-                            formatter2.format(now.add((Duration(days: -30))));
-                        todatenamed = formatter2.format(now);
-
-                        _controllerdate.text = '$fromdatenamed - $todatenamed';
-                      });
-
-                      myMethod.call();
-                      if (type == 'Ringkasan') {
+                      selected = '30 Hari';
+                      formatdate = formatter.format(now);
+                      month = formatter.format(now.add((Duration(days: -30))));
+                      fromdate = month;
+                      todate = formatdate;
+                      fromdatenamed =
+                          formatter2.format(now.add((Duration(days: -30))));
+                      todatenamed = formatter2.format(now);
+                      _controllerdate.text = '$fromdatenamed - $todatenamed';
+                      setState(() {});
+                      if (type == 'Summary Cashier') {
+                        myMethod.call();
+                      } else if (type == 'Ringkasan') {
                         ringkasan.call();
+                      } else if (type == 'Ringkasan Combine') {
+                        ringkasancombine.call();
+                      } else if (type == 'Detail Item Terjual') {
+                        detailmenu.call();
                       }
+                      if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                        outletdata = [];
+                      }
+
+                      setState(() {});
                     },
                   ),
                 ],
@@ -250,14 +349,36 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                       builder: (BuildContext context, void Function() methodA) {
                         myMethod = methodA;
                       },
+                      listoutlets: outletdata!.isEmpty
+                          ? listoutlets
+                          : List.generate(outletdata!.length,
+                              (index) => outletdata![index]['outletcode']),
                       fromdate: fromdate!,
                       todate: todate!,
                     )
                   : Container(),
               type == 'Ringkasan'
-                  ? ClassRingkasan(
+                  ? ClassRingkasanAll(
+                      listoutlets: outletdata!.isEmpty
+                          ? listoutlets
+                          : List.generate(outletdata!.length,
+                              (index) => outletdata![index]['outletcode']),
+                      data: data,
                       builder: (BuildContext context, void Function() methodA) {
                         ringkasan = methodA;
+                      },
+                      fromdate: fromdate!,
+                      todate: todate!,
+                    )
+                  : Container(),
+              type == 'Detail Item Terjual'
+                  ? DetailMenuTerjualMobile(
+                      listoutlets: outletdata!.isEmpty
+                          ? listoutlets
+                          : List.generate(outletdata!.length,
+                              (index) => outletdata![index]['outletcode']),
+                      builder: (BuildContext context, void Function() methodA) {
+                        detailmenu = methodA;
                       },
                       fromdate: fromdate!,
                       todate: todate!,

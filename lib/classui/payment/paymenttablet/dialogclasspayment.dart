@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
@@ -12,6 +13,7 @@ import 'package:posq/classui/payment/paymenttablet/classpaymentlainlaintab.dart'
 import 'package:posq/classui/payment/paymenttablet/classpaymentpiutangtab.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentqristab.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
@@ -55,6 +57,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
   bool zerobill = false;
   List<IafjrnhdClass> data = [];
   String selectedpay = '';
+  String qr = '';
   List<double> paymentlist = [
     1000,
     2000,
@@ -77,6 +80,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var now = DateTime.now();
+  var nows;
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   List<IafjrndtClass> listdata = [];
@@ -88,6 +92,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
   String compdescription = '';
   int lastsplit = 1;
   List<PaymentMaster> companylist = [];
+  List<Midtransitem> listitem = [];
 
   @override
   void initState() {
@@ -109,6 +114,14 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     }
 
     getPaymentMaster();
+    List.generate(
+        widget.datatrans.length,
+        (index) => listitem.add(Midtransitem(
+            id: '${widget.datatrans[index].itemcode}'.replaceAll(' ', ''),
+            price: num.parse(
+                '${widget.datatrans[index].totalaftdisc! / widget.datatrans[index].qty!}'),
+            quantity: int.parse('${widget.datatrans[index].qty}'),
+            name: '${widget.datatrans[index].description}')));
   }
 
   String _formatValue(double value) {
@@ -471,11 +484,45 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                                 : Colors
                                                     .orange // Background color
                                             ),
-                                        onPressed: () {
+                                        onPressed: () async {
                                           selectedpy = 'QRIS';
                                           pymtmthd = 'QRIS';
                                           compcode = pymtmthd;
-                                          setState(() {});
+                                          print(serverkeymidtrans);
+                                          nows = DateTime.now();
+                                          await PaymentGate.goPayQris(
+                                                  'gopay',
+                                                  'guestname',
+                                                  'email',
+                                                  'phone',
+                                                  widget.trno.toString() +
+                                                      nows.toString(),
+                                                  widget.balance.toString(),
+                                                  listitem.toList())
+                                              .then((value) {
+                                            print(value);
+                                            print(widget.trno.toString() +
+                                                now.toString());
+                                            if (value['status_code'] != '406') {
+                                              List action = value['actions'];
+                                              setState(() {
+                                                qr = action.first['url'];
+                                              });
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "Check Intergrasi atau conflict transaksi",
+                                                  toastLength:
+                                                      Toast.LENGTH_LONG,
+                                                  gravity: ToastGravity.CENTER,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 11, 12, 14),
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0);
+                                            }
+                                          });
                                         },
                                         child: Text(
                                           'QRIS',
@@ -729,6 +776,11 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'QRIS':
                                   return ClassPaymentQrisTab(
+                                    fromsplit: widget.fromsplit,
+                                    trnoqr: widget.trno.toString() +
+                                        nows.toString(),
+                                    listitem: listitem,
+                                    qr: qr,
                                     selectedpayment: setSelected,
                                     selectedpay: selectedpay,
                                     cardno: cardno,
@@ -745,7 +797,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     pymtmthd: pymtmthd,
                                     result: result,
                                     trdt: formattedDate,
-                                    trno: widget.trno,
+                                    trno: widget.trno.toString(),
                                     paymentlist: [
                                       'BCA',
                                       'BNI',

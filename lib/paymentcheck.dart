@@ -40,7 +40,9 @@ class _PaymentChecksState extends State<PaymentChecks> {
           sukses = true;
         });
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => Mainapps()),
+            MaterialPageRoute(builder: (context) => Mainapps(
+                   fromretailmain: false,
+            )),
             (Route<dynamic> route) => false);
       } else if (value != 200) {
         Navigator.push(

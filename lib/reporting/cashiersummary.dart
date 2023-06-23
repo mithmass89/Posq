@@ -7,17 +7,20 @@ import 'package:posq/reporting/classcahsiersummarydetail.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
+import 'package:collection/collection.dart';
 
 class CashierSummary extends StatefulWidget {
   late String fromdate;
   late String todate;
   final MyBuilder builder;
+  late List<String> listoutlets;
 
   CashierSummary(
       {Key? key,
       required this.fromdate,
       required this.todate,
-      required this.builder})
+      required this.builder,
+      required this.listoutlets})
       : super(key: key);
 
   @override
@@ -25,20 +28,58 @@ class CashierSummary extends StatefulWidget {
 }
 
 class _CashierSummaryState extends State<CashierSummary> {
-  late DatabaseHandler handler;
   String? query = '';
+  List<IafjrnhdClass> data = [];
+  List<IafjrnhdClass> datatemp = [];
+  Map<String, int> sumByPymtmthd = {};
 
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
+    data = [];
+    datatemp = [];
+    sumByPymtmthd = {};
     ToastContext().init(context);
   }
 
   void methodA() {
-    setState(() {
-      print(widget.fromdate); 
-      print(widget.todate);
+    data = [];
+    datatemp = [];
+    sumByPymtmthd = {};
+    setState(() {});
+    print('from voidmethod ${widget.listoutlets}');
+  }
+
+  Future<List<IafjrnhdClass>> olahData() async {
+    for (var x in widget.listoutlets) {
+      await ClassApi.getCashierSummary(
+        widget.fromdate,
+        widget.todate,
+        x,
+      ).then((value) {
+        datatemp.addAll(value);
+      });
+    }
+    ;
+    // Grouping transactions by 'pymtmthd'
+    Map<String, List<IafjrnhdClass>> groupedTransactions =
+        groupBy(datatemp, (transaction) => transaction.pymtmthd!);
+
+    // Calculating the sum of transaction amounts for each 'pymtmthd'
+
+    groupedTransactions.forEach((key, value) {
+      int sum = value.fold(0, (previousValue, transaction) {
+        return previousValue + (transaction.ftotamt as int);
+      });
+      sumByPymtmthd[key] = sum;
     });
+
+    // Printing the sums by 'pymtmthd'
+    sumByPymtmthd.forEach((key, value) {
+      print('pymtmthd: $key, sum: $value');
+      data.add(IafjrnhdClass(transno1: '', pymtmthd: key, ftotamt: value));
+    });
+    print(data);
+    return data;
   }
 
   @override
@@ -55,10 +96,9 @@ class _CashierSummaryState extends State<CashierSummary> {
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height * 0.50,
       child: FutureBuilder(
-          future:ClassApi.getCashierSummary( widget.fromdate, widget.todate,dbname),
-          builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
-            var x = snapshot.data ?? [];
-            if (x.isNotEmpty) {
+          future: olahData(),
+          builder: (context, snapshot) {
+            if (data.isNotEmpty) {
               return Column(
                 children: [
                   Container(
@@ -72,7 +112,7 @@ class _CashierSummaryState extends State<CashierSummary> {
                         width: 1,
                       )),
                     ),
-                    child: Text('Ringkasan'),
+                    child: Text('Cashier summary'),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -84,13 +124,13 @@ class _CashierSummaryState extends State<CashierSummary> {
                                 childAspectRatio: 5 / 2,
                                 crossAxisSpacing: 1,
                                 mainAxisSpacing: 1),
-                        itemCount: x.length,
+                        itemCount: data.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             dense: true,
-                            title: Text(x[index].pymtmthd!),
+                            title: Text(data[index].pymtmthd!),
                             subtitle: Text(CurrencyFormat.convertToIdr(
-                                x[index].ftotamt, 0)),
+                                data[index].ftotamt, 0)),
                           );
                         }),
                   ),
