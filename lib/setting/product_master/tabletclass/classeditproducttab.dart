@@ -95,6 +95,7 @@ print('ganti $pathimage');
     pctservice.text = widget.productcode!.svchgpct.toString();
     stock.text = widget.productcode!.stock.toString();
     salesflag = widget.productcode!.slsfl!.toInt();
+    trackstock= widget.productcode!.trackstock!;
     costcoa = widget.productcode!.costcoa;
     revenuecoa = widget.productcode!.revenuecoa;
     taxcoa = widget.productcode!.taxcoa;

@@ -270,6 +270,88 @@ class _TextFieldMobile2State extends State<TextFieldMobile2> {
   }
 }
 
+class TextFieldMobile3 extends StatefulWidget {
+  final String? label;
+  final String? hint;
+  final TextEditingController controller;
+  final int? maxline;
+  final ValueChanged<String> onChanged;
+  final typekeyboard;
+  final bool? enable;
+  final double? height;
+  final double? width;
+  final suffixIcon;
+  late bool? readonly;
+  late FocusNode? focus;
+  var expands;
+  var minLines;
+  var validator;
+
+  TextFieldMobile3(
+      {Key? key,
+      this.label,
+      required this.controller,
+      required this.onChanged,
+      required this.typekeyboard,
+      this.maxline,
+      this.hint,
+      this.enable = true,
+      this.height,
+      this.width,
+      this.suffixIcon,
+      this.readonly,
+      this.focus,
+      this.validator,
+      this.expands,
+      this.minLines})
+      : super(key: key);
+
+  @override
+  State<TextFieldMobile3> createState() => _TextFieldMobile3State();
+}
+
+class _TextFieldMobile3State extends State<TextFieldMobile3> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        textAlign: TextAlign.center,
+        validator: widget.validator,
+        // expands: widget.expands,
+        // minLines: widget.minLines,
+        // maxLines: widget.maxline,
+
+        focusNode: widget.focus,
+        readOnly: widget.readonly ?? false,
+        keyboardType: widget.typekeyboard,
+        onChanged: widget.onChanged,
+        controller: widget.controller,
+        // autofocus: false,
+        style: const TextStyle(fontSize: 15.0, color: Colors.black),
+        decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon,
+          hintText: widget.hint,
+          label: widget.label != null ? Text(widget.label.toString()) : null,
+          border: InputBorder.none,
+          filled: true,
+          fillColor: Colors.white,
+          // contentPadding:
+          //     const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 0.0),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class TextFieldTab1 extends StatefulWidget {
   final String? label;
   final String? hint;

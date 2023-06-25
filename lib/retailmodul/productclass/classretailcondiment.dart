@@ -513,63 +513,65 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                             await ClassApi.insert_Poscondiment(
                                 dbname, summarycondiment);
                             var result = IafjrndtClass(
-                                id: widget.iditem,
-                                trdt: formattedDate,
-                                pscd: widget.outletcd,
-                                transno: widget.transno,
-                                transno1: widget.transno,
-                                split: 1,
-                                itemcode: widget.data.itemcode,
-                                itemdesc: widget.data.itemdesc,
-                                description: widget.data.description,
-                                qty: qtyitemmaster,
-                                discpct: 0,
-                                discamt: 0,
-                                ratecurcd: 'Rupiah',
-                                ratebs1: 1,
-                                ratebs2: 1,
-                                rateamtcost: widget.data.costamt,
-                                rateamtitem: widget.data.slsamt!,
-                                rateamtservice:
-                                    (widget.data.slsamt! / qtyitemmaster) *
-                                        widget.data.svchgpct! /
-                                        100,
-                                rateamttax:
-                                    (widget.data.slsamt! / qtyitemmaster) *
-                                        widget.data.taxpct! /
-                                        100,
-                                rateamttotal:
-                                    widget.data.slsamt! / qtyitemmaster,
-                                revenueamt: qtyitemmaster * widget.data.slsamt!,
-                                taxamt: (qtyitemmaster * widget.data.slsamt!) *
-                                    widget.data.taxpct! *
-                                    100,
-                                serviceamt:
-                                    (qtyitemmaster * widget.data.slsamt!) *
-                                        widget.data.svchgpct! *
-                                        100,
-                                totalaftdisc:
-                                    qtyitemmaster * widget.data.slsamt!,
-                                rebateamt: 0,
-                                rvncoa: 'REVENUE',
-                                taxcoa: 'TAX',
-                                servicecoa: 'SERVICE',
-                                costcoa: 'COST',
-                                active: 1,
-                                usercrt: usercd,
-                                userupd: '',
-                                userdel: '',
-                                prnkitchen: 0,
-                                prnkitchentm: now.hour.toString() +
-                                    ":" +
-                                    now.minute.toString() +
-                                    ":" +
-                                    now.second.toString(),
-                                confirmed: '1',
-                                taxpct: widget.data.taxpct,
-                                svchgpct: widget.data.svchgpct,
-                                createdt: now.toString(),
-                                guestname: widget.guestname);
+                              id: widget.iditem,
+                              trdt: formattedDate,
+                              pscd: widget.outletcd,
+                              transno: widget.transno,
+                              transno1: widget.transno,
+                              split: 1,
+                              itemcode: widget.data.itemcode,
+                              itemdesc: widget.data.itemdesc,
+                              description: widget.data.description,
+                              qty: qtyitemmaster,
+                              discpct: 0,
+                              discamt: 0,
+                              ratecurcd: 'Rupiah',
+                              ratebs1: 1,
+                              ratebs2: 1,
+                              rateamtcost: widget.data.costamt,
+                              rateamtitem: widget.data.slsamt!,
+                              rateamtservice:
+                                  (widget.data.slsamt! / qtyitemmaster) *
+                                      widget.data.svchgpct! /
+                                      100,
+                              rateamttax:
+                                  (widget.data.slsamt! / qtyitemmaster) *
+                                      widget.data.taxpct! /
+                                      100,
+                              rateamttotal: widget.data.slsamt! / qtyitemmaster,
+                              revenueamt: qtyitemmaster * widget.data.slsamt!,
+                              taxamt: (qtyitemmaster * widget.data.slsamt!) *
+                                  widget.data.taxpct! *
+                                  100,
+                              serviceamt:
+                                  (qtyitemmaster * widget.data.slsamt!) *
+                                      widget.data.svchgpct! *
+                                      100,
+                              totalaftdisc: qtyitemmaster * widget.data.slsamt!,
+                              rebateamt: 0,
+                              rvncoa: 'REVENUE',
+                              taxcoa: 'TAX',
+                              servicecoa: 'SERVICE',
+                              costcoa: 'COST',
+                              active: 1,
+                              usercrt: usercd,
+                              userupd: '',
+                              userdel: '',
+                              prnkitchen: 0,
+                              prnkitchentm: now.hour.toString() +
+                                  ":" +
+                                  now.minute.toString() +
+                                  ":" +
+                                  now.second.toString(),
+                              confirmed: '1',
+                              taxpct: widget.data.taxpct,
+                              svchgpct: widget.data.svchgpct,
+                              createdt: now.toString(),
+                              guestname: widget.guestname,
+                              pricelist: [],
+                              note: '',
+                              tablesid: '',
+                            );
                             await ClassApi.updatePosDetail(result, dbname);
                             setState(() {
                               _isloading = false;

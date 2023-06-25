@@ -99,10 +99,12 @@ class _EditproductState extends State<Editproduct>
     svchgcoa = widget.productcode!.svchgcoa;
     pathimage = widget.productcode!.pathimage;
     stock.text = widget.productcode!.stock.toString();
+    trackstock = widget.productcode!.trackstock!;
     print('test barcode : ${widget.productcode!.barcode}');
     barcode.text = widget.productcode!.barcode.toString();
     sku.text = widget.productcode!.sku.toString();
     pricelist = widget.productcode!.pricelist!;
+    adjusmentstock.text= widget.productcode!.stock.toString();
     if (widget.productcode!.multiprice == 1) {
       multiflag = true;
     } else {
@@ -120,6 +122,7 @@ class _EditproductState extends State<Editproduct>
     setState(() {
       trackstock = value;
     });
+    print("ini trackstock flag ${trackstock}");
   }
 
   changeValueMultiPrice(int multiharga) {
@@ -193,7 +196,7 @@ class _EditproductState extends State<Editproduct>
                     ClassKelolaStockMobile(
                       trackstockcallback: updateStockTrack,
                       data: widget.productcode!,
-                      trackstock: widget.productcode!.trackstock!,
+                      trackstock: trackstock,
                       catatan: catatan,
                       minproduct: minproduct,
                       adjusmentstock: adjusmentstock,
@@ -225,9 +228,9 @@ class _EditproductState extends State<Editproduct>
 
                   await ClassApi.updateProduct(
                       Item(
-                            packageflag: 0,
+                        packageflag: 0,
                         multiprice: multiprice,
-                        trackstock: widget.productcode!.trackstock,
+                        trackstock: trackstock,
                         outletcode: widget.productcode!.outletcode,
                         itemcode: widget.productcode!.itemcode,
                         itemdesc: productname.text,
@@ -248,7 +251,7 @@ class _EditproductState extends State<Editproduct>
                         costcoa: costcoa.toString(),
                         ctg: kategory.text,
                         pathimage: pathimage,
-                        stock: widget.productcode!.stock,
+                        stock: int.parse(adjusmentstock.text),
                         id: widget.productcode!.id,
                         barcode: barcode.text,
                         sku: sku.text,

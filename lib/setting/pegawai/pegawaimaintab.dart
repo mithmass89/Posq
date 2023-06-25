@@ -23,10 +23,36 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
   final TextEditingController fullname = TextEditingController();
   final TextEditingController jabatan =
       TextEditingController(text: 'Pilih Role');
+  final TextEditingController outlet =
+      TextEditingController(text: 'Pilih Outlet');
   bool passwordisSame = false;
   List<Pegawai>? selectedRoles;
   bool isRegistered = false;
   final _formKey = GlobalKey<FormState>();
+  List<dynamic>? selectedOutlet;
+  List<dynamic> accesslist = [];
+  List<AccessPegawai> accesspegawai = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  getAccessRole() async {
+    accesslist =
+        await ClassApi.getRoleAccessTemplate(selectedRoles![0].jobcode!, '');
+    // print(accesslist);
+    for (var x in accesslist) {
+      accesspegawai.add(AccessPegawai(
+          usercode: usercd,
+          rolecode: x['jobcd'],
+          roledesc: x['jobdesc'],
+          accesscode: x['accesscode'],
+          accessdesc: x['accessdesc'],
+          outletcd: 'outlet',
+          subscription: subscribtion));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +91,8 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
                   email: email.text, password: password.text);
               await ClassApi.insertRegisterUser(email.text, fullname.text,
                   password.text, jabatan.text, subscribtion, paymentcheck);
-              await ClassApi.insertAccessOutlet(pscd, fullname.text, dbname);
+              await ClassApi.insertAccessUser(accesspegawai);
+              await ClassApi.insertAccessOutlet(pscd, fullname.text);
               EasyLoading.dismiss();
               Navigator.of(context).pop();
             }
@@ -193,15 +220,63 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
                           typekeyboard: TextInputType.none,
                           onChanged: (value) {},
                           ontap: () async {
+                            selectedRoles = [];
                             selectedRoles = await showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogRoleStaff();
                                 });
                             jabatan.text = selectedRoles![0].joblevel;
+                            await getAccessRole();
                             setState(() {});
                           }),
                     ),
+                    TextFieldMobileButton(
+                        hint: 'Outlet',
+                        controller: outlet,
+                        typekeyboard: TextInputType.none,
+                        onChanged: (value) {},
+                        ontap: () async {
+                          if (jabatan.text != 'Pilih Role') {
+                            selectedOutlet = [];
+                            selectedOutlet = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogOutletStaff();
+                                });
+                            outlet.text = selectedOutlet![0]['outletdesc']!;
+                            selectedOutlet!.removeAt(0);
+                            // print(selectedOutlet);
+                            for (var x in selectedOutlet!) {
+                              for (var z in accesspegawai) {
+                                z.outletcd = x['outletcode'];
+                                z.usercode = fullname.text;
+                              }
+                            }
+                            print(accesspegawai);
+                            setState(() {});
+                          } else if (fullname.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "isi nama karyawan dulu",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor:
+                                    Color.fromARGB(255, 11, 12, 14),
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Pilih Role dulu",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor:
+                                    Color.fromARGB(255, 11, 12, 14),
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        }),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.45,
                     ),

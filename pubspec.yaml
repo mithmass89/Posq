@@ -156,6 +156,7 @@ flutter:
     - assets/wallet.png
     - assets/check.png
     - assets/package.png
+    - assets/fifo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

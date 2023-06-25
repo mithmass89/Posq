@@ -92,6 +92,52 @@ class Pegawai {
   }
 }
 
+class AccessPegawai {
+  late String? usercode;
+  final String rolecode;
+  final String? roledesc;
+  final String? accesscode;
+  final String accessdesc;
+  late String? outletcd;
+  final String? subscription;
+
+  AccessPegawai({
+    required this.usercode,
+    required this.rolecode,
+    required this.roledesc,
+    required this.accesscode,
+    required this.accessdesc,
+    required this.outletcd,
+    required this.subscription,
+  });
+
+  AccessPegawai.fromJson(Map<String, dynamic> res)
+      : usercode = res["usercode"],
+        rolecode = res["rolecode"],
+        roledesc = res['roledesc'],
+        accesscode = res["accesscode"],
+        accessdesc = res["accessdesc"],
+        outletcd = res['outletcd'],
+        subscription = res['subscription'];
+
+  @override
+  String toString() {
+    return '{"usercode": $usercode, "rolecode": $rolecode,"roledesc": $roledesc,"accesscode": $accesscode, "accessdesc": $accessdesc,"outletcd": $outletcd,"subscription": $subscription}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'usercode': usercode,
+      'rolecode': rolecode,
+      'roledesc': roledesc,
+      'accesscode': accesscode,
+      'accessdesc': accessdesc,
+      'outletcd': outletcd,
+      'subscription': subscription,
+    };
+  }
+}
+
 class ListUser {
   final String? usercd;
   final String? fullname;
@@ -164,6 +210,88 @@ class CombineDataRingkasan {
       'service': service,
       'totalnett': totalnett,
       'totalpayment': totalpayment,
+    };
+  }
+}
+
+class TransaksiBO {
+  final String? trdt;
+  final String? transno;
+  final String? documentno;
+  final String? description;
+  final String? type_tr;
+  final String? product;
+  final String? proddesc;
+  late num? qty;
+  final String? unit;
+  final String? ctr;
+  final String? subctr;
+  late num? famount;
+  late num? lamount;
+  final String? note;
+  final String? usercreate;
+  final int? active;
+
+  TransaksiBO({
+    this.trdt,
+    this.transno,
+    this.documentno,
+    this.description,
+    this.type_tr,
+    this.product,
+    this.proddesc,
+    this.qty,
+    this.unit,
+    this.ctr,
+    this.subctr,
+    this.famount,
+    this.lamount,
+    this.note,
+    this.active,
+    this.usercreate,
+  });
+
+  TransaksiBO.fromJson(Map<String, dynamic> res)
+      : trdt = res["trdt"],
+        transno = res["transno"],
+        documentno = res["documentno"],
+        description = res['description'],
+        type_tr = res['type_tr'],
+        product = res['product'],
+        proddesc = res['proddesc'],
+        qty = res["qty"],
+        unit = res["unit"],
+        ctr = res['ctr'],
+        subctr = res["subctr"],
+        famount = res["famount"],
+        lamount = res['lamount'],
+        note = res["note"],
+        active = res["active"],
+        usercreate = res["usercreate"];
+
+  @override
+  String toString() {
+    return '{"trdt": $trdt, "transno": $transno,"documentno": $documentno,"description": $description,"type_tr": $type_tr,"product": $product,"proddesc": $proddesc,"qty": $qty,"unit": $unit,"ctr": $ctr,"subctr": $subctr,"famount": $famount,"lamount": $lamount,"note": $note,"active": $active,"usercreate":$usercreate}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'trdt': trdt,
+      'transno': transno,
+      'documentno': documentno,
+      'description': description,
+      'type_tr': type_tr,
+      'product': product,
+      'proddesc': proddesc,
+      'qty': qty,
+      'unit': unit,
+      'ctr': ctr,
+      'subctr': subctr,
+      'famount': famount,
+      'lamount': lamount,
+      'note': note,
+      'active': active,
+      'usercreate': usercreate
     };
   }
 }

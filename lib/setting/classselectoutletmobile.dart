@@ -21,7 +21,7 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHandler();
+
   }
 
   @override

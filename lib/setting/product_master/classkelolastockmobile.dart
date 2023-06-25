@@ -127,6 +127,7 @@ class _ClassKelolaStockMobileState extends State<ClassKelolaStockMobile> {
         ),
         seedetail == true
             ? ClassDetailKelolaProduct(
+              trackstockcallback: widget.trackstockcallback,
               stocknow: widget.stocknow,
                 trackstock: widget.trackstock,
                 gntrantp: widget.gntrantp,

@@ -437,6 +437,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       context: context,
                       builder: (BuildContext context) {
                         return DialogClassWillPop(
+                          outletinfo: widget.outletinfo,
                           trno: trno.toString(),
                         );
                       });
@@ -885,6 +886,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                       context: context,
                       builder: (BuildContext context) {
                         return DialogClassWillPop(
+                          outletinfo: widget.outletinfo,
                           trno: trno.toString(),
                         );
                       });
@@ -918,13 +920,17 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       Container(
                                         alignment: Alignment.center,
                                         height: 30,
-                                        width: MediaQuery.of(context).size.width*0.4,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
                                         child: Text(
                                           'Manual',
                                         ),
                                       ),
                                       Container(
-                                       width: MediaQuery.of(context).size.width*0.4,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
                                         alignment: Alignment.center,
                                         height: 30,
                                         child: Text(
@@ -1035,11 +1041,52 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     },
                                   ),
                                 ),
+                                 Container(
+                                  color: Color.fromARGB(255, 0, 129, 119),
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.056,
+                                  child: GestureDetector(
+                                    child: Icon(
+                                      Icons.money_off,
+                                      size: 22,
+                                      color: Colors.white,
+                                    ),
+                                    onTap: accesslistuser.contains('canceltrans') ==
+                                            true
+                                        ? () async {
+                             
+
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return DialogClassRefundorder(
+                                                    fromsaved: widget.fromsaved,
+                                                    outletcd: pscd,
+                                                    outletinfo:
+                                                        widget.outletinfo,
+                                                    trno: widget.trno!,
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          
+                                        : () {
+                                            Toast.show(
+                                                "Tidak punya akses refund",
+                                                duration: Toast.lengthLong,
+                                                gravity: Toast.center);
+                                          },
+                                  ),
+                                ),
                                 Container(
                                     color: Color.fromARGB(255, 0, 160, 147),
                                     alignment: Alignment.center,
                                     width: MediaQuery.of(context).size.width *
-                                        0.25,
+                                        0.2,
                                     height: MediaQuery.of(context).size.height *
                                         0.057,
                                     child: Text(
@@ -1060,7 +1107,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       size: 22,
                                       color: Colors.orange,
                                     ),
-                                    onTap: accesslist.contains('canceltrans') ==
+                                    onTap: accesslistuser.contains('canceltrans') ==
                                             true
                                         ? () async {
                                             print(strictuser);

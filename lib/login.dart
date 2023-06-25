@@ -218,7 +218,8 @@ class _LoginState extends State<Login> {
                                           if (valued.length != 0) {
                                             dbname = valued[0]['outletcode'];
                                             pscd = valued[0]['outletcode'];
-                                            outletdesc = valued[0]['outletdesc'];
+                                            outletdesc =
+                                                valued[0]['outletdesc'];
                                             for (var x in valued) {
                                               listoutlets.add(x['outletcode']);
                                             }
@@ -226,6 +227,14 @@ class _LoginState extends State<Login> {
                                                 .then((valueds) {
                                               for (var x in valueds) {
                                                 accesslist.add(x['access']);
+                                              }
+                                            });
+                                            await ClassApi.getAccessUserOutlet(
+                                                    usercd, pscd, '')
+                                                .then((valuesx) {
+                                              for (var x in valuesx) {
+                                                accesslistuser
+                                                    .add(x['accesscode']);
                                               }
                                             });
                                             await ClassApi
@@ -242,7 +251,8 @@ class _LoginState extends State<Login> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             Mainapps(
-                                                                   fromretailmain: false,
+                                                              fromretailmain:
+                                                                  false,
                                                             )),
                                                     (Route<dynamic> route) =>
                                                         false);
@@ -252,7 +262,7 @@ class _LoginState extends State<Login> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       ClassSetupProfileMobile(
-                                                        username: username,
+                                                        username: usercd,
                                                       )),
                                             );
                                           }
@@ -387,6 +397,14 @@ class _LoginState extends State<Login> {
                                               accesslist.add(x['access']);
                                             }
                                           });
+                                          await ClassApi.getAccessUserOutlet(
+                                                  usercd, pscd, '')
+                                              .then((valuesx) {
+                                            for (var x in valuesx) {
+                                              accesslistuser
+                                                  .add(x['accesscode']);
+                                            }
+                                          });
                                           await ClassApi.getAccessSettingsUser()
                                               .then((valuess) {
                                             strictuser = valuess[0]
@@ -398,7 +416,8 @@ class _LoginState extends State<Login> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           Mainapps(
-                                                                 fromretailmain: false,
+                                                            fromretailmain:
+                                                                false,
                                                           )),
                                                   (Route<dynamic> route) =>
                                                       false);
@@ -408,7 +427,7 @@ class _LoginState extends State<Login> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ClassSetupProfileMobile(
-                                                      username: username,
+                                                      username: usercd,
                                                     )),
                                           );
                                         }
@@ -631,7 +650,8 @@ class _LoginState extends State<Login> {
                                                 dbname =
                                                     valued[0]['outletcode'];
                                                 pscd = valued[0]['outletcode'];
-                                                outletdesc = valued[0]['outletdesc'];
+                                                outletdesc =
+                                                    valued[0]['outletdesc'];
                                                 for (var x in valued) {
                                                   listoutlets
                                                       .add(x['outletcode']);
@@ -642,6 +662,15 @@ class _LoginState extends State<Login> {
                                                   .then((valueds) {
                                                 for (var x in valueds) {
                                                   accesslist.add(x['access']);
+                                                }
+                                              });
+                                              await ClassApi
+                                                      .getAccessUserOutlet(
+                                                          usercd, pscd, '')
+                                                  .then((valuesx) {
+                                                for (var x in valuesx) {
+                                                  accesslistuser
+                                                      .add(x['accesscode']);
                                                 }
                                               });
                                               await ClassApi
@@ -656,7 +685,8 @@ class _LoginState extends State<Login> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               Mainapps(
-                                                                fromretailmain: false,
+                                                                fromretailmain:
+                                                                    false,
                                                               )),
                                                       (Route<dynamic> route) =>
                                                           false);
@@ -676,7 +706,8 @@ class _LoginState extends State<Login> {
                                               .then((valued) {
                                             dbname = valued[0]['outletcode'];
                                             pscd = valued[0]['outletcode'];
-                                            outletdesc = valued[0]['outletdesc'];
+                                            outletdesc =
+                                                valued[0]['outletdesc'];
                                             for (var x in valued) {
                                               listoutlets.add(x['outletcode']);
                                             }
@@ -685,6 +716,14 @@ class _LoginState extends State<Login> {
                                               .then((valueds) {
                                             for (var x in valueds) {
                                               accesslist.add(x['access']);
+                                            }
+                                          });
+                                          await ClassApi.getAccessUserOutlet(
+                                                  usercd, pscd, '')
+                                              .then((valuesx) {
+                                            for (var x in valuesx) {
+                                              accesslistuser
+                                                  .add(x['accesscode']);
                                             }
                                           });
                                           await ClassApi.getAccessSettingsUser()
@@ -698,7 +737,8 @@ class _LoginState extends State<Login> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           Mainapps(
-                                                                 fromretailmain: false,
+                                                            fromretailmain:
+                                                                false,
                                                           )),
                                                   (Route<dynamic> route) =>
                                                       false);

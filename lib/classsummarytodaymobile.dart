@@ -110,7 +110,7 @@ class _SummarytodayState extends State<Summarytoday> {
                       dense: true,
                       title: Text('Penjualan Rata Rata'),
                       trailing: Text(
-                     '${CurrencyFormat.convertToIdr(widget.rataratapenjualan[0]['totalaftdisc'],0)}',
+                     '${CurrencyFormat.convertToIdr(widget.rataratapenjualan.isNotEmpty? widget.rataratapenjualan[0]['totalaftdisc']:0,0)}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),

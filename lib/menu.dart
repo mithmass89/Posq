@@ -116,7 +116,7 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/outlet1.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: accesslist.contains('selectoutlet') == true
+                onpressed: accesslistuser.contains('selectoutlet') == true
                     ? () async {
                         setState(() {
                           selected = !selected;
@@ -151,7 +151,7 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/investor.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: accesslist.contains('createcostumer') == true
+                onpressed: accesslistuser.contains('createcostumer') == true
                     ? () {
                         selected = !selected;
                         setState(() {});
@@ -182,7 +182,7 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/settings.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: accesslist.contains('setting') == true
+                onpressed: accesslistuser.contains('setting') == true
                     ? () {
                         selected = !selected;
                         setState(() {});
@@ -216,7 +216,7 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/staff.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: accesslist.contains('pegawai') == true
+                onpressed: accesslistuser.contains('pegawai') == true
                     ? () {
                         Navigator.push(
                           context,
@@ -315,7 +315,7 @@ class _MenuMainState extends State<MenuMain> {
                   setState(() {});
                   // callbackTitle(result);
                   AppsMobile.of(context)!.string = result;
-                  
+
                   print(result);
                 },
                 name: 'Outlet',
@@ -328,13 +328,24 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/investor.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClassListCustomers()),
-                  );
-                },
+                onpressed: accesslistuser.contains('setting') == true
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ClassListCustomers()),
+                        );
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses Customer",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
                 name: 'Customer',
               ),
               SizedBox(
@@ -345,16 +356,27 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/settings.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainMenuProduct(
-                              pscd: widget.outletinfo!.outletcd,
-                              outletinfo: widget.outletinfo!,
-                            )),
-                  );
-                },
+                onpressed: accesslistuser.contains('setting') == true
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainMenuProduct(
+                                    pscd: widget.outletinfo!.outletcd,
+                                    outletinfo: widget.outletinfo!,
+                                  )),
+                        );
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses Setting",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
                 name: 'Kelola',
               ),
               SizedBox(
@@ -365,7 +387,7 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/staff.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
-                onpressed: accesslist.contains('pegawai') == true
+                onpressed: accesslistuser.contains('pegawai') == true
                     ? () {
                         Navigator.push(
                           context,

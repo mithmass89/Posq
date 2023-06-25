@@ -210,7 +210,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       iconSize: 25,
                       color: connected == true ? Colors.green : Colors.red,
                       splashColor: Colors.purple,
-                      onPressed: accesslist.contains('settingprinter') == true
+                      onPressed: accesslistuser.contains('settingprinter') == true
                           ? () async {
                               await getSumm();
                               if (connected == true) {

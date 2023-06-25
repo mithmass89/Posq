@@ -482,9 +482,12 @@ ${payment.reduce((value, element) => value + element)}
                                           (Route<dynamic> route) => false);
                                     } else if (widget.fromsplit == true) {
                                       for (var x in widget.datatrans) {
-                                        await ClassApi.updateSplit(
-                                            dbname, widget.trno, x.itemseq!);
+                                        if (x.condimenttype == '') {
+                                          await ClassApi.updateSplit(
+                                              dbname, widget.trno, x.itemseq!);
+                                        }
                                       }
+
                                       await ClassApi.getOutstandingBillTransno(
                                               widget.trno, dbname, '')
                                           .then((valued) async {
@@ -537,7 +540,7 @@ ${payment.reduce((value, element) => value + element)}
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ClassRetailMainMobile(
-                                                    fromsaved:false,
+                                                    fromsaved: false,
                                                     pscd: widget.outletcd!,
                                                     trno: nexttrno,
                                                     outletinfo:

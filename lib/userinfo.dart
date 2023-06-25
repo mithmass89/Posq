@@ -6,6 +6,7 @@ String outletdesc = '';
 String alamatoutlet = '';
 List<String> listoutlets = [];
 List<String> accesslist = [];
+List<String> accesslistuser = [];
 List<String> outlet_settings = [];
 String strictuser = '0';
 String imageurl = '';

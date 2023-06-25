@@ -268,11 +268,11 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
               ),
               height: MediaQuery.of(context).size.height * 0.088,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Column(
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.21,
+                      width: MediaQuery.of(context).size.width * 0.22,
                       child: Text(
                         widget.item.itemdesc!,
                         style: TextStyle(
@@ -292,10 +292,10 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                           )
                         : Container(),
                     widget.item.trackstock == 1
-                        ? Column(
+                        ? Row(
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.2,
+                                width: MediaQuery.of(context).size.width * 0.07,
                                 child: Text(
                                   '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
                                   style: TextStyle(
@@ -304,12 +304,13 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                               ),
                               Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.036,
-                                width: MediaQuery.of(context).size.width * 0.2,
+                                    MediaQuery.of(context).size.height * 0.03,
+                                width: MediaQuery.of(context).size.width * 0.05,
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Stock',
+                                      'Stk : ',  style: TextStyle(
+                                          fontSize: 10, color: Colors.white)
                                     ),
                                     Text(
                                       widget.item.stock.toString(),

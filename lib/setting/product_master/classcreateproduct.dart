@@ -93,6 +93,7 @@ class _CreateproductState extends State<Createproduct>
     setState(() {
       trackstock = value;
     });
+    print('ini trackstock create $trackstock');
   }
 
   Future<dynamic> checkInternet() async {

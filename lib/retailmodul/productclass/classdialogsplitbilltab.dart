@@ -53,12 +53,11 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
     totalSlsNett = selected.fold(
         0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
     setState(() {});
+    print(totalSlsNett);
   }
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-
     return LayoutBuilder(builder: (context, BoxConstraints constraints) {
       if (constraints.maxWidth >= 820) {
         return StatefulBuilder(builder: (context, setState) {
@@ -103,38 +102,79 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                         itemBuilder: (BuildContext context, int index) {
                           return Column(
                             children: [
-                              CheckboxListTile(
-                                dense: true,
-                                subtitle: Row(
-                                  children: [
-                                    Text(
-                                        widget.datatrans[index].qty.toString()),
-                                    Text('X  '),
-                                    Text(
-                                      CurrencyFormat.convertToIdr(
-                                          widget.datatrans[index].totalaftdisc,
-                                          0),
+                              widget.datatrans[index].condimenttype == ''
+                                  ? CheckboxListTile(
+                                      dense: true,
+                                      subtitle: Row(
+                                        children: [
+                                          Text(widget.datatrans[index].qty
+                                              .toString()),
+                                          Text('X  '),
+                                          Text(
+                                            CurrencyFormat.convertToIdr(
+                                                widget.datatrans[index]
+                                                    .totalaftdisc,
+                                                0),
+                                          ),
+                                        ],
+                                      ),
+                                      title: widget.datatrans[index]
+                                                  .condimenttype !=
+                                              ''
+                                          ? Text(
+                                              widget.datatrans[index].itemdesc!)
+                                          : Text(
+                                              '*** ${widget.datatrans[index].itemdesc!}***'),
+                                      value: checkedValues[index],
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          checkedValues[index] = newValue!;
+                                        });
+                                        if (checkedValues[index] == true) {
+                                          print(
+                                              widget.datatrans[index].itemseq);
+                                          for (var x in widget.datatrans.where(
+                                              (element) =>
+                                                  element.itemseq ==
+                                                  widget.datatrans[index]
+                                                      .itemseq)) {
+                                            selected.add(x);
+                                          }
+
+                                          print(selected);
+                                          getSum(selected);
+                                        } else {
+                                          selected.removeWhere((element) =>
+                                              element ==
+                                              widget.datatrans[index]);
+                                          print(selected);
+                                          getSum(selected);
+                                        }
+                                      },
+                                    )
+                                  : ListTile(
+                                      dense: true,
+                                      title: widget.datatrans[index]
+                                                  .condimenttype ==
+                                              ''
+                                          ? Text(
+                                              widget.datatrans[index].itemdesc!)
+                                          : Text(
+                                              '*** ${widget.datatrans[index].itemdesc!}***'),
+                                      subtitle: Row(
+                                        children: [
+                                          Text(widget.datatrans[index].qty
+                                              .toString()),
+                                          Text('X  '),
+                                          Text(
+                                            CurrencyFormat.convertToIdr(
+                                                widget.datatrans[index]
+                                                    .totalaftdisc,
+                                                0),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                                title: Text(widget.datatrans[index].itemdesc!),
-                                value: checkedValues[index],
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    checkedValues[index] = newValue!;
-                                  });
-                                  if (checkedValues[index] == true) {
-                                    selected.add(widget.datatrans[index]);
-                                    print(selected);
-                                    getSum(selected);
-                                  } else {
-                                    selected.removeWhere((element) =>
-                                        element == widget.datatrans[index]);
-                                    print(selected);
-                                    getSum(selected);
-                                  }
-                                },
-                              ),
                               Divider(
                                 height:
                                     MediaQuery.of(context).size.height * 0.01,
@@ -244,38 +284,79 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                         itemBuilder: (BuildContext context, int index) {
                           return Column(
                             children: [
-                              CheckboxListTile(
-                                dense: true,
-                                subtitle: Row(
-                                  children: [
-                                    Text(
-                                        widget.datatrans[index].qty.toString()),
-                                    Text('X  '),
-                                    Text(
-                                      CurrencyFormat.convertToIdr(
-                                          widget.datatrans[index].totalaftdisc,
-                                          0),
+                              widget.datatrans[index].condimenttype == ''
+                                  ? CheckboxListTile(
+                                      dense: true,
+                                      subtitle: Row(
+                                        children: [
+                                          Text(widget.datatrans[index].qty
+                                              .toString()),
+                                          Text('X  '),
+                                          Text(
+                                            CurrencyFormat.convertToIdr(
+                                                widget.datatrans[index]
+                                                    .totalaftdisc,
+                                                0),
+                                          ),
+                                        ],
+                                      ),
+                                      title: widget.datatrans[index]
+                                                  .condimenttype ==
+                                              ''
+                                          ? Text(
+                                              widget.datatrans[index].itemdesc!)
+                                          : Text(
+                                              '*** ${widget.datatrans[index].itemdesc!}***'),
+                                      value: checkedValues[index],
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          checkedValues[index] = newValue!;
+                                        });
+                                        if (checkedValues[index] == true) {
+                                          print(
+                                              widget.datatrans[index].itemseq);
+                                          for (var x in widget.datatrans.where(
+                                              (element) =>
+                                                  element.itemseq ==
+                                                  widget.datatrans[index]
+                                                      .itemseq)) {
+                                            selected.add(x);
+                                          }
+
+                                          print(selected);
+                                          getSum(selected);
+                                        } else {
+                                          selected.removeWhere((element) =>
+                                              element ==
+                                              widget.datatrans[index]);
+                                          print(selected);
+                                          getSum(selected);
+                                        }
+                                      },
+                                    )
+                                  : ListTile(
+                                      dense: true,
+                                      title: widget.datatrans[index]
+                                                  .condimenttype ==
+                                              ''
+                                          ? Text(
+                                              widget.datatrans[index].itemdesc!)
+                                          : Text(
+                                              '*** ${widget.datatrans[index].itemdesc!}***'),
+                                      subtitle: Row(
+                                        children: [
+                                          Text(widget.datatrans[index].qty
+                                              .toString()),
+                                          Text('X  '),
+                                          Text(
+                                            CurrencyFormat.convertToIdr(
+                                                widget.datatrans[index]
+                                                    .totalaftdisc,
+                                                0),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                                title: Text(widget.datatrans[index].itemdesc!),
-                                value: checkedValues[index],
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    checkedValues[index] = newValue!;
-                                  });
-                                  if (checkedValues[index] == true) {
-                                    selected.add(widget.datatrans[index]);
-                                    print(selected);
-                                    getSum(selected);
-                                  } else {
-                                    selected.removeWhere((element) =>
-                                        element == widget.datatrans[index]);
-                                    print(selected);
-                                    getSum(selected);
-                                  }
-                                },
-                              ),
                               Divider(
                                 height:
                                     MediaQuery.of(context).size.height * 0.01,

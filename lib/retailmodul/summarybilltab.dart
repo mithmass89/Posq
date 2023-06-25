@@ -401,7 +401,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                   Colors.grey[200] // Background color
                               ),
                           onPressed:
-                              accesslist.contains('settingprinter') == true
+                              accesslistuser.contains('settingprinter') == true
                                   ? () async {
                                       await getSumm();
                                       if (connected == true) {

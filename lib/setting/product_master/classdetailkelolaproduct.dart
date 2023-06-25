@@ -11,6 +11,8 @@ class ClassDetailKelolaProduct extends StatefulWidget {
   late Gntrantp? gntrantp;
   late TextEditingController? stocknow;
   late int trackstock;
+
+  final Function? trackstockcallback;
   ClassDetailKelolaProduct({
     Key? key,
     required this.adjusmentstock,
@@ -19,6 +21,7 @@ class ClassDetailKelolaProduct extends StatefulWidget {
     required this.trackstock,
     required this.catatan,
     this.stocknow,
+    required this.trackstockcallback,
   }) : super(key: key);
 
   @override
@@ -65,6 +68,7 @@ class _ClassDetailKelolaProductState extends State<ClassDetailKelolaProduct> {
                         setState(() {
                           print("stock now $value");
                         });
+                        // widget.trackstockcallback!();
                       },
                     ),
                   ),

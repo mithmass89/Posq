@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
 import 'package:posq/setting/generalsetting/generalsettingmobile.dart';
+import 'package:posq/setting/kelolastock/kelolaproductmains.dart';
+import 'package:posq/setting/kelolastock/mobile/kelolastockmainmobile.dart';
 import 'package:posq/setting/menupackage/menupackagemainmobile.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/product_master/tabletclass/PaymentMasterTab.dart';
@@ -25,6 +27,7 @@ class MainMenuProduct extends StatefulWidget {
 class _MainMenuProductState extends State<MainMenuProduct> {
   List<String> menulist = [
     "Tambah produk",
+    "Kelola Stok",
     "Condiment /  Topping",
     "Menu Paket",
     "Tipe Transaksi",
@@ -73,10 +76,14 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                                                 ? Image.asset(
                                                     'assets/settings.png')
                                                 : menulist[index] ==
-                                                        'Menu Paket'
+                                                        'Kelola Stok'
                                                     ? Image.asset(
-                                                        'assets/package.png')
-                                                    : Container(),
+                                                        'assets/fifo.png')
+                                                    : menulist[index] ==
+                                                            'Menu Paket'
+                                                        ? Image.asset(
+                                                            'assets/package.png')
+                                                        : Container(),
                       ),
                     ),
                     title: Text(menulist[index]),
@@ -87,7 +94,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Productmain(
-                                    pscd: widget.outletinfo!.outletcd,
+                                    pscd: pscd,
                                   )),
                         );
                       } else if (menulist[index] == 'Condiment /  Topping') {
@@ -96,7 +103,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => MainCondiment(
-                                      pscd: widget.outletinfo!.outletcd,
+                                      pscd: pscd,
                                     )),
                           );
                         } else {
@@ -115,7 +122,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => MainTransaksiType(
-                                      pscd: widget.outletinfo!.outletcd,
+                                      pscd: pscd,
                                     )),
                           );
                         }
@@ -169,7 +176,25 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                           );
                         } else {
                           Fluttertoast.showToast(
-                              msg: "Tidak punya akses General Setting",
+                              msg: "Tidak punya akses Menu Setting",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                      } else if (menulist[index] == 'Kelola Stok') {
+                        print(accesslist);
+                        if (accesslist.contains('kelolastock') == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => KelolaMainsStock()),
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Tidak punya akses Stock Setting",
                               toastLength: Toast.LENGTH_LONG,
                               gravity: ToastGravity.CENTER,
                               timeInSecForIosWeb: 1,

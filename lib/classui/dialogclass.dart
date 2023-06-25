@@ -5,9 +5,11 @@ import 'dart:io';
 import 'dart:math';
 import 'package:dropdown_button2/src/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/payment/paymentsugestionclass.dart';
 import 'package:posq/classui/searchwidget.dart';
@@ -783,6 +785,102 @@ class _DialogRoleStaffState extends State<DialogRoleStaff>
   }
 }
 
+class DialogOutletStaff extends StatefulWidget {
+  DialogOutletStaff({
+    Key? key,
+
+    // required this.imagepath,
+  }) : super(key: key);
+
+  @override
+  State<DialogOutletStaff> createState() => _DialogOutletStaffState();
+}
+
+class _DialogOutletStaffState extends State<DialogOutletStaff>
+    with SingleTickerProviderStateMixin {
+  TabController? controller;
+  int? index = 0;
+  String query = '';
+  List<dynamic> selectedRole = [];
+  var selectedindex;
+  List<bool> _value = [];
+  bool selected = false;
+  List<dynamic> data = [
+    {
+      "outletcode": "All",
+      "usercode": usercd,
+      "id": "",
+      "outletcd": "All",
+      "outletdesc": "All outlet",
+      "telp": "",
+      "alamat": "",
+      "kodepos": "",
+      "slstp": "",
+      "dbname": ""
+    }
+  ];
+  Future<List<dynamic>> getOutlets(query) async {
+    await ClassApi.getOutlets(usercd).then((value) {
+      for (var x in value) {
+        data.add(x);
+      }
+    });
+    setState(() {});
+    print(data);
+    return data;
+  }
+
+  bool isloading = true;
+
+  @override
+  void initState() {
+    controller =
+        TabController(vsync: this, length: 2, initialIndex: index!.toInt());
+    super.initState();
+    getOutlets(query);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          title: Text('Pilih Outlet'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+          ],
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  dense: true,
+                  title: Text(data[index]['outletdesc']),
+                  onTap: () {
+                    if (data[index]['outletcd'] == 'All') {
+                      // selectedRole.add(data);
+                      Navigator.of(context).pop(data);
+                    } else {
+                      selectedRole.add(data[index]);
+                      Navigator.of(context).pop(selectedRole);
+                    }
+                  },
+                );
+              },
+            ),
+          ));
+    });
+  }
+}
+
 class DialogTipeCondiment extends StatefulWidget {
   const DialogTipeCondiment({
     Key? key,
@@ -1260,9 +1358,11 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
 
 class DialogClassWillPop extends StatefulWidget {
   final String trno;
+  final Outlet outletinfo;
   const DialogClassWillPop({
     Key? key,
     required this.trno,
+    required this.outletinfo,
   }) : super(key: key);
 
   @override
@@ -1378,7 +1478,7 @@ class _DialogClassWillPopExitState extends State<DialogClassWillPopExit> {
                 )
               ],
             )),
-        title: Text('Anda ingin logout'),
+        title: Text('Anda ingin Keluar aplikasi'),
         actions: <Widget>[
           TextButton(
               onPressed: () async {
@@ -1391,7 +1491,8 @@ class _DialogClassWillPopExitState extends State<DialogClassWillPopExit> {
               child: Text('Batal')),
           TextButton(
               onPressed: () async {
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+                exit(0);
               },
               child: Text('OK!'))
         ],
@@ -1491,6 +1592,121 @@ class _DialogClassCancelorderState extends State<DialogClassCancelorder> {
                               qty: 0,
                             )),
                     (Route<dynamic> route) => false);
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
+class DialogClassRefundorder extends StatefulWidget {
+  final String trno;
+  final String outletcd;
+  final Outlet outletinfo;
+  final bool? fromsaved;
+
+  const DialogClassRefundorder({
+    Key? key,
+    required this.trno,
+    required this.outletcd,
+    required this.outletinfo,
+    this.fromsaved,
+  }) : super(key: key);
+
+  @override
+  State<DialogClassRefundorder> createState() => _DialogClassRefundorderState();
+}
+
+class _DialogClassRefundorderState extends State<DialogClassRefundorder> {
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  var formattedDate;
+  TextEditingController _controller = TextEditingController();
+  String trno = '';
+  int? selected;
+
+  @override
+  void initState() {
+    super.initState();
+    formattedDate = formatter.format(now);
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: FutureBuilder(
+                      future: ClassApi.getSummaryCashierDetail(formattedDate,
+                          formattedDate, dbname, _controller.text),
+                      builder: (context,
+                          AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
+                        if (snapshot.hasData) {
+                          var x = snapshot.data ?? [];
+                          return ListView.builder(
+                              itemCount: x.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  selectedColor: Colors.orange,
+                                  onTap: () {
+                                    trno = x[index].transno!;
+                                    selected = index;
+
+                                    setState(() {});
+                                  },
+                                  dense: true,
+                                  title: Text(x[index].transno!,
+                                      style: TextStyle(
+                                          color: selected == index
+                                              ? Colors.orange
+                                              : Colors.black)),
+                                  subtitle: Text(x[index].pymtmthd!,
+                                      style: TextStyle(
+                                          color: selected == index
+                                              ? Colors.orange
+                                              : Colors.black)),
+                                  trailing: Text(
+                                      CurrencyFormat.convertToIdr(
+                                          x[index].totalamt, 0),
+                                      style: TextStyle(
+                                          color: selected == index
+                                              ? Colors.orange
+                                              : Colors.black)),
+                                );
+                              });
+                        }
+                        return Container();
+                      },
+                    )),
+              ],
+            )),
+        title: Text('Refund Transaksi'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Batal')),
+          TextButton(
+              onPressed: () async {
+                EasyLoading.show(status: 'loading...');
+                await ClassApi.deactivePosdetailtrans(trno, dbname);
+                await ClassApi.deactivePosPaymenttrans(trno, dbname);
+                await ClassApi.deactivePromoTrno(trno, dbname);
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('savecostmrs');
+                EasyLoading.dismiss();
+                Navigator.of(context).pop();
               },
               child: Text('OK!'))
         ],
@@ -1871,7 +2087,6 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
-
   }
 
   Future<int> insertIafjrnhd() async {
@@ -1929,7 +2144,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     ),
                   ],
                 ),
-              
+
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   children: [
@@ -1948,17 +2163,16 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                 // ),
               ],
             )),
-        title:  Container(
-                  alignment: Alignment.topCenter,
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/qris.png'),
-                        fit: BoxFit.fitHeight),
-                    // shape: BoxShape.circle,
-                  ),
-                ),
+        title: Container(
+          alignment: Alignment.topCenter,
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.4,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/qris.png'), fit: BoxFit.fitHeight),
+            // shape: BoxShape.circle,
+          ),
+        ),
         actions: <Widget>[
           TextButton(
               onPressed: () async {

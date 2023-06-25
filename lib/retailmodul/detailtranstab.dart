@@ -1075,7 +1075,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                           backgroundColor: Colors
                                               .grey[200] // Background color
                                           ),
-                                      onPressed: accesslist
+                                      onPressed: accesslistuser
                                                   .contains('settingprinter') ==
                                               true
                                           ? () async {

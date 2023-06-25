@@ -6,6 +6,7 @@ import 'dart:io' show Directory;
 import 'package:path/path.dart' show join;
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/model.dart';
@@ -324,7 +325,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                         contentPadding: EdgeInsets.all(8.0),
                                         title: Text(x[index].itemdesc!),
                                         subtitle:
-                                            Text(x[index].slsnett.toString()),
+                                            Text(CurrencyFormat.convertToIdr(x[index].slsnett,0)),
                                         trailing: Container(
                                           width: MediaQuery.of(context)
                                                   .size

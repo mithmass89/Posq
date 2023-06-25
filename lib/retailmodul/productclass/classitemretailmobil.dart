@@ -258,7 +258,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
                       child: Row(
                         children: [
                           Text(
-                            'Stock',
+                            'Stock : ',
                           ),
                           Text(
                             widget.item.stock.toString(),

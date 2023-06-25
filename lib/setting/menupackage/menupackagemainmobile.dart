@@ -68,7 +68,7 @@ class _MainMenuPackageMobileState extends State<MainMenuPackageMobile> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BuatPaketTab()),
+            MaterialPageRoute(builder: (context) => BuatPaketMobile()),
           ).then((_) {
             setState(() {});
           });

@@ -53,7 +53,7 @@ class _MainappsState extends State<Mainapps> {
     loadKey();
     checkapps = checkingApps();
     // checkNewApp();
-    print(widget.fromretailmain);
+    print('fromretailmain : ${widget.fromretailmain}');
   }
 
   loadKey() async {
@@ -102,22 +102,22 @@ class _MainappsState extends State<Mainapps> {
   getOutletSelected() async {
     print('check selected outlet');
     await ClassApi.getOutletUserSelected(usercd, pscd).then((value) {
+      print(value);
       if (value.isNotEmpty) {
-        setState(() {
-          pscd = value.first['outletcd'];
-          dbname = value.first['outletcd'];
-          outletdesc = value.first['outletdesc'];
-          hasoutlet = true;
-          outletinfo = Outlet(
-              outletcd: value.first['outletcd'],
-              outletname: value.first['outletdesc'],
-              alamat: value.first['alamat'],
-              telp: num.parse(value.first['telp']),
-              kodepos: value.first['kodepos'].toString(),
-              profile: value.first['profile'],
-              trnonext: value.first['billnext']);
-              print(outletinfo);
-        });
+        pscd = value.first['outletcode'];
+        dbname = value.first['outletcode'];
+        outletdesc = value.first['outletdesc'];
+        hasoutlet = true;
+        outletinfo = Outlet(
+            outletcd: value.first['outletcode'],
+            outletname: value.first['outletdesc'],
+            alamat: value.first['alamat'],
+            telp: num.parse(value.first['telp']),
+            kodepos: value.first['kodepos'].toString(),
+            profile: value.first['profile'],
+            trnonext: value.first['billnext']);
+        print(outletinfo);
+        setState(() {});
       }
     });
   }

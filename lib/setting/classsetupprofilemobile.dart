@@ -109,7 +109,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Buat Usahamu $usercd',
+          title: Text('Buat Usahamu ${widget.username}',
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
       body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
@@ -264,7 +264,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                 alamat: controllerDetail.text,
                                                 outletcd: outletcd.text,
                                                 profile: outletcd.text));
-                                            await ClassApi.insertOutletUser(
+                                            await ClassApi.insertAccessOutlet(
                                                 outletcd.text, usercd);
                                             // await _insertGntrantp(outletcd.text);
                                             setState(() {
@@ -496,7 +496,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                       outletcd: outletcd.text,
                                                       profile: outletcd.text));
                                                   await ClassApi
-                                                      .insertOutletUser(
+                                                      .insertAccessOutlet(
                                                           outletcd.text,
                                                           usercd);
                                                   // await _insertGntrantp(outletcd.text);

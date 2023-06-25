@@ -6,7 +6,7 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = '192.168.56.1';
+var ip = '192.168.1.23';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
@@ -388,6 +388,48 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> insertAdujsmentStock(
+      String dbname, List<TransaksiBO> condiment) async {
+    var body = {"dbname": dbname, "data": condiment};
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertAdujsmentStock');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertAccessUser(
+      List<AccessPegawai> accesslist) async {
+    var body = {"data": accesslist};
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertAccessUser');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> insertCondiment_Map(
       String dbname, List<Condiment_Map> condiment) async {
     var body = {"dbname": dbname, "data": condiment};
@@ -430,12 +472,8 @@ class ClassApi {
     }
   }
 
-  static Future<dynamic> insertOutletUser(String data, String usercd) async {
-    var body = {
-      "dbname": data,
-      "usercode": usercd,
-      "outletcd": data,
-    };
+  static Future<dynamic> insertOutletUser(String usercode, String pscd) async {
+    var body = {"outletcode": pscd, "usercode": usercode};
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/addoutletuser');
     final response = await http.post(url,
@@ -502,13 +540,13 @@ class ClassApi {
   }
 
   static Future<dynamic> insertAccessOutlet(
-      String outletcode, String usercode, String dbname) async {
+      String outletcode, String usercode) async {
     // print(json.encode(pembayaran));
     var body = {
-      "dbname": dbname,
       "outletcode": outletcode,
       "usercode": usercode,
     };
+    print(body);
     final url = Uri.parse('$api/insertAccessOutlet');
     final response = await http.post(url,
         headers: <String, String>{
@@ -985,6 +1023,32 @@ class ClassApi {
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/updateSplit');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateSplitCondiment(
+      String dbname, String transno, int itemseq) async {
+    var body = {
+      "dbname": dbname,
+      "transno": transno,
+      "itemseq": itemseq,
+    };
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateSplitCondiment');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1915,6 +1979,52 @@ class ClassApi {
     }
   }
 
+  static Future<List<dynamic>> getRoleAccessTemplate(
+      String jobcode, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"jobcd": jobcode};
+    final url = Uri.parse('$api/getRoleAccessTemplate');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      return bodyJson;
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<dynamic>> getAccessUserOutlet(
+      String usercode, String outletcd, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"usercode": usercode, "outletcd": outletcd};
+    final url = Uri.parse('$api/getAccessUserOutlet');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      return bodyJson;
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<ListUser>> getListUser(String query) async {
     // print(json.encode(pembayaran));
     var data = {
@@ -2555,6 +2665,29 @@ class ClassApi {
       var bodyJson = json.decode(response.body);
       print(bodyJson);
       return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getTrnoBO(String type, String dbname) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "type": type,
+      "dbname": dbname,
+    };
+    final url = Uri.parse('$api/getTrnoBO');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson[0]['trnonext'];
     } else {
       throw Exception();
     }
