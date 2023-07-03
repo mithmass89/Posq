@@ -35,7 +35,7 @@ class SummaryOrderSlideTabs extends StatefulWidget {
   late List<IafjrndtClass> summary;
   late List<IafjrndtClass> listdata;
   final num balance;
-
+  final String guestname;
   SummaryOrderSlideTabs(
       {Key? key,
       required this.trno,
@@ -47,7 +47,8 @@ class SummaryOrderSlideTabs extends StatefulWidget {
       required this.listdata,
       required this.summary,
       required this.balance,
-      this.fromsaved})
+      this.fromsaved,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -221,7 +222,6 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Container(
-                               
                                     alignment: Alignment.centerRight,
                                     width: MediaQuery.of(context).size.width *
                                         0.23,
@@ -469,6 +469,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                 context: context,
                                 builder: (BuildContext context) =>
                                     DialogSplitTab(
+                                      guestname: widget.guestname,
                                       fromsaved: false,
                                       datatrans: widget.listdata,
                                       outletinfo: widget.outletinfo,
@@ -514,6 +515,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                 context: context,
                                 builder: (BuildContext context) =>
                                     DialogPaymentTab(
+                                      guestname: widget.guestname,
                                       fromsplit: false,
                                       fromsaved: widget.fromsaved!,
                                       datatrans: widget.listdata,

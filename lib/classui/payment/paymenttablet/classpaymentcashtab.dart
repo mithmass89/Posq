@@ -24,6 +24,7 @@ class PaymenCashTab extends StatefulWidget {
   final String pymtmthd;
   late num? result;
   final bool fromsplit;
+  final String guestname;
 
   PaymenCashTab(
       {Key? key,
@@ -40,7 +41,8 @@ class PaymenCashTab extends StatefulWidget {
       this.insertIafjrnhdRefund,
       this.insertIafjrnhd,
       required this.pymtmthd,
-      required this.fromsplit})
+      required this.fromsplit,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -149,6 +151,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassPaymetSucsessTabs(
+                                                  guestname: widget.guestname,
                                                   fromsplit: widget.fromsplit,
                                                   fromsaved: widget.fromsaved,
                                                   datatrans: widget.datatrans,
@@ -174,6 +177,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                guestname: widget.guestname,
                                                 fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
                                                 datatrans: widget.datatrans,
@@ -220,6 +224,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return PasswordDialog(
+                                          guestname: widget.guestname,
                                           frompaymentmobile: false,
                                           insertIafjrnhd: widget.insertIafjrnhd,
                                           insertIafjrnhdRefund:
@@ -251,6 +256,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                guestname: widget.guestname,
                                                 fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
                                                 datatrans: widget.datatrans,
@@ -275,6 +281,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                guestname: widget.guestname,
                                                 fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
                                                 datatrans: widget.datatrans,
@@ -302,6 +309,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         ClassPaymetSucsessTabs(
+                                          guestname: widget.guestname,
                                           fromsplit: widget.fromsplit,
                                           fromsaved: widget.fromsaved,
                                           datatrans: widget.datatrans,

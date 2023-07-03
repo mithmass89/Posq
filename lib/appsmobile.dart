@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_field, unnecessary_null_comparison, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/drawermainmenumobile.dart';

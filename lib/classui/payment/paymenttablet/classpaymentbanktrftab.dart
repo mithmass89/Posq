@@ -30,6 +30,7 @@ class PaymentTrfTabs extends StatefulWidget {
   final bool fromsplit;
   late String selectedpay;
   final Function selectedpayment;
+  final String guestname;
   PaymentTrfTabs(
       {Key? key,
       required this.trno,
@@ -50,7 +51,7 @@ class PaymentTrfTabs extends StatefulWidget {
       required this.result,
       required this.paymentlist,
       required this.fromsplit,
-      required this.selectedpayment})
+      required this.selectedpayment, required this.guestname})
       : super(key: key);
 
   @override
@@ -179,6 +180,7 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassPaymetSucsessTabs(
+                                                  guestname: widget.guestname,
                                                   fromsplit: widget.fromsplit,
                                                   fromsaved: widget.fromsaved,
                                                   datatrans: widget.datatrans,
@@ -204,6 +206,7 @@ class _PaymentTrfTabsState extends State<PaymentTrfTabs> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                         guestname: widget.guestname,
                                                 fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
                                                      datatrans: widget.datatrans,

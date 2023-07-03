@@ -210,34 +210,35 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       iconSize: 25,
                       color: connected == true ? Colors.green : Colors.red,
                       splashColor: Colors.purple,
-                      onPressed: accesslistuser.contains('settingprinter') == true
-                          ? () async {
-                              await getSumm();
-                              if (connected == true) {
-                                await printing.prints(
-                                    widget.listdata,
-                                    summary,
-                                    widget.outletinfo.outletname!,
-                                    widget.outletinfo);
-                              } else {
-                                await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClassMainPrinter()));
-                              }
-                            }
-                          : () {
-                              Fluttertoast.showToast(
-                                  msg: "Tidak Punya Akses Printer",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(255, 11, 12, 14),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            },
+                      onPressed:
+                          accesslistuser.contains('settingprinter') == true
+                              ? () async {
+                                  await getSumm();
+                                  if (connected == true) {
+                                    await printing.prints(
+                                        widget.listdata,
+                                        summary,
+                                        widget.outletinfo.outletname!,
+                                        widget.outletinfo);
+                                  } else {
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ClassMainPrinter()));
+                                  }
+                                }
+                              : () {
+                                  Fluttertoast.showToast(
+                                      msg: "Tidak Punya Akses Printer",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 11, 12, 14),
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                },
                     )),
                 Expanded(
                     flex: 1,
@@ -336,7 +337,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                 discpct: element.discpct,
                                 taxpct: element.taxpct,
                                 revenueamt: amountprice.isNotEmpty
-                                    ? element.qty! * amountprice.first.amount-element.discamt!
+                                    ? element.qty! * amountprice.first.amount -
+                                        element.discamt!
                                     : element.revenueamt,
                                 taxamt: amountprice.isNotEmpty
                                     ? (element.qty! *
@@ -360,7 +362,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                         ((element.qty! *
                                                 amountprice.first.amount) *
                                             element.svchgpct! /
-                                            100)-element.discamt!
+                                            100) -
+                                        element.discamt!
                                     : element.totalaftdisc,
                                 id: element.id);
 
@@ -504,7 +507,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                 dataedit:
                                                                     datadetail,
                                                                 data: Item(
-                                                                      packageflag: 0,
+                                                                    packageflag:
+                                                                        0,
                                                                     multiprice:
                                                                         multiprice,
                                                                     itemcode: datadetail[index]
@@ -673,6 +677,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                               builder:
                                                                   (context) {
                                                             return PasswordDialog(
+                                                              guestname: widget.guestname,
                                                               frompaymentmobile:
                                                                   false,
                                                               frompayment:
@@ -983,6 +988,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
+                    guestname:
+                        widget.guestname == '' ?'' : widget.guestname,
                     datatransaksi: datadetail,
                     summary: summary,
                     fromsaved: widget.fromsaved,

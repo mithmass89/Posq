@@ -25,6 +25,7 @@ class PaymentCashV2Mobile extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
 
   PaymentCashV2Mobile(
       {Key? key,
@@ -39,7 +40,8 @@ class PaymentCashV2Mobile extends StatefulWidget {
       required this.datatrans,
       required this.fromsaved,
       required this.lastsplit,
-      required this.fromsplit})
+      required this.fromsplit,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -258,6 +260,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ClassPaymetSucsessMobile(
+                                      guestname: widget.guestname,
                                       fromsplit: widget.fromsplit,
                                       fromsaved: widget.fromsaved,
                                       datatrans: widget.datatrans,
@@ -285,6 +288,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                               builder: (BuildContext context) {
                                 return Builder(builder: (context) {
                                   return PasswordDialog(
+                                       guestname: widget.guestname,
                                     frompaymentmobile: true,
                                     outletcd: pscd,
                                     outletinfo: widget.outletinfo,
@@ -325,6 +329,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       ClassPaymetSucsessMobile(
+                                        guestname: widget.guestname,
                                         fromsplit: widget.fromsplit,
                                         fromsaved: widget.fromsaved,
                                         datatrans: widget.datatrans,

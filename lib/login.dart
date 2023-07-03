@@ -411,6 +411,21 @@ class _LoginState extends State<Login> {
                                                     ['strictuser']
                                                 .toString();
                                           });
+                                          await ClassApi
+                                                  .getLoyalityProgramActive()
+                                              .then((rules) {
+                                            rulesprogram = PointSystem(
+                                              fromdate: rules[0]['fromdate'],
+                                              type: rules[0]['type'],
+                                              todate: rules[0]['todate'],
+                                              convamount: rules[0]
+                                                  ['convamount'],
+                                              point: rules[0]['point'],
+                                              joinreward: rules[0]
+                                                  ['joinreward'],
+                                            );
+                                          });
+
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(
                                                   MaterialPageRoute(
@@ -680,6 +695,7 @@ class _LoginState extends State<Login> {
                                                         ['strictuser']
                                                     .toString();
                                               });
+
                                               Navigator.of(context)
                                                   .pushAndRemoveUntil(
                                                       MaterialPageRoute(
@@ -731,6 +747,20 @@ class _LoginState extends State<Login> {
                                             strictuser = valuess[0]
                                                     ['strictuser']
                                                 .toString();
+                                          });
+                                          await ClassApi
+                                                  .getLoyalityProgramActive()
+                                              .then((rules) {
+                                            rulesprogram = PointSystem(
+                                              fromdate: rules[0]['fromdate'],
+                                              type: rules[0]['type'],
+                                              todate: rules[0]['todate'],
+                                              convamount: rules[0]
+                                                  ['convamount'],
+                                              point: rules[0]['point'],
+                                              joinreward: rules[0]
+                                                  ['joinreward'],
+                                            );
                                           });
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(

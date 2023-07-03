@@ -144,15 +144,15 @@ class DatabaseHandler {
     return result;
   }
 
-  Future<int> insertCustomers(List<Costumers> users) async {
-    int result = 0;
-    final Database db = await initializeDB(databasename);
-    for (var user in users) {
-      result = await db.insert('arscomp', user.toMap());
-      print(user.compdesc);
-    }
-    return result;
-  }
+  // Future<int> insertCustomers(List<Costumers> users) async {
+  //   int result = 0;
+  //   final Database db = await initializeDB(databasename);
+  //   for (var user in users) {
+  //     result = await db.insert('arscomp', user.toMap());
+  //     print(user.compdesc);
+  //   }
+  //   return result;
+  // }
 
   Future<int> insertCustomersTrno(List<CostumersSavedManual> users) async {
     int result = 0;
@@ -354,13 +354,13 @@ class DatabaseHandler {
     return queryResult.map((e) => Promo.fromJson(e)).toList();
   }
 
-  Future<List<Costumers>> retrieveListCustomers(String query) async {
-    final Database db = await initializeDB(databasename);
-    final List<Map<String, Object?>> queryResult = await db
-        .rawQuery('select * from arscomp where compdesc like "%$query%"');
-    print(queryResult);
-    return queryResult.map((e) => Costumers.fromMap(e)).toList();
-  }
+  // Future<List<Costumers>> retrieveListCustomers(String query) async {
+  //   final Database db = await initializeDB(databasename);
+  //   final List<Map<String, Object?>> queryResult = await db
+  //       .rawQuery('select * from arscomp where compdesc like "%$query%"');
+  //   print(queryResult);
+  //   return queryResult.map((e) => Costumers.fromMap(e)).toList();
+  // }
 
   Future<List<IafjrndtClass>> summarybill(String trno) async {
     final Database db = await initializeDB(databasename);
@@ -861,21 +861,21 @@ where x.nettamt<>0
     ]);
   }
 
-  Future<void> updateArscomp(Costumers pelanggan) async {
-    final db = await initializeDB(databasename);
-    await db.rawUpdate('''
-    UPDATE arscomp 
-    SET compdesc=?,address=?,email=?,telp=?,pic=?,active=? WHERE compcd =?
-    ''', [
-      pelanggan.compdesc,
-      pelanggan.address,
-      pelanggan.email,
-      pelanggan.telp,
-      pelanggan.pic,
-      pelanggan.active,
-      pelanggan.compcd,
-    ]);
-  }
+  // Future<void> updateArscomp(Costumers pelanggan) async {
+  //   final db = await initializeDB(databasename);
+  //   await db.rawUpdate('''
+  //   UPDATE arscomp 
+  //   SET compdesc=?,address=?,email=?,telp=?,pic=?,active=? WHERE compcd =?
+  //   ''', [
+  //     pelanggan.compdesc,
+  //     pelanggan.address,
+  //     pelanggan.email,
+  //     pelanggan.telp,
+  //     pelanggan.pic,
+  //     pelanggan.active,
+  //     pelanggan.compcd,
+  //   ]);
+  // }
 
   Future<void> updatePromo(Promo promo) async {
     final db = await initializeDB(databasename);

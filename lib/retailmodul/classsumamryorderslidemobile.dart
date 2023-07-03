@@ -24,6 +24,7 @@ class SummaryOrderSlidemobile extends StatefulWidget {
   final bool? fromsaved;
   late List<IafjrndtClass> summary;
   final List<IafjrndtClass> datatransaksi;
+  final String guestname;
 
   SummaryOrderSlidemobile(
       {Key? key,
@@ -35,7 +36,8 @@ class SummaryOrderSlidemobile extends StatefulWidget {
       required this.outletinfo,
       required this.summary,
       this.fromsaved,
-      required this.datatransaksi})
+      required this.datatransaksi,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -201,13 +203,15 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       TextButton(
-                          onPressed: accesslistuser.contains('canceltrans') == true
+                          onPressed: accesslistuser.contains('canceltrans') ==
+                                  true
                               ? () async {
                                   if (strictuser == '1') {
                                     await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return PasswordDialog(
+                                            guestname: widget.guestname,
                                             frompaymentmobile: false,
                                             frompayment: false,
                                             trno: x.first.transno!,
@@ -253,6 +257,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                             await showDialog(
                                 context: context,
                                 builder: (_) => DialogSplitTab(
+                                      guestname: widget.guestname,
                                       balance: x.first.totalaftdisc!,
                                       datatrans: widget.datatransaksi,
                                       fromsaved: false,

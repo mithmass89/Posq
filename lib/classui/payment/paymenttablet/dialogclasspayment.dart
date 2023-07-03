@@ -27,6 +27,7 @@ class DialogPaymentTab extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
 
   const DialogPaymentTab({
     Key? key,
@@ -39,6 +40,7 @@ class DialogPaymentTab extends StatefulWidget {
     required this.datatrans,
     required this.fromsaved,
     required this.fromsplit,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -730,6 +732,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                               switch (selectedpy) {
                                 case 'Cash':
                                   return PaymenCashTab(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
@@ -747,6 +750,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'EDC':
                                   return PaymentDebitTabs(
+                                    guestname: widget.guestname,
                                     selectedpayment: setSelected,
                                     selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
@@ -776,6 +780,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'QRIS':
                                   return ClassPaymentQrisTab(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     trnoqr: widget.trno.toString() +
                                         nows.toString(),
@@ -809,6 +814,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'E-wallet':
                                   return PaymentEwalletTab(
+                                    guestname: widget.guestname,
                                     selectedpayment: setSelected,
                                     selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
@@ -838,6 +844,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Bank transfer':
                                   return PaymentTrfTabs(
+                                    guestname: widget.guestname,
                                     selectedpayment: setSelected,
                                     selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
@@ -867,6 +874,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Piutang':
                                   return PaymentPiutangTabs(
+                                    guestname: widget.guestname,
                                     selectedpayment: setSelected,
                                     selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,
@@ -889,6 +897,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   );
                                 case 'Lain lain':
                                   return PaymentLainLainTabs(
+                                    guestname: widget.guestname,
                                     selectedpayment: setSelected,
                                     selectedpay: selectedpay,
                                     fromsplit: widget.fromsplit,

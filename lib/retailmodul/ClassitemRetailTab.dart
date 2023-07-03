@@ -55,6 +55,12 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
     print('ini dari product ${widget.trno}');
   }
 
+  Future<List<Item>> getitemOutlet(query) async {
+    List<Item> data = await ClassApi.getItemList(pscd, dbname, query);
+    return data;
+  }
+
+
   Future<IafjrndtClass?> insertIafjrndt() async {
     now = DateTime.now();
 
@@ -174,10 +180,16 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
       onTap: () async {
         if (widget.item.modifiers == 0) {
           if (widget.item.stock != 0 && widget.item.trackstock == 1) {
-            await insertIafjrndt();
-
-            //update to main // callback
-            ClassRetailMainMobile.of(context)!.string = result!;
+       await getitemOutlet(widget.item.itemcode).then((value) async {
+                  print('ini checking data $value');
+                  if (value.first.stock! > 0) {
+                    await insertIafjrndt();
+                    ClassRetailMainMobile.of(context)!.string = result!;
+                  } else {
+                    Toast.show("Kamu Kehabisan Stock",
+                        duration: Toast.lengthLong, gravity: Toast.center);
+                  }
+                });
             // DetailTransTabs.of(context)!.refreshtrans = result!;
           } else if (widget.item.trackstock == 0) {
             await insertIafjrndt();

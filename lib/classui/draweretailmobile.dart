@@ -68,7 +68,6 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                   width: MediaQuery.of(context).size.width * 0.3,
                 ),
                 Container(
-             
                   alignment: Alignment.topLeft,
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: Row(
@@ -123,34 +122,8 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             leading: Icon(
               Icons.attach_money,
             ),
-            trailing: SizedBox(
-              width: 40.0,
-              child: DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.black,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 7.0,
-                      color: Colors.pink,
-                      offset: Offset(0, 0),
-                    ),
-                  ],
-                ),
-                child: AnimatedTextKit(
-                  repeatForever: true,
-                  animatedTexts: [
-                    FlickerAnimatedText('Pro'),
-                    FlickerAnimatedText('New !!'),
-                  ],
-                  onTap: () {
-                    print("Tap Event");
-                  },
-                ),
-              ),
-            ),
             title: Text('Kelola Promo'),
-            onTap: accesslist.contains('kelolapromo') == true
+            onTap: accesslistuser.contains('kelolapromo') == true
                 ? () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
@@ -158,7 +131,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                     }));
                   }
                 : () {
-                  print(accesslist);
+                    print(accesslistuser);
                     Fluttertoast.showToast(
                         msg: "Tidak punya akses kelola promo",
                         toastLength: Toast.LENGTH_LONG,
@@ -174,7 +147,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               Icons.history_outlined,
             ),
             title: const Text('Riwayat Transaksi'),
-            onTap: accesslist.contains('riwayattrans') == true
+            onTap: accesslistuser.contains('riwayattrans') == true
                 ? () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
@@ -201,9 +174,9 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               Icons.add_chart_outlined,
             ),
             title: const Text('Laporan'),
-            onTap: accesslist.contains('laporan') == true
+            onTap: accesslistuser.contains('laporan') == true
                 ? () {
-                  print(listoutlets);
+                    print(listoutlets);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
                       return ClassSummaryReport(user: usercd);
@@ -225,12 +198,13 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               Icons.add_box,
             ),
             title: const Text('Kelola Produk'),
-            onTap: accesslist.contains('setting') == true
+            onTap: accesslistuser.contains('setting') == true
                 ? () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
                       return MainMenuProduct(
-                        pscd:pscd , outletinfo: widget.outletinfo,
+                        pscd: pscd,
+                        outletinfo: widget.outletinfo,
                       );
                     }));
                   }
@@ -246,32 +220,6 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                   },
           ),
           ListTile(
-            trailing: SizedBox(
-              width: 40.0,
-              child: DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.black,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 7.0,
-                      color: Colors.pink,
-                      offset: Offset(0, 0),
-                    ),
-                  ],
-                ),
-                child: AnimatedTextKit(
-                  repeatForever: true,
-                  animatedTexts: [
-                    FlickerAnimatedText('Pro'),
-                    FlickerAnimatedText('New !!'),
-                  ],
-                  onTap: () {
-                    print("Tap Event");
-                  },
-                ),
-              ),
-            ),
             leading: Icon(
               Icons.people_outline_outlined,
             ),
@@ -284,32 +232,6 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             },
           ),
           ListTile(
-            trailing: SizedBox(
-              width: 40.0,
-              child: DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.black,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 7.0,
-                      color: Colors.pink,
-                      offset: Offset(0, 0),
-                    ),
-                  ],
-                ),
-                child: AnimatedTextKit(
-                  repeatForever: true,
-                  animatedTexts: [
-                    FlickerAnimatedText('Pro'),
-                    FlickerAnimatedText('New !!'),
-                  ],
-                  onTap: () {
-                    print("Tap Event");
-                  },
-                ),
-              ),
-            ),
             leading: Icon(
               Icons.shopify_sharp,
             ),
@@ -356,35 +278,9 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         height: MediaQuery.of(context).size.height * 0.03,
                       ),
                       ListTile(
-                        trailing: SizedBox(
-                          width: 40.0,
-                          child: DefaultTextStyle(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.black,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 7.0,
-                                  color: Colors.pink,
-                                  offset: Offset(0, 0),
-                                ),
-                              ],
-                            ),
-                            child: AnimatedTextKit(
-                              repeatForever: true,
-                              animatedTexts: [
-                                FlickerAnimatedText('Pro'),
-                                FlickerAnimatedText('New !!'),
-                              ],
-                              onTap: () {
-                                print("Tap Event");
-                              },
-                            ),
-                          ),
-                        ),
                         leading: Icon(Icons.settings),
                         title: Text('Integrasi '),
-                        onTap: accesslist.contains('integrasi') == true
+                        onTap: accesslistuser.contains('integrasi') == true
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {
@@ -406,7 +302,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                       ListTile(
                         leading: Icon(Icons.print),
                         title: Text('Printer'),
-                        onTap: accesslist.contains('settingprinter') == true
+                        onTap: accesslistuser.contains('settingprinter') == true
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {

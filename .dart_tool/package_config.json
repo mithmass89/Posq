@@ -350,6 +350,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "im_stepper",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/im_stepper-1.0.1+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "image",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/image-3.1.3",
       "packageUri": "lib/",
@@ -794,7 +800,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-06-24T05:23:48.277806Z",
+  "generated": "2023-06-29T06:45:46.791469Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }

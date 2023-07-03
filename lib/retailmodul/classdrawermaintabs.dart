@@ -79,23 +79,23 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                 ),
                 Row(
                   children: [
-                 imageurl == ''
-                                  ? CircleAvatar(
-                                      radius: 30,
-                                      // backgroundImage: AssetImage(
-                                      //   'assets/sheryl.png',
-                                      // ),
-                                      child: Text(
-                                        usercd.substring(0, 1),
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  : CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(imageurl),
-                                    ),
+                    imageurl == ''
+                        ? CircleAvatar(
+                            radius: 30,
+                            // backgroundImage: AssetImage(
+                            //   'assets/sheryl.png',
+                            // ),
+                            child: Text(
+                              usercd.substring(0, 1),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        : CircleAvatar(
+                            radius: 30,
+                            backgroundImage: NetworkImage(imageurl),
+                          ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.01,
                     ),
@@ -134,34 +134,31 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   leading: Icon(
                     Icons.attach_money,
                   ),
-                  trailing: SizedBox(
-                    width: 40.0,
-                    child: DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.black,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 7.0,
-                            color: Colors.pink,
-                            offset: Offset(0, 0),
-                          ),
-                        ],
-                      ),
-                      child: AnimatedTextKit(
-                        repeatForever: true,
-                        animatedTexts: [
-                          FlickerAnimatedText('Pro'),
-                          FlickerAnimatedText('New !!'),
-                        ],
-                        onTap: () {
-                          print("Tap Event");
-                        },
-                      ),
-                    ),
-                  ),
                   title: Text('Kelola Promo'),
-                  onTap: accesslist.contains('kelolapromo') == true
+                  onTap: accesslistuser.contains('kelolapromo') == true
+                      ? () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return ClassPromoTab();
+                          }));
+                        }
+                      : () {
+                          Fluttertoast.showToast(
+                              msg: "Tidak punya akses kelola promo",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.attach_money,
+                  ),
+                  title: Text('Refund / Retur'),
+                  onTap: accesslistuser.contains('kelolapromo') == true
                       ? () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
@@ -184,7 +181,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                     Icons.history_outlined,
                   ),
                   title: const Text('Riwayat Transaksi'),
-                  onTap: accesslist.contains('riwayattrans') == true
+                  onTap: accesslistuser.contains('riwayattrans') == true
                       ? () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
@@ -211,7 +208,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                     Icons.add_chart_outlined,
                   ),
                   title: const Text('Laporan'),
-                  onTap: accesslist.contains('laporan') == true
+                  onTap: accesslistuser.contains('laporan') == true
                       ? () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
@@ -234,7 +231,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                     Icons.add_box,
                   ),
                   title: const Text('Kelola usaha'),
-                  onTap: accesslist.contains('setting') == true
+                  onTap: accesslistuser.contains('setting') == true
                       ? () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
@@ -256,32 +253,6 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                         },
                 ),
                 ListTile(
-                  trailing: SizedBox(
-                    width: 40.0,
-                    child: DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.black,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 7.0,
-                            color: Colors.pink,
-                            offset: Offset(0, 0),
-                          ),
-                        ],
-                      ),
-                      child: AnimatedTextKit(
-                        repeatForever: true,
-                        animatedTexts: [
-                          FlickerAnimatedText('Pro'),
-                          FlickerAnimatedText('New !!'),
-                        ],
-                        onTap: () {
-                          print("Tap Event");
-                        },
-                      ),
-                    ),
-                  ),
                   leading: Icon(
                     Icons.people_outline_outlined,
                   ),
@@ -294,37 +265,11 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   },
                 ),
                 ListTile(
-                  trailing: SizedBox(
-                    width: 40.0,
-                    child: DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.black,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 7.0,
-                            color: Colors.pink,
-                            offset: Offset(0, 0),
-                          ),
-                        ],
-                      ),
-                      child: AnimatedTextKit(
-                        repeatForever: true,
-                        animatedTexts: [
-                          FlickerAnimatedText('Pro'),
-                          FlickerAnimatedText('New !!'),
-                        ],
-                        onTap: () {
-                          print("Tap Event");
-                        },
-                      ),
-                    ),
-                  ),
                   leading: Icon(
                     Icons.shopify_sharp,
                   ),
                   title: const Text('Toko Online'),
-                  onTap: accesslist.contains('tokoonline') == true
+                  onTap: accesslistuser.contains('tokoonline') == true
                       ? () {
                           Navigator.pop(context);
                         }
@@ -369,35 +314,9 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                         height: MediaQuery.of(context).size.height * 0.03,
                       ),
                       ListTile(
-                        trailing: SizedBox(
-                          width: 40.0,
-                          child: DefaultTextStyle(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.black,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 7.0,
-                                  color: Colors.pink,
-                                  offset: Offset(0, 0),
-                                ),
-                              ],
-                            ),
-                            child: AnimatedTextKit(
-                              repeatForever: true,
-                              animatedTexts: [
-                                FlickerAnimatedText('Pro'),
-                                FlickerAnimatedText('New !!'),
-                              ],
-                              onTap: () {
-                                print("Tap Event");
-                              },
-                            ),
-                          ),
-                        ),
                         leading: Icon(Icons.settings),
                         title: Text('Integrasi '),
-                        onTap: accesslist.contains('integrasi') == true
+                        onTap: accesslistuser.contains('integrasi') == true
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {
@@ -419,7 +338,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                       ListTile(
                         leading: Icon(Icons.print),
                         title: Text('Printer'),
-                        onTap: accesslist.contains('settingprinter') == true
+                        onTap: accesslistuser.contains('settingprinter') == true
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {

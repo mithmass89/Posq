@@ -32,6 +32,7 @@ class PaymentMobileCreditCard extends StatefulWidget {
       checkselected;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
 
   PaymentMobileCreditCard({
     Key? key,
@@ -51,6 +52,7 @@ class PaymentMobileCreditCard extends StatefulWidget {
     required this.checkselected,
     required this.fromsaved,
     required this.fromsplit,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -183,6 +185,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -263,6 +266,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -333,6 +337,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -409,6 +414,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -477,6 +483,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -548,6 +555,7 @@ class _PaymentMobileCreditCardState extends State<PaymentMobileCreditCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,

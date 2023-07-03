@@ -34,6 +34,7 @@ class ClassPaymentQrisTab extends StatefulWidget {
   final List<Midtransitem> listitem;
   final String trnoqr;
   final bool fromsplit;
+  final String guestname;
 
   ClassPaymentQrisTab(
       {Key? key,
@@ -58,7 +59,8 @@ class ClassPaymentQrisTab extends StatefulWidget {
       required this.qr,
       required this.listitem,
       required this.trnoqr,
-      required this.fromsplit})
+      required this.fromsplit,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -72,14 +74,14 @@ class _ClassPaymentQrisTabState extends State<ClassPaymentQrisTab> {
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
-///payment kedouble karena stream
+
+  ///payment kedouble karena stream
 
   @override
   void initState() {
     widget.debitcontroller.text = widget.balance.toString();
     super.initState();
   }
-
 
   Stream<String> _statustransaksi() async* {
     PaymentGate.getStatusTransaction(widget.trnoqr).then((value) {
@@ -91,15 +93,14 @@ class _ClassPaymentQrisTabState extends State<ClassPaymentQrisTab> {
     if (statustransaction == 'expire') {
       //  reloadqr();
     } else if (statustransaction == 'settlement') {
-      statustransaction='finish';
-      setState(() {
-        
-      });
+      statustransaction = 'finish';
+      setState(() {});
       await widget.insertIafjrnhd!();
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => ClassPaymetSucsessTabs(
+                    guestname: widget.guestname,
                     fromsplit: widget.fromsplit,
                     fromsaved: widget.fromsaved,
                     datatrans: widget.datatrans,
@@ -225,6 +226,8 @@ class _ClassPaymentQrisTabState extends State<ClassPaymentQrisTab> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         ClassPaymetSucsessTabs(
+                                                          guestname:
+                                                              widget.guestname,
                                                           fromsplit:
                                                               widget.fromsplit,
                                                           fromsaved:
@@ -262,6 +265,8 @@ class _ClassPaymentQrisTabState extends State<ClassPaymentQrisTab> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       ClassPaymetSucsessTabs(
+                                                        guestname:
+                                                            widget.guestname,
                                                         fromsplit:
                                                             widget.fromsplit,
                                                         fromsaved:

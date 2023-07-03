@@ -22,6 +22,7 @@ class PaymentV2MobileClass extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
 
   const PaymentV2MobileClass({
     Key? key,
@@ -34,6 +35,7 @@ class PaymentV2MobileClass extends StatefulWidget {
     required this.datatrans,
     required this.fromsaved,
     required this.fromsplit,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -68,7 +70,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
 
   @override
   void initState() {
-    listdata=widget.datatrans;
+    listdata = widget.datatrans;
     super.initState();
     print('ini data transaksi : ${widget.datatrans}');
     if (widget.fromsplit == true) {
@@ -313,10 +315,13 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                       controller: _controller,
                       children: [
                         PaymentCashV2Mobile(
+                          guestname: widget.guestname,
                           fromsplit: widget.fromsplit,
                           lastsplit: lastsplit,
                           fromsaved: widget.fromsaved,
-                          datatrans: widget.fromsplit==true?widget.datatrans:listdata,
+                          datatrans: widget.fromsplit == true
+                              ? widget.datatrans
+                              : listdata,
                           callback: checkbalance,
                           zerobill: zerobill,
                           result: result!,
@@ -327,6 +332,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           amountcash: amountcash,
                         ),
                         NonTunaiMobile(
+                             guestname: widget.guestname,
                           fromsplit: widget.fromsplit,
                           lastsplit: lastsplit,
                           fromsaved: widget.fromsaved,
@@ -335,7 +341,9 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           compdescription: compdescription,
                           checkselected: checkSelected,
                           midtransonline: midtransonline,
-                          datatrans:widget.fromsplit==true?widget.datatrans:listdata,
+                          datatrans: widget.fromsplit == true
+                              ? widget.datatrans
+                              : listdata,
                           callback: checkbalance,
                           zerobill: zerobill,
                           result: result!,
@@ -355,71 +363,72 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
           Positioned(
               top: MediaQuery.of(context).size.height * 0.92,
               left: MediaQuery.of(context).size.width * 0.07,
-              child: Builder(
-                builder: (context) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    child: ElevatedButton(
-                      onPressed: zerobill == true
-                          ? () async {
-                              print('ini compcode $compcode');
-                              if (compcode != '' || compcode.isNotEmpty) {
-                                await insertIafjrnhd().whenComplete(() {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ClassPaymetSucsessMobile(
-                                                fromsplit: widget.fromsplit,
-                                                fromsaved: widget.fromsaved,
-                                                datatrans: listdata,
-                                                frombanktransfer: false,
-                                                cash: true,
-                                                outletinfo: widget.outletinfo,
-                                                outletname: widget.outletname,
-                                                outletcd: widget.pscd,
-                                                amount: amountcash.text == '' ||
-                                                        amountcash.text.isEmpty
-                                                    ? widget.balance
-                                                    : double.parse(amountcash.text),
-                                                paymenttype: pymtmthd,
-                                                trno: widget.trno.toString(),
-                                                trdt: formattedDate,
-                                              )));
-                                });
-                              } else {
-                                print('dari  cash');
+              child: Builder(builder: (context) {
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  child: ElevatedButton(
+                    onPressed: zerobill == true
+                        ? () async {
+                            print('ini compcode $compcode');
+                            if (compcode != '' || compcode.isNotEmpty) {
+                              await insertIafjrnhd().whenComplete(() {
                                 Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ClassPaymetSucsessMobile(
-                                            fromsplit: widget.fromsplit,
-                                            fromsaved: widget.fromsaved,
-                                            datatrans: listdata,
-                                            frombanktransfer: false,
-                                            cash: true,
-                                            outletinfo: widget.outletinfo,
-                                            outletname: widget.outletname,
-                                            outletcd: widget.pscd,
-                                            amount: amountcash.text == '' ||
-                                                    amountcash.text.isEmpty
-                                                ? widget.balance
-                                                : double.parse(amountcash.text),
-                                            paymenttype: pymtmthd,
-                                            trno: widget.trno.toString(),
-                                            trdt: formattedDate,
-                                          )),
-                                );
-                              }
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassPaymetSucsessMobile(
+                                              guestname: widget.guestname,
+                                              fromsplit: widget.fromsplit,
+                                              fromsaved: widget.fromsaved,
+                                              datatrans: listdata,
+                                              frombanktransfer: false,
+                                              cash: true,
+                                              outletinfo: widget.outletinfo,
+                                              outletname: widget.outletname,
+                                              outletcd: widget.pscd,
+                                              amount: amountcash.text == '' ||
+                                                      amountcash.text.isEmpty
+                                                  ? widget.balance
+                                                  : double.parse(
+                                                      amountcash.text),
+                                              paymenttype: pymtmthd,
+                                              trno: widget.trno.toString(),
+                                              trdt: formattedDate,
+                                            )));
+                              });
+                            } else {
+                              print('dari  cash');
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ClassPaymetSucsessMobile(
+                                          guestname: widget.guestname,
+                                          fromsplit: widget.fromsplit,
+                                          fromsaved: widget.fromsaved,
+                                          datatrans: listdata,
+                                          frombanktransfer: false,
+                                          cash: true,
+                                          outletinfo: widget.outletinfo,
+                                          outletname: widget.outletname,
+                                          outletcd: widget.pscd,
+                                          amount: amountcash.text == '' ||
+                                                  amountcash.text.isEmpty
+                                              ? widget.balance
+                                              : double.parse(amountcash.text),
+                                          paymenttype: pymtmthd,
+                                          trno: widget.trno.toString(),
+                                          trdt: formattedDate,
+                                        )),
+                              );
                             }
-                          : null,
-                      child: Text('Selesaikan'),
-                    ),
-                  );
-                }
-              ))
+                          }
+                        : null,
+                    child: Text('Selesaikan'),
+                  ),
+                );
+              }))
         ],
       ),
     );

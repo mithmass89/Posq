@@ -25,6 +25,7 @@ class PaymentTransferMobile extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
 
   PaymentTransferMobile(
       {Key? key,
@@ -37,7 +38,8 @@ class PaymentTransferMobile extends StatefulWidget {
       this.discbyamount,
       required this.datatrans,
       required this.fromsaved,
-      required this.fromsplit})
+      required this.fromsplit,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -168,6 +170,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                guestname: widget.guestname,
                                 fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
@@ -236,6 +239,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                guestname: widget.guestname,
                                 fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
@@ -293,6 +297,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                guestname: widget.guestname,
                                 fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
@@ -356,6 +361,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassMandiribiller(
+                                guestname: widget.guestname,
                                 fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,
@@ -411,6 +417,7 @@ class _PaymentTransferMobileState extends State<PaymentTransferMobile> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogClassBankTransfer(
+                                guestname: widget.guestname,
                                 fromsplit: widget.fromsplit,
                                 fromsaved: widget.fromsaved,
                                 datatrans: widget.datatrans,

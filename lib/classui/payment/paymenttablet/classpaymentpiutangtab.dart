@@ -28,6 +28,7 @@ class PaymentPiutangTabs extends StatefulWidget {
   final bool fromsplit;
   late String selectedpay;
   final Function selectedpayment;
+  final String guestname;
   PaymentPiutangTabs(
       {Key? key,
       required this.trno,
@@ -48,7 +49,8 @@ class PaymentPiutangTabs extends StatefulWidget {
       required this.result,
       required this.paymentlist,
       required this.fromsplit,
-      required this.selectedpayment})
+      required this.selectedpayment,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -88,7 +90,8 @@ class _PaymentPiutangTabsState extends State<PaymentPiutangTabs> {
                       selected = widget.paymentlist[index].paymentcd!;
                       widget.pymtmthd = selected;
                     });
-                    widget.selectedpayment(widget.paymentlist[index].paymentdesc!);
+                    widget.selectedpayment(
+                        widget.paymentlist[index].paymentdesc!);
                     print("ini selected $selected");
                   },
                   child: Card(
@@ -182,6 +185,7 @@ class _PaymentPiutangTabsState extends State<PaymentPiutangTabs> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassPaymetSucsessTabs(
+                                                  guestname: widget.guestname,
                                                   fromsplit: widget.fromsplit,
                                                   fromsaved: widget.fromsaved,
                                                   datatrans: widget.datatrans,
@@ -207,6 +211,7 @@ class _PaymentPiutangTabsState extends State<PaymentPiutangTabs> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                guestname: widget.guestname,
                                                 fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
                                                 datatrans: widget.datatrans,

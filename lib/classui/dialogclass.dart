@@ -247,7 +247,7 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
           content: Container(
             height: MediaQuery.of(context).size.height * 0.35,
             child: FutureBuilder(
-              future: handler.retrieveListCustomers(query),
+              future: ClassApi.getCustomers(query),
               builder: (BuildContext context,
                   AsyncSnapshot<List<Costumers>> snapshot) {
                 x = snapshot.data ?? [];
@@ -283,9 +283,9 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
                                       onTap: () {
                                         setState(() {
                                           selected = index;
-                                          name = snapshot.data![index].compdesc
+                                          name = snapshot.data![index].fullname
                                               .toString();
-                                          email = snapshot.data![index].email
+                                          email = snapshot.data![index].phone
                                               .toString();
                                         });
                                         print(index);
@@ -294,7 +294,7 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
                                       visualDensity: VisualDensity(
                                           vertical: -1), // to compact
                                       title: Text(
-                                        snapshot.data![index].compdesc
+                                        snapshot.data![index].fullname
                                             .toString(),
                                         style: TextStyle(
                                             color: index == selected
@@ -977,8 +977,6 @@ class _DialogTabArscompClassState extends State<DialogTabArscompClass>
 
   @override
   void initState() {
-    controller =
-        TabController(vsync: this, length: 2, initialIndex: index!.toInt());
     super.initState();
   }
 
@@ -986,59 +984,287 @@ class _DialogTabArscompClassState extends State<DialogTabArscompClass>
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Batal'))
+        ],
+        title: Text('Gender'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        content: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.5,
-          child: Scaffold(
-              body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.05,
-                child: TabBar(
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20), // Creates border
-                      color: Colors.blue), //Change background color from here
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.blue,
-                  controller: controller,
-                  tabs: <Widget>[
-                    Tab(
-                      text: 'Kategori',
-                    ),
-                    Tab(
-                      text: 'Buat Kategori',
-                    ),
-                  ],
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.05,
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).pop('Laki Laki');
+                },
+                title: Text('Laki Laki'),
+              )),
+          Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.05,
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).pop('Perempuan');
+                },
+                title: Text('Perempuan'),
+              )),
+        ]),
+      );
+    });
+  }
+}
+
+class DialogReward extends StatefulWidget {
+  final String fromdate;
+  final String todate;
+  final String point;
+  final num amount;
+  final num initialamount;
+  final String type;
+  const DialogReward(
+      {Key? key,
+      required this.fromdate,
+      required this.todate,
+      required this.point,
+      required this.amount,
+      required this.initialamount,
+      required this.type})
+      : super(key: key);
+
+  @override
+  State<DialogReward> createState() => _DialogRewardState();
+}
+
+class _DialogRewardState extends State<DialogReward>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController amount = TextEditingController();
+  TextEditingController minimum = TextEditingController(text: '0');
+  TextEditingController persen = TextEditingController();
+  TextEditingController point = TextEditingController();
+  TabController? controller;
+  int? index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return SingleChildScrollView(
+        child: AlertDialog(
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Batal')),
+            TextButton(
+                onPressed: () async {
+                  await ClassApi.insertRewardSetting(
+                      '01-01',
+                      index.toString(),
+                      num.parse(point.text),
+                      index == 0
+                          ? num.parse(amount.text.replaceAll(',', ''))
+                          : num.parse(persen.text),
+                      index == 0
+                          ? 'Discount By amount'
+                          : 'Discount by percentage',
+                      minimum.text == '0' ? 0 : 1,
+                      num.parse(minimum.text.replaceAll(',', '')));
+                  Navigator.of(context).pop();
+                },
+                child: Text('Simpan'))
+          ],
+          title: Text('Setting reward'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          content: Column(mainAxisSize: MainAxisSize.max, children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            Container(
+              // alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  'Pilih Reward',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              Form(
-                key: _formKey,
-                child: Container(
+            ),
+            Card(
+              color: index == 0 ? Colors.orange : Colors.transparent,
+              child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  child: TabBarView(
-                    controller: controller,
-                    children: [
-                      CategoryListArscomp(
-                        controller: controller,
-                        index: index,
-                      ),
-                      CreatectgArscomp()
-                    ],
-                  ),
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: ListTile(
+                    leading: Icon(Icons.numbers, size: 20),
+                    onTap: () {
+                      index = 0;
+                      persen.clear();
+                      setState(() {});
+                    },
+                    title: Text('Dari Nominal'),
+                    subtitle: Text(
+                        'Pelanggan akan mendapat reward nominal dari total belanja'),
+                  )),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            Card(
+              color: index == 1 ? Colors.orange : Colors.transparent,
+              child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: ListTile(
+                    leading: Icon(Icons.percent, size: 20),
+                    onTap: () {
+                      index = 1;
+                      amount.clear();
+                      setState(() {});
+                    },
+                    title: Text('Dari persentasi'),
+                    subtitle: Text(
+                        'Pelanggan akan mendapat reward persentasi dari total belanja'),
+                  )),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            Container(
+              // alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  'Reward Convert',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-            ],
-          )),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: point,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'This field is required';
+                  }
+                  return null;
+                },
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Point yg di tukar',
+                  prefixText: 'pts ',
+                ),
+              ),
+            ),
+            index == 0
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: amount,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        _NumberFormatter(),
+                      ],
+                      onChanged: (value) {},
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Jumlah Nominal Reward',
+                        prefixText: 'Rp ',
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: persen,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {},
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Jumlah persentasi reward',
+                        prefixText: '% ',
+                      ),
+                    ),
+                  ),
+            Container(
+              // alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  'Belanja Minimum',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: minimum,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  _NumberFormatter(),
+                ],
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Minimum',
+                  prefixText: 'Rp ',
+                ),
+              ),
+            )
+          ]),
         ),
       );
     });
+  }
+}
+
+class _NumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final int selectionIndex = newValue.selection.end;
+    String formattedValue = newValue.text;
+
+    if (formattedValue.isNotEmpty) {
+      final numberValue = int.tryParse(formattedValue.replaceAll(',', ''));
+      if (numberValue != null) {
+        final NumberFormat numberFormat = NumberFormat('#,###');
+        formattedValue = numberFormat.format(numberValue);
+      }
+    }
+
+    return TextEditingValue(
+      text: formattedValue,
+      selection: TextSelection.collapsed(offset: selectionIndex),
+    );
   }
 }
 
@@ -2052,7 +2278,7 @@ class DialogClassEwallet extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   final bool fromsplit;
-
+  final String guestname;
   DialogClassEwallet({
     Key? key,
     required this.trno,
@@ -2069,6 +2295,7 @@ class DialogClassEwallet extends StatefulWidget {
     required this.datatrans,
     required this.fromsaved,
     required this.fromsplit,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -2181,6 +2408,7 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                              guestname: widget.guestname,
                               fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
@@ -2222,6 +2450,7 @@ class DialogClassBankTransfer extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
 
   DialogClassBankTransfer({
     Key? key,
@@ -2242,6 +2471,7 @@ class DialogClassBankTransfer extends StatefulWidget {
     required this.datatrans,
     required this.fromsaved,
     required this.fromsplit,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -2368,6 +2598,7 @@ class _DialogClassBankTransferState extends State<DialogClassBankTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                              guestname: widget.guestname,
                               fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,
@@ -2410,6 +2641,7 @@ class DialogClassMandiribiller extends StatefulWidget {
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
 
   DialogClassMandiribiller({
     Key? key,
@@ -2430,6 +2662,7 @@ class DialogClassMandiribiller extends StatefulWidget {
     required this.datatrans,
     required this.fromsaved,
     required this.fromsplit,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -2582,6 +2815,7 @@ class _DialogClassMandiribillerState extends State<DialogClassMandiribiller> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassPaymetSucsessMobile(
+                              guestname: widget.guestname,
                               fromsplit: widget.fromsplit,
                               fromsaved: widget.fromsaved,
                               datatrans: widget.datatrans,

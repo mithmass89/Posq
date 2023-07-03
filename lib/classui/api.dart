@@ -263,6 +263,125 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> insertRegisterCustomer(
+    String customercd,
+    String fullname,
+    String title,
+    String phone,
+    String email,
+    String workkom,
+    String address,
+    String points,
+    String memberfrom,
+  ) async {
+    var body = {
+      "dbname": dbname,
+      "customercd": customercd,
+      "fullname": fullname,
+      "title": title,
+      "phone": phone,
+      "email": email,
+      "workkom": workkom,
+      "address": address,
+      "points": points,
+      "memberfrom": memberfrom,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertRegisterCustomer');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertLoyalityProgram(
+    String loyalitycd,
+    String loyaltiydesc,
+    String fromdate,
+    String todate,
+    String type,
+    num convamount,
+    num point,
+    num minimumamount,
+    int useminimum,
+    num joinreward,
+  ) async {
+    var body = {
+      "dbname": dbname,
+      "loyalitycd": loyalitycd,
+      "loyaltiydesc": loyaltiydesc,
+      "fromdate": fromdate,
+      "todate": todate,
+      "type": type,
+      "convamount": convamount,
+      "point": point,
+      "minimumamount": minimumamount,
+      "joinreward": joinreward,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertLoyalityProgram');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertRewardSetting(
+      String loyalitycd,
+      String rewaradtype,
+      num redempoint,
+      num reward,
+      String note,
+      int useminimum,
+      num minimumamount) async {
+    var body = {
+      "dbname": dbname,
+      "loyalitycd": loyalitycd,
+      "rewaradtype": rewaradtype,
+      "redempoint": redempoint,
+      "reward": reward,
+      "note": note,
+      "useminimum": useminimum,
+      "minimumamount": minimumamount
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertRewardSetting');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> insertCategory(Ctg data, String dbname) async {
     var body = {"dbname": dbname, "ctgcd": data.ctgcd, "ctgdesc": data.ctgdesc};
     // print(json.encode(pembayaran));
@@ -414,6 +533,26 @@ class ClassApi {
     var body = {"data": accesslist};
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/insertAccessUser');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertAccessOutletUser(String usercode) async {
+    var body = {"usercode": usercode};
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertAccessOutletUser');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -796,6 +935,65 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> updateCustomers(
+      String fullname,
+      String tittle,
+      String phone,
+      String email,
+      String address,
+      String customercd,
+      String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "customercd": customercd,
+      "fullname": fullname,
+      "tittle": tittle,
+      "phone": phone,
+      "email": email,
+      "address": address,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateCustomers');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updatePointCustomers(num points,String fullname) async {
+    var body = {
+      "dbname": dbname,
+      "points": points,
+      "fullname": fullname,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updatePointCustomers');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> checkUserFromOauth(String email, String dbname) async {
     var body = {
       "dbname": dbname,
@@ -825,6 +1023,73 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/getTemplatePrinter');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List user = json.decode(response.body);
+
+      return user;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> checkPhoneNumber(String phone) async {
+    var body = {
+      "dbname": dbname,
+      "phone": phone,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/checkPhoneNumber');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List user = json.decode(response.body);
+
+      return user;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> checkTypeLoyality() async {
+    var body = {
+      "dbname": dbname,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/checkTypeLoyality');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List user = json.decode(response.body);
+
+      return user;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> checkProgramExist() async {
+    var body = {
+      "dbname": dbname,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/checkProgramExist');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1697,6 +1962,27 @@ class ClassApi {
     }
   }
 
+  static Future<List<dynamic>> getLoyalityProgramActive() async {
+    var data = {"dbname": dbname};
+
+    final url = Uri.parse('$api/getLoyalityProgramActive');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List body = json.decode(response.body);
+      print(body);
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<TableMaster>> getTableList(String query) async {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname};
@@ -1714,6 +2000,32 @@ class ClassApi {
       return bodyJson.map((json) => TableMaster.fromJson(json)).where((items) {
         final itemdescLower = items.tablecd!.toLowerCase();
         final itemcodes = items.tablecd!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<RewardCLass>> getRewardData(String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/getRewardData');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => RewardCLass.fromJson(json)).where((items) {
+        final itemdescLower = items.note!.toLowerCase();
+        final itemcodes = items.redempoint!.toString().toLowerCase();
         final searchLower = query.toLowerCase();
         return itemdescLower.contains(searchLower) ||
             itemcodes.contains(searchLower);
@@ -2044,6 +2356,37 @@ class ClassApi {
       return bodyJson.map((json) => ListUser.fromJson(json)).where((items) {
         final itemdescLower = items.usercd!.toLowerCase();
         final itemcodes = items.level!.toLowerCase();
+        final searchLower = query.toLowerCase();
+
+        return itemdescLower.contains(searchLower) ||
+            itemcodes.contains(searchLower);
+      }).toList();
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<Costumers>> getCustomers(String query) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "dbname": dbname,
+    };
+    final url = Uri.parse('$api/getCustomers');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson.map((json) => Costumers.fromJson(json)).where((items) {
+        final itemdescLower = items.fullname.toLowerCase();
+        final itemcodes = items.memberfrom!.toLowerCase();
         final searchLower = query.toLowerCase();
 
         return itemdescLower.contains(searchLower) ||

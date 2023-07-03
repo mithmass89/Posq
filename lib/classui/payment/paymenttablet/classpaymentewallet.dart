@@ -28,6 +28,7 @@ class PaymentEwalletTab extends StatefulWidget {
   final bool fromsplit;
   late String selectedpay;
   final Function? selectedpayment;
+  final String guestname;
   PaymentEwalletTab(
       {Key? key,
       required this.trno,
@@ -48,7 +49,8 @@ class PaymentEwalletTab extends StatefulWidget {
       required this.result,
       required this.paymentlist,
       required this.fromsplit,
-      required this.selectedpayment})
+      required this.selectedpayment,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -177,6 +179,7 @@ class _PaymentEwalletTabState extends State<PaymentEwalletTab> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ClassPaymetSucsessTabs(
+                                                  guestname: widget.guestname,
                                                   fromsplit: widget.fromsplit,
                                                   fromsaved: widget.fromsaved,
                                                   datatrans: widget.datatrans,
@@ -202,6 +205,7 @@ class _PaymentEwalletTabState extends State<PaymentEwalletTab> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ClassPaymetSucsessTabs(
+                                                guestname: widget.guestname,
                                                 fromsplit: widget.fromsplit,
                                                 fromsaved: widget.fromsaved,
                                                 datatrans: widget.datatrans,

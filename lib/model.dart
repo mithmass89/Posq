@@ -1362,58 +1362,54 @@ class Getstatus {
 }
 
 class Costumers {
-  final int? id;
-  final String compcd;
-  final String? compdesc;
-  final String? category;
-  final String? coaar;
-  final String? coapayment;
-  final String? address;
-  final String? telp;
-  final String? pic;
+  final String? customercd;
+  final String fullname;
+  final String? title;
+  final String? phone;
   final String? email;
-  final int? active;
+  final String? workkom;
+  final String? address;
+  final num? points;
+  final String? memberfrom;
 
   Costumers({
-    this.id,
-    required this.compcd,
-    this.compdesc,
-    this.category,
-    this.coaar,
-    this.coapayment,
-    this.address,
-    this.telp,
-    this.pic,
+    this.customercd,
+    required this.fullname,
+    this.title,
     this.email,
-    this.active,
+    this.workkom,
+    this.address,
+    this.phone,
+    this.points,
+    this.memberfrom,
   });
 
-  Costumers.fromMap(Map<String, dynamic> res)
-      : id = res["id"],
-        compcd = res["compcd"],
-        compdesc = res["compdesc"],
-        category = res["category"],
-        coaar = res["coaar"],
-        coapayment = res["coapayment"],
-        address = res["address"],
-        telp = res["telp"],
-        pic = res["pic"],
+  Costumers.fromJson(Map<String, dynamic> res)
+      : customercd = res["customercd"],
+        fullname = res["fullname"],
+        title = res["title"],
         email = res["email"],
-        active = res["active"];
+        workkom = res["workkom"],
+        address = res["address"],
+        phone = res["phone"],
+        points = res["points"],
+        memberfrom = res["memberfrom"];
+  @override
+  String toString() {
+    return '{customercd: $customercd,  fullname: $fullname, title: $title,email:$email,workkom:$workkom,address:$address,phone:$phone,points:$points,memberfrom:$memberfrom}';
+  }
 
-  Map<String, Object?> toMap() {
+  Map<String, Object?> toJson() {
     return {
-      'id': id,
-      'compcd': compcd,
-      'compdesc': compdesc,
-      'category': category,
-      'coaar': coaar,
-      'coapayment': coapayment,
-      'address': address,
-      'telp': telp,
-      'pic': pic,
+      'customercd': customercd,
+      'fullname': fullname,
+      'title': title,
       'email': email,
-      'active': active
+      'workkom': workkom,
+      'address': address,
+      'phone': phone,
+      'points': points,
+      'memberfrom': memberfrom,
     };
   }
 }
@@ -1455,6 +1451,79 @@ class CostumersSavedManual {
       'telp': telp,
       'email': email,
       'alamat': alamat,
+    };
+  }
+}
+
+class RewardCLass {
+  final String? loyalitycd;
+  final String rewaradtype;
+  final num? redempoint;
+  final num? reward;
+  final num? minimum;
+  final String? note;
+
+  RewardCLass({
+    this.loyalitycd,
+    required this.rewaradtype,
+    required this.minimum,
+    this.redempoint,
+    this.reward,
+    this.note,
+  });
+
+  RewardCLass.fromJson(Map<String, dynamic> res)
+      : loyalitycd = res["loyalitycd"],
+        rewaradtype = res["rewaradtype"],
+        redempoint = res["redempoint"],
+        reward = res["reward"],
+        minimum = res["minimum"],
+        note = res["note"];
+
+  Map<String, Object?> toJson() {
+    return {
+      'loyalitycd': loyalitycd,
+      'rewaradtype': rewaradtype,
+      'redempoint': redempoint,
+      'reward': reward,
+      'note': note,
+    };
+  }
+}
+
+class PointSystem {
+  final String? fromdate;
+  final String todate;
+  final num? type;
+  final num? convamount;
+  final num? point;
+  final String? joinreward;
+
+  PointSystem({
+    this.fromdate,
+    required this.todate,
+    required this.type,
+    this.convamount,
+    this.point,
+    this.joinreward,
+  });
+
+  PointSystem.fromJson(Map<String, dynamic> res)
+      : fromdate = res["fromdate"],
+        todate = res["todate"],
+        type = res["type"],
+        convamount = res["convamount"],
+        point = res["point"],
+        joinreward = res["joinreward"];
+
+  Map<String, Object?> toJson() {
+    return {
+      'fromdate': fromdate,
+      'todate': todate,
+      'type': type,
+      'convamount': convamount,
+      'point': point,
+      'joinreward': joinreward,
     };
   }
 }

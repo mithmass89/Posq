@@ -1,10 +1,14 @@
 // ignore_for_file: unnecessary_this
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 
 class ClassEditCustomers extends StatefulWidget {
   final Costumers listdata;
@@ -16,45 +20,32 @@ class ClassEditCustomers extends StatefulWidget {
 }
 
 class _ClassEditCustomersState extends State<ClassEditCustomers> {
-  late DatabaseHandler handler;
-  TextEditingController? compcd = TextEditingController();
-  TextEditingController? compdesc= TextEditingController();
-  TextEditingController? coaar= TextEditingController();
-  TextEditingController? coapayment=TextEditingController();
-  TextEditingController? address=TextEditingController();
-  TextEditingController? active=TextEditingController();
-  TextEditingController? kategory=TextEditingController();
-  TextEditingController? telp=TextEditingController();
-  TextEditingController? email=TextEditingController();
-  TextEditingController? pic=TextEditingController();
+  TextEditingController? customercd = TextEditingController();
+  TextEditingController? fullname = TextEditingController();
+  TextEditingController? title = TextEditingController();
+  TextEditingController? phone = TextEditingController();
+  TextEditingController? email = TextEditingController();
+  TextEditingController? address = TextEditingController();
+  TextEditingController? point = TextEditingController();
+  TextEditingController? memberfrom = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    compcd!.text = widget.listdata.compcd;
-    compdesc!.text = widget.listdata.compdesc!;
-    coaar!.text = widget.listdata.coaar!;
-    coapayment!.text = widget.listdata.coapayment!;
+    customercd!.text = widget.listdata.customercd!;
+    fullname!.text = widget.listdata.fullname;
+    title!.text = widget.listdata.title!;
+    phone!.text = widget.listdata.phone!;
     address!.text = widget.listdata.address!;
-    active!.text = widget.listdata.active.toString();
-    kategory!.text = widget.listdata.category!;
-    telp!.text = widget.listdata.telp!;
+    email!.text = widget.listdata.email.toString();
+    point!.text = widget.listdata.points!.toString();
+    memberfrom!.text = widget.listdata.memberfrom!;
     email!.text = widget.listdata.email!;
-    pic!.text = widget.listdata.pic!;
-    this.handler = DatabaseHandler();
-    handler.initializeDB(databasename);
   }
 
   updateCustomers() async {
-    await handler.initializeDB(databasename);
-    handler.updateArscomp(Costumers(
-        compdesc: compdesc!.text,
-        address: address!.text,
-        email: email!.text,
-        telp: telp!.text,
-        pic: pic!.text,
-        active: 1,
-        compcd: widget.listdata.compcd));
+    await ClassApi.updateCustomers(fullname!.text, title!.text, phone!.text,
+        email!.text, address!.text, customercd!.text, dbname);
   }
 
   @override
@@ -77,11 +68,26 @@ class _ClassEditCustomersState extends State<ClassEditCustomers> {
             indent: 20,
           ),
           TextFieldMobile2(
-            label: 'Nama perusahaan / perorangan',
-            controller: compdesc!,
+            label: 'Nama lengkap',
+            controller: fullname!,
             typekeyboard: TextInputType.text,
             onChanged: (value) {},
           ),
+          TextFieldMobileButton(
+              hint: 'gender',
+              controller: title!,
+              typekeyboard: TextInputType.text,
+              onChanged: (value) {},
+              ontap: () async {
+                final String titles = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const DialogTabArscompClass();
+                    });
+
+                title!.text = titles.isNotEmpty ? titles : 'Pilih Gender';
+                setState(() {});
+              }),
           TextFieldMobile2(
             label: 'Alamat',
             controller: address!,
@@ -89,8 +95,8 @@ class _ClassEditCustomersState extends State<ClassEditCustomers> {
             onChanged: (value) {},
           ),
           TextFieldMobile2(
-            label: 'No Telp',
-            controller: telp!,
+            label: 'Phone',
+            controller: phone!,
             typekeyboard: TextInputType.text,
             onChanged: (value) {},
           ),
@@ -100,24 +106,20 @@ class _ClassEditCustomersState extends State<ClassEditCustomers> {
             typekeyboard: TextInputType.text,
             onChanged: (value) {},
           ),
-          TextFieldMobile2(
-            label: 'Nama Pic',
-            controller: pic!,
-            typekeyboard: TextInputType.text,
-            onChanged: (value) {},
-          ),
           const Divider(
             endIndent: 20,
             indent: 20,
           ),
           ButtonNoIcon(
-              name: 'Save',
+              name: 'Simpan',
               color: Colors.blue,
               textcolor: Colors.white,
               height: MediaQuery.of(context).size.height * 0.05,
               width: MediaQuery.of(context).size.width * 0.95,
               onpressed: () async {
+                EasyLoading.show(status: 'loading...');
                 await updateCustomers().whenComplete(() {
+                  EasyLoading.dismiss();
                   Navigator.of(context).pop();
                 });
               }),

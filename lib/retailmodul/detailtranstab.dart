@@ -701,6 +701,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                 context: context,
                                                                                 builder: (BuildContext context) {
                                                                                   return PasswordDialog(
+                                                                                            guestname: widget.guestname,
                                                                                     frompaymentmobile: false,
                                                                                     frompayment: false,
                                                                                     dialogcancel: false,
@@ -903,6 +904,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                         return Expanded(
                           flex: 1,
                           child: SummaryOrderSlideTabs(
+                            guestname: widget.guestname,
                             listdata: widget.listdata,
                             summary: summary,
                             fromsaved: widget.fromsaved,

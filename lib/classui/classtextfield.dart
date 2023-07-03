@@ -254,6 +254,7 @@ class _TextFieldMobile2State extends State<TextFieldMobile2> {
           border: InputBorder.none,
           filled: true,
           fillColor: Colors.white,
+          
           // contentPadding:
           //     const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 0.0),
           focusedBorder: OutlineInputBorder(

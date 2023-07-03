@@ -41,17 +41,28 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
   IafjrndtClass? result;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
+  bool caninput = true;
 
   @override
   void initState() {
     super.initState();
     ToastContext().init(context);
     print('ini dari product ${widget.trno}');
+    caninput =true;
+  }
+
+  Future<List<Item>> getitemOutlet(query) async {
+    List<Item> data = await ClassApi.getItemList(pscd, dbname, query);
+    if (data.isNotEmpty) {
+      print(data);
+  
+    }
+
+    return data;
   }
 
   Future<IafjrndtClass?> insertIafjrndt() async {
     now = DateTime.now();
-
     await ClassApi.insertPosDetail(
         IafjrndtClass(
           trdt: widget.trdt,
@@ -169,38 +180,55 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       children: [
         ListTile(
           // dense: true,
-          onTap: () async {
-            if (widget.item.modifiers == 0) {
-              if (widget.item.stock != 0 && widget.item.trackstock == 1) {
-                await insertIafjrndt();
+          onTap: caninput == true
+              ? () async {
+                  if (widget.item.modifiers == 0) {
+                    if (widget.item.stock! > 0 && widget.item.trackstock == 1) {
+                      // always check stock  //
+                      await getitemOutlet(widget.item.itemcode)
+                          .then((value) async {
+                        print('ini checking data $value');
+                        if (value.first.stock! > 0) {
+                          
+                          await insertIafjrndt();
+                    
+                          ClassRetailMainMobile.of(context)!.string = result!;
+                        } else {
+                          Toast.show("Kamu Kehabisan Stock",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        }
+                      });
 
-                //update to main // callback
-                ClassRetailMainMobile.of(context)!.string = result!;
-              } else if (widget.item.trackstock == 0) {
-                await insertIafjrndt();
-
-                ClassRetailMainMobile.of(context)!.string = result!;
-              } else {
-                Toast.show("Kamu Kehabisan Stock",
-                    duration: Toast.lengthLong, gravity: Toast.center);
-              }
-            } else {
-              var result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ClassInputCondiment(
-                          guestname: widget.guestname!,
-                          fromedit: false,
-                          itemseq: widget.itemseq,
-                          outletcd: pscd,
-                          transno: widget.trno,
-                          data: widget.item,
-                        )),
-              );
-              print("ini result $result");
-              ClassRetailMainMobile.of(context)!.string = result!;
-            }
-          },
+                      //update to main // callback
+                    } else if (widget.item.trackstock == 0) {
+                      await insertIafjrndt();
+                      ClassRetailMainMobile.of(context)!.string = result!;
+                    } else {
+                      Toast.show("Kamu Kehabisan Stock",
+                          duration: Toast.lengthLong, gravity: Toast.center);
+                    }
+                  } else {
+                    var result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ClassInputCondiment(
+                                guestname: widget.guestname!,
+                                fromedit: false,
+                                itemseq: widget.itemseq,
+                                outletcd: pscd,
+                                transno: widget.trno,
+                                data: widget.item,
+                              )),
+                    );
+                    print("ini result $result");
+                    ClassRetailMainMobile.of(context)!.string = result!;
+                  }
+                }
+              : () {
+                  Toast.show("masih check stock",
+                      duration: Toast.lengthLong, gravity: Toast.center);
+                },
           leading: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -218,7 +246,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
               filterQuality: FilterQuality.medium,
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
-                    print(exception);
+                print(exception);
                 return Image.network(
                   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
                   fit: BoxFit.fill,

@@ -1,3 +1,5 @@
+import 'package:posq/model.dart';
+
 String usercd = '';
 String passcode = '';
 String pscd = '';
@@ -14,3 +16,4 @@ String emaillogin = '';
 String subscribtion = '';
 String paymentcheck = '';
 String level = '';
+PointSystem rulesprogram = PointSystem(todate: '', type: null);

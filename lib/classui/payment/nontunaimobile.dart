@@ -32,7 +32,8 @@ class NonTunaiMobile extends StatefulWidget {
   final bool fromsaved;
   final int lastsplit;
   final bool fromsplit;
-  
+  final String guestname;
+
   NonTunaiMobile({
     Key? key,
     required this.amountcash,
@@ -49,7 +50,10 @@ class NonTunaiMobile extends StatefulWidget {
     this.compdescription,
     required this.checkselected,
     required this.pymtmthd,
-    required this.fromsaved, required this.lastsplit, required this.fromsplit,
+    required this.fromsaved,
+    required this.lastsplit,
+    required this.fromsplit,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -76,7 +80,8 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
       shrinkWrap: true,
       children: [
         EWalletClassNonTunai(
-                 fromsplit: widget.fromsplit,
+          guestname: widget.guestname,
+          fromsplit: widget.fromsplit,
           fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
@@ -93,7 +98,8 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           amountcash: widget.amountcash,
         ),
         NonTunaiMobileTransfer(
-                 fromsplit: widget.fromsplit,
+             guestname: widget.guestname,
+          fromsplit: widget.fromsplit,
           fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
@@ -109,7 +115,8 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentMobileCreditCard(
-                 fromsplit: widget.fromsplit,
+          guestname: widget.guestname,
+          fromsplit: widget.fromsplit,
           fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
@@ -125,8 +132,9 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
         ),
         PaymentDebitCardMobile(
-                 fromsplit: widget.fromsplit,
-               fromsaved: widget.fromsaved,
+          guestname: widget.guestname,
+          fromsplit: widget.fromsplit,
+          fromsaved: widget.fromsaved,
           checkselected: widget.checkselected,
           compcode: widget.compcode,
           compdescription: widget.compdescription,

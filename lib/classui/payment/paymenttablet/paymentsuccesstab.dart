@@ -3,6 +3,7 @@
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classhitungreward.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -27,7 +28,7 @@ class ClassPaymetSucsessTabs extends StatefulWidget {
   final String trno;
   final num amount;
   final String paymenttype;
-  final String? guestname;
+  final String guestname;
   final String? trdt;
   final String? outletcd;
   final String? outletname;
@@ -42,7 +43,7 @@ class ClassPaymetSucsessTabs extends StatefulWidget {
     required this.trno,
     required this.amount,
     required this.paymenttype,
-    this.guestname,
+    required this.guestname,
     this.trdt,
     this.outletcd,
     this.outletname,
@@ -454,6 +455,16 @@ ${payment.reduce((value, element) => value + element)}
                                   style: TextStyle(color: Colors.orange),
                                 )),
                             onPressed: () async {
+                              if (Pembelian(widget.amount)
+                                      .hitungPoin()
+                                      .toInt() !=
+                                  '0') {
+                                await ClassApi.updatePointCustomers(
+                                    Pembelian(widget.amount)
+                                        .hitungPoin()
+                                        .toInt(),
+                                    widget.guestname);
+                              }
                               await getDetailTrnos().then((value) async {
                                 print('ini value : $value');
                                 if (value.isEmpty) {

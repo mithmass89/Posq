@@ -289,6 +289,16 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                             pscd = outletcd.text;
                                             outletdesc = namaoutlet.toString();
 
+                                            await ClassApi
+                                                .insertAccessOutletUser(usercd);
+                                            await ClassApi.getAccessUserOutlet(
+                                                    usercd, pscd, '')
+                                                .then((valuesx) {
+                                              for (var x in valuesx) {
+                                                accesslistuser
+                                                    .add(x['accesscode']);
+                                              }
+                                            });
                                             EasyLoading.dismiss();
                                             Navigator.pushReplacement(
                                               context,
@@ -524,6 +534,21 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                   pscd = outletcd.text;
                                                   outletdesc =
                                                       namaoutlet.toString();
+                                                  await ClassApi
+                                                      .insertAccessOutletUser(
+                                                          usercd);
+                                                  await ClassApi
+                                                      .insertAccessOutletUser(
+                                                          usercd);
+                                                  await ClassApi
+                                                          .getAccessUserOutlet(
+                                                              usercd, pscd, '')
+                                                      .then((valuesx) {
+                                                    for (var x in valuesx) {
+                                                      accesslistuser
+                                                          .add(x['accesscode']);
+                                                    }
+                                                  });
                                                   EasyLoading.dismiss();
                                                   Navigator.pushReplacement(
                                                     context,

@@ -30,6 +30,7 @@ class EWalletClassNonTunai extends StatefulWidget {
   final bool fromsplit;
   final void Function(String compcd, String compdesc, String methode)
       checkselected;
+  final String guestname;
   EWalletClassNonTunai(
       {Key? key,
       required this.amountcash,
@@ -46,7 +47,8 @@ class EWalletClassNonTunai extends StatefulWidget {
       this.compdescription,
       this.pymtmthd,
       required this.checkselected,
-      required this.fromsaved, required this.fromsplit})
+      required this.fromsaved,
+      required this.fromsplit, required this.guestname})
       : super(key: key);
 
   @override
@@ -159,7 +161,8 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
-                                           fromsplit: widget.fromsplit,
+                                    guestname: widget.guestname,
+                                    fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -225,7 +228,8 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
-                                           fromsplit: widget.fromsplit,
+                                    guestname: widget.guestname,
+                                    fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -298,7 +302,8 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
-                                           fromsplit: widget.fromsplit,
+                                    guestname: widget.guestname,
+                                    fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -365,7 +370,8 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
-                                           fromsplit: widget.fromsplit,
+                                    guestname: widget.guestname,
+                                    fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     url: qr,
@@ -434,7 +440,8 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
-                                           fromsplit: widget.fromsplit,
+                                    guestname: widget.guestname,
+                                    fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     compcd: compcd,
@@ -500,8 +507,9 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassEwallet(
-                                           fromsplit: widget.fromsplit,
-                                         fromsaved: widget.fromsaved,
+                                    guestname: widget.guestname,
+                                    fromsplit: widget.fromsplit,
+                                    fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
                                     compcd: compcd,
                                     compdesc: compdesc,

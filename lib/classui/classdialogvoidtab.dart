@@ -29,6 +29,7 @@ class PasswordDialog extends StatefulWidget {
   final String? outletname;
   final List<IafjrndtClass>? datatrans;
   late TextEditingController? controller;
+  final String guestname;
 
   PasswordDialog(
       {required this.onPasswordEntered,
@@ -47,7 +48,8 @@ class PasswordDialog extends StatefulWidget {
       this.datatrans,
       this.controller,
       this.outletname,
-      required this.frompaymentmobile});
+      required this.frompaymentmobile,
+      required this.guestname});
 
   @override
   _PasswordDialogState createState() => _PasswordDialogState();
@@ -152,6 +154,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         ClassPaymetSucsessTabs(
+                                          guestname: widget.guestname,
                                           fromsplit: widget.fromsplit!,
                                           fromsaved: widget.fromsaved!,
                                           datatrans: widget.datatrans!,
@@ -173,6 +176,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         ClassPaymetSucsessMobile(
+                                          guestname: widget.guestname,
                                           fromsplit: widget.fromsplit!,
                                           fromsaved: widget.fromsaved!,
                                           datatrans: widget.datatrans!,
@@ -195,6 +199,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ClassPaymetSucsessTabs(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit!,
                                     fromsaved: widget.fromsaved!,
                                     datatrans: widget.datatrans!,

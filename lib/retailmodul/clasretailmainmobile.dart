@@ -716,13 +716,39 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                               flex: 1,
                                               child: IconButton(
                                                 icon: Icon(
+                                                  Icons.money_off,
+                                                ),
+                                                iconSize: 25,
+                                                color: Colors.blueGrey,
+                                                splashColor: Colors.purple,
+                                                onPressed: () async {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return DialogClassRefundorder(
+                                                        fromsaved:
+                                                            widget.fromsaved,
+                                                        outletcd: pscd,
+                                                        outletinfo:
+                                                            widget.outletinfo,
+                                                        trno: widget.trno!,
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              )),
+                                          Expanded(
+                                              flex: 1,
+                                              child: IconButton(
+                                                icon: Icon(
                                                   Icons.people,
                                                 ),
                                                 iconSize: 25,
                                                 color: Colors.blueGrey,
                                                 splashColor: Colors.purple,
                                                 onPressed: () async {
-                                                  await showDialog(
+                                                  guestname = await showDialog(
                                                       context: context,
                                                       builder: (BuildContext
                                                           context) {
@@ -799,6 +825,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               context,
                               MaterialPageRoute(
                                   builder: (context) => PaymentV2MobileClass(
+                                        guestname: guestname == ''
+                                            ? randomNumber.toString()
+                                            : guestname!,
                                         fromsplit: false,
                                         fromsaved: widget.fromsaved!,
                                         datatrans: listdata!,
@@ -1041,7 +1070,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     },
                                   ),
                                 ),
-                                 Container(
+                                Container(
                                   color: Color.fromARGB(255, 0, 129, 119),
                                   alignment: Alignment.center,
                                   width:
@@ -1054,26 +1083,22 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       size: 22,
                                       color: Colors.white,
                                     ),
-                                    onTap: accesslistuser.contains('canceltrans') ==
+                                    onTap: accesslistuser
+                                                .contains('canceltrans') ==
                                             true
                                         ? () async {
-                             
-
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return DialogClassRefundorder(
-                                                    fromsaved: widget.fromsaved,
-                                                    outletcd: pscd,
-                                                    outletinfo:
-                                                        widget.outletinfo,
-                                                    trno: widget.trno!,
-                                                  );
-                                                },
-                                              );
-                                            }
-                                          
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return DialogClassRefundorder(
+                                                  fromsaved: widget.fromsaved,
+                                                  outletcd: pscd,
+                                                  outletinfo: widget.outletinfo,
+                                                  trno: widget.trno!,
+                                                );
+                                              },
+                                            );
+                                          }
                                         : () {
                                             Toast.show(
                                                 "Tidak punya akses refund",
@@ -1085,8 +1110,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 Container(
                                     color: Color.fromARGB(255, 0, 160, 147),
                                     alignment: Alignment.center,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.2,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.2,
                                     height: MediaQuery.of(context).size.height *
                                         0.057,
                                     child: Text(
@@ -1107,7 +1132,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       size: 22,
                                       color: Colors.orange,
                                     ),
-                                    onTap: accesslistuser.contains('canceltrans') ==
+                                    onTap: accesslistuser
+                                                .contains('canceltrans') ==
                                             true
                                         ? () async {
                                             print(strictuser);
@@ -1117,6 +1143,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                 builder:
                                                     (BuildContext context) {
                                                   return PasswordDialog(
+                                                      guestname:
+                                                          guestname!.isEmpty
+                                                              ? randomNumber
+                                                                  .toString()
+                                                              : guestname!,
                                                       frompaymentmobile: false,
                                                       frompayment: false,
                                                       trno: widget.trno,

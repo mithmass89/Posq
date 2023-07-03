@@ -30,6 +30,7 @@ class NonTunaiMobileTransfer extends StatefulWidget {
   late String? compdescription;
   final bool fromsaved;
   final bool fromsplit;
+  final String guestname;
   final void Function(String compcd, String compdesc, String methode)
       checkselected;
 
@@ -50,7 +51,8 @@ class NonTunaiMobileTransfer extends StatefulWidget {
       this.compdescription,
       required this.checkselected,
       required this.fromsaved,
-      required this.fromsplit})
+      required this.fromsplit,
+      required this.guestname})
       : super(key: key);
 
   @override
@@ -183,6 +185,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -265,6 +268,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -337,6 +341,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -415,6 +420,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassMandiribiller(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -485,6 +491,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,
@@ -558,6 +565,7 @@ class _NonTunaiMobileTransferState extends State<NonTunaiMobileTransfer> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return DialogClassBankTransfer(
+                                    guestname: widget.guestname,
                                     fromsplit: widget.fromsplit,
                                     fromsaved: widget.fromsaved,
                                     datatrans: widget.datatrans,

@@ -15,6 +15,7 @@ class DialogSplitTab extends StatefulWidget {
   final Outlet? outletinfo;
   final List<IafjrndtClass> datatrans;
   final bool fromsaved;
+  final String guestname;
 
   const DialogSplitTab({
     Key? key,
@@ -26,6 +27,7 @@ class DialogSplitTab extends StatefulWidget {
     this.outletname,
     required this.datatrans,
     required this.fromsaved,
+    required this.guestname,
   }) : super(key: key);
 
   @override
@@ -217,6 +219,7 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                         barrierDismissible: false,
                         context: context,
                         builder: (BuildContext context) => DialogPaymentTab(
+                             guestname: widget.guestname,
                               fromsplit: true,
                               fromsaved: widget.fromsaved,
                               datatrans: selected,
@@ -399,6 +402,7 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PaymentV2MobileClass(
+                                guestname: widget.guestname,
                                 fromsplit: true,
                                 fromsaved: widget.fromsaved,
                                 datatrans: selected,
