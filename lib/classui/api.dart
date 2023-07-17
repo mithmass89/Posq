@@ -6,7 +6,7 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = '192.168.1.23';
+var ip = '192.168.56.1';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
@@ -970,7 +970,8 @@ class ClassApi {
     }
   }
 
-  static Future<dynamic> updatePointCustomers(num points,String fullname) async {
+  static Future<dynamic> updatePointCustomers(
+      num points, String fullname) async {
     var body = {
       "dbname": dbname,
       "points": points,
@@ -1001,6 +1002,30 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/checkUserFromOauth');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List user = json.decode(response.body);
+
+      return user;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> checkPointCustomer(
+      String fullname, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "email": fullname,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/checkPointCustomer');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1808,9 +1833,9 @@ class ClassApi {
     }
   }
 
-  static Future<List<dynamic>> getOutlets(String usercd) async {
+  static Future<List<dynamic>> getOutlets(String email) async {
     // print(json.encode(pembayaran));
-    var data = {"usercd": usercd};
+    var data = {"email": email};
 
     final url = Uri.parse('$api/outlet_user');
     print(url);
@@ -1831,9 +1856,9 @@ class ClassApi {
   }
 
   static Future<List<dynamic>> getOutletUserSelected(
-      String usercd, String outletcode) async {
+      String email, String outletcode) async {
     // print(json.encode(pembayaran));
-    var data = {"usercd": usercd, "outletcode": outletcode};
+    var data = {"email": email, "outletcode": outletcode};
 
     final url = Uri.parse('$api/getOutletUserSelected');
     print(url);
@@ -1853,11 +1878,58 @@ class ClassApi {
     }
   }
 
+
+   static Future<List<dynamic>> getListStaffOutlet(
+      String email, String outletcode) async {
+    // print(json.encode(pembayaran));
+    var data = {"outletcode": outletcode};
+
+    final url = Uri.parse('$api/getListStaffOutlet');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
+
   static Future<List<dynamic>> checkVerifiedPayment(String email) async {
     // print(json.encode(pembayaran));
     var data = {"email": email};
 
     final url = Uri.parse('$api/checkVerifiedPayment');
+    print(url);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      return body;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<dynamic>> checkExpiredDate(String email) async {
+    // print(json.encode(pembayaran));
+    var data = {"email": email};
+
+    final url = Uri.parse('$api/checkExpiredDate');
     print(url);
     final response = await http.post(url,
         headers: <String, String>{
@@ -2315,9 +2387,9 @@ class ClassApi {
   }
 
   static Future<List<dynamic>> getAccessUserOutlet(
-      String usercode, String outletcd, String query) async {
+      String email, String outletcd, String query) async {
     // print(json.encode(pembayaran));
-    var data = {"usercode": usercode, "outletcd": outletcd};
+    var data = {"email": email, "outletcd": outletcd};
     final url = Uri.parse('$api/getAccessUserOutlet');
     final response = await http.post(url,
         headers: <String, String>{
@@ -2328,7 +2400,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
-      // print(bodyJson);
+      print('ini accessuser $bodyJson');
       return bodyJson;
       // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
       // return data;
@@ -2945,6 +3017,29 @@ class ClassApi {
       "email": email,
     };
     final url = Uri.parse('$api/updatePaymentFirst');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> Update7DayActive(String date, String email) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "date": date,
+      "email": email,
+    };
+    final url = Uri.parse('$api/Update7DayActive');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

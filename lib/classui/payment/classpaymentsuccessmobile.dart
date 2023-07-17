@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print
 
+import 'dart:convert';
+
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +19,7 @@ import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 PaymentGate? paymentapi;
 ClassApi? api;
@@ -97,6 +100,8 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   String logourl = '';
   String header = '';
   String footer = '';
+  var wsUrl;
+  WebSocketChannel? channel;
 
   checkPrinter() async {
     connected = await bluetooth.isConnected.then((value) => value!);
@@ -108,6 +113,13 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   void initState() {
     super.initState();
     checkPrinter();
+    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    channel = WebSocketChannel.connect(wsUrl);
+    channel!.stream.listen((message) {
+      print(message);
+
+      // channel.sink.close(status.goingAway);
+    });
     getSumm();
     formattedDate = formatter.format(now);
     generateDataWA();
@@ -446,17 +458,17 @@ ${payment.reduce((value, element) => value + element)}
                               height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.18,
                               onpressed: () async {
-                                if (Pembelian(widget.amount)
-                                        .hitungPoin()
-                                        .toInt() !=
-                                    '0') {
-                                  await ClassApi.updatePointCustomers(
-                                      Pembelian(widget.amount)
-                                          .hitungPoin()
-                                          .toInt(),
-                                      widget.guestname!);
-                                }
-
+                                // if (Pembelian(widget.amount)
+                                //         .hitungPoin()
+                                //         .toInt() !=
+                                //     '0') {
+                                //   await ClassApi.updatePointCustomers(
+                                //       Pembelian(widget.amount)
+                                //           .hitungPoin()
+                                //           .toInt(),
+                                //       widget.guestname!);
+                                // }
+                                channel!.sink.add(json.encode({"property": dbname}));
                                 await getDetailTrnos().then((value) async {
                                   print('ini value : $value');
                                   if (value.isEmpty) {
@@ -545,6 +557,7 @@ ${payment.reduce((value, element) => value + element)}
                                         }
                                       });
                                     } else {
+                                    
                                       await updateTrno();
                                       await ClassApi.cleartable(
                                           dbname, widget.trno);

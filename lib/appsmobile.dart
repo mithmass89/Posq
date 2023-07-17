@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_field, unnecessary_null_comparison, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/drawermainmenumobile.dart';
@@ -13,6 +15,7 @@ import 'package:posq/model.dart';
 import 'package:posq/newchart.dart';
 import 'package:posq/summarytab.dart';
 import 'package:posq/userinfo.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class AppsMobile extends StatefulWidget {
   late Outlet? profileusaha;
@@ -52,10 +55,31 @@ class _AppsMobileState extends State<AppsMobile> {
   String? time;
   String? date;
   String? date1;
+  var wsUrl;
+  WebSocketChannel? channel;
+  List todaysales = [
+    {'totalaftdisc': 0}
+  ];
+  List monthlysales = [
+    {'totalaftdisc': 0}
+  ];
+  List penjualanratarata = [
+    {'totalaftdisc': 0}
+  ];
+  List chartdata = [];
+  Future<dynamic>? checkapps;
 
   @override
   void initState() {
     super.initState();
+    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    channel = WebSocketChannel.connect(wsUrl);
+    channel!.stream.listen((message) {
+      print(message);
+      getSelesToday();
+      // channel!.sink.add('received!');
+      // channel.sink.close(status.goingAway);
+    });
     _scaffoldKey = GlobalKey<ScaffoldState>();
     outlet = Outlet(
       outletcd: widget.profileusaha!.outletcd,
@@ -95,6 +119,34 @@ class _AppsMobileState extends State<AppsMobile> {
     widget.chartdata = [];
     widget.chartreload!();
     print(value);
+  }
+
+  todayDate() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('dd-MM-yyyy');
+    var formatter1 = new DateFormat('yyyy-MM-dd');
+    time = DateFormat('kk:mm:a').format(now);
+    date = formatter.format(now);
+    date1 = formatter1.format(now);
+    setState(() {});
+  }
+
+  getSelesToday() async {
+    widget.chartdata = [];
+    todayDate();
+    widget.todaysale = await ClassApi.getTodaySales(date1!, dbname);
+    widget.monthlysales = await ClassApi.monthlysales(date1!, dbname);
+    widget.chartdata = await ClassApi.listdataChart(date1!, dbname);
+    widget.penjualanratarata =
+        await ClassApi.getPenjualanRataRata(date1!, dbname);
+    print('oke refresh');
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    channel!.sink.close();
   }
 
   @override
@@ -186,10 +238,9 @@ class _AppsMobileState extends State<AppsMobile> {
                                                   .width *
                                               0.65,
                                           child: Text(
-                                            outlet!.outletname
-                                                  .toString(),
+                                              outlet!.outletname.toString(),
                                               style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold)),
                                         ),

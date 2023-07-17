@@ -1,9 +1,14 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/pagefretrial.dart';
+import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/subscriptionpage.dart';
 import 'package:posq/userinfo.dart';
 
@@ -22,9 +27,19 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController confirmationpass = TextEditingController();
   bool passwordlock = false;
   bool isRegistered = false;
+  String formatDate(DateTime dateTime) {
+    // Format the DateTime object using intl package.
+    var formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(dateTime);
+  }
 
   @override
   Widget build(BuildContext context) {
+    DateTime currentTime = DateTime.now();
+    DateTime futureTime = currentTime.add(Duration(days: 7));
+
+    String formattedCurrentTime = formatDate(currentTime);
+    String formattedFutureTime = formatDate(futureTime);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -221,18 +236,36 @@ class _RegisterFormState extends State<RegisterForm> {
                               fontSize: 16.0);
                         } else {
                           EasyLoading.show(status: 'loading...');
-                          await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: email.text, password: password.text);
+                          // await FirebaseAuth.instance
+                          //     .createUserWithEmailAndPassword(
+                          //         email: email.text, password: password.text);
                           await ClassApi.insertRegisterUserNew(email.text,
                                   namalengkap.text, password.text, 'Owner')
                               .then((_) async {
                             usercd = namalengkap.text;
                             print('ini usercode $usercd');
+                            // Navigator.of(context).pushAndRemoveUntil(
+                            //     MaterialPageRoute(
+                            //         builder: (context) => SubScribetionPage(
+                            //               username: namalengkap.text,
+                            //               email: email.text,
+                            //             )),
+                            //     (Route<dynamic> route) => false);
+                            Random random = new Random();
+                            int randomNumber =
+                                random.nextInt(100); // from 0 upto 99 included
+                            await ClassApi.updatePaymentFirst(
+                                'Pro',
+                                '${email.text}$randomNumber',
+                                'settlement',
+                                email.text);
+                            await ClassApi.Update7DayActive(
+                                formattedFutureTime, email.text);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => SubScribetionPage(
-                                          username: namalengkap.text,
+                                    builder: (context) =>
+                                        ClassSetupProfileMobile(
+                                          fullname: namalengkap.text,
                                           email: email.text,
                                         )),
                                 (Route<dynamic> route) => false);

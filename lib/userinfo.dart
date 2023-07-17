@@ -16,4 +16,12 @@ String emaillogin = '';
 String subscribtion = '';
 String paymentcheck = '';
 String level = '';
-PointSystem rulesprogram = PointSystem(todate: '', type: null);
+String useloyality = '';
+PointSystem rulesprogram = PointSystem(
+  todate: '',
+  type: null,
+  convamount: 0,
+);
+num notifyexp = 3;
+String? expireddate;
+bool refundmode = false;

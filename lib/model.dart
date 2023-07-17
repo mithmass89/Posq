@@ -138,6 +138,32 @@ class AccessPegawai {
   }
 }
 
+class SelectedPegawai {
+  late String? usercode;
+  final String email;
+
+  SelectedPegawai({
+    required this.usercode,
+    required this.email,
+  });
+
+  SelectedPegawai.fromJson(Map<String, dynamic> res)
+      : usercode = res["usercode"],
+        email = res["email"];
+
+  @override
+  String toString() {
+    return '{"usercode": $usercode, "email":$email }';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'usercode': usercode,
+      'email': email,
+    };
+  }
+}
+
 class ListUser {
   final String? usercd;
   final String? fullname;

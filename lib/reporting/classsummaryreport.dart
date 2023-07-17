@@ -15,6 +15,7 @@ import 'package:posq/reporting/classringkasancombine.dart';
 import 'package:posq/reporting/detailitemterjaulmobile.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MyBuilder = void Function(
     BuildContext context, void Function() methodA);
@@ -56,9 +57,27 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   late void Function() detailmenu;
   List<IafjrnhdClass> listdatapayment = [];
   List<CombineDataRingkasan> data = [];
+  var wsUrl;
+  WebSocketChannel? channel;
 
   void initState() {
     super.initState();
+    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    channel = WebSocketChannel.connect(wsUrl);
+    channel!.stream.listen((message) {
+      if (type == 'Summary Cashier') {
+        myMethod.call();
+      } else if (type == 'Ringkasan') {
+        ringkasan.call();
+      } else if (type == 'Ringkasan Combine') {
+        ringkasancombine.call();
+      } else if (type == 'Detail Item Terjual') {
+        detailmenu.call();
+      }
+      if (outletdata![0]['outletdesc'] == 'All Outlet') {
+        outletdata = [];
+      }
+    });
     type = 'Summary Cashier';
     formattedDate = formatter2.format(now);
     formatdate = formatter.format(now);
@@ -81,6 +100,12 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     print("ini formatdate sql $formatdate");
     print("ini from date$fromdate");
     print("ini todate $todate");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    channel!.sink.close();
   }
 
 /////fungsi pengambilan tanggal////
@@ -140,7 +165,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                       onChanged: (value) {},
                       ontap: () async {
                         await _selectDate(context);
-                         if (type == 'Summary Cashier') {
+                        if (type == 'Summary Cashier') {
                           myMethod.call();
                         } else if (type == 'Ringkasan') {
                           ringkasan.call();
@@ -149,7 +174,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         } else if (type == 'Detail Item Terjual') {
                           detailmenu.call();
                         }
-                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
+                        if (outletdata![0]['outletdesc'] == 'All Outlet') {
                           outletdata = [];
                         }
                       },

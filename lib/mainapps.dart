@@ -69,7 +69,7 @@ class _MainappsState extends State<Mainapps> {
       await getOutletSelected();
       await getSelesToday();
     } else {
-      await getOutlet(usercd);
+      await getOutlet(emaillogin);
       await getSelesToday();
     }
   }
@@ -78,8 +78,8 @@ class _MainappsState extends State<Mainapps> {
     await checkNewApp();
   }
 
-  getOutlet(String usercd) async {
-    await ClassApi.getOutlets(usercd).then((value) {
+  getOutlet(String emaillogin) async {
+    await ClassApi.getOutlets(emaillogin).then((value) {
       if (value.isNotEmpty) {
         setState(() {
           pscd = value.first['outletcd'];
@@ -101,7 +101,7 @@ class _MainappsState extends State<Mainapps> {
 
   getOutletSelected() async {
     print('check selected outlet');
-    await ClassApi.getOutletUserSelected(usercd, pscd).then((value) {
+    await ClassApi.getOutletUserSelected(emaillogin, pscd).then((value) {
       print(value);
       if (value.isNotEmpty) {
         pscd = value.first['outletcode'];
@@ -169,7 +169,8 @@ class _MainappsState extends State<Mainapps> {
                       switch (hasoutlet) {
                         case false:
                           return ClassSetupProfileMobile(
-                            username: '',
+                            email: emaillogin,
+                            fullname: usercd,
                           );
                         case true:
                           // do something else
@@ -198,7 +199,8 @@ class _MainappsState extends State<Mainapps> {
                     switch (hasoutlet) {
                       case false:
                         return ClassSetupProfileMobile(
-                          username: '',
+                          email: emaillogin,
+                          fullname: usercd,
                         );
                       case true:
                         // do something else

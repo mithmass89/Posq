@@ -356,7 +356,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 110,
+                      maxCrossAxisExtent: 140,
                       childAspectRatio: 4 / 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10),

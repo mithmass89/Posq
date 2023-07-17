@@ -770,6 +770,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "web_socket_channel",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/web_socket_channel-2.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "wifi_iot",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/wifi_iot-0.3.18",
       "packageUri": "lib/",
@@ -800,7 +806,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-06-29T06:45:46.791469Z",
+  "generated": "2023-07-15T13:39:02.649302Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }

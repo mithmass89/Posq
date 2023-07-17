@@ -18,8 +18,10 @@ import 'package:toast/toast.dart';
 ClassApi? apicloud;
 
 class ClassSetupProfileMobile extends StatefulWidget {
-  final String username;
-  const ClassSetupProfileMobile({Key? key, required this.username})
+  final String email;
+  final String fullname;
+  const ClassSetupProfileMobile(
+      {Key? key, required this.email, required this.fullname})
       : super(key: key);
 
   @override
@@ -109,7 +111,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Buat Usahamu ${widget.username}',
+          title: Text('Buat Usahamu ${widget.fullname}',
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
       body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
@@ -246,7 +248,6 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                 onpressed: _isloading == false
                                     ? () async {
                                         if (formKey.currentState!.validate()) {
-                                          usercd = widget.username;
                                           setState(() {
                                             _isloading = true;
                                           });
@@ -265,14 +266,15 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                 outletcd: outletcd.text,
                                                 profile: outletcd.text));
                                             await ClassApi.insertAccessOutlet(
-                                                outletcd.text, usercd);
+                                                outletcd.text, widget.email);
                                             // await _insertGntrantp(outletcd.text);
                                             setState(() {
                                               _isloading = false;
                                               pscd = outletcd.text;
                                               dbname = outletcd.text;
                                             });
-                                            await ClassApi.getAccessUser(usercd)
+                                            await ClassApi.getAccessUser(
+                                                    widget.email)
                                                 .then((valueds) {
                                               for (var x in valueds) {
                                                 accesslist.add(x['access']);
@@ -290,9 +292,10 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                             outletdesc = namaoutlet.toString();
 
                                             await ClassApi
-                                                .insertAccessOutletUser(usercd);
+                                                .insertAccessOutletUser(
+                                                    widget.email);
                                             await ClassApi.getAccessUserOutlet(
-                                                    usercd, pscd, '')
+                                                    widget.email, pscd, '')
                                                 .then((valuesx) {
                                               for (var x in valuesx) {
                                                 accesslistuser
@@ -485,7 +488,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                           ? () async {
                                               if (formKey.currentState!
                                                   .validate()) {
-                                                usercd = widget.username;
+                                                usercd = widget.email;
                                                 setState(() {
                                                   _isloading = true;
                                                 });
@@ -505,10 +508,11 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                           controllerDetail.text,
                                                       outletcd: outletcd.text,
                                                       profile: outletcd.text));
+
                                                   await ClassApi
                                                       .insertAccessOutlet(
                                                           outletcd.text,
-                                                          usercd);
+                                                          widget.email);
                                                   // await _insertGntrantp(outletcd.text);
                                                   setState(() {
                                                     _isloading = false;
@@ -516,7 +520,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                     dbname = outletcd.text;
                                                   });
                                                   await ClassApi.getAccessUser(
-                                                          usercd)
+                                                          widget.email)
                                                       .then((valueds) {
                                                     for (var x in valueds) {
                                                       accesslist
@@ -536,13 +540,13 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                       namaoutlet.toString();
                                                   await ClassApi
                                                       .insertAccessOutletUser(
-                                                          usercd);
-                                                  await ClassApi
-                                                      .insertAccessOutletUser(
-                                                          usercd);
+                                                          widget.email);
+
                                                   await ClassApi
                                                           .getAccessUserOutlet(
-                                                              usercd, pscd, '')
+                                                              widget.email,
+                                                              pscd,
+                                                              '')
                                                       .then((valuesx) {
                                                     for (var x in valuesx) {
                                                       accesslistuser

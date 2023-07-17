@@ -5,11 +5,14 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
-import 'package:posq/setting/profilemain.dart';
 import 'package:posq/userinfo.dart';
 
 class Selectoutletmobile extends StatefulWidget {
-  const Selectoutletmobile({Key? key}) : super(key: key);
+  final String email;
+  final String fullname;
+  const Selectoutletmobile(
+      {Key? key, required this.email, required this.fullname})
+      : super(key: key);
 
   @override
   State<Selectoutletmobile> createState() => _SelectoutletmobileState();
@@ -21,7 +24,6 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -34,7 +36,7 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
         ),
       ),
       body: FutureBuilder(
-        future: ClassApi.getOutlets(usercd),
+        future: ClassApi.getOutlets(emaillogin),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -76,7 +78,8 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
             context,
             MaterialPageRoute(
                 builder: (context) => ClassSetupProfileMobile(
-                      username: usercd,
+                      email: emaillogin,
+                      fullname:usercd,
                     )),
           ).then((_) {
             setState(() {});

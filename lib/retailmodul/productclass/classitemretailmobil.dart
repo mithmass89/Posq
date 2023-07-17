@@ -48,14 +48,13 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
     super.initState();
     ToastContext().init(context);
     print('ini dari product ${widget.trno}');
-    caninput =true;
+    caninput = true;
   }
 
   Future<List<Item>> getitemOutlet(query) async {
     List<Item> data = await ClassApi.getItemList(pscd, dbname, query);
     if (data.isNotEmpty) {
       print(data);
-  
     }
 
     return data;
@@ -172,6 +171,117 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
     return result;
   }
 
+  Future<IafjrndtClass?> insertIafjrndtRefundMode() async {
+    now = DateTime.now();
+    await ClassApi.insertPosDetail(
+        IafjrndtClass(
+          trdt: widget.trdt,
+          pscd: pscd,
+          transno: widget.trno,
+          split: 1,
+          transno1: 'trnobill',
+          itemcode: widget.item.itemcode,
+          itemdesc: widget.item.itemdesc,
+          trno1: widget.trno,
+          itemseq: widget.itemseq,
+          cono: 'cono',
+          waitercd: 'waitercd',
+          discpct: 0,
+          discamt: 0,
+          qty: -1,
+          ratecurcd: 'Rupiah',
+          ratebs1: 1,
+          ratebs2: 1,
+          rateamtcost: -(widget.item.costamt)!,
+          rateamtitem: -(widget.item.slsamt)!,
+          rateamtservice: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
+          rateamttax: -(widget.item.slsamt! * widget.item.taxpct! / 100),
+          rateamttotal: -(widget.item.slsnett)!,
+          revenueamt: -(1 * widget.item.slsamt!.toDouble()),
+          taxamt: -(widget.item.slsamt! * widget.item.taxpct! / 100),
+          serviceamt: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
+          totalaftdisc: -(1 * widget.item.slsamt! +
+              widget.item.slsamt! * widget.item.taxpct! / 100 +
+              widget.item.slsamt! * widget.item.svchgpct! / 100),
+          rebateamt: 0,
+          rvncoa: 'REVENUE',
+          taxcoa: 'TAX',
+          servicecoa: 'SERVICE',
+          costcoa: 'COST',
+          active: 1,
+          usercrt: usercd,
+          userupd: usercd,
+          userdel: usercd,
+          prnkitchen: 0,
+          prnkitchentm: now.hour.toString() +
+              ":" +
+              now.minute.toString() +
+              ":" +
+              now.second.toString(),
+          confirmed: '1',
+          description: widget.item.itemdesc,
+          taxpct: widget.item.taxpct,
+          svchgpct: widget.item.svchgpct,
+          statustrans: 'prosess',
+          createdt: now.toString(),
+          guestname: widget.guestname,
+        ),
+        pscd);
+    result = IafjrndtClass(
+      trdt: widget.trdt,
+      pscd: pscd,
+      transno: widget.trno,
+      split: 1,
+      transno1: 'trnobill',
+      itemcode: widget.item.itemcode,
+      itemdesc: widget.item.itemdesc,
+      trno1: widget.trno,
+      itemseq: widget.itemseq,
+      cono: 'cono',
+      waitercd: 'waitercd',
+      discpct: 0,
+      discamt: 0,
+      qty: -1,
+      ratecurcd: 'Rupiah',
+      ratebs1: 1,
+      ratebs2: 1,
+      rateamtcost: -(widget.item.costamt)!,
+      rateamtitem: -(widget.item.slsamt)!,
+      rateamtservice: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
+      rateamttax: -(widget.item.slsamt! * widget.item.taxpct! / 100),
+      rateamttotal: -(widget.item.slsnett)!,
+      revenueamt: -(1 * widget.item.slsamt!.toDouble()),
+      taxamt: -(widget.item.slsamt! * widget.item.taxpct! / 100),
+      serviceamt: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
+      totalaftdisc: -(1 * widget.item.slsamt! +
+          widget.item.slsamt! * widget.item.taxpct! / 100 +
+          widget.item.slsamt! * widget.item.svchgpct! / 100),
+      rebateamt: 0,
+      rvncoa: 'REVENUE',
+      taxcoa: 'TAX',
+      servicecoa: 'SERVICE',
+      costcoa: 'COST',
+      active: 1,
+      usercrt: usercd,
+      userupd: usercd,
+      userdel: usercd,
+      prnkitchen: 0,
+      prnkitchentm: now.hour.toString() +
+          ":" +
+          now.minute.toString() +
+          ":" +
+          now.second.toString(),
+      confirmed: '1',
+      description: widget.item.itemdesc,
+      taxpct: widget.item.taxpct,
+      svchgpct: widget.item.svchgpct,
+      statustrans: 'prosess',
+      createdt: now.toString(),
+      guestname: widget.guestname,
+    );
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -189,9 +299,12 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
                           .then((value) async {
                         print('ini checking data $value');
                         if (value.first.stock! > 0) {
-                          
-                          await insertIafjrndt();
-                    
+                          if (refundmode == false) {
+                            await insertIafjrndt();
+                          } else {
+                            await insertIafjrndtRefundMode();
+                          }
+
                           ClassRetailMainMobile.of(context)!.string = result!;
                         } else {
                           Toast.show("Kamu Kehabisan Stock",
@@ -202,7 +315,11 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
 
                       //update to main // callback
                     } else if (widget.item.trackstock == 0) {
-                      await insertIafjrndt();
+                      if (refundmode == false) {
+                        await insertIafjrndt();
+                      } else {
+                        await insertIafjrndtRefundMode();
+                      }
                       ClassRetailMainMobile.of(context)!.string = result!;
                     } else {
                       Toast.show("Kamu Kehabisan Stock",

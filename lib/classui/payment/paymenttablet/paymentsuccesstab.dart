@@ -17,6 +17,7 @@ import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 PaymentGate? paymentapi;
 ClassApi? api;
@@ -95,11 +96,20 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   List<IafjrndtClass>? summarybill;
   List<IafjrnhdClass> data = [];
+  var wsUrl;
+  WebSocketChannel? channel;
 
   @override
   void initState() {
     print(widget.fromsaved);
     super.initState();
+    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    channel = WebSocketChannel.connect(wsUrl);
+    channel!.stream.listen((message) {
+      print(message);
+
+      // channel.sink.close(status.goingAway);
+    });
     formattedDate = formatter.format(now);
     generateDataWA();
     removeDiscount();
@@ -455,16 +465,17 @@ ${payment.reduce((value, element) => value + element)}
                                   style: TextStyle(color: Colors.orange),
                                 )),
                             onPressed: () async {
-                              if (Pembelian(widget.amount)
-                                      .hitungPoin()
-                                      .toInt() !=
-                                  '0') {
-                                await ClassApi.updatePointCustomers(
-                                    Pembelian(widget.amount)
-                                        .hitungPoin()
-                                        .toInt(),
-                                    widget.guestname);
-                              }
+                              // if (Pembelian(widget.amount)
+                              //         .hitungPoin()
+                              //         .toInt() !=
+                              //     '0') {
+                              //   await ClassApi.updatePointCustomers(
+                              //       Pembelian(widget.amount)
+                              //           .hitungPoin()
+                              //           .toInt(),
+                              //       widget.guestname);
+                              // }
+                              channel!.sink.add({"property": dbname});
                               await getDetailTrnos().then((value) async {
                                 print('ini value : $value');
                                 if (value.isEmpty) {

@@ -10,9 +10,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SubScribetionPage extends StatefulWidget {
   final String email;
-  final String username;
+  final String fullname;
   const SubScribetionPage(
-      {Key? key, required this.email, required this.username})
+      {Key? key, required this.fullname, required this.email})
       : super(key: key);
 
   @override
@@ -121,7 +121,8 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ClassSetupProfileMobile(
-                                      username: widget.username,
+                                  fullname: widget.fullname,
+                                      email: widget.email,
                                     )),
                           );
                         },

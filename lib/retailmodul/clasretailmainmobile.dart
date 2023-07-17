@@ -15,10 +15,10 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/payment/paymentmobile.dart';
 import 'package:posq/databasehandler.dart';
-import 'package:posq/retailmodul/classdrawermaintabs.dart';
+import 'package:posq/retailmodul/retailmodultab/classdrawermaintabs.dart';
 import 'package:posq/retailmodul/classretailmanualtab.dart';
-import 'package:posq/retailmodul/classretailproducttabs.dart';
-import 'package:posq/retailmodul/detailtranstab.dart';
+import 'package:posq/retailmodul/retailmodultab/classretailproducttabs.dart';
+import 'package:posq/retailmodul/retailmodultab/detailtranstab.dart';
 import 'package:posq/retailmodul/savedtransaction/classlisttransactionmobile.dart';
 import 'package:posq/retailmodul/productclass/classretailproductmobile.dart';
 import 'package:posq/retailmodul/savedtransaction/classsavedtransactionmobile.dart';
@@ -645,7 +645,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     : guestname!,
                                 datatransaksi: data,
                                 fromsaved: widget.fromsaved,
-                                sum: sum,
+                                sum: refundmode == false ? sum : -sum,
                                 animated: _scrollisanimated,
                                 outletinfo: Outlet(
                                   alamat: widget.outletinfo.alamat,
@@ -719,23 +719,26 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                   Icons.money_off,
                                                 ),
                                                 iconSize: 25,
-                                                color: Colors.blueGrey,
+                                                color: refundmode == false
+                                                    ? Colors.grey
+                                                    : Colors.red,
                                                 splashColor: Colors.purple,
                                                 onPressed: () async {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return DialogClassRefundorder(
-                                                        fromsaved:
-                                                            widget.fromsaved,
-                                                        outletcd: pscd,
-                                                        outletinfo:
-                                                            widget.outletinfo,
-                                                        trno: widget.trno!,
-                                                      );
-                                                    },
-                                                  );
+                                                  refundmode = !refundmode;
+                                                  // showDialog(
+                                                  //   context: context,
+                                                  //   builder:
+                                                  //       (BuildContext context) {
+                                                  //     return DialogClassRefundorder(
+                                                  //       fromsaved:
+                                                  //           widget.fromsaved,
+                                                  //       outletcd: pscd,
+                                                  //       outletinfo:
+                                                  //           widget.outletinfo,
+                                                  //       trno: widget.trno!,
+                                                  //     );
+                                                  //   },
+                                                  // );
                                                 },
                                               )),
                                           Expanded(
@@ -821,6 +824,10 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               ? MediaQuery.of(context).size.width * 0.0
                               : MediaQuery.of(context).size.width * 0.53,
                           onpressed: () async {
+                            // await ClassApi.checkPointCustomer(
+                            //         guestname!, dbname)
+                            //     .then((value) async {
+                            //   if (value[0]['points'] != 0) {
                             final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -841,6 +848,32 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       )),
                             );
                             ClassRetailMainMobile.of(context)!.string = result!;
+                            //   } else {
+                            //     final result = await Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               PaymentV2MobileClass(
+                            //                 guestname: guestname == ''
+                            //                     ? randomNumber.toString()
+                            //                     : guestname!,
+                            //                 fromsplit: false,
+                            //                 fromsaved: widget.fromsaved!,
+                            //                 datatrans: listdata!,
+                            //                 outletinfo: widget.outletinfo,
+                            //                 balance: sum.toInt(),
+                            //                 pscd: widget.outletinfo.outletcd,
+                            //                 trdt: formattedDate,
+                            //                 trno: widget.trno.toString(),
+                            //                 outletname:
+                            //                     widget.outletinfo.outletname,
+                            //               )),
+                            //     );
+
+                            //     ClassRetailMainMobile.of(context)!.string =
+                            //         result!;
+                            //   }
+                            // });
                           },
                           name: 'Bayar'),
                     ),
@@ -948,7 +981,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     tabs: [
                                       Container(
                                         alignment: Alignment.center,
-                                        height: 30,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.05,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.4,
@@ -961,7 +996,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                             MediaQuery.of(context).size.width *
                                                 0.4,
                                         alignment: Alignment.center,
-                                        height: 30,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.05,
                                         child: Text(
                                           'Produk',
                                         ),
@@ -1048,70 +1085,123 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       MediaQuery.of(context).size.width * 0.05,
                                   height: MediaQuery.of(context).size.height *
                                       0.056,
-                                  child: GestureDetector(
-                                    child: Icon(
-                                      Icons.list,
-                                      size: 22,
-                                      color: Colors.white,
-                                    ),
-                                    onTap: () async {
-                                      await checkSF();
-                                      await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ClassSavedTransactionTab(
-                                                    trno: widget.trno!,
-                                                    pscd: widget
-                                                        .outletinfo.alamat,
-                                                    outletinfo:
-                                                        widget.outletinfo,
-                                                  )));
+                                  child: PopupMenuButton<int>(
+                                    color: Colors.white,
+                                    itemBuilder: (context) => [
+                                      // popupmenu item 1
+                                      PopupMenuItem(
+                                        value: 1,
+                                        // row has two child icon and text.
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.list),
+                                            SizedBox(
+                                              // sized box with width 10
+                                              width: 10,
+                                            ),
+                                            Text("Order management")
+                                          ],
+                                        ),
+                                      ),
+                                      // popupmenu item 2
+                                      PopupMenuItem(
+                                        value: 2,
+                                        // row has two child icon and text
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.money_off),
+                                            SizedBox(
+                                              // sized box with width 10
+                                              width: 10,
+                                            ),
+                                            Text("Refund")
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                    offset: Offset(
+                                        MediaQuery.of(context).size.height *
+                                            0.25,
+                                        MediaQuery.of(context).size.height *
+                                            0.06), //(left,bottom)
+
+                                    elevation: 2,
+                                    onSelected: (value) async {
+                                      if (value == 1) {
+                                        await checkSF();
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ClassSavedTransactionTab(
+                                                      trno: widget.trno!,
+                                                      pscd: widget
+                                                          .outletinfo.alamat,
+                                                      outletinfo:
+                                                          widget.outletinfo,
+                                                    )));
+                                      } else if (value == 2) {
+                                        refundmode = !refundmode;
+                                        setState(() {});
+                                        // accesslistuser
+                                        //             .contains('canceltrans') ==
+                                        //         true
+                                        //     ? showDialog(
+                                        //         context: context,
+                                        //         builder:
+                                        //             (BuildContext context) {
+                                        //           return DialogClassRefundorder(
+                                        //             fromsaved: widget.fromsaved,
+                                        //             outletcd: pscd,
+                                        //             outletinfo:
+                                        //                 widget.outletinfo,
+                                        //             trno: widget.trno!,
+                                        //           );
+                                        //         },
+                                        //       )
+                                        //     : Toast.show(
+                                        //         "Tidak punya akses refund",
+                                        //         duration: Toast.lengthLong,
+                                        //         gravity: Toast.center);
+                                      }
                                     },
                                   ),
                                 ),
-                                Container(
-                                  color: Color.fromARGB(255, 0, 129, 119),
-                                  alignment: Alignment.center,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  height: MediaQuery.of(context).size.height *
-                                      0.056,
-                                  child: GestureDetector(
-                                    child: Icon(
-                                      Icons.money_off,
-                                      size: 22,
-                                      color: Colors.white,
-                                    ),
-                                    onTap: accesslistuser
-                                                .contains('canceltrans') ==
-                                            true
-                                        ? () async {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return DialogClassRefundorder(
-                                                  fromsaved: widget.fromsaved,
-                                                  outletcd: pscd,
-                                                  outletinfo: widget.outletinfo,
-                                                  trno: widget.trno!,
-                                                );
-                                              },
-                                            );
-                                          }
-                                        : () {
-                                            Toast.show(
-                                                "Tidak punya akses refund",
-                                                duration: Toast.lengthLong,
-                                                gravity: Toast.center);
-                                          },
-                                  ),
-                                ),
+                                // Container(
+                                //   color: Color.fromARGB(255, 0, 129, 119),
+                                //   alignment: Alignment.center,
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 0.05,
+                                //   height: MediaQuery.of(context).size.height *
+                                //       0.056,
+                                //   child: GestureDetector(
+                                //     child: Icon(
+                                //       Icons.list,
+                                //       size: 22,
+                                //       color: Colors.white,
+                                //     ),
+                                //     onTap: () async {
+                                //       await checkSF();
+                                //       await Navigator.push(
+                                //           context,
+                                //           MaterialPageRoute(
+                                //               builder: (context) =>
+                                //                   ClassSavedTransactionTab(
+                                //                     trno: widget.trno!,
+                                //                     pscd: widget
+                                //                         .outletinfo.alamat,
+                                //                     outletinfo:
+                                //                         widget.outletinfo,
+                                //                   )));
+                                //     },
+                                //   ),
+                                // ),
+
                                 Container(
                                     color: Color.fromARGB(255, 0, 160, 147),
                                     alignment: Alignment.center,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.2,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
                                     height: MediaQuery.of(context).size.height *
                                         0.057,
                                     child: Text(

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -33,19 +34,23 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
   List<dynamic> accesslist = [];
   List<AccessPegawai> accesspegawai = [];
 
-  getAccessRole() async {
+  getAccessRole(List outlet) async {
+    accesspegawai = [];
+    print(outlet.length);
     accesslist =
         await ClassApi.getRoleAccessTemplate(selectedRoles![0].jobcode!, '');
     // print(accesslist);
     for (var x in accesslist) {
-      accesspegawai.add(AccessPegawai(
-          usercode: usercd,
-          rolecode: x['jobcd'],
-          roledesc: x['jobdesc'],
-          accesscode: x['accesscode'],
-          accessdesc: x['accessdesc'],
-          outletcd: 'outlet',
-          subscription: subscribtion));
+      for (var z in outlet) {
+        accesspegawai.add(AccessPegawai(
+            usercode: email.text,
+            rolecode: x['jobcd'],
+            roledesc: x['jobdesc'],
+            accesscode: x['accesscode'],
+            accessdesc: x['accessdesc'],
+            outletcd: z['outletcode'],
+            subscription: subscribtion));
+      }
     }
   }
 
@@ -143,7 +148,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                   height: 10,
                 ),
                 TextFieldMobileButton(
-                    hint: 'Pilih Jabatan',
+                    hint: 'Pilih Role',
                     controller: jabatan,
                     typekeyboard: TextInputType.none,
                     onChanged: (value) {},
@@ -155,7 +160,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                             return DialogRoleStaff();
                           });
                       jabatan.text = selectedRoles![0].joblevel;
-                      await getAccessRole();
+                      await getAccessRole(selectedOutlet!);
                       setState(() {});
                     }),
                 TextFieldMobileButton(
@@ -177,14 +182,16 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                         for (var x in selectedOutlet!) {
                           for (var z in accesspegawai) {
                             z.outletcd = x['outletcode'];
-                            z.usercode = fullname.text;
+                            z.usercode = email.text;
                           }
                         }
-                        print(accesspegawai);
+                        // accesspegawai=[];
+                        print(accesspegawai.length);
+                        await getAccessRole(selectedOutlet!);
                         setState(() {});
-                      } else if (fullname.text.isEmpty) {
+                      } else if (email.text.isEmpty) {
                         Fluttertoast.showToast(
-                            msg: "isi nama karyawan dulu",
+                            msg: "isi email karyawan dulu",
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.CENTER,
                             timeInSecForIosWeb: 1,
@@ -235,9 +242,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                           fontSize: 16.0);
                     } else {
                       EasyLoading.show(status: 'Registered Please wait...');
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: email.text, password: password.text);
+
                       await ClassApi.insertRegisterUser(
                           email.text,
                           fullname.text,
@@ -245,8 +250,14 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                           jabatan.text,
                           subscribtion,
                           paymentcheck);
-                      await ClassApi.insertAccessOutlet(pscd, fullname.text);
+                      await ClassApi.Update7DayActive(expireddate!, email.text);
+                      for (var x in selectedOutlet!) {
+                        await ClassApi.insertAccessOutlet(
+                            x['outletcd'], email.text);
+                      }
+
                       await ClassApi.insertAccessUser(accesspegawai);
+
                       EasyLoading.dismiss();
                       Navigator.of(context).pop();
                     }

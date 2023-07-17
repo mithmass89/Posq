@@ -15,6 +15,7 @@ import 'package:posq/setting/classselectoutletmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/pegawai/listpegawai.dart';
+import 'package:posq/setting/pegawai/pegawaimain.dart';
 import 'package:posq/setting/pegawai/pegawaimainmobile.dart';
 import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/product_master/productmain.dart';
@@ -124,7 +125,10 @@ class _MenuMainState extends State<MenuMain> {
                         final Outlet? result = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Selectoutletmobile()),
+                              builder: (context) => const Selectoutletmobile(
+                                    email: '',
+                                    fullname: '',
+                                  )),
                         );
                         // callbackTitle(result);
                         AppsMobile.of(context)!.string = result;
@@ -221,7 +225,7 @@ class _MenuMainState extends State<MenuMain> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PegawaiMainMobile()),
+                              builder: (context) => MainPagePegawai()),
                         );
                         selected = !selected;
                         setState(() {});
@@ -310,7 +314,10 @@ class _MenuMainState extends State<MenuMain> {
                   final Outlet? result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const Selectoutletmobile()),
+                        builder: (context) => const Selectoutletmobile(
+                              email: '',
+                              fullname: '',
+                            )),
                   );
                   setState(() {});
                   // callbackTitle(result);
@@ -392,7 +399,7 @@ class _MenuMainState extends State<MenuMain> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ListPegawaiClass()),
+                              builder: (context) => MainPagePegawai()),
                         );
                         selected = !selected;
                         setState(() {});

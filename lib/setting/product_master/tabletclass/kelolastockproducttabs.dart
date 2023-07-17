@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
-import 'package:posq/setting/product_master/classdetailkelolaproduct.dart';
 import 'package:posq/setting/product_master/tabletclass/classkelolaproductdetailtab.dart';
 
 class ClassKelolaStockTabs extends StatefulWidget {

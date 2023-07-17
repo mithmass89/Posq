@@ -820,7 +820,7 @@ class _DialogOutletStaffState extends State<DialogOutletStaff>
     }
   ];
   Future<List<dynamic>> getOutlets(query) async {
-    await ClassApi.getOutlets(usercd).then((value) {
+    await ClassApi.getOutlets(emaillogin).then((value) {
       for (var x in value) {
         data.add(x);
       }
@@ -873,6 +873,81 @@ class _DialogOutletStaffState extends State<DialogOutletStaff>
                       Navigator.of(context).pop(selectedRole);
                     }
                   },
+                );
+              },
+            ),
+          ));
+    });
+  }
+}
+
+class DialogListStaff extends StatefulWidget {
+  DialogListStaff({
+    Key? key,
+
+    // required this.imagepath,
+  }) : super(key: key);
+
+  @override
+  State<DialogListStaff> createState() => _DialogListStaffState();
+}
+
+class _DialogListStaffState extends State<DialogListStaff>
+    with SingleTickerProviderStateMixin {
+  TabController? controller;
+  int? index = 0;
+  String query = '';
+  List<dynamic> selectedRole = [];
+  var selectedindex;
+  List<bool> _value = [];
+  bool selected = false;
+  List<dynamic> data = [];
+  Future<List<dynamic>> getListStaffOutlet(query) async {
+    await ClassApi.getListStaffOutlet(pscd).then((value) {
+      for (var x in value) {
+        data.add(x);
+      }
+    });
+    setState(() {});
+    print(data);
+    return data;
+  }
+
+  bool isloading = true;
+
+  @override
+  void initState() {
+    controller =
+        TabController(vsync: this, length: 2, initialIndex: index!.toInt());
+    super.initState();
+    getListStaffOutlet(query);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          title: Text('Pilih Staff'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+          ],
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  dense: true,
+                  title: Text(data[index]['usercd']),
+                  onTap: () {},
                 );
               },
             ),
@@ -1420,9 +1495,67 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             servicecoa: 'SERVICE',
             costcoa: 'COST',
             active: 1,
-            usercrt: 'Admin',
-            userupd: 'Admin',
-            userdel: 'Admin',
+            usercrt: usercd,
+            userupd: usercd,
+            userdel: usercd,
+            prnkitchen: 0,
+            prnkitchentm: '10:10',
+            confirmed: '1',
+            description: widget.controller.text,
+            taxpct: 0,
+            svchgpct: 0,
+            statustrans: 'prosess',
+            createdt: now.toString(),
+            guestname: 'No Guest Name'),
+        pscd);
+  }
+
+  insertIafjrndtRefundMod(day) async {
+    await ClassApi.insertPosDetail(
+        IafjrndtClass(
+            trdt: formattedDate,
+            pscd: widget.outletinfo.outletcd,
+            transno: widget.trno,
+            split: 1,
+            transno1: 'trnobill',
+            itemcode: widget.controller.text,
+            itemdesc: widget.controller.text,
+            trno1: widget.trno,
+            itemseq: widget.itemlenght,
+            cono: 'cono',
+            waitercd: 'waitercd',
+            discpct: 0,
+            discamt: 0,
+            qty: -1,
+            ratecurcd: 'Rupiah',
+            ratebs1: 1,
+            ratebs2: 1,
+            rateamtcost: -(widget.result!.toDouble()),
+            rateamtitem: -(widget.result!.toDouble()),
+            rateamtservice: -(pctservice.text != ''
+                ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
+                : num.parse('0')),
+            rateamttax: -(pcttax.text != ''
+                ? widget.result!.toDouble() * num.parse(pcttax.text) / 100
+                : num.parse('0')),
+            rateamttotal: -(widget.result!.toDouble()),
+            revenueamt: -(1 * widget.result!.toDouble()),
+            taxamt: -(pcttax.text != ''
+                ? 1 * widget.result!.toDouble() * num.parse(pcttax.text) / 100
+                : num.parse('0')),
+            serviceamt: -(pctservice.text != ''
+                ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
+                : num.parse('0')),
+            totalaftdisc: -(widget.result!.toDouble()),
+            rebateamt: 0,
+            rvncoa: 'REVENUE',
+            taxcoa: 'TAX',
+            servicecoa: 'SERVICE',
+            costcoa: 'COST',
+            active: 1,
+            usercrt: usercd,
+            userupd: usercd,
+            userdel: usercd,
             prnkitchen: 0,
             prnkitchentm: '10:10',
             confirmed: '1',
@@ -1471,103 +1604,203 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
         actions: <Widget>[
           ElevatedButton(
               onPressed: () async {
-                await insertIafjrndt(formattedDate);
-                setState(() {
-                  hasil = IafjrndtClass(
-                    trdt: formattedDate,
-                    pscd: widget.outletinfo.outletcd,
-                    transno: widget.trno,
-                    split: 1,
-                    transno1: 'trnobill',
-                    itemcode: widget.controller.text,
-                    trno1: widget.trno,
-                    itemseq: widget.itemlenght,
-                    cono: 'cono',
-                    waitercd: 'waitercd',
-                    discpct: 0,
-                    discamt: 0,
-                    qty: 1,
-                    ratecurcd: 'Rupiah',
-                    ratebs1: 1,
-                    ratebs2: 1,
-                    rateamtcost: widget.result!.toDouble(),
-                    rateamtitem: widget.result!.toDouble(),
-                    rateamtservice: 0,
-                    rateamttax: 0,
-                    rateamttotal: widget.result!.toDouble(),
-                    revenueamt: widget.result!.toDouble(),
-                    taxamt: 0,
-                    serviceamt: 0,
-                    totalaftdisc: widget.result!.toDouble(),
-                    rebateamt: 0,
-                    rvncoa: 'REVENUE',
-                    taxcoa: 'TAX',
-                    servicecoa: 'SERVICE',
-                    costcoa: 'COST',
-                    active: 1,
-                    usercrt: 'Admin',
-                    userupd: 'Admin',
-                    userdel: 'Admin',
-                    prnkitchen: 0,
-                    prnkitchentm: now.hour.toString() +
-                        ":" +
-                        now.minute.toString() +
-                        ":" +
-                        now.second.toString(),
-                    confirmed: '1',
-                    description: widget.controller.text,
-                    taxpct: 0,
-                    svchgpct: 0,
-                  );
-                  // ClassRetailMainMobile.of(context)!.string = hasil;
-                });
+                if (refundmode == false) {
+                  await insertIafjrndt(formattedDate);
+                  setState(() {
+                    hasil = IafjrndtClass(
+                      trdt: formattedDate,
+                      pscd: widget.outletinfo.outletcd,
+                      transno: widget.trno,
+                      split: 1,
+                      transno1: 'trnobill',
+                      itemcode: widget.controller.text,
+                      trno1: widget.trno,
+                      itemseq: widget.itemlenght,
+                      cono: 'cono',
+                      waitercd: 'waitercd',
+                      discpct: 0,
+                      discamt: 0,
+                      qty: 1,
+                      ratecurcd: 'Rupiah',
+                      ratebs1: 1,
+                      ratebs2: 1,
+                      rateamtcost: widget.result!.toDouble(),
+                      rateamtitem: widget.result!.toDouble(),
+                      rateamtservice: 0,
+                      rateamttax: 0,
+                      rateamttotal: widget.result!.toDouble(),
+                      revenueamt: widget.result!.toDouble(),
+                      taxamt: 0,
+                      serviceamt: 0,
+                      totalaftdisc: widget.result!.toDouble(),
+                      rebateamt: 0,
+                      rvncoa: 'REVENUE',
+                      taxcoa: 'TAX',
+                      servicecoa: 'SERVICE',
+                      costcoa: 'COST',
+                      active: 1,
+                      usercrt: usercd,
+                      userupd: usercd,
+                      userdel: usercd,
+                      prnkitchen: 0,
+                      prnkitchentm: now.hour.toString() +
+                          ":" +
+                          now.minute.toString() +
+                          ":" +
+                          now.second.toString(),
+                      confirmed: '1',
+                      description: widget.controller.text,
+                      taxpct: 0,
+                      svchgpct: 0,
+                    );
+                    // ClassRetailMainMobile.of(context)!.string = hasil;
+                  });
 
-                await getDataSlide();
-                setState(() {
-                  counter++;
-                });
-                Navigator.of(context).pop(IafjrndtClass(
-                  trdt: hasil.trdt,
-                  pscd: hasil.pscd,
-                  transno: hasil.transno,
-                  split: hasil.split,
-                  transno1: hasil.transno,
-                  itemcode: hasil.itemcode,
-                  trno1: hasil.trno1,
-                  itemseq: hasil.itemseq,
-                  cono: hasil.cono,
-                  waitercd: hasil.waitercd,
-                  discpct: hasil.discpct,
-                  discamt: hasil.discamt,
-                  qty: hasil.qty,
-                  ratecurcd: hasil.ratecurcd,
-                  ratebs1: hasil.ratebs1,
-                  ratebs2: hasil.ratebs2,
-                  rateamtcost: hasil.rateamtcost,
-                  rateamtitem: hasil.rateamtitem,
-                  rateamtservice: hasil.rateamtservice,
-                  rateamttax: hasil.rateamttax,
-                  rateamttotal: hasil.rateamttotal,
-                  revenueamt: hasil.revenueamt,
-                  taxamt: hasil.taxamt,
-                  serviceamt: hasil.serviceamt,
-                  totalaftdisc: hasil.totalaftdisc,
-                  rebateamt: hasil.rebateamt,
-                  rvncoa: hasil.rvncoa,
-                  taxcoa: hasil.taxcoa,
-                  servicecoa: hasil.servicecoa,
-                  costcoa: hasil.costcoa,
-                  active: hasil.active,
-                  usercrt: hasil.usercrt,
-                  userupd: hasil.userupd,
-                  userdel: hasil.userdel,
-                  prnkitchen: hasil.prnkitchen,
-                  prnkitchentm: hasil.prnkitchentm,
-                  confirmed: hasil.confirmed,
-                  description: hasil.description,
-                ));
+                  await getDataSlide();
+                  setState(() {
+                    counter++;
+                  });
+                  Navigator.of(context).pop(IafjrndtClass(
+                    trdt: hasil.trdt,
+                    pscd: hasil.pscd,
+                    transno: hasil.transno,
+                    split: hasil.split,
+                    transno1: hasil.transno,
+                    itemcode: hasil.itemcode,
+                    trno1: hasil.trno1,
+                    itemseq: hasil.itemseq,
+                    cono: hasil.cono,
+                    waitercd: hasil.waitercd,
+                    discpct: hasil.discpct,
+                    discamt: hasil.discamt,
+                    qty: hasil.qty,
+                    ratecurcd: hasil.ratecurcd,
+                    ratebs1: hasil.ratebs1,
+                    ratebs2: hasil.ratebs2,
+                    rateamtcost: hasil.rateamtcost,
+                    rateamtitem: hasil.rateamtitem,
+                    rateamtservice: hasil.rateamtservice,
+                    rateamttax: hasil.rateamttax,
+                    rateamttotal: hasil.rateamttotal,
+                    revenueamt: hasil.revenueamt,
+                    taxamt: hasil.taxamt,
+                    serviceamt: hasil.serviceamt,
+                    totalaftdisc: hasil.totalaftdisc,
+                    rebateamt: hasil.rebateamt,
+                    rvncoa: hasil.rvncoa,
+                    taxcoa: hasil.taxcoa,
+                    servicecoa: hasil.servicecoa,
+                    costcoa: hasil.costcoa,
+                    active: hasil.active,
+                    usercrt: hasil.usercrt,
+                    userupd: hasil.userupd,
+                    userdel: hasil.userdel,
+                    prnkitchen: hasil.prnkitchen,
+                    prnkitchentm: hasil.prnkitchentm,
+                    confirmed: hasil.confirmed,
+                    description: hasil.description,
+                  ));
 
-                widget.cleartext();
+                  widget.cleartext();
+                } else {
+                  await insertIafjrndtRefundMod(formattedDate);
+                  setState(() {
+                    hasil = IafjrndtClass(
+                      trdt: formattedDate,
+                      pscd: widget.outletinfo.outletcd,
+                      transno: widget.trno,
+                      split: 1,
+                      transno1: 'trnobill',
+                      itemcode: widget.controller.text,
+                      trno1: widget.trno,
+                      itemseq: widget.itemlenght,
+                      cono: 'cono',
+                      waitercd: 'waitercd',
+                      discpct: 0,
+                      discamt: 0,
+                      qty: -1,
+                      ratecurcd: 'Rupiah',
+                      ratebs1: 1,
+                      ratebs2: 1,
+                      rateamtcost: -(widget.result!.toDouble()),
+                      rateamtitem: -(widget.result!.toDouble()),
+                      rateamtservice: 0,
+                      rateamttax: 0,
+                      rateamttotal: -(widget.result!.toDouble()),
+                      revenueamt: -(widget.result!.toDouble()),
+                      taxamt: 0,
+                      serviceamt: 0,
+                      totalaftdisc: -(widget.result!.toDouble()),
+                      rebateamt: 0,
+                      rvncoa: 'REVENUE',
+                      taxcoa: 'TAX',
+                      servicecoa: 'SERVICE',
+                      costcoa: 'COST',
+                      active: 1,
+                      usercrt: usercd,
+                      userupd: usercd,
+                      userdel: usercd,
+                      prnkitchen: 0,
+                      prnkitchentm: now.hour.toString() +
+                          ":" +
+                          now.minute.toString() +
+                          ":" +
+                          now.second.toString(),
+                      confirmed: '1',
+                      description: widget.controller.text,
+                      taxpct: 0,
+                      svchgpct: 0,
+                    );
+                    // ClassRetailMainMobile.of(context)!.string = hasil;
+                  });
+
+                  await getDataSlide();
+                  setState(() {
+                    counter++;
+                  });
+                  Navigator.of(context).pop(IafjrndtClass(
+                    trdt: hasil.trdt,
+                    pscd: hasil.pscd,
+                    transno: hasil.transno,
+                    split: hasil.split,
+                    transno1: hasil.transno,
+                    itemcode: hasil.itemcode,
+                    trno1: hasil.trno1,
+                    itemseq: hasil.itemseq,
+                    cono: hasil.cono,
+                    waitercd: hasil.waitercd,
+                    discpct: -hasil.discpct!,
+                    discamt: -hasil.discamt!,
+                    qty: -(hasil.qty)!,
+                    ratecurcd: hasil.ratecurcd,
+                    ratebs1: hasil.ratebs1,
+                    ratebs2: hasil.ratebs2,
+                    rateamtcost: -hasil.rateamtcost!,
+                    rateamtitem: -hasil.rateamtitem!,
+                    rateamtservice: -hasil.rateamtservice!,
+                    rateamttax: -hasil.rateamttax!,
+                    rateamttotal: -hasil.rateamttotal!,
+                    revenueamt: -hasil.revenueamt!,
+                    taxamt: -hasil.taxamt!,
+                    serviceamt: -hasil.serviceamt!,
+                    totalaftdisc: -hasil.totalaftdisc!,
+                    rebateamt: -hasil.rebateamt!,
+                    rvncoa: hasil.rvncoa,
+                    taxcoa: hasil.taxcoa,
+                    servicecoa: hasil.servicecoa,
+                    costcoa: hasil.costcoa,
+                    active: hasil.active,
+                    usercrt: hasil.usercrt,
+                    userupd: hasil.userupd,
+                    userdel: hasil.userdel,
+                    prnkitchen: hasil.prnkitchen,
+                    prnkitchentm: hasil.prnkitchentm,
+                    confirmed: hasil.confirmed,
+                    description: hasil.description,
+                  ));
+
+                  widget.cleartext();
+                }
               },
               child: Text(
                 'Ok!',

@@ -26,9 +26,7 @@ class _SummaryTodayTabsState extends State<SummaryTodayTabs> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Object>(
-        stream: null,
-        builder: (context, snapshot) {
+ 
           return Container(
             child: Column(
               children: [
@@ -118,6 +116,6 @@ class _SummaryTodayTabsState extends State<SummaryTodayTabs> {
               ],
             ),
           );
-        });
+        
   }
 }
