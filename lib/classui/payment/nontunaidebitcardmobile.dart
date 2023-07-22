@@ -129,8 +129,8 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
           Row(
             children: [
               Container(
-                child: Text('Debit Card',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                child:
+                    Text('EDC', style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -159,64 +159,10 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
-                      if (widget.midtransonline == true) {
-                        await PaymentGate.bankTransfer(
-                                guestname,
-                                'bca',
-                                phone,
-                                email,
-                                widget.trno,
-                                widget.result.toString(),
-                                listitem.toList())
-                            .then((value) async {
-                          if (value['status_code'] != '406') {
-                            List x = value['va_numbers'];
-                            print(x.first['va_number']);
-                            setState(() {
-                              virtualaccount = x.first['va_number'];
-                              bank = x.first['bank'];
-                              transactionstatus = value['transaction_status'];
-                              totalamount = num.parse(value['gross_amount']);
-                            });
-                            await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DialogClassBankTransfer(
-                                    guestname: widget.guestname,
-                                    fromsplit: widget.fromsplit,
-                                    fromsaved: widget.fromsaved,
-                                    datatrans: widget.datatrans,
-                                    paymenttype: 'Debit Card',
-                                    virtualaccount: virtualaccount,
-                                    bank: bank,
-                                    transactionstatus: transactionstatus,
-                                    grossmaount: totalamount,
-                                    compcd: compcd,
-                                    compdesc: compdesc,
-                                    result: widget.result,
-                                    balance: widget.balance,
-                                    pscd: widget.outletinfo!.outletcd,
-                                    trno: widget.trno,
-                                    outletinfo: widget.outletinfo,
-                                  );
-                                });
-                            setState(() {
-                              compcd = 'BCA VA';
-                              compdesc = 'BCA VA';
-                            });
-                          }
-                          Toast.show(
-                              "Payment Information already sent to customers email",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
-                        });
-                      } else {
-                        widget.checkselected(
-                            widget.compcode = 'DBTBCA',
-                            widget.compdescription = 'Debit Card BCA',
-                            'Debit Card');
-                      }
+                      widget.checkselected(
+                          widget.compcode = 'DBTBCA',
+                          widget.compdescription = 'Debit Card BCA',
+                          'Debit Card');
                     },
                   ),
                 ),
@@ -238,62 +184,11 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                         compcd = 'BNIVA';
                         compdesc = 'BNI VA';
                       });
-                      if (widget.midtransonline == true) {
-                        await PaymentGate.bankTransfer(
-                                guestname,
-                                'bni',
-                                phone,
-                                email,
-                                widget.trno,
-                                widget.result.toString(),
-                                listitem.toList())
-                            .then((value) async {
-                          if (value['status_code'] != '406') {
-                            if (value != null) {
-                              List x = value['va_numbers'];
-                              print(x.first['va_number']);
-                              setState(() {
-                                virtualaccount = x.first['va_number'];
-                                bank = x.first['bank'];
-                                transactionstatus = value['transaction_status'];
-                                totalamount = num.parse(value['gross_amount']);
-                              });
-                            }
-                            await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DialogClassBankTransfer(
-                                    guestname: widget.guestname,
-                                    fromsplit: widget.fromsplit,
-                                    fromsaved: widget.fromsaved,
-                                    datatrans: widget.datatrans,
-                                    paymenttype: 'Account',
-                                    virtualaccount: virtualaccount,
-                                    bank: bank,
-                                    transactionstatus: transactionstatus,
-                                    grossmaount: totalamount,
-                                    compcd: compcd,
-                                    compdesc: compdesc,
-                                    result: widget.result,
-                                    balance: widget.balance,
-                                    pscd: widget.outletinfo!.outletcd,
-                                    trno: widget.trno,
-                                    outletinfo: widget.outletinfo,
-                                  );
-                                });
-                          }
-                          Toast.show(
-                              "Payment Information already sent to customers email",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
-                        });
-                      } else {
-                        widget.checkselected(
-                            widget.compcode = 'DBTBNI',
-                            widget.compdescription = 'Debit Card BNI',
-                            'Debit Card');
-                      }
+
+                      widget.checkselected(
+                          widget.compcode = 'DBTBNI',
+                          widget.compdescription = 'Debit Card BNI',
+                          'Debit Card');
                     },
                   ),
                 ),
@@ -311,64 +206,10 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
-                      if (widget.midtransonline == true) {
-                        await PaymentGate.bankTransfer(
-                                guestname,
-                                'bri',
-                                phone,
-                                email,
-                                widget.trno,
-                                widget.result.toString(),
-                                listitem.toList())
-                            .then((value) async {
-                          if (value['status_code'] != '406') {
-                            List x = value['va_numbers'];
-                            print(x.first['va_number']);
-                            setState(() {
-                              virtualaccount = x.first['va_number'];
-                              bank = x.first['bank'];
-                              transactionstatus = value['transaction_status'];
-                              totalamount = num.parse(value['gross_amount']);
-                            });
-                            await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DialogClassBankTransfer(
-                                    guestname: widget.guestname,
-                                    fromsplit: widget.fromsplit,
-                                    fromsaved: widget.fromsaved,
-                                    datatrans: widget.datatrans,
-                                    paymenttype: 'Account',
-                                    virtualaccount: virtualaccount,
-                                    bank: bank,
-                                    transactionstatus: transactionstatus,
-                                    grossmaount: totalamount,
-                                    compcd: compcd,
-                                    compdesc: compdesc,
-                                    result: widget.result,
-                                    balance: widget.balance,
-                                    pscd: widget.outletinfo!.outletcd,
-                                    trno: widget.trno,
-                                    outletinfo: widget.outletinfo,
-                                  );
-                                });
-                            setState(() {
-                              compcd = 'BRIVA';
-                              compdesc = 'BRI VA';
-                            });
-                          }
-                          Toast.show(
-                              "Payment Information already sent to customers email",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
-                        });
-                      } else {
-                        widget.checkselected(
-                            widget.compcode = 'DBTBRI',
-                            widget.compdescription = 'Debit Card BRI',
-                            'Debit Card');
-                      }
+                      widget.checkselected(
+                          widget.compcode = 'DBTBRI',
+                          widget.compdescription = 'Debit Card BRI',
+                          'Debit Card');
                     },
                   ),
                 ),
@@ -386,62 +227,10 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
-                      if (widget.midtransonline == true) {
-                        await PaymentGate.mandiribillers(
-                                guestname,
-                                phone,
-                                email,
-                                widget.trno,
-                                widget.result.toString(),
-                                listitem.toList())
-                            .then((value) async {
-                          if (value['status_code'] != '406') {
-                            print(value['bill_key']);
-                            setState(() {
-                              bill_key = value['bill_key'];
-                              biller_code = value['biller_code'];
-                              transactionstatus = value['transaction_status'];
-                              totalamount = num.parse(value['gross_amount']);
-                            });
-                            setState(() {
-                              compcd = 'MANDIRIVA';
-                              compdesc = 'MANDIRI VA';
-                            });
-                            await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DialogClassMandiribiller(
-                                    guestname: widget.guestname,
-                                    fromsplit: widget.fromsplit,
-                                    fromsaved: widget.fromsaved,
-                                    datatrans: widget.datatrans,
-                                    paymenttype: 'Debit Card',
-                                    bill_key: bill_key,
-                                    biller_code: biller_code,
-                                    transactionstatus: transactionstatus,
-                                    grossmaount: totalamount,
-                                    compcd: compcd,
-                                    compdesc: compdesc,
-                                    result: widget.result,
-                                    balance: widget.balance,
-                                    pscd: widget.outletinfo!.outletcd,
-                                    trno: widget.trno,
-                                    outletinfo: widget.outletinfo,
-                                  );
-                                });
-                          }
-                          Toast.show(
-                              "Payment Information already sent to customers email",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
-                        });
-                      } else {
-                        widget.checkselected(
-                            widget.compcode = 'DBTMANDIRI',
-                            widget.compdescription = 'Debit Card MANDIRI',
-                            'Debit Card');
-                      }
+                      widget.checkselected(
+                          widget.compcode = 'DBTMANDIRI',
+                          widget.compdescription = 'Debit Card MANDIRI',
+                          'Debit Card');
                     },
                   ),
                 ),
@@ -459,62 +248,12 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
-                      if (widget.midtransonline == true) {
-                        await PaymentGate.getvaPermata(
-                          guestname,
-                          email,
-                          phone,
-                          widget.trno,
-                          listitem.toList(),
-                          widget.result.toString(),
-                        ).then((value) async {
-                          if (value['status_code'] != '406') {
-                            print(value);
-                            setState(() {
-                              virtualaccount = value['permata_va_number'];
-                              bank = 'permata bank';
-                              transactionstatus = value['transaction_status'];
-                              totalamount = num.parse(value['gross_amount']);
-                            });
-                            await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DialogClassBankTransfer(
-                                    guestname: widget.guestname,
-                                    fromsplit: widget.fromsplit,
-                                    fromsaved: widget.fromsaved,
-                                    datatrans: widget.datatrans,
-                                    paymenttype: 'Debit Card',
-                                    virtualaccount: virtualaccount,
-                                    bank: bank,
-                                    transactionstatus: transactionstatus,
-                                    grossmaount: totalamount,
-                                    compcd: compcd,
-                                    compdesc: compdesc,
-                                    result: widget.result,
-                                    balance: widget.balance,
-                                    pscd: widget.outletinfo!.outletcd,
-                                    trno: widget.trno,
-                                    outletinfo: widget.outletinfo,
-                                  );
-                                });
-                            setState(() {
-                              compcd = 'PERMATAVA';
-                              compdesc = 'PERMATA VA';
-                            });
-                          }
-                          Toast.show(
-                              "Payment Information already sent to customers email",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
-                        });
-                      } else {
+
                         widget.checkselected(
                             widget.compcode = 'DBTPERMATA',
                             widget.compdescription = 'Debit Card PERMATA',
                             'Debit Card');
-                      }
+                      
                     },
                   ),
                 ),
@@ -531,62 +270,12 @@ class _PaymentDebitCardMobileState extends State<PaymentDebitCardMobile> {
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.1,
                     onpressed: () async {
-                      if (widget.midtransonline == true) {
-                        await PaymentGate.getvaPermata(
-                          guestname,
-                          email,
-                          phone,
-                          widget.trno,
-                          listitem.toList(),
-                          widget.result.toString(),
-                        ).then((value) async {
-                          if (value['status_code'] != '406') {
-                            print(value);
-                            setState(() {
-                              virtualaccount = value['permata_va_number'];
-                              bank = 'permata bank';
-                              transactionstatus = value['transaction_status'];
-                              totalamount = num.parse(value['gross_amount']);
-                            });
-                            await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DialogClassBankTransfer(
-                                    guestname: widget.guestname,
-                                    fromsplit: widget.fromsplit,
-                                    fromsaved: widget.fromsaved,
-                                    datatrans: widget.datatrans,
-                                    paymenttype: 'Account',
-                                    virtualaccount: virtualaccount,
-                                    bank: bank,
-                                    transactionstatus: transactionstatus,
-                                    grossmaount: totalamount,
-                                    compcd: compcd,
-                                    compdesc: compdesc,
-                                    result: widget.result,
-                                    balance: widget.balance,
-                                    pscd: widget.outletinfo!.outletcd,
-                                    trno: widget.trno,
-                                    outletinfo: widget.outletinfo,
-                                  );
-                                });
-                            setState(() {
-                              compcd = 'PERMATAVA';
-                              compdesc = 'PERMATA VA';
-                            });
-                          }
-                          Toast.show(
-                              "Payment Information already sent to customers email",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
-                        });
-                      } else {
+                    
                         widget.checkselected(
                             widget.compcode = 'DBTOTHERS',
                             widget.compdescription = 'Debit Card OTHERS',
                             'Debit Card');
-                      }
+                      
                     },
                   ),
                 ),

@@ -10,7 +10,7 @@ class OutletAccess extends StatelessWidget {
   TextEditingController staff = TextEditingController(text: 'Pilih staff');
   TextEditingController outlet = TextEditingController(text: 'Pilih Outlet');
   SelectedPegawai? pegawai;
-  List<Outlet>? outlets = [];
+  List outlets = [];
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,7 @@ class OutletAccess extends StatelessWidget {
                     builder: (BuildContext context) {
                       return DialogListStaff();
                     });
+                staff.text = pegawai!.usercode.toString();
               }),
           ListTile(
             title: Text(
@@ -55,6 +56,7 @@ class OutletAccess extends StatelessWidget {
                     builder: (BuildContext context) {
                       return DialogOutletStaff();
                     });
+                outlet.text = outlets.toString();
               }),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.15,
@@ -68,16 +70,19 @@ class OutletAccess extends StatelessWidget {
                   ),
                   onPressed: () async {
                     EasyLoading.show(status: 'insert access...');
-                    for (var x in outlets!) {
-                      await ClassApi.insertAccessOutlet(
-                          x.outletcd, pegawai!.email);
+                    for (var x in outlets) {
+                      await ClassApi.insertAccessOutlet(x, pegawai!.email);
                     }
                     ;
+                    staff.text = 'Pilih Staff';
+                    outlet.text = 'Pilih Outlet';
+                    outlets = [];
+
                     EasyLoading.dismiss();
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width * 0.1,
+                      width: MediaQuery.of(context).size.width * 0.15,
                       child: Text(
                         'Simpan',
                         style: TextStyle(color: Colors.white),
@@ -86,10 +91,14 @@ class OutletAccess extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white, // Background color
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    staff.text = 'Pilih Staff';
+                    outlet.text = 'Pilih Outlet';
+                    outlets = [];
+                  },
                   child: Container(
                       alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width * 0.1,
+                      width: MediaQuery.of(context).size.width * 0.15,
                       child: Text(
                         'Reset',
                         style: TextStyle(color: Colors.orange),

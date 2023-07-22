@@ -310,6 +310,56 @@
 }
 
 # End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4de36ce71286781e228ebe35811813b4\jetified-recaptcha-18.1.2\proguard.txt
+# The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\proguard.txt
+# Copyright (C) 2020 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Never inline methods, but allow shrinking and obfuscation.
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.AuthenticationCallbackProvider$Api* {
+    <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.BiometricFragment$Api* {
+    <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.BiometricManager$Api* {
+    <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.CancellationSignalProvider$Api* {
+    <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.CryptoObjectUtils$Api* {
+    <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.FingerprintDialogFragment$Api* {
+    <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.KeyguardUtils$Api* {
+    <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking
+        class androidx.biometric.PackageUtils$Api* {
+    <methods>;
+}
+
+# End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\proguard.txt
 # The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f9bfe5e36b9518abf2bf7b7ac1b238d\material-1.3.0\proguard.txt
 # Copyright (C) 2015 The Android Open Source Project
 #
@@ -716,6 +766,36 @@
     boolean getRECOVER_STACK_TRACES() return false;
 }
 # End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\37a91effae22bd89753f45296783c028\rules\lib\META-INF\com.android.tools\r8-from-1.6.0\coroutines.pro
+# The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\de4c41607b92b25fa09ba96fe2b87688\webkit-1.5.0\proguard.txt
+# Copyright 2018 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# We need to avoid obfuscating the support library boundary interface because
+# this API is shared with the Android Support Library.
+# Note that we only 'keep' the package org.chromium.support_lib_boundary itself,
+# any sub-packages of that package can still be obfuscated.
+-keep public class org.chromium.support_lib_boundary.* { public *; }
+
+# Copyright (C) 2018 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Prevent WebViewClientCompat from being renamed, since chromium depends on this name.
+-keepnames public class androidx.webkit.WebViewClientCompat
+
+
+# End of content from C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\de4c41607b92b25fa09ba96fe2b87688\webkit-1.5.0\proguard.txt
 # The proguard configuration file for the following section is C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3a739cfdd85bf266f743c7ac01b683a6\media-1.0.0\proguard.txt
 # Copyright (C) 2017 The Android Open Source Project
 #

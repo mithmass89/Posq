@@ -219,7 +219,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
               ":" +
               now.second.toString(),
           confirmed: '1',
-          description: widget.item.itemdesc,
+          description: 'refund mode',
           taxpct: widget.item.taxpct,
           svchgpct: widget.item.svchgpct,
           statustrans: 'prosess',

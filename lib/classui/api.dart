@@ -6,7 +6,7 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = '192.168.56.1';
+var ip = '153.92.5.25';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
@@ -210,6 +210,7 @@ class ClassApi {
     String level,
     String subscription,
     String paymentcheck,
+    String frenchisecode,
   ) async {
     var body = {
       "email": email,
@@ -217,7 +218,8 @@ class ClassApi {
       "password": password,
       "level": level,
       "subscription": subscription,
-      "paymentcheck": paymentcheck
+      "paymentcheck": paymentcheck,
+      "frenchisecode": frenchisecode
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/insertRegisterUser');
@@ -238,12 +240,21 @@ class ClassApi {
   }
 
   static Future<dynamic> insertRegisterUserNew(
-      String email, String usercd, String password, String level) async {
+      String email,
+      String usercd,
+      String password,
+      String level,
+      String frenchisecode,
+      String referral,
+      String telp) async {
     var body = {
       "email": email,
       "usercd": usercd,
       "password": password,
-      "level": level
+      "level": level,
+      "frenchisecode": frenchisecode,
+      "referral": referral,
+      "telp": telp,
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/insertRegisterUserNew');
@@ -330,6 +341,40 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/insertLoyalityProgram');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> insertAbsensi(
+ 
+    String date,
+    String email,
+    String type,
+    String actiontime,
+    bool hasbeencheck,
+  ) async {
+    var body = {
+      "dbname":dbname,
+      "date": date,
+      "email": email,
+      "type": type,
+      "actiontime": actiontime,
+      "hasbeencheck": hasbeencheck,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertAbsensi');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1878,9 +1923,7 @@ class ClassApi {
     }
   }
 
-
-   static Future<List<dynamic>> getListStaffOutlet(
-      String email, String outletcode) async {
+  static Future<List<dynamic>> getListStaffOutlet(String outletcode) async {
     // print(json.encode(pembayaran));
     var data = {"outletcode": outletcode};
 
@@ -1901,7 +1944,6 @@ class ClassApi {
       throw Exception();
     }
   }
-
 
   static Future<List<dynamic>> checkVerifiedPayment(String email) async {
     // print(json.encode(pembayaran));
@@ -3033,11 +3075,14 @@ class ClassApi {
     }
   }
 
-  static Future<dynamic> Update7DayActive(String date, String email) async {
+  static Future<dynamic> Update7DayActive(
+      String date, String email, String referral, String telp) async {
     // print(json.encode(pembayaran));
     var data = {
       "date": date,
       "email": email,
+      "referral": referral,
+      "telp": telp
     };
     final url = Uri.parse('$api/Update7DayActive');
     final response = await http.post(url,

@@ -25,3 +25,8 @@ PointSystem rulesprogram = PointSystem(
 num notifyexp = 3;
 String? expireddate;
 bool refundmode = false;
+String corporatecode = '';
+String telp = '';
+String referrals = '';
+String statusabsen = '';
+String midkey='';

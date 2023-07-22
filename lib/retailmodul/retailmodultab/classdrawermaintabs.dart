@@ -61,13 +61,9 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                         children: [
                           Text(
                             widget.outletname.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
-                          Icon(
-                            Icons.arrow_right_outlined,
-                            color: Colors.white,
-                            size: 30.0,
-                          ),
+                    
                         ],
                       ),
                     ),
@@ -126,7 +122,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.5,
             child: ListView(
               padding: EdgeInsets.zero,
               children: [

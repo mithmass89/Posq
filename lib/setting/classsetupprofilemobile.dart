@@ -35,6 +35,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
   final controllerTelp = TextEditingController();
   final controllerDetail = TextEditingController();
   final controllerKodepos = TextEditingController();
+
   String? namaoutlet;
   num? telp;
   String? detail;
@@ -495,6 +496,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                 if (outletcd.text == '') {
                                                   print('Empty code outlet');
                                                 } else {
+                                                  emaillogin=widget.email;
                                                   EasyLoading.show(
                                                       status: 'loading...');
                                                   await _createProfile(Outlet(

@@ -67,8 +67,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   String? nexttrno;
   String? statustransaction = '';
   final bool pending = true;
-  final TextEditingController _telp =
-      TextEditingController(text: '82221769478');
+  final TextEditingController _telp = TextEditingController(text: '');
   final TextEditingController _email = TextEditingController();
   List<String> string = [];
   List<ItemMail> itememail = [];
@@ -303,33 +302,36 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                               color: Colors.blue,
                               splashColor: Colors.purple,
                               onPressed: () {
-                                // String subtotal = 'subtotal';
-                                // String discount = 'Discount';
-                                // String taxs = 'Pajak';
-                                // String services = 'Service';
-                                // String grandtotal = 'Grand Total';
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                var whatsappUrl =
-                                    "whatsapp://send?phone=${"+62" + _telp.text}" +
-                                        "&text=" +
-                                        '''
-Outlet : ${widget.outletname}
-Trx    : ${widget.trno}
+                                    Toast.show("Segera hadir",
+                                    duration: Toast.lengthLong,
+                                    gravity: Toast.center);
+//                                 // String subtotal = 'subtotal';
+//                                 // String discount = 'Discount';
+//                                 // String taxs = 'Pajak';
+//                                 // String services = 'Service';
+//                                 // String grandtotal = 'Grand Total';
+//                                 FocusManager.instance.primaryFocus?.unfocus();
+//                                 var whatsappUrl =
+//                                     "whatsapp://send?phone=${"+62" + _telp.text}" +
+//                                         "&text=" +
+//                                         '''
+// Outlet : ${widget.outletname}
+// Trx    : ${widget.trno}
 
-item
------------------------------------------          
-${string.reduce((value, element) => value + element)}
------------------------------------------
-${summary.reduce((value, element) => value + element)}
------------------------------------------
-${payment.reduce((value, element) => value + element)}
-''';
-                                try {
-                                  launch(whatsappUrl);
-                                } catch (e) {
-                                  //To handle error and display error message
-                                  print('gagal kirim $e');
-                                }
+// item
+// -----------------------------------------          
+// ${string.reduce((value, element) => value + element)}
+// -----------------------------------------
+// ${summary.reduce((value, element) => value + element)}
+// -----------------------------------------
+// ${payment.reduce((value, element) => value + element)}
+// ''';
+//                                 try {
+//                                   launch(whatsappUrl);
+//                                 } catch (e) {
+//                                   //To handle error and display error message
+//                                   print('gagal kirim $e');
+//                                 }
                               },
                             ),
                             label: 'Whatsapp',
@@ -348,40 +350,45 @@ ${payment.reduce((value, element) => value + element)}
                               iconSize: 20,
                               color: Colors.blue,
                               splashColor: Colors.purple,
-                              onPressed: emailValid == true
-                                  ? () async {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                      await ClassApi.sendMail(
-                                              paymentemail,
-                                              itememail,
-                                              formattedDate,
-                                              widget.outletname!,
-                                              widget.trno,
-                                              totalcharge,
-                                              _email.text)
-                                          .then((value) {
-                                        if (value['hasil'] == 'success') {
-                                          setState(() {
-                                            loading = false;
-                                          });
-                                        } else {
-                                          setState(() {
-                                            loading = false;
-                                          });
-                                          Toast.show("Failed send email",
-                                              duration: Toast.lengthLong,
-                                              gravity: Toast.center);
-                                        }
-                                        print(value['hasil']);
-                                        Toast.show(
-                                            "${value['hasil']} sending email",
-                                            duration: Toast.lengthLong,
-                                            gravity: Toast.center);
-                                      });
-                                    }
-                                  : null,
+                              onPressed: () {
+                                Toast.show("Segera hadir",
+                                    duration: Toast.lengthLong,
+                                    gravity: Toast.center);
+                              },
+                              // onPressed: emailValid == true
+                              //     ? () async {
+                              //         setState(() {
+                              //           loading = true;
+                              //         });
+                              //         await ClassApi.sendMail(
+                              //                 paymentemail,
+                              //                 itememail,
+                              //                 formattedDate,
+                              //                 widget.outletname!,
+                              //                 widget.trno,
+                              //                 totalcharge,
+                              //                 _email.text)
+                              //             .then((value) {
+                              //           if (value['hasil'] == 'success') {
+                              //             setState(() {
+                              //               loading = false;
+                              //             });
+                              //           } else {
+                              //             setState(() {
+                              //               loading = false;
+                              //             });
+                              //             Toast.show("Failed send email",
+                              //                 duration: Toast.lengthLong,
+                              //                 gravity: Toast.center);
+                              //           }
+                              //           print(value['hasil']);
+                              //           Toast.show(
+                              //               "${value['hasil']} sending email",
+                              //               duration: Toast.lengthLong,
+                              //               gravity: Toast.center);
+                              //         });
+                              //       }
+                              //     : null,
                             ),
                             label: 'E-mail',
                             controller: _email,

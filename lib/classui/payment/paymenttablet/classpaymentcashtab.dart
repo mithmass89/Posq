@@ -144,8 +144,41 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                 });
                               }).whenComplete(() {
                                 if (widget.result!.isNegative) {
-                                  widget.insertIafjrnhdRefund!()
-                                      .whenComplete(() {
+                                  if (refundmode == false) {
+                                    widget.insertIafjrnhdRefund!()
+                                        .whenComplete(() {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClassPaymetSucsessTabs(
+                                                    guestname: widget.guestname,
+                                                    fromsplit: widget.fromsplit,
+                                                    fromsaved: widget.fromsaved,
+                                                    datatrans: widget.datatrans,
+                                                    frombanktransfer: false,
+                                                    cash: true,
+                                                    outletinfo:
+                                                        widget.outletinfo,
+                                                    outletname:
+                                                        widget.outletname,
+                                                    outletcd: widget.pscd,
+                                                    amount:
+                                                        NumberFormat.currency(
+                                                                locale: 'id_ID',
+                                                                symbol: 'Rp')
+                                                            .parse(widget
+                                                                .controller
+                                                                .text)
+                                                            .toInt(),
+                                                    paymenttype:
+                                                        widget.pymtmthd,
+                                                    trno:
+                                                        widget.trno.toString(),
+                                                    trdt: formattedDate,
+                                                  )));
+                                    });
+                                  } else {
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -170,7 +203,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                                                   trno: widget.trno.toString(),
                                                   trdt: formattedDate,
                                                 )));
-                                  });
+                                  }
                                 } else {
                                   Navigator.pushReplacement(
                                       context,

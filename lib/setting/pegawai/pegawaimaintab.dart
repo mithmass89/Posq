@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +21,7 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
   final TextEditingController password = TextEditingController();
   final TextEditingController confirmpassword = TextEditingController();
   final TextEditingController fullname = TextEditingController();
+    final TextEditingController corporate = TextEditingController();
   final TextEditingController jabatan =
       TextEditingController(text: 'Pilih Role');
   final TextEditingController outlet =
@@ -91,8 +92,8 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
             } else {
               EasyLoading.show(status: 'loading...');
               await ClassApi.insertRegisterUser(email.text, fullname.text,
-                  password.text, jabatan.text, subscribtion, paymentcheck);
-              await ClassApi.Update7DayActive(expireddate!, email.text);
+                  password.text, jabatan.text, subscribtion, paymentcheck,corporate.text);
+              await ClassApi.Update7DayActive(expireddate!, email.text,referrals,telp);
               for (var x in selectedOutlet!) {
                 await ClassApi.insertAccessOutlet(x['outletcd'], email.text);
               }
@@ -158,6 +159,15 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
             SizedBox(
               height: 10,
             ),
+              //  Container(
+              //   height: MediaQuery.of(context).size.height * 0.09,
+              //   child: TextFieldMobile2(
+              //     hint: 'Corporate',
+              //     controller: corporate,
+              //     typekeyboard: TextInputType.text,
+              //     onChanged: (value) async {},
+              //   ),
+              // ),
             SizedBox(
               height: 10,
             ),
@@ -250,7 +260,10 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
                                 return DialogOutletStaff();
                               });
                           outlet.text = selectedOutlet![0]['outletdesc']!;
-                          selectedOutlet!.removeAt(0);
+                          if (selectedOutlet![0]['outletcode'] == 'All') {
+                            selectedOutlet!.removeAt(0);
+                          }
+
                           // print(selectedOutlet);
                           for (var x in selectedOutlet!) {
                             for (var z in accesspegawai) {

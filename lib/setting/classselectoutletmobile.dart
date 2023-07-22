@@ -56,6 +56,7 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
                     pscd = snapshot.data![index]['outletcode'];
                     outletdesc = snapshot.data![index]['outletdesc'];
                     setState(() {});
+                    print('terpilih ${snapshot.data![index]['outletcode']}');
                   },
                   child: Card(
                       child: ListTile(

@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:posq/classfungsi/classbiometrik.dart';
+import 'package:posq/classfungsi/classsesilogin.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/color.dart';
@@ -17,6 +20,9 @@ import 'package:posq/paymentcheck.dart';
 import 'package:posq/registerform.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/userinfo.dart';
+import 'package:flutter/services.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
+import 'package:local_auth/local_auth.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -63,6 +69,57 @@ class _LoginState extends State<Login> {
     }
   }
 
+  final BiometricRegistration _biometricRegistration = BiometricRegistration();
+
+  void _registerBiometrics() async {
+    bool registered = await _biometricRegistration.registerBiometrics(context);
+
+    if (registered) {
+      // Biometric registration successful. Implement your logic here.
+      print('Biometric registration successful!');
+    } else {
+      // Biometric registration failed or canceled.
+      print('Biometric registration failed or canceled.');
+    }
+  }
+
+  Future<void> _checkBiometric() async {
+    final LocalAuthentication localAuth = LocalAuthentication();
+
+    try {
+      bool canCheckBiometrics = await localAuth.canCheckBiometrics;
+
+      if (canCheckBiometrics) {
+        // Check if fingerprint is an available biometric type
+        List<BiometricType> availableBiometrics =
+            await localAuth.getAvailableBiometrics();
+        bool hasFingerprint =
+            availableBiometrics.contains(BiometricType.fingerprint);
+
+        if (hasFingerprint) {
+          print("Fingerprint authentication is available on this device.");
+        } else {
+          print("Fingerprint authentication is not available on this device.");
+        }
+      } else {
+        print("Biometric is not available on this device.");
+      }
+    } catch (e) {
+      print("An error occurred: $e");
+    }
+  }
+
+  final LocalAuthentication auth = LocalAuthentication();
+  // ···
+  localAuth() async {
+    final bool didAuthenticate = await auth.authenticate(
+      biometricOnly: true,
+      localizedReason: 'Please authenticate AOVIPOS',
+    );
+    print(didAuthenticate);
+    return didAuthenticate;
+  }
+
   bool validateEmail(String email) {
     // regex pattern for validating email address
     final pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
@@ -87,6 +144,12 @@ class _LoginState extends State<Login> {
     super.initState();
     LogOut.signOut(context: context);
     formattedCurrentTime = formatDate(currentTime);
+    loadSession();
+  }
+
+  loadSession() async {
+    email.text = (await LoginSession.getEmail())!;
+    password.text = (await LoginSession.getPassword())!;
   }
 
   Future<String> expiredDate(String email) async {
@@ -262,6 +325,16 @@ class _LoginState extends State<Login> {
                                         subscribtion = value[0]['subscription'];
                                         paymentcheck = value[0]['paymentcheck'];
                                         level = value[0]['level'];
+                                        corporatecode =
+                                            value[0]['frenchisecode'];
+                                        referrals = value[0]['referral'];
+                                        telp = value[0]['telp'];
+                                        LoginSession.saveLoginInfo(
+                                          emaillogin,
+                                          password.text,
+                                          dbname,
+                                          pscd,
+                                        );
                                       });
                                       await ClassApi.checkVerifiedPayment(
                                               emaillogin)
@@ -436,6 +509,30 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor: Colors.orange, // Background color
+                      //   ),
+                      //   onPressed: () async {
+                      //     // _registerBiometrics();
+                      //     // _checkBiometric();
+                      //     localAuth();
+                      //   },
+                      //   child: Container(
+                      //     alignment: Alignment.center,
+                      //     width: MediaQuery.of(context).size.width * 0.70,
+                      //     child: Wrap(
+                      //       children: <Widget>[
+                      //         Text("Absensi",
+                      //             style: TextStyle(
+                      //                 fontSize: 20, color: Colors.white)),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
                     ],
                   ),
                 )
@@ -553,12 +650,18 @@ class _LoginState extends State<Login> {
                                         fontSize: 16.0);
                                   } else {
                                     usercd = value[0]['usercd'];
+                                    corporatecode = value[0]['frenchisecode'];
                                     await ClassApi.checkUserFromOauth(
                                             email.text, 'profiler')
                                         .then((values) async {
                                       if (values.isNotEmpty) {
                                         print(values);
-
+                                        LoginSession.saveLoginInfo(
+                                          email.text,
+                                          password.text,
+                                          dbname,
+                                          pscd,
+                                        );
                                         // usercd = value[0]['usercd'];
                                         setState(() {
                                           usercd = values[0]['usercd'];
@@ -568,6 +671,8 @@ class _LoginState extends State<Login> {
                                               value[0]['subscription'];
                                           paymentcheck =
                                               value[0]['paymentcheck'];
+                                          corporatecode =
+                                              value[0]['frenchisecode'];
                                         });
                                         await ClassApi.checkVerifiedPayment(
                                                 emaillogin)

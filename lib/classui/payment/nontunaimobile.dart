@@ -70,9 +70,9 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
   String compdesc = '';
   String qr = '';
   List<Midtransitem> listitem = [];
-  String email = 'mithmass2@gmail.com';
-  String phone = '+6282221769478';
-  String guestname = 'Nico Cahya Yunianto';
+  // String email = 'mithmass2@gmail.com';
+  // String phone = '+6282221769478';
+  // String guestname = 'Nico Cahya Yunianto';
 
   @override
   Widget build(BuildContext context) {
@@ -97,24 +97,24 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           balance: widget.balance,
           amountcash: widget.amountcash,
         ),
+            PaymentDebitCardMobile(
+          guestname: widget.guestname,
+          fromsplit: widget.fromsplit,
+          fromsaved: widget.fromsaved,
+          checkselected: widget.checkselected,
+          compcode: widget.compcode,
+          compdescription: widget.compdescription,
+          midtransonline: widget.midtransonline,
+          datatrans: widget.datatrans,
+          callback: widget.callback,
+          zerobill: widget.zerobill,
+          result: widget.result,
+          outletinfo: widget.outletinfo,
+          pscd: widget.pscd.toString(),
+          trno: widget.trno.toString(),
+          balance: widget.balance,
+        ),
         NonTunaiMobileTransfer(
-             guestname: widget.guestname,
-          fromsplit: widget.fromsplit,
-          fromsaved: widget.fromsaved,
-          checkselected: widget.checkselected,
-          compcode: widget.compcode,
-          compdescription: widget.compdescription,
-          midtransonline: widget.midtransonline,
-          datatrans: widget.datatrans,
-          callback: widget.callback,
-          zerobill: widget.zerobill,
-          result: widget.result,
-          outletinfo: widget.outletinfo,
-          pscd: widget.pscd.toString(),
-          trno: widget.trno.toString(),
-          balance: widget.balance,
-        ),
-        PaymentMobileCreditCard(
           guestname: widget.guestname,
           fromsplit: widget.fromsplit,
           fromsaved: widget.fromsaved,
@@ -131,23 +131,7 @@ class _NonTunaiMobileState extends State<NonTunaiMobile> {
           trno: widget.trno.toString(),
           balance: widget.balance,
         ),
-        PaymentDebitCardMobile(
-          guestname: widget.guestname,
-          fromsplit: widget.fromsplit,
-          fromsaved: widget.fromsaved,
-          checkselected: widget.checkselected,
-          compcode: widget.compcode,
-          compdescription: widget.compdescription,
-          midtransonline: widget.midtransonline,
-          datatrans: widget.datatrans,
-          callback: widget.callback,
-          zerobill: widget.zerobill,
-          result: widget.result,
-          outletinfo: widget.outletinfo,
-          pscd: widget.pscd.toString(),
-          trno: widget.trno.toString(),
-          balance: widget.balance,
-        )
+    
       ],
     );
   }

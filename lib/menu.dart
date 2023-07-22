@@ -2,11 +2,13 @@
 
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show getApplicationDocumentsDirectory;
 import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
+import 'package:posq/classfungsi/dialogattendance.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
@@ -49,15 +51,69 @@ class MenuMain extends StatefulWidget {
 class _MenuMainState extends State<MenuMain> {
   String? trno = '';
   bool selected = false;
+  DateTime now = DateTime.now();
+  // Format the date as "yyyy-MM-dd" (e.g., 2023-07-01)
+  String? formattedDate;
+  String? datetime;
 
   deleteDatabase() async {
     print('oke');
+  }
+
+  void showAttendanceDialog(BuildContext context) async {
+    String selectedOption = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AttendanceDialog();
+      },
+    );
+
+    if (selectedOption != null) {
+      // Lakukan sesuatu berdasarkan opsi yang dipilih.
+      switch (selectedOption) {
+        case 'Check-in':
+          statusabsen = 'Check-in';
+          setState(() {});
+          await ClassApi.insertAbsensi(
+              formattedDate!, emaillogin, 'Check-in', datetime!, false);
+          // Lakukan logika untuk Check-in.
+          break;
+        case 'Breakout':
+          // Lakukan logika untuk Breakout.
+          statusabsen = 'Breakout';
+
+          await ClassApi.insertAbsensi(
+              formattedDate!, emaillogin, 'Breakout', datetime!, false);
+          setState(() {});
+          break;
+        case 'Break In':
+          statusabsen = 'Break In';
+          // Lakukan logika untuk Breakout.
+          await ClassApi.insertAbsensi(
+              formattedDate!, emaillogin, 'Breakout', datetime!, false);
+          setState(() {});
+          break;
+        case 'Checkout':
+          statusabsen = 'Checkout';
+          // Lakukan logika untuk Checkout.
+          await ClassApi.insertAbsensi(
+              formattedDate!, emaillogin, 'Checkout', datetime!, false);
+          setState(() {});
+          break;
+        default:
+          // Opsi tidak valid.
+          break;
+      }
+    }
   }
 
   @override
   void initState() {
     super.initState();
     print(widget.pscd);
+
+    formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    datetime = DateFormat('HH:mm:ss').format(now);
     checkTrno();
   }
 
@@ -125,14 +181,14 @@ class _MenuMainState extends State<MenuMain> {
                         final Outlet? result = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Selectoutletmobile(
-                                    email: '',
-                                    fullname: '',
+                              builder: (context) => Selectoutletmobile(
+                                    email: emaillogin,
+                                    fullname: usercd,
                                   )),
                         );
                         // callbackTitle(result);
                         AppsMobile.of(context)!.string = result;
-                        print(result);
+                        print('ini result : $result');
                       }
                     : () {
                         Fluttertoast.showToast(
@@ -176,6 +232,20 @@ class _MenuMainState extends State<MenuMain> {
                             fontSize: 16.0);
                       },
                 name: 'Customer',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                splash: selected,
+                iconasset: 'assets/fingerprint.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () async {
+                  showAttendanceDialog(context);
+                },
+                name: 'Absen',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -360,6 +430,19 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
+                iconasset: 'assets/fingerprint.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
+                onpressed: () {
+                  showAttendanceDialog(context);
+                },
+                name: 'Absen',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
                 iconasset: 'assets/settings.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
@@ -440,22 +523,7 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.04,
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
-              ButtonClassAction(
-                iconasset: 'assets/support.png',
-                height: MediaQuery.of(context).size.height * 0.02,
-                widht: MediaQuery.of(context).size.width * 0.08,
-                onpressed: () async {
-                  Fluttertoast.showToast(
-                      msg: "Cooming soon",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                },
-                name: 'Updgrade',
-              ),
+        
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
                 width: MediaQuery.of(context).size.width * 0.05,

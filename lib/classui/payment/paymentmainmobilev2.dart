@@ -4,6 +4,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/payment/nontunaimobile.dart';
+import 'package:posq/classui/payment/nontunaimobileQRISv2.dart';
 import 'package:posq/classui/payment/paymentcashv2.dart';
 import 'package:posq/classui/payment/slideuppanelpaymentmobile.dart';
 import 'package:posq/databasehandler.dart';
@@ -149,7 +150,39 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
         compcd: compcode,
         compdesc: compdescription,
         active: 1,
-        usercrt: 'Admin',
+        usercrt: usercd,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
+  }
+
+  Future<int> insertIafjrnhdRefundMode() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: '${widget.trno}',
+        transno1: '${widget.trno}',
+        split: lastsplit,
+        pscd: '${widget.pscd}',
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
+        disccd: '',
+        pax: '1',
+        pymtmthd: pymtmthd,
+        ftotamt: -double.parse(widget.balance.toString()),
+        totalamt: -double.parse(widget.balance.toString()),
+        framtrmn: -double.parse(widget.balance.toString()),
+        amtrmn: -double.parse(widget.balance.toString()),
+        trdesc: 'refund mode',
+        trdesc2: '$pymtmthd ${widget.trno}',
+        compcd: compcode,
+        compdesc: compdescription,
+        active: 1,
+        usercrt: usercd,
         slstp: '1',
         currcd: 'IDR');
     IafjrnhdClass listiafjrnhd = iafjrnhd;
@@ -331,8 +364,32 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                           balance: widget.balance,
                           amountcash: amountcash,
                         ),
+                        // NonTunaiMobileV2(
+                        //   email: emaillogin,
+                        //   phone: '',
+                        //   guestname: widget.guestname,
+                        //   fromsplit: widget.fromsplit,
+                        //   lastsplit: lastsplit,
+                        //   fromsaved: widget.fromsaved,
+                        //   pymtmthd: pymtmthd,
+                        //   compcode: compcode,
+                        //   compdescription: compdescription,
+                        //   checkselected: checkSelected,
+                        //   midtransonline: midtransonline,
+                        //   datatrans: widget.fromsplit == true
+                        //       ? widget.datatrans
+                        //       : listdata,
+                        //   callback: checkbalance,
+                        //   zerobill: zerobill,
+                        //   result: result!,
+                        //   outletinfo: widget.outletinfo!,
+                        //   pscd: widget.pscd,
+                        //   trno: widget.trno,
+                        //   balance: widget.balance,
+                        //   amountcash: amountcash,
+                        // )
                         NonTunaiMobile(
-                             guestname: widget.guestname,
+                          guestname: widget.guestname,
                           fromsplit: widget.fromsplit,
                           lastsplit: lastsplit,
                           fromsaved: widget.fromsaved,

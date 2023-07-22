@@ -5,13 +5,14 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:posq/model.dart';
 
-var api = 'https://api.sandbox.midtrans.com/v2/charge';
+var apisnap = 'https://app.midtrans.com/snap/v1/transactions';
+var api = 'https://api.midtrans.com/v2/charge';
 var serverkeymidtrans = '';
 var basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
 
 class PaymentGate {
   static Future<dynamic> getStatusTransaction(String trno) async {
-    final url = Uri.parse('https://api.sandbox.midtrans.com/v2/$trno/status');
+    final url = Uri.parse('https://api.midtrans.com/v2/$trno/status');
     final response = await http.get(
       url,
       headers: <String, String>{
@@ -42,7 +43,7 @@ class PaymentGate {
             '$serverkeymidtrans')); // server key uniqe perclient dari , di berikan ketika client daftar di midtrans
     var body = {
       "payment_type":
-          "gopay", // wajib di set gopay , tapi nantinya bisa di pakai di semua e-wallet dengan starndart QRIS
+          "qris", // wajib di set gopay , tapi nantinya bisa di pakai di semua e-wallet dengan starndart QRIS
       "transaction_details": {
         "order_id": trno,
         "gross_amount": totalamount
@@ -56,9 +57,8 @@ class PaymentGate {
         "email": email, //bill akan di kirim email
         "phone": phone
       },
-      "gopay": {
-        "enable_callback": false,
-        "callback_url": "someapps://callback"
+      "qris": {
+        "acquirer": "gopay"
       } // jika memakai webhoook eneable callback yes
     };
 
@@ -76,7 +76,7 @@ class PaymentGate {
         .timeout(
           const Duration(seconds: 100),
         );
-
+    print(api);
     if (response.statusCode == 200) {
       final _responsemidtrans = json.decode(response.body);
       print(response);
@@ -84,6 +84,74 @@ class PaymentGate {
     } else {
       print(json.decode(response.body));
       return response;
+    }
+  }
+
+  static Future<dynamic> snapWeb(
+    // pembayaran GOPAY / QRIS
+    // String method,
+
+    String trno,
+    String totalamount,
+  ) async {
+    String basicAuth = 'Basic ' +
+        base64Encode(utf8.encode(
+            '$serverkeymidtrans')); // server key uniqe perclient dari , di berikan ketika client daftar di midtrans
+    var body = {
+      "transaction_details": {"order_id": "$trno", "gross_amount": totalamount},
+
+      "enabled_payments": ["gopay"],
+      "credit_card": {
+        "secure": true,
+        "bank": "bca",
+        "installment": {
+          "required": false,
+          "terms": {
+            "bni": [3, 6, 12],
+            "mandiri": [3, 6, 12],
+            "cimb": [3],
+            "bca": [3, 6, 12],
+            "offline": [6, 12]
+          }
+        },
+        "whitelist_bins": ["48111111", "41111111"]
+      },
+      "callbacks": {"finish": "https://demo.midtrans.com"},
+      "expiry": {
+        // "start_time": "2019-12-13 18:11:08 +0700",
+        // "unit": "minutes",
+        // "duration": 1
+      },
+      "custom_field1": "custom field 1 content",
+      "custom_field2": "custom field 2 content",
+      "custom_field3": "custom field 3 content"
+    };
+
+    final url = Uri.parse(
+      apisnap,
+    );
+    final response = await http
+        .post(url,
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'authorization': basicAuth // menggunakan auth tipe basic//
+            },
+            body: json.encode(body))
+        .timeout(
+          const Duration(seconds: 100),
+        );
+    print(apisnap);
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final _responsemidtrans = json.decode(response.body);
+      print(_responsemidtrans);
+      return _responsemidtrans;
+    } else {
+      final _responsemidtrans = json.decode(response.body);
+      print(_responsemidtrans);
+      return _responsemidtrans;
     }
   }
 
@@ -224,6 +292,71 @@ class PaymentGate {
     if (response.statusCode == 200) {
       final rooms = json.decode(response.body);
       // print(rooms['va_numbers']);
+      return rooms;
+    }
+  }
+
+  static Future<dynamic> SnapLink(String trno, String amount) async {
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
+    var body = jsonEncode({
+      "transaction_details": {"order_id": "$trno", "gross_amount": amount},
+      // "item_details": [{
+      //   "id": "ITEM1",
+      //   "price": 10000,
+      //   "quantity": 1,
+      //   "name": "Midtrans Bear",
+      //   "brand": "Midtrans",
+      //   "category": "Toys",
+      //   "merchant_name": "Midtrans"
+      // }],
+
+      "enabled_payments": ["gopay"],
+      "credit_card": {
+        "secure": true,
+        "bank": "bca",
+        "installment": {
+          "required": false,
+          "terms": {
+            "bni": [3, 6, 12],
+            "mandiri": [3, 6, 12],
+            "cimb": [3],
+            "bca": [3, 6, 12],
+            "offline": [6, 12]
+          }
+        },
+        "whitelist_bins": ["48111111", "41111111"]
+      },
+
+      "callbacks": {"finish": "https://demo.midtrans.com"},
+      "expiry": {
+        // "start_time": "2019-12-13 18:11:08 +0700",
+        // "unit": "minutes",
+        // "duration": 1
+      },
+      "custom_field1": "custom field 1 content",
+      "custom_field2": "custom field 2 content",
+      "custom_field3": "custom field 3 content"
+    });
+
+    final url = Uri.parse(
+      apisnap,
+    );
+    final response = await http
+        .post(url,
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'authorization': basicAuth
+            },
+            body: json.encode(body))
+        .timeout(
+          const Duration(seconds: 100),
+        );
+    print(apisnap);
+    if (response.statusCode == 200) {
+      final rooms = json.decode(response.body);
+      // print(rooms['va_numbers']);
+      print(rooms);
       return rooms;
     }
   }

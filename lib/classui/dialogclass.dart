@@ -12,7 +12,9 @@ import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/payment/paymentsugestionclass.dart';
+import 'package:posq/classui/payment/paymenttablet/paymentsuccesstab.dart';
 import 'package:posq/classui/searchwidget.dart';
+import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/category/classcategorylist.dart';
@@ -26,6 +28,7 @@ import 'package:posq/userinfo.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class DialogClass1 extends StatefulWidget {
   final bool fromreopen;
@@ -766,17 +769,19 @@ class _DialogRoleStaffState extends State<DialogRoleStaff>
                 child: Text('Cancel')),
           ],
           content: Container(
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width * 0.8,
             child: ListView.builder(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(data[index].joblevel),
-                  onTap: () {
-                    selectedRole.add(data[index]);
-                    Navigator.of(context).pop(selectedRole);
-                  },
+                return Card(
+                  child: ListTile(
+                    title: Text(data[index].joblevel),
+                    onTap: () {
+                      selectedRole.add(data[index]);
+                      Navigator.of(context).pop(selectedRole);
+                    },
+                  ),
                 );
               },
             ),
@@ -804,6 +809,7 @@ class _DialogOutletStaffState extends State<DialogOutletStaff>
   List<dynamic> selectedRole = [];
   var selectedindex;
   List<bool> _value = [];
+  List<String> selectedoutlet = [];
   bool selected = false;
   List<dynamic> data = [
     {
@@ -826,6 +832,7 @@ class _DialogOutletStaffState extends State<DialogOutletStaff>
       }
     });
     setState(() {});
+
     print(data);
     return data;
   }
@@ -856,23 +863,28 @@ class _DialogOutletStaffState extends State<DialogOutletStaff>
                 child: Text('Cancel')),
           ],
           content: Container(
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width * 0.8,
             child: ListView.builder(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  dense: true,
-                  title: Text(data[index]['outletdesc']),
-                  onTap: () {
-                    if (data[index]['outletcd'] == 'All') {
-                      // selectedRole.add(data);
-                      Navigator.of(context).pop(data);
-                    } else {
-                      selectedRole.add(data[index]);
-                      Navigator.of(context).pop(selectedRole);
-                    }
-                  },
+                return Card(
+                  child: ListTile(
+                    dense: true,
+                    title: Text(data[index]['outletdesc']),
+                    onTap: () {
+                      if (data[index]['outletcd'] == 'All') {
+                        // selectedRole.add(data);
+                        for (var x in data) {
+                          selectedoutlet.add(x['outletcode']);
+                        }
+                        Navigator.of(context).pop(selectedoutlet);
+                      } else {
+                        selectedoutlet.add(data[index]['outletcode']);
+                        Navigator.of(context).pop(selectedoutlet);
+                      }
+                    },
+                  ),
                 );
               },
             ),
@@ -939,15 +951,21 @@ class _DialogListStaffState extends State<DialogListStaff>
                 child: Text('Cancel')),
           ],
           content: Container(
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width * 0.8,
             child: ListView.builder(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  dense: true,
-                  title: Text(data[index]['usercd']),
-                  onTap: () {},
+                return Card(
+                  child: ListTile(
+                    dense: true,
+                    title: Text(data[index]['usercd']),
+                    onTap: () {
+                      Navigator.of(context).pop(SelectedPegawai(
+                          usercode: data[index]['usercd'],
+                          email: data[index]['email']));
+                    },
+                  ),
                 );
               },
             ),
@@ -1559,7 +1577,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             prnkitchen: 0,
             prnkitchentm: '10:10',
             confirmed: '1',
-            description: widget.controller.text,
+            description: 'refund mode',
             taxpct: 0,
             svchgpct: 0,
             statustrans: 'prosess',
@@ -2149,7 +2167,7 @@ class _DialogClassRefundorderState extends State<DialogClassRefundorder> {
                     )),
               ],
             )),
-        title: Text('Refund Transaksi'),
+        title: Text('Cancel Transaksi'),
         actions: <Widget>[
           TextButton(
               onPressed: () {
@@ -2542,14 +2560,27 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
   var formattedDate;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
+  
+  String initialUrl = 'https://google.com'; // Replace with your desired URL
+  bool isLoading = true;
+  String trnotemp='';
 
   @override
   void initState() {
     super.initState();
+    trnotemp= '${widget.trno}-$now';
     formattedDate = formatter.format(now);
+    PaymentGate.snapWeb(widget.trno, widget.result.toString()).then((value) {
+      print('test $value');
+    });
   }
 
-  Future<int> insertIafjrnhd() async {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<dynamic> insertIafjrnhd() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
         transno: widget.trno,
@@ -2563,7 +2594,9 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
             now.second.toString(),
         disccd: widget.discbyamount == true ? 'By Amount' : 'By Percent',
         pax: '1',
-        pymtmthd: 'EWALLET',
+        pymtmthd: 'QRIS',
+        trdesc2: 'QRIS',
+        trdesc: 'QRIS',
         ftotamt: double.parse(widget.result.toString()),
         totalamt: double.parse(widget.result.toString()),
         framtrmn: double.parse(widget.result.toString()),
@@ -2571,7 +2604,8 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
         compcd: widget.compcd.toString(),
         compdesc: widget.compdesc.toString(),
         active: 1,
-        usercrt: 'Admin',
+        usercrt: usercd,
+        docno: trnotemp,
         slstp: '1',
         currcd: 'IDR');
     IafjrnhdClass listiafjrnhd = iafjrnhd;
@@ -2579,60 +2613,51 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
     return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
   }
 
+  String qr =
+      'https://api.midtrans.com/v2/qris/270c2c13-a548-417b-9a30-06abe9901bfd/qr-code';
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
+          insetPadding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.zero,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+         shape: RoundedRectangleBorder(
+    borderRadius:
+      BorderRadius.all(
+        Radius.circular(10.0))),
         content: Form(
             key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: QrImage(
-                        size: MediaQuery.of(context).size.height * 0.7,
-                        version: QrVersions.auto,
-                        data: widget.url.toString(),
-                      ),
-                    ),
-                  ],
-                ),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 1,
+              width: MediaQuery.of(context).size.width * 1.1,
+              child: FutureBuilder(
+                  future: PaymentGate.snapWeb(
+                      trnotemp, widget.result.toString()),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      print(snapshot.hasData);
+                      // String url ='https://api.midtrans.com/v2/qris/${snapshot.data['token']}/qr-code';
+                      // print(url);
+                      String url = snapshot.data['redirect_url'];
+                      // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
 
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text('copy Text'),
-                //     IconButton(
-                //       icon: Icon(Icons.copy),
-                //       iconSize: 20,
-                //       color: Colors.green,
-                //       splashColor: Colors.purple,
-                //       onPressed: () {
-                //         Clipboard.setData(
-                //             ClipboardData(text: widget.url.toString()));
-                //       },
-                //     ),
-                //   ],
-                // ),
-              ],
+                      return WebView(
+                        initialUrl: '$url#/gopay-qris',
+                        // initialUrl: 'https://www.google.com',
+                        // initialUrl: '$url',
+                        javascriptMode: JavascriptMode.unrestricted,
+                        onPageFinished: (String url) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator());
+                  }),
             )),
-        title: Container(
-          alignment: Alignment.topCenter,
-          height: MediaQuery.of(context).size.height * 0.07,
-          width: MediaQuery.of(context).size.width * 0.4,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/qris.png'), fit: BoxFit.fitHeight),
-            // shape: BoxShape.circle,
-          ),
-        ),
         actions: <Widget>[
           TextButton(
               onPressed: () async {
@@ -2658,7 +2683,184 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                   );
                 });
               },
-              child: Text('OK!'))
+              child: Text('Lanjutkan!',style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)))
+        ],
+      );
+    });
+  }
+}
+
+
+class DialogClassEwalletTab extends StatefulWidget {
+  final String trno;
+  final String pscd;
+  late num? result;
+  final num balance;
+  final String? outletname;
+  final Outlet? outletinfo;
+  final bool? discbyamount;
+  final String compcd;
+  final String? compdesc;
+  final String? url;
+  final bool? fromtrfbank;
+  final List<IafjrndtClass> datatrans;
+  final bool fromsaved;
+  final bool fromsplit;
+  final String guestname;
+  DialogClassEwalletTab({
+    Key? key,
+    required this.trno,
+    required this.pscd,
+    required this.balance,
+    this.outletname,
+    this.outletinfo,
+    this.discbyamount,
+    this.result,
+    required this.compcd,
+    required this.compdesc,
+    this.url,
+    this.fromtrfbank,
+    required this.datatrans,
+    required this.fromsaved,
+    required this.fromsplit,
+    required this.guestname,
+  }) : super(key: key);
+
+  @override
+  State<DialogClassEwalletTab> createState() => _DialogClassEwalletTabState();
+}
+
+class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
+  TextEditingController docno = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late DatabaseHandler handler;
+  var formattedDate;
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  
+  String initialUrl = 'https://google.com'; // Replace with your desired URL
+  bool isLoading = true;
+  String trnotemp='';
+
+  @override
+  void initState() {
+    super.initState();
+    trnotemp= '${widget.trno}-$now';
+    formattedDate = formatter.format(now);
+    PaymentGate.snapWeb(widget.trno, widget.result.toString()).then((value) {
+      print('test $value');
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<dynamic> insertIafjrnhd() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: widget.trno,
+        transno1: widget.trno,
+        split: 1,
+        pscd: widget.pscd,
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
+        disccd: widget.discbyamount == true ? 'By Amount' : 'By Percent',
+        pax: '1',
+        pymtmthd: 'QRIS',
+        trdesc2: 'QRIS',
+        trdesc: 'QRIS',
+        ftotamt: double.parse(widget.result.toString()),
+        totalamt: double.parse(widget.result.toString()),
+        framtrmn: double.parse(widget.result.toString()),
+        amtrmn: double.parse(widget.result.toString()),
+        compcd: widget.compcd.toString(),
+        compdesc: widget.compdesc.toString(),
+        active: 1,
+        usercrt: usercd,
+        docno: trnotemp,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
+  }
+
+  String qr =
+      'https://api.midtrans.com/v2/qris/270c2c13-a548-417b-9a30-06abe9901bfd/qr-code';
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          insetPadding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.zero,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+         shape: RoundedRectangleBorder(
+    borderRadius:
+      BorderRadius.all(
+        Radius.circular(10.0))),
+        content: Form(
+            key: _formKey,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 1,
+              width: MediaQuery.of(context).size.width * 1.1,
+              child: FutureBuilder(
+                  future: PaymentGate.snapWeb(
+                      trnotemp, widget.result.toString()),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      print(snapshot.hasData);
+                      // String url ='https://api.midtrans.com/v2/qris/${snapshot.data['token']}/qr-code';
+                      // print(url);
+                      String url = snapshot.data['redirect_url'];
+                      // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
+
+                      return WebView(
+                        initialUrl: '$url#/gopay-qris',
+                        // initialUrl: 'https://www.google.com',
+                        // initialUrl: '$url',
+                        javascriptMode: JavascriptMode.unrestricted,
+                        onPageFinished: (String url) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator());
+                  }),
+            )),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () async {
+                await insertIafjrnhd().whenComplete(() {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassPaymetSucsessTabs(
+                              guestname: widget.guestname,
+                              fromsplit: widget.fromsplit,
+                              fromsaved: widget.fromsaved,
+                              datatrans: widget.datatrans,
+                              frombanktransfer: false,
+                              cash: false,
+                              outletinfo: widget.outletinfo,
+                              outletname: widget.outletname,
+                              outletcd: widget.pscd,
+                              amount: double.parse(widget.result.toString()),
+                              paymenttype: widget.compdesc.toString(),
+                              trno: widget.trno.toString(),
+                              trdt: formattedDate,
+                            )),
+                  );
+                });
+              },
+              child: Text('Lanjutkan!',style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)))
         ],
       );
     });

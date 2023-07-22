@@ -217,7 +217,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
               ":" +
               now.second.toString(),
           confirmed: '1',
-          description: widget.item.itemdesc,
+          description: 'refund mode',
           taxpct: widget.item.taxpct,
           svchgpct: widget.item.svchgpct,
           statustrans: 'prosess',
@@ -290,7 +290,12 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
             await getitemOutlet(widget.item.itemcode).then((value) async {
               print('ini checking data $value');
               if (value.first.stock! > 0) {
-                await insertIafjrndt();
+                if (refundmode == true) {
+                  insertIafjrndtRefundMod();
+                } else {
+                  await insertIafjrndt();
+                }
+
                 ClassRetailMainMobile.of(context)!.string = result!;
               } else {
                 Toast.show("Kamu Kehabisan Stock",
@@ -299,29 +304,39 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
             });
             // DetailTransTabs.of(context)!.refreshtrans = result!;
           } else if (widget.item.trackstock == 0) {
-            await insertIafjrndt();
+            if (refundmode == true) {
+              await insertIafjrndtRefundMod();
+              ClassRetailMainMobile.of(context)!.string = result!;
+            } else {
+              await insertIafjrndt();
+              ClassRetailMainMobile.of(context)!.string = result!;
+            }
 
-            ClassRetailMainMobile.of(context)!.string = result!;
             // DetailTransTabs.of(context)!.refreshtrans = result!;
           } else {
             Toast.show("Kamu Kehabisan Stock",
                 duration: Toast.lengthLong, gravity: Toast.center);
           }
         } else {
-          var result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ClassInputCondimentTab(
-                      guestname: widget.guestname!,
-                      fromedit: false,
-                      itemseq: widget.itemseq,
-                      outletcd: pscd,
-                      transno: widget.trno,
-                      data: widget.item,
-                    )),
-          );
-          print("ini result $result");
-          ClassRetailMainMobile.of(context)!.string = result!;
+          if (refundmode == false) {
+            var result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ClassInputCondimentTab(
+                        guestname: widget.guestname!,
+                        fromedit: false,
+                        itemseq: widget.itemseq,
+                        outletcd: pscd,
+                        transno: widget.trno,
+                        data: widget.item,
+                      )),
+            );
+            print("ini result $result");
+            ClassRetailMainMobile.of(context)!.string = result!;
+          } else {
+            Toast.show("Mode ini belum aktif",
+                duration: Toast.lengthLong, gravity: Toast.center);
+          }
         }
         widget.refreshdata();
       },

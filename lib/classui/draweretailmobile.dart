@@ -57,7 +57,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         widget.outletname.toString(),
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -238,7 +238,14 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             title: const Text('Toko Online'),
             onTap: accesslist.contains('tokoonline') == true
                 ? () {
-                    Navigator.pop(context);
+                    Fluttertoast.showToast(
+                        msg: "Segera hadir",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   }
                 : () {
                     Fluttertoast.showToast(
@@ -282,10 +289,19 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         title: Text('Integrasi '),
                         onTap: accesslistuser.contains('integrasi') == true
                             ? () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return ClassListIntegrasi();
-                                }));
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (BuildContext context) {
+                                //   return ClassListIntegrasi();
+                                // }));
+                                Fluttertoast.showToast(
+                                    msg: "Oops Sedang Maintenence",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
                               }
                             : () {
                                 Fluttertoast.showToast(

@@ -66,7 +66,7 @@ class _SummaryTodayTabsState extends State<SummaryTodayTabs> {
                                   '${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )
-                              : Text('0'),
+                              : Text('Rp 0'),
                         ),
                       ),
                     ),
@@ -105,7 +105,7 @@ class _SummaryTodayTabsState extends State<SummaryTodayTabs> {
                           dense: true,
                           title: Text('Penjualan Rata Rata'),
                           trailing: Text(
-                            '${CurrencyFormat.convertToIdr(widget.penjualanratarata[0]['totalaftdisc'], 0)}',
+                            widget.penjualanratarata.isNotEmpty? '${CurrencyFormat.convertToIdr(widget.penjualanratarata[0]['totalaftdisc'], 0)}':'Rp 0',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

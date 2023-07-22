@@ -23,7 +23,7 @@ class _ResetPasswordClassState extends State<ResetPasswordClass> {
       body: Center(
         child: Container(
           alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.8,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

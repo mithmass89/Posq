@@ -261,6 +261,23 @@ class _AppsMobileState extends State<AppsMobile> {
                                                 color: Colors.white,
                                               )),
                                         ),
+                                        // SizedBox(
+                                        //   height: MediaQuery.of(context)
+                                        //           .size
+                                        //           .height *
+                                        //       0.01,
+                                        // ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.65,
+                                          child: Text(statusabsen,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                              )),
+                                        ),
                                       ],
                                     )),
                                 SizedBox(
@@ -417,7 +434,7 @@ class _AppsMobileState extends State<AppsMobile> {
                             children: [
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.040,
+                                    MediaQuery.of(context).size.height * 0.038,
                                 width: MediaQuery.of(context).size.width * 1,
                               ),
                               Row(
@@ -484,6 +501,17 @@ class _AppsMobileState extends State<AppsMobile> {
                                                     .width *
                                                 0.65,
                                             child: Text(usercd,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                )),
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.65,
+                                            child: Text(statusabsen,
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.white,

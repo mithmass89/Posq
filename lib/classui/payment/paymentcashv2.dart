@@ -151,6 +151,34 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
     return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
   }
 
+  Future<dynamic> insertIafjrnhdRefundMode() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: '${widget.trno}',
+        transno1: widget.trno!,
+        split: widget.lastsplit,
+        pscd: '${widget.pscd}',
+        trtm: '00:00',
+        disccd: '',
+        pax: '1',
+        pymtmthd: 'CASH',
+        ftotamt: double.parse(widget.amountcash.text),
+        totalamt: double.parse(widget.amountcash.text),
+        framtrmn: double.parse(widget.amountcash.text),
+        amtrmn: double.parse(widget.amountcash.text),
+        trdesc: 'refund mode',
+        trdesc2: 'refund mode',
+        compcd: 'CASH',
+        compdesc: 'CASH',
+        active: 1,
+        usercrt: usercd,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
+  }
+
   Future<dynamic> insertIafjrnhdRefund() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
@@ -169,6 +197,34 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         compcd: 'REFUND',
         compdesc: 'REFUND',
         trdesc: 'Refund cash ',
+        trdesc2: 'Refund cash ',
+        active: 1,
+        usercrt: usercd,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
+  }
+
+  Future<dynamic> insertIafjrnhdRefundRefunMode() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: '${widget.trno}',
+        transno1: widget.trno!,
+        split: widget.lastsplit,
+        pscd: '${widget.pscd}',
+        trtm: '00:00',
+        disccd: '',
+        pax: '1',
+        pymtmthd: 'REFUND',
+        ftotamt: -widget.result.toDouble(),
+        totalamt: -widget.result.toDouble(),
+        framtrmn: -widget.result.toDouble(),
+        amtrmn: -widget.result.toDouble(),
+        compcd: 'REFUND',
+        compdesc: 'REFUND',
+        trdesc: 'refund mode',
         trdesc2: 'Refund cash ',
         active: 1,
         usercrt: usercd,
@@ -251,9 +307,16 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 //// checking balance //////
                 onpressed: widget.result <= 0 || widget.result == 0
                     ? () async {
-                        await insertIafjrnhd().whenComplete(() {
-                          setState(() {});
-                        });
+                        if (refundmode == false) {
+                          await insertIafjrnhd().whenComplete(() {
+                            setState(() {});
+                          });
+                        } else {
+                          await insertIafjrnhdRefundMode().whenComplete(() {
+                            setState(() {});
+                          });
+                        }
+
                         pesanPaymentTersimpan();
                         if (widget.result == 0) {
                           Navigator.pushReplacement(
@@ -288,7 +351,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                               builder: (BuildContext context) {
                                 return Builder(builder: (context) {
                                   return PasswordDialog(
-                                       guestname: widget.guestname,
+                                    guestname: widget.guestname,
                                     frompaymentmobile: true,
                                     outletcd: pscd,
                                     outletinfo: widget.outletinfo,
@@ -323,29 +386,55 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                               },
                             );
                           } else {
-                            insertIafjrnhdRefund();
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ClassPaymetSucsessMobile(
-                                        guestname: widget.guestname,
-                                        fromsplit: widget.fromsplit,
-                                        fromsaved: widget.fromsaved,
-                                        datatrans: widget.datatrans,
-                                        frombanktransfer: false,
-                                        cash: true,
-                                        outletinfo: widget.outletinfo,
-                                        outletname:
-                                            widget.outletinfo.outletname,
-                                        outletcd: widget.pscd,
-                                        amount: double.parse(
-                                            widget.amountcash.text),
-                                        paymenttype: 'Cash',
-                                        trno: widget.trno.toString(),
-                                        trdt: formattedDate,
-                                      )),
-                            );
+                            if (refundmode == false) {
+                              insertIafjrnhdRefund();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ClassPaymetSucsessMobile(
+                                          guestname: widget.guestname,
+                                          fromsplit: widget.fromsplit,
+                                          fromsaved: widget.fromsaved,
+                                          datatrans: widget.datatrans,
+                                          frombanktransfer: false,
+                                          cash: true,
+                                          outletinfo: widget.outletinfo,
+                                          outletname:
+                                              widget.outletinfo.outletname,
+                                          outletcd: widget.pscd,
+                                          amount: double.parse(
+                                              widget.amountcash.text),
+                                          paymenttype: 'Cash',
+                                          trno: widget.trno.toString(),
+                                          trdt: formattedDate,
+                                        )),
+                              );
+                            } else {
+                              insertIafjrnhdRefundRefunMode();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ClassPaymetSucsessMobile(
+                                          guestname: widget.guestname,
+                                          fromsplit: widget.fromsplit,
+                                          fromsaved: widget.fromsaved,
+                                          datatrans: widget.datatrans,
+                                          frombanktransfer: false,
+                                          cash: true,
+                                          outletinfo: widget.outletinfo,
+                                          outletname:
+                                              widget.outletinfo.outletname,
+                                          outletcd: widget.pscd,
+                                          amount: double.parse(
+                                              widget.amountcash.text),
+                                          paymenttype: 'Cash',
+                                          trno: widget.trno.toString(),
+                                          trdt: formattedDate,
+                                        )),
+                              );
+                            }
                           }
 
                           await widget.callback();

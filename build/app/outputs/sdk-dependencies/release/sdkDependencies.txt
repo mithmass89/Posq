@@ -1094,6 +1094,16 @@ library {
 }
 library {
   maven_library {
+    groupId: "androidx.biometric"
+    artifactId: "biometric"
+    version: "1.1.0"
+  }
+  digests {
+    sha256: "\'\f{}\231\224-^\301\335\210YNFH\376\263=\2161\330\303\302\253#!\324\235\232\275\374\037"
+  }
+}
+library {
+  maven_library {
     groupId: "com.android.billingclient"
     artifactId: "billing"
     version: "5.1.0"
@@ -1174,7 +1184,7 @@ library {
 }
 library {
   digests {
-    sha256: "1\tR\324\205Q\210\366\242\261\276\223\251\276\024y\312\023Y\240\277a\246\225\221}\261sp\225\225Q"
+    sha256: "\273\0020\351\373\241\272\354I8*\206l5?\031\270&\b[\225\025\254\022\300\330\277\317\036_\321\205"
   }
 }
 library_dependencies {
@@ -1857,19 +1867,29 @@ library_dependencies {
   library_dep_index: 109
 }
 library_dependencies {
-  library_index: 114
+  library_index: 110
+  library_dep_index: 49
+  library_dep_index: 71
+  library_dep_index: 36
+  library_dep_index: 35
+  library_dep_index: 16
+  library_dep_index: 20
+  library_dep_index: 47
+}
+library_dependencies {
+  library_index: 115
   library_dep_index: 16
 }
 library_dependencies {
-  library_index: 118
+  library_index: 119
 }
 module_dependencies {
   module_name: "base"
   dependency_index: 0
   dependency_index: 1
-  dependency_index: 115
   dependency_index: 52
   dependency_index: 116
   dependency_index: 117
   dependency_index: 118
+  dependency_index: 119
 }

@@ -22,6 +22,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
   final TextEditingController password = TextEditingController();
   final TextEditingController confirmpassword = TextEditingController();
   final TextEditingController fullname = TextEditingController();
+  final TextEditingController corporate = TextEditingController();
   final TextEditingController jabatan =
       TextEditingController(text: 'Pilih Role');
   final TextEditingController outlet =
@@ -57,164 +58,167 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Setting Pegawai'),
       ),
-      body: Form(
-        key: _formKey,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: 10,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.09,
+                child: TextFieldMobile2(
+                  hint: 'Nama Karyawan',
+                  controller: fullname,
+                  typekeyboard: TextInputType.text,
+                  onChanged: (value) {},
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.09,
-                  child: TextFieldMobile2(
-                    hint: 'Nama Karyawan',
-                    controller: fullname,
-                    typekeyboard: TextInputType.text,
-                    onChanged: (value) {},
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.09,
-                  child: TextFieldMobile2(
-                    hint: 'E-mail',
-                    controller: email,
-                    typekeyboard: TextInputType.text,
-                    onChanged: (value) async {
-                      await ClassApi.checkEmailExist(email.text).then((value) {
-                        if (value.isNotEmpty) {
-                          print(value);
-                          isRegistered = true;
-                          Fluttertoast.showToast(
-                              msg: "Email sudah terdaftar",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        } else {
-                          print(value);
-                          isRegistered = false;
-                        }
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.09,
-                  child: TextFieldMobile2(
-                    hint: 'password',
-                    controller: password,
-                    typekeyboard: TextInputType.text,
-                    onChanged: (value) {
-                      if (confirmpassword.text == password.text) {
-                        passwordisSame = true;
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.09,
+                child: TextFieldMobile2(
+                  hint: 'E-mail',
+                  controller: email,
+                  typekeyboard: TextInputType.text,
+                  onChanged: (value) async {
+                    await ClassApi.checkEmailExist(email.text).then((value) {
+                      if (value.isNotEmpty) {
+                        print(value);
+                        isRegistered = true;
+                        Fluttertoast.showToast(
+                            msg: "Email sudah terdaftar",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                       } else {
-                        passwordisSame = false;
+                        print(value);
+                        isRegistered = false;
                       }
-                    },
-                  ),
+                    });
+                  },
                 ),
-                SizedBox(
-                  height: 10,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.09,
+                child: TextFieldMobile2(
+                  hint: 'password',
+                  controller: password,
+                  typekeyboard: TextInputType.text,
+                  onChanged: (value) {
+                    if (confirmpassword.text == password.text) {
+                      passwordisSame = true;
+                    } else {
+                      passwordisSame = false;
+                    }
+                  },
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.09,
-                  child: TextFieldMobile2(
-                    hint: 'confirm password',
-                    controller: confirmpassword,
-                    typekeyboard: TextInputType.text,
-                    onChanged: (value) {
-                      if (confirmpassword.text == password.text) {
-                        passwordisSame = true;
-                      } else {
-                        passwordisSame = false;
-                      }
-                    },
-                  ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.09,
+                child: TextFieldMobile2(
+                  hint: 'confirm password',
+                  controller: confirmpassword,
+                  typekeyboard: TextInputType.text,
+                  onChanged: (value) {
+                    if (confirmpassword.text == password.text) {
+                      passwordisSame = true;
+                    } else {
+                      passwordisSame = false;
+                    }
+                  },
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFieldMobileButton(
-                    hint: 'Pilih Role',
-                    controller: jabatan,
-                    typekeyboard: TextInputType.none,
-                    onChanged: (value) {},
-                    ontap: () async {
-                      selectedRoles = [];
-                      selectedRoles = await showDialog(
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFieldMobileButton(
+                  hint: 'Pilih Role',
+                  controller: jabatan,
+                  typekeyboard: TextInputType.none,
+                  onChanged: (value) {},
+                  ontap: () async {
+                    selectedRoles = [];
+                    selectedRoles = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DialogRoleStaff();
+                        });
+                    jabatan.text = selectedRoles![0].joblevel;
+                    await getAccessRole(selectedOutlet!);
+                    setState(() {});
+                  }),
+              TextFieldMobileButton(
+                  hint: 'Outlet',
+                  controller: outlet,
+                  typekeyboard: TextInputType.none,
+                  onChanged: (value) {},
+                  ontap: () async {
+                    if (jabatan.text != 'Pilih Role') {
+                      selectedOutlet = [];
+                      selectedOutlet = await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return DialogRoleStaff();
+                            return DialogOutletStaff();
                           });
-                      jabatan.text = selectedRoles![0].joblevel;
+
+                      outlet.text = selectedOutlet![0]['outletdesc']!;
+                      if (selectedOutlet![0]['outletcode'] == 'All') {
+                        selectedOutlet!.removeAt(0);
+                      }
+                      print(
+                          'ini outlet terpilih ${selectedOutlet![0]['outletdesc']}');
+                      // print(selectedOutlet);
+                      for (var x in selectedOutlet!) {
+                        for (var z in accesspegawai) {
+                          z.outletcd = x['outletcode'];
+                          z.usercode = email.text;
+                        }
+                      }
+                      // accesspegawai=[];
+                      print(accesspegawai.length);
                       await getAccessRole(selectedOutlet!);
                       setState(() {});
-                    }),
-                TextFieldMobileButton(
-                    hint: 'Outlet',
-                    controller: outlet,
-                    typekeyboard: TextInputType.none,
-                    onChanged: (value) {},
-                    ontap: () async {
-                      if (jabatan.text != 'Pilih Role') {
-                        selectedOutlet = [];
-                        selectedOutlet = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogOutletStaff();
-                            });
-                        outlet.text = selectedOutlet![0]['outletdesc']!;
-                        selectedOutlet!.removeAt(0);
-                        // print(selectedOutlet);
-                        for (var x in selectedOutlet!) {
-                          for (var z in accesspegawai) {
-                            z.outletcd = x['outletcode'];
-                            z.usercode = email.text;
-                          }
-                        }
-                        // accesspegawai=[];
-                        print(accesspegawai.length);
-                        await getAccessRole(selectedOutlet!);
-                        setState(() {});
-                      } else if (email.text.isEmpty) {
-                        Fluttertoast.showToast(
-                            msg: "isi email karyawan dulu",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Pilih Role dulu",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    }),
-              ],
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.01,
-              left: MediaQuery.of(context).size.height * 0.02,
-              child: ButtonNoIcon2(
+                    } else if (email.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "isi email karyawan dulu",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Pilih Role dulu",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              ButtonNoIcon2(
                 color: Colors.orange,
                 textcolor: Colors.white,
                 name: 'Buat Staff',
@@ -249,8 +253,10 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                           password.text,
                           jabatan.text,
                           subscribtion,
-                          paymentcheck);
-                      await ClassApi.Update7DayActive(expireddate!, email.text);
+                          paymentcheck,
+                          corporate.text);
+                      await ClassApi.Update7DayActive(
+                          expireddate!, email.text, referrals, telp);
                       for (var x in selectedOutlet!) {
                         await ClassApi.insertAccessOutlet(
                             x['outletcd'], email.text);
@@ -264,8 +270,8 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                   }
                 },
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

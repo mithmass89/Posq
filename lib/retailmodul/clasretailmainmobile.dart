@@ -612,7 +612,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 controller: controller,
                                 children: [
                                   ClassRetailManualMobile(
-                                      guestname: guestname == ''
+                                      guestname: guestname == '' 
                                           ? randomNumber.toString()
                                           : guestname!,
                                       refreshdata: getDataSlide,
@@ -723,23 +723,36 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                     ? Colors.grey
                                                     : Colors.red,
                                                 splashColor: Colors.purple,
-                                                onPressed: () async {
-                                                  refundmode = !refundmode;
-                                                  // showDialog(
-                                                  //   context: context,
-                                                  //   builder:
-                                                  //       (BuildContext context) {
-                                                  //     return DialogClassRefundorder(
-                                                  //       fromsaved:
-                                                  //           widget.fromsaved,
-                                                  //       outletcd: pscd,
-                                                  //       outletinfo:
-                                                  //           widget.outletinfo,
-                                                  //       trno: widget.trno!,
-                                                  //     );
-                                                  //   },
-                                                  // );
-                                                },
+                                                onPressed: accesslistuser
+                                                            .contains(
+                                                                'refund') ==
+                                                        true
+                                                    ? () async {
+                                                        refundmode =
+                                                            !refundmode;
+                                                        // showDialog(
+                                                        //   context: context,
+                                                        //   builder:
+                                                        //       (BuildContext context) {
+                                                        //     return DialogClassRefundorder(
+                                                        //       fromsaved:
+                                                        //           widget.fromsaved,
+                                                        //       outletcd: pscd,
+                                                        //       outletinfo:
+                                                        //           widget.outletinfo,
+                                                        //       trno: widget.trno!,
+                                                        //     );
+                                                        //   },
+                                                        // );
+                                                      }
+                                                    : () async {
+                                                        Toast.show(
+                                                            "Tidak punya akses refund",
+                                                            duration: Toast
+                                                                .lengthLong,
+                                                            gravity:
+                                                                Toast.center);
+                                                      },
                                               )),
                                           Expanded(
                                               flex: 1,
@@ -757,6 +770,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                           context) {
                                                         return DialogCustomerList();
                                                       });
+                                                      if(guestname==null){
+                                                        guestname='';
+                                                      }
                                                 },
                                               )),
                                         ],
@@ -1109,12 +1125,36 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                         // row has two child icon and text
                                         child: Row(
                                           children: [
-                                            Icon(Icons.money_off),
+                                            Icon(
+                                              Icons.money_off,
+                                              color: refundmode == false
+                                                  ? Colors.black
+                                                  : Colors.red,
+                                            ),
                                             SizedBox(
                                               // sized box with width 10
                                               width: 10,
                                             ),
                                             Text("Refund")
+                                          ],
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 3,
+                                        // row has two child icon and text
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.cancel,
+                                              color: refundmode == false
+                                                  ? Colors.black
+                                                  : Colors.red,
+                                            ),
+                                            SizedBox(
+                                              // sized box with width 10
+                                              width: 10,
+                                            ),
+                                            Text("Void transaksi")
                                           ],
                                         ),
                                       ),
@@ -1141,62 +1181,43 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                           widget.outletinfo,
                                                     )));
                                       } else if (value == 2) {
-                                        refundmode = !refundmode;
-                                        setState(() {});
-                                        // accesslistuser
-                                        //             .contains('canceltrans') ==
-                                        //         true
-                                        //     ? showDialog(
-                                        //         context: context,
-                                        //         builder:
-                                        //             (BuildContext context) {
-                                        //           return DialogClassRefundorder(
-                                        //             fromsaved: widget.fromsaved,
-                                        //             outletcd: pscd,
-                                        //             outletinfo:
-                                        //                 widget.outletinfo,
-                                        //             trno: widget.trno!,
-                                        //           );
-                                        //         },
-                                        //       )
-                                        //     : Toast.show(
-                                        //         "Tidak punya akses refund",
-                                        //         duration: Toast.lengthLong,
-                                        //         gravity: Toast.center);
+                                        if (accesslistuser.contains('refund') ==
+                                            true) {
+                                          refundmode = !refundmode;
+                                          setState(() {});
+                                          Toast.show("Mode refund $refundmode ",
+                                              duration: Toast.lengthLong,
+                                              gravity: Toast.center);
+                                        } else {
+                                          Toast.show("Tidak punya akses refund",
+                                              duration: Toast.lengthLong,
+                                              gravity: Toast.center);
+                                        }
+                                      } else if (value == 3) {
+                                        accesslistuser
+                                                    .contains('canceltrans') ==
+                                                true
+                                            ? showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return DialogClassRefundorder(
+                                                    fromsaved: widget.fromsaved,
+                                                    outletcd: pscd,
+                                                    outletinfo:
+                                                        widget.outletinfo,
+                                                    trno: widget.trno!,
+                                                  );
+                                                },
+                                              )
+                                            : Toast.show(
+                                                "Tidak punya akses refund",
+                                                duration: Toast.lengthLong,
+                                                gravity: Toast.center);
                                       }
                                     },
                                   ),
                                 ),
-                                // Container(
-                                //   color: Color.fromARGB(255, 0, 129, 119),
-                                //   alignment: Alignment.center,
-                                //   width:
-                                //       MediaQuery.of(context).size.width * 0.05,
-                                //   height: MediaQuery.of(context).size.height *
-                                //       0.056,
-                                //   child: GestureDetector(
-                                //     child: Icon(
-                                //       Icons.list,
-                                //       size: 22,
-                                //       color: Colors.white,
-                                //     ),
-                                //     onTap: () async {
-                                //       await checkSF();
-                                //       await Navigator.push(
-                                //           context,
-                                //           MaterialPageRoute(
-                                //               builder: (context) =>
-                                //                   ClassSavedTransactionTab(
-                                //                     trno: widget.trno!,
-                                //                     pscd: widget
-                                //                         .outletinfo.alamat,
-                                //                     outletinfo:
-                                //                         widget.outletinfo,
-                                //                   )));
-                                //     },
-                                //   ),
-                                // ),
-
                                 Container(
                                     color: Color.fromARGB(255, 0, 160, 147),
                                     alignment: Alignment.center,

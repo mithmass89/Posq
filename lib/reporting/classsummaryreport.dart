@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -14,7 +15,6 @@ import 'package:posq/reporting/classringkasan.dart';
 import 'package:posq/reporting/classringkasancombine.dart';
 import 'package:posq/reporting/detailitemterjaulmobile.dart';
 import 'package:posq/userinfo.dart';
-import 'package:toast/toast.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MyBuilder = void Function(
@@ -88,7 +88,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     fromdatenamed = formattedDate;
     todatenamed = formattedDate;
     _controllerdate.text = '$fromdatenamed - $todatenamed';
-    ToastContext().init(context);
+
     selected = 'Hari ini';
   }
 
@@ -426,7 +426,16 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                     color: Colors.white,
                     textcolor: Colors.orange,
                     name: 'Print',
-                    onpressed: () {},
+                    onpressed: () {
+                      Fluttertoast.showToast(
+                          msg: "Segera hadir",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    },
                   ),
                   ButtonNoIcon2(
                     width: MediaQuery.of(context).size.width * 0.35,
@@ -435,12 +444,20 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                     textcolor: Colors.white,
                     name: 'Kirim Laporan',
                     onpressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return ClassKirimLaporan(
-                          datapayment: listdatapayment,
-                        );
-                      }));
+                      Fluttertoast.showToast(
+                          msg: "Segera hadir",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      // Navigator.of(context).push(
+                      //     MaterialPageRoute(builder: (BuildContext context) {
+                      //   return ClassKirimLaporan(
+                      //     datapayment: listdatapayment,
+                      //   );
+                      // }));
                     },
                   ),
                 ],

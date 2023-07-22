@@ -4,6 +4,7 @@ import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
+import 'package:posq/userinfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -39,6 +40,7 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
     serverkey.text = midtranskey.getString('serverkey')!;
     setState(() {
       serverkeymidtrans = serverkey.text;
+      midkey=serverkeymidtrans;
     });
   }
 
@@ -95,7 +97,7 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
                     splashColor: Colors.purple,
                     onPressed: () {
                       Clipboard.setData(ClipboardData(
-                          text: 'SB-Mid-server-J4XJjwc-pTBQYsY4hUFztCP-'));
+                          text: 'Mid-server-qmj2d89j1ghmOZWkj1dYrJtg'));
                       Toast.show("Clipboard Copy",
                           duration: Toast.lengthLong, gravity: Toast.center);
                     },

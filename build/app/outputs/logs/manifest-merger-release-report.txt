@@ -1,14 +1,15 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
-INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
-INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
-INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
+INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
+INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
+INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
 MERGED from [:firebase_dynamic_links] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_dynamic_links\intermediates\library_manifest\release\AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_core] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_core\intermediates\library_manifest\release\AndroidManifest.xml:2:1-15:12
 MERGED from [:file_picker] E:\posplay2\posplay2\posplay\posplay\posq\build\file_picker\intermediates\library_manifest\release\AndroidManifest.xml:2:1-17:12
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\release\AndroidManifest.xml:2:1-21:12
+MERGED from [:local_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\local_auth\intermediates\library_manifest\release\AndroidManifest.xml:2:1-11:12
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\release\AndroidManifest.xml:2:1-19:12
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:sqflite] E:\posplay2\posplay2\posplay\posplay\posq\build\sqflite\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
@@ -16,14 +17,16 @@ MERGED from [:url_launcher_android] E:\posplay2\posplay2\posplay\posplay\posq\bu
 MERGED from [:path_provider_android] E:\posplay2\posplay2\posplay\posplay\posq\build\path_provider_android\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:google_sign_in_android] E:\posplay2\posplay2\posplay\posplay\posq\build\google_sign_in_android\intermediates\library_manifest\release\AndroidManifest.xml:2:1-9:12
 MERGED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:2:1-19:12
+MERGED from [:webview_flutter_android] E:\posplay2\posplay2\posplay\posplay\posq\build\webview_flutter_android\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:in_app_purchase_android] E:\posplay2\posplay2\posplay\posplay\posq\build\in_app_purchase_android\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\release\AndroidManifest.xml:2:1-33:12
-MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
+MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\release\AndroidManifest.xml:2:1-19:12
 MERGED from [com.google.firebase:firebase-auth:22.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\58dfd4cdc2715089d75cee18444bd32d\jetified-firebase-auth-22.0.0\AndroidManifest.xml:17:1-75:12
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4de36ce71286781e228ebe35811813b4\jetified-recaptcha-18.1.2\AndroidManifest.xml:2:1-10:12
+MERGED from [androidx.biometric:biometric:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\AndroidManifest.xml:17:1-29:12
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f9bfe5e36b9518abf2bf7b7ac1b238d\material-1.3.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\fa8a82be6e98a74cd7cb3d513a514044\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\1063aba8065243ed9acc215f060279fa\appcompat-1.4.2\AndroidManifest.xml:17:1-24:12
@@ -68,17 +71,18 @@ MERGED from [androidx.loader:loader:1.0.0] C:\Users\Mitro\.gradle\caches\transfo
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\0ad10004ec600a0f5e78a28b215d5130\lifecycle-viewmodel-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\0578298fcdd92966bc34c8de66a8588e\jetified-lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5d93ab2f2812dcc02a149cabf48676c0\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.webkit:webkit:1.5.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\de4c41607b92b25fa09ba96fe2b87688\webkit-1.5.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.media:media:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3a739cfdd85bf266f743c7ac01b683a6\media-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ce392ecc6617af3e26539cc539bdee6f\coordinatorlayout-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.transition:transition:1.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\dfb2c3cc2bd0402deba4c26c7b19b2f0\transition-1.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.4.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6fee5dac21f1dfa8f5ebc4f05e79c444\jetified-appcompat-resources-1.4.2\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ac73634e906881b680c2d60db62ecdd1\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ad41e05f423fd29fc25b56cdc74d5fd2\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e7064369b5eb3475c12cd859c5d4d374\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.browser:browser:1.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6ad2882e70130260d46e79cbdbdd7320\browser-1.4.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\53dfa34b202f498149f4f1849e5b16cb\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd87993f1badbea004efa47e80eb6898\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\26fb15319d259b9b76c702a289576309\jetified-emoji2-1.0.0\AndroidManifest.xml:17:1-37:12
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e7064369b5eb3475c12cd859c5d4d374\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4072cb9a0fb996c7c13618205dd1ab96\slidingpanelayout-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a473d67d1a8bedc20974ec9183f2024c\recyclerview-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.customview:customview:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\67d3738df5404ce2302d80bfaf17f3dc\customview-1.0.0\AndroidManifest.xml:17:1-22:12
@@ -92,9 +96,9 @@ MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\Mitro\.gradle\cach
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6a44f5abbd400fe077b523d1886ab15b\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-components:17.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3dad0f85458aad9ec0416855bc06d5ca\jetified-firebase-components-17.1.0\AndroidManifest.xml:15:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8fec76014b650a3bcc0a01b5a925e038\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\29bc08fdcb60866d1cd8129df1f5c9d5\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3538ce2c424997c71c4626352a0bbd31\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\523066fa8624ca7b08ef867d1e168644\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\29bc08fdcb60866d1cd8129df1f5c9d5\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\f1b4a5656230aec54185aa469eb3a64c\lifecycle-runtime-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.savedstate:savedstate:1.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a5304800b6d3d9149b3601d9c8962180\jetified-savedstate-1.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\2fb0b350f7bcba332f16a9439151e16c\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
@@ -107,20 +111,20 @@ MERGED from [com.android.billingclient:billing:5.1.0] C:\Users\Mitro\.gradle\cac
 MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4503534d8380891552074ff069d9c1ce\multidex-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\7f12e1c7fae5665479920c5b11554793\jetified-zxing-android-embedded-3.6.0\AndroidManifest.xml:17:1-56:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\adbddfd2bbda0bef346c1fd6168a0aac\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
-INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
-INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
-INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
+INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
+INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
+INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
 	package
 		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:70-99
 		INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
 		INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
 		INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-46:12
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:1-47:12
 		INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:1:11-69
@@ -208,12 +212,18 @@ MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot
 MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\release\AndroidManifest.xml:13:5-79
 	android:name
 		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:12:20-74
-uses-permission#android.permission.FOREGROUND_SERVICE
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:14:3-75
+uses-permission#android.permission.USE_BIOMETRIC
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:13:3-69
+MERGED from [androidx.biometric:biometric:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\AndroidManifest.xml:24:5-72
+MERGED from [androidx.biometric:biometric:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\AndroidManifest.xml:24:5-72
 	android:name
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:14:20-72
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:13:20-67
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:15:3-75
+	android:name
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:15:20-72
 application
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:3-45:17
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:3-46:17
 MERGED from [:firebase_dynamic_links] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_dynamic_links\intermediates\library_manifest\release\AndroidManifest.xml:9:5-15:19
 MERGED from [:firebase_dynamic_links] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_dynamic_links\intermediates\library_manifest\release\AndroidManifest.xml:9:5-15:19
 MERGED from [:firebase_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:7:5-13:19
@@ -301,57 +311,57 @@ MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\Mitro\.gradl
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.8.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\efbf645ac7f7a6288f6f3f3011a758fb\core-1.8.0\AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:16-36
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:16-36
 	android:largeHeap
 		ADDED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\release\AndroidManifest.xml:16:9-33
 	android:icon
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:16:37-71
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:37-71
 	android:theme
 		ADDED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\release\AndroidManifest.xml:17:9-59
 activity#com.project.aovipos.MainActivity
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:5-40:16
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:18:5-41:16
 	android:launchMode
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:44-74
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:18:44-74
 	android:hardwareAccelerated
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:20:7-41
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:21:7-41
 	android:windowSoftInputMode
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:20:42-84
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:21:42-84
 	android:exported
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:21:7-30
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:22:7-30
 	android:configChanges
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:19:7-157
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:20:7-157
 	android:theme
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:18:7-41
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:19:7-41
 	android:name
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:17:15-43
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:18:15-43
 meta-data#io.flutter.embedding.android.NormalTheme
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:27:7-28:49
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:28:7-29:49
 	android:resource
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:28:9-46
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:29:9-46
 	android:name
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:27:18-73
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:28:18-73
 meta-data#io.flutter.embedding.android.SplashScreenDrawable
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:34:7-35:58
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:35:7-36:58
 	android:resource
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:35:9-55
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:36:9-55
 	android:name
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:34:18-82
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:35:18-82
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:36:7-39:23
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:37:7-40:23
 action#android.intent.action.MAIN
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:37:9-61
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:38:9-61
 	android:name
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:37:17-58
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:38:17-58
 category#android.intent.category.LAUNCHER
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:38:9-69
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:39:9-69
 	android:name
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:38:19-66
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:39:19-66
 meta-data#flutterEmbedding
-ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:43:5-68
+ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:44:5-68
 	android:value
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:43:48-65
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:44:48-65
 	android:name
-		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:43:16-47
+		ADDED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml:44:16-47
 uses-sdk
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\posplay2\posplay2\posplay\posplay\posq\android\app\src\main\AndroidManifest.xml
@@ -366,6 +376,8 @@ MERGED from [:file_picker] E:\posplay2\posplay2\posplay\posplay\posq\build\file_
 MERGED from [:file_picker] E:\posplay2\posplay2\posplay\posplay\posq\build\file_picker\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\release\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\release\AndroidManifest.xml:5:5-7:41
+MERGED from [:local_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\local_auth\intermediates\library_manifest\release\AndroidManifest.xml:5:5-7:41
+MERGED from [:local_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\local_auth\intermediates\library_manifest\release\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
@@ -380,22 +392,26 @@ MERGED from [:google_sign_in_android] E:\posplay2\posplay2\posplay\posplay\posq\
 MERGED from [:google_sign_in_android] E:\posplay2\posplay2\posplay\posplay\posq\build\google_sign_in_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:printing] E:\posplay2\posplay2\posplay\posplay\posq\build\printing\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:webview_flutter_android] E:\posplay2\posplay2\posplay\posplay\posq\build\webview_flutter_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:webview_flutter_android] E:\posplay2\posplay2\posplay\posplay\posq\build\webview_flutter_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences_android] E:\posplay2\posplay2\posplay\posplay\posq\build\shared_preferences_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:in_app_purchase_android] E:\posplay2\posplay2\posplay\posplay\posq\build\in_app_purchase_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:in_app_purchase_android] E:\posplay2\posplay2\posplay\posplay\posq\build\in_app_purchase_android\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:blue_thermal_printer] E:\posplay2\posplay2\posplay\posplay\posq\build\blue_thermal_printer\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
-MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
-MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:charset_converter] E:\posplay2\posplay2\posplay\posplay\posq\build\charset_converter\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] E:\posplay2\posplay2\posplay\posplay\posq\build\fluttertoast\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:wifi_iot] E:\posplay2\posplay2\posplay\posplay\posq\build\wifi_iot\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-auth:22.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\58dfd4cdc2715089d75cee18444bd32d\jetified-firebase-auth-22.0.0\AndroidManifest.xml:21:5-23:64
 MERGED from [com.google.firebase:firebase-auth:22.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\58dfd4cdc2715089d75cee18444bd32d\jetified-firebase-auth-22.0.0\AndroidManifest.xml:21:5-23:64
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4de36ce71286781e228ebe35811813b4\jetified-recaptcha-18.1.2\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4de36ce71286781e228ebe35811813b4\jetified-recaptcha-18.1.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.biometric:biometric:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.biometric:biometric:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f9bfe5e36b9518abf2bf7b7ac1b238d\material-1.3.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.3.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8f9bfe5e36b9518abf2bf7b7ac1b238d\material-1.3.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\fa8a82be6e98a74cd7cb3d513a514044\constraintlayout-2.0.1\AndroidManifest.xml:5:5-7:41
@@ -484,6 +500,8 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\M
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\0578298fcdd92966bc34c8de66a8588e\jetified-lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5d93ab2f2812dcc02a149cabf48676c0\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\5d93ab2f2812dcc02a149cabf48676c0\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.webkit:webkit:1.5.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\de4c41607b92b25fa09ba96fe2b87688\webkit-1.5.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.webkit:webkit:1.5.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\de4c41607b92b25fa09ba96fe2b87688\webkit-1.5.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.media:media:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3a739cfdd85bf266f743c7ac01b683a6\media-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.media:media:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3a739cfdd85bf266f743c7ac01b683a6\media-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ce392ecc6617af3e26539cc539bdee6f\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
@@ -496,6 +514,8 @@ MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Mit
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ac73634e906881b680c2d60db62ecdd1\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ad41e05f423fd29fc25b56cdc74d5fd2\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\ad41e05f423fd29fc25b56cdc74d5fd2\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e7064369b5eb3475c12cd859c5d4d374\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e7064369b5eb3475c12cd859c5d4d374\viewpager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.browser:browser:1.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6ad2882e70130260d46e79cbdbdd7320\browser-1.4.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.browser:browser:1.4.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\6ad2882e70130260d46e79cbdbdd7320\browser-1.4.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\53dfa34b202f498149f4f1849e5b16cb\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
@@ -504,8 +524,6 @@ MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\c
 MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\cd87993f1badbea004efa47e80eb6898\jetified-emoji2-views-helper-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\26fb15319d259b9b76c702a289576309\jetified-emoji2-1.0.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\26fb15319d259b9b76c702a289576309\jetified-emoji2-1.0.0\AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e7064369b5eb3475c12cd859c5d4d374\viewpager-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\e7064369b5eb3475c12cd859c5d4d374\viewpager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4072cb9a0fb996c7c13618205dd1ab96\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\4072cb9a0fb996c7c13618205dd1ab96\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a473d67d1a8bedc20974ec9183f2024c\recyclerview-1.1.0\AndroidManifest.xml:20:5-22:41
@@ -532,12 +550,12 @@ MERGED from [com.google.firebase:firebase-components:17.1.0] C:\Users\Mitro\.gra
 MERGED from [com.google.firebase:firebase-components:17.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3dad0f85458aad9ec0416855bc06d5ca\jetified-firebase-components-17.1.0\AndroidManifest.xml:18:5-20:41
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8fec76014b650a3bcc0a01b5a925e038\cardview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\8fec76014b650a3bcc0a01b5a925e038\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\29bc08fdcb60866d1cd8129df1f5c9d5\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\29bc08fdcb60866d1cd8129df1f5c9d5\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3538ce2c424997c71c4626352a0bbd31\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\3538ce2c424997c71c4626352a0bbd31\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\523066fa8624ca7b08ef867d1e168644\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\523066fa8624ca7b08ef867d1e168644\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\29bc08fdcb60866d1cd8129df1f5c9d5\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\29bc08fdcb60866d1cd8129df1f5c9d5\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\f1b4a5656230aec54185aa469eb3a64c\lifecycle-runtime-2.5.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\f1b4a5656230aec54185aa469eb3a64c\lifecycle-runtime-2.5.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.savedstate:savedstate:1.2.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\a5304800b6d3d9149b3601d9c8962180\jetified-savedstate-1.2.0\AndroidManifest.xml:20:5-22:41
@@ -654,6 +672,12 @@ activity#com.amolg.flutterbarcodescanner.BarcodeCaptureActivity
 ADDED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\release\AndroidManifest.xml:18:9-91
 	android:name
 		ADDED from [:flutter_barcode_scanner] E:\posplay2\posplay2\posplay\posplay\posq\build\flutter_barcode_scanner\intermediates\library_manifest\release\AndroidManifest.xml:18:19-88
+uses-permission#android.permission.USE_FINGERPRINT
+ADDED from [:local_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\local_auth\intermediates\library_manifest\release\AndroidManifest.xml:9:5-74
+MERGED from [androidx.biometric:biometric:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\AndroidManifest.xml:27:5-74
+MERGED from [androidx.biometric:biometric:1.1.0] C:\Users\Mitro\.gradle\caches\transforms-2\files-2.1\15e5f624e233e23b1bed509a4b03246e\biometric-1.1.0\AndroidManifest.xml:27:5-74
+	android:name
+		ADDED from [:local_auth] E:\posplay2\posplay2\posplay\posplay\posq\build\local_auth\intermediates\library_manifest\release\AndroidManifest.xml:9:22-71
 provider#io.flutter.plugins.imagepicker.ImagePickerFileProvider
 ADDED from [:image_picker_android] E:\posplay2\posplay2\posplay\posplay\posq\build\image_picker_android\intermediates\library_manifest\release\AndroidManifest.xml:8:9-16:20
 	android:grantUriPermissions

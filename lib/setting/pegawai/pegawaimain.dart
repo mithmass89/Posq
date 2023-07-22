@@ -37,18 +37,10 @@ class MainPagePegawai extends StatelessWidget {
               Card(
                   child: ListTile(
                 onTap: () {
-                  Fluttertoast.showToast(
-                      msg: "Segera Hadir",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => OutletAccess()),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OutletAccess()),
+                  );
                 },
                 title: Text('Outlet Pegawai'),
               )),
@@ -65,6 +57,19 @@ class MainPagePegawai extends StatelessWidget {
                       fontSize: 16.0);
                 },
                 title: Text('Absensi'),
+              )),     Card(
+                  child: ListTile(
+                onTap: () {
+                  Fluttertoast.showToast(
+                      msg: "Segera Hadir",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                },
+                title: Text('Akses review'),
               )),
             ],
           ));
@@ -85,14 +90,10 @@ class MainPagePegawai extends StatelessWidget {
               Card(
                   child: ListTile(
                 onTap: () {
-                  Fluttertoast.showToast(
-                      msg: "Segera Hadir",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OutletAccess()),
+                  );
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(builder: (context) => OutletAccess()),
@@ -113,6 +114,20 @@ class MainPagePegawai extends StatelessWidget {
                       fontSize: 16.0);
                 },
                 title: Text('Absensi'),
+              )),
+              Card(
+                  child: ListTile(
+                onTap: () {
+                  Fluttertoast.showToast(
+                      msg: "Segera Hadir",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                },
+                title: Text('Akses review'),
               )),
             ],
           ));

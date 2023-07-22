@@ -1,9 +1,10 @@
 // ignore_for_file: unused_field
-
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:toast/toast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/payment/paymentsugestionclass.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentbanktrftab.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentcashtab.dart';
@@ -61,6 +62,16 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
   String selectedpay = '';
   String qr = '';
   List<double> paymentlist = [
+    1000,
+    2000,
+    5000,
+    10000,
+    15000,
+    20000,
+    50000,
+    100000
+  ];
+  List<double> paymentlistrefund = [
     1000,
     2000,
     5000,
@@ -209,6 +220,46 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
   }
 
+  Future<dynamic> insertIafjrnhdrefundMode() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: '${widget.trno}',
+        transno1: '${widget.trno}',
+        split: lastsplit,
+        pscd: '${widget.pscd}',
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
+        disccd: '',
+        pax: '1',
+        pymtmthd: pymtmthd,
+        ftotamt: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(controller.text)
+            .toInt()),
+        totalamt: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(controller.text)
+            .toInt()),
+        framtrmn: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(controller.text)
+            .toInt()),
+        amtrmn: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(controller.text)
+            .toInt()),
+        trdesc: 'refund mode',
+        trdesc2: 'refund mode',
+        compcd: compcode,
+        compdesc: selectedpay,
+        active: 1,
+        usercrt: usercd,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd);
+  }
+
   Future<Null> insertIafjrnhdEDC() async {
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
         trdt: formattedDate,
@@ -238,6 +289,48 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
             .toInt(),
         trdesc: '$pymtmthd ${widget.trno}',
         trdesc2: '$pymtmthd ${widget.trno}',
+        compcd: compcode,
+        compdesc: selectedpay,
+        active: 1,
+        usercrt: usercd,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd).then((_) {
+      setState(() {});
+    });
+  }
+
+  Future<Null> insertIafjrnhdEDCrefundMode() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: '${widget.trno}',
+        transno1: '${widget.trno}',
+        split: lastsplit,
+        pscd: '${widget.pscd}',
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
+        disccd: '',
+        pax: '1',
+        pymtmthd: pymtmthd,
+        ftotamt: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        totalamt: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        framtrmn: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        amtrmn: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        trdesc: 'refund mode',
+        trdesc2: 'refund mode',
         compcd: compcode,
         compdesc: selectedpay,
         active: 1,
@@ -293,6 +386,48 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     });
   }
 
+  Future<Null> insertIafjrnhdEwalletMode() async {
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: '${widget.trno}',
+        transno1: '${widget.trno}',
+        split: lastsplit,
+        pscd: '${widget.pscd}',
+        trtm: now.hour.toString() +
+            ":" +
+            now.minute.toString() +
+            ":" +
+            now.second.toString(),
+        disccd: '',
+        pax: '1',
+        pymtmthd: pymtmthd,
+        ftotamt: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        totalamt: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        framtrmn: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        amtrmn: -(NumberFormat.currency(locale: 'id_ID', symbol: 'Rp')
+            .parse(debitcontroller.text)
+            .toInt()),
+        trdesc: 'refund mode',
+        trdesc2: 'refund mode',
+        compcd: compcode,
+        compdesc: selectedpay,
+        active: 1,
+        usercrt: usercd,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, pscd).then((_) {
+      setState(() {});
+    });
+  }
+
   Future<dynamic> insertIafjrnhdRefund() async {
     await checkbalance();
     IafjrnhdClass iafjrnhd = IafjrnhdClass(
@@ -313,6 +448,35 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
         compdesc: 'REFUND',
         trdesc: 'Refund cash ${widget.trno}',
         trdesc2: 'Refund cash ${widget.trno}',
+        active: 1,
+        usercrt: usercd,
+        slstp: '1',
+        currcd: 'IDR');
+    IafjrnhdClass listiafjrnhd = iafjrnhd;
+    print(iafjrnhd);
+    return await ClassApi.insertPosPayment(listiafjrnhd, dbname);
+  }
+
+  Future<dynamic> insertIafjrnhdRefundrefundMode() async {
+    await checkbalance();
+    IafjrnhdClass iafjrnhd = IafjrnhdClass(
+        trdt: formattedDate,
+        transno: '${widget.trno}',
+        transno1: widget.trno,
+        split: lastsplit,
+        pscd: '${widget.pscd}',
+        trtm: '00:00',
+        disccd: '',
+        pax: '1',
+        pymtmthd: pymtmthd,
+        ftotamt: -(result!.toDouble()),
+        totalamt: -(result!.toDouble()),
+        framtrmn: -(result!.toDouble()),
+        amtrmn: -(result!.toDouble()),
+        compcd: compcode,
+        compdesc: 'REFUND',
+        trdesc: 'refund mode',
+        trdesc2: 'refund mode',
         active: 1,
         usercrt: usercd,
         slstp: '1',
@@ -487,44 +651,41 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                                     .orange // Background color
                                             ),
                                         onPressed: () async {
-                                          selectedpy = 'QRIS';
-                                          pymtmthd = 'QRIS';
-                                          compcode = pymtmthd;
-                                          print(serverkeymidtrans);
-                                          nows = DateTime.now();
-                                          await PaymentGate.goPayQris(
-                                                  'gopay',
-                                                  'guestname',
-                                                  'email',
-                                                  'phone',
-                                                  widget.trno.toString() +
-                                                      nows.toString(),
-                                                  widget.balance.toString(),
-                                                  listitem.toList())
-                                              .then((value) {
-                                            print(value);
-                                            print(widget.trno.toString() +
-                                                now.toString());
-                                            if (value['status_code'] != '406') {
-                                              List action = value['actions'];
-                                              setState(() {
-                                                qr = action.first['url'];
-                                              });
+                                          if (midkey != '') {
+                                            if (refundmode == false) {
+                                              await showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return DialogClassEwalletTab(
+                                                      guestname:
+                                                          widget.guestname,
+                                                      fromsplit:
+                                                          widget.fromsplit,
+                                                      fromsaved:
+                                                          widget.fromsaved,
+                                                      datatrans:
+                                                          widget.datatrans,
+                                                      url: qr,
+                                                      compcd: compcode,
+                                                      compdesc: compcode,
+                                                      result: result,
+                                                      balance: widget.balance,
+                                                      pscd: widget
+                                                          .outletinfo!.outletcd,
+                                                      trno: widget.trno
+                                                          .toString(),
+                                                      outletinfo:
+                                                          widget.outletinfo,
+                                                    );
+                                                  });
                                             } else {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      "Check Intergrasi atau conflict transaksi",
-                                                  toastLength:
-                                                      Toast.LENGTH_LONG,
-                                                  gravity: ToastGravity.CENTER,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 11, 12, 14),
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
+                                              Toast.show(
+                                                  "Refund mode tidak tersedia ",
+                                                  duration: Toast.lengthLong,
+                                                  gravity: Toast.center);
                                             }
-                                          });
+                                          }
                                         },
                                         child: Text(
                                           'QRIS',
@@ -736,8 +897,12 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     fromsplit: widget.fromsplit,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
-                                    insertIafjrnhd: insertIafjrnhd,
-                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    insertIafjrnhd: refundmode == false
+                                        ? insertIafjrnhd
+                                        : insertIafjrnhdrefundMode,
+                                    insertIafjrnhdRefund: refundmode == false
+                                        ? insertIafjrnhdRefund
+                                        : insertIafjrnhdRefundrefundMode,
                                     balance: widget.balance,
                                     controller: controller,
                                     datatrans: widget.datatrans,
@@ -759,8 +924,12 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     debitcontroller: debitcontroller,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
-                                    insertIafjrnhd: insertIafjrnhdEDC,
-                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    insertIafjrnhd: refundmode == false
+                                        ? insertIafjrnhdEDC
+                                        : insertIafjrnhdEDCrefundMode,
+                                    insertIafjrnhdRefund: refundmode == false
+                                        ? insertIafjrnhdRefund
+                                        : insertIafjrnhdRefundrefundMode,
                                     balance: widget.balance,
                                     datatrans: widget.datatrans,
                                     fromsaved: widget.fromsaved,
@@ -793,8 +962,12 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     debitcontroller: debitcontroller,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
-                                    insertIafjrnhd: insertIafjrnhdEDC,
-                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    insertIafjrnhd: refundmode == false
+                                        ? insertIafjrnhdEDC
+                                        : insertIafjrnhdEDCrefundMode,
+                                    insertIafjrnhdRefund: refundmode == false
+                                        ? insertIafjrnhdRefund
+                                        : insertIafjrnhdRefundrefundMode,
                                     balance: widget.balance,
                                     datatrans: widget.datatrans,
                                     fromsaved: widget.fromsaved,
@@ -812,6 +985,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                       'OTHER'
                                     ],
                                   );
+
                                 case 'E-wallet':
                                   return PaymentEwalletTab(
                                     guestname: widget.guestname,
@@ -823,8 +997,12 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     debitcontroller: debitcontroller,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
-                                    insertIafjrnhd: insertIafjrnhdEDC,
-                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    insertIafjrnhd: refundmode == false
+                                        ? insertIafjrnhdEDC
+                                        : insertIafjrnhdEDCrefundMode,
+                                    insertIafjrnhdRefund: refundmode == false
+                                        ? insertIafjrnhdRefund
+                                        : insertIafjrnhdRefundrefundMode,
                                     balance: widget.balance,
                                     datatrans: widget.datatrans,
                                     fromsaved: widget.fromsaved,
@@ -853,8 +1031,12 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     debitcontroller: debitcontroller,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
-                                    insertIafjrnhd: insertIafjrnhdEDC,
-                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    insertIafjrnhd: refundmode == false
+                                        ? insertIafjrnhdEDC
+                                        : insertIafjrnhdEDCrefundMode,
+                                    insertIafjrnhdRefund: refundmode == false
+                                        ? insertIafjrnhdRefund
+                                        : insertIafjrnhdRefundrefundMode,
                                     balance: widget.balance,
                                     datatrans: widget.datatrans,
                                     fromsaved: widget.fromsaved,
@@ -883,8 +1065,12 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     debitcontroller: debitcontroller,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
-                                    insertIafjrnhd: insertIafjrnhdEDC,
-                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    insertIafjrnhd: refundmode == false
+                                        ? insertIafjrnhdEDC
+                                        : insertIafjrnhdEDCrefundMode,
+                                    insertIafjrnhdRefund: refundmode == false
+                                        ? insertIafjrnhdRefund
+                                        : insertIafjrnhdRefundrefundMode,
                                     balance: widget.balance,
                                     datatrans: widget.datatrans,
                                     fromsaved: widget.fromsaved,
@@ -906,8 +1092,12 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     debitcontroller: debitcontroller,
                                     outletinfo: widget.outletinfo,
                                     outletname: widget.outletname,
-                                    insertIafjrnhd: insertIafjrnhdEDC,
-                                    insertIafjrnhdRefund: insertIafjrnhdRefund,
+                                    insertIafjrnhd: refundmode == false
+                                        ? insertIafjrnhdEDC
+                                        : insertIafjrnhdEDCrefundMode,
+                                    insertIafjrnhdRefund: refundmode == false
+                                        ? insertIafjrnhdRefund
+                                        : insertIafjrnhdRefundrefundMode,
                                     balance: widget.balance,
                                     datatrans: widget.datatrans,
                                     fromsaved: widget.fromsaved,

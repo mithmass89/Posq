@@ -114,6 +114,35 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
     // print(poscondimentchoice);
   }
 
+  posCodimentChoiceRefundMode() {
+    poscondimentchoice = [];
+    for (var x in condiment.where((element) => element.isSelected == true)) {
+      poscondimentchoice.add(PosCondiment(
+          transno: widget.transno,
+          itemseq: widget.itemseq,
+          trdt: formattedDate,
+          outletcode: widget.outletcd,
+          itemcode: widget.data.itemcode,
+          condimentcode: x.itemcode,
+          condimentdesc: x.condimentdesc,
+          condimenttype: x.condimenttype,
+          qty: -1,
+          rateamt: -(x.amount)!,
+          rateamtservice: -(x.serviceamount)!,
+          rateamttax: -(x.taxamount)!,
+          totalamt: -(1 * x.amount!),
+          totalserviceamt: -(1 * x.serviceamount!),
+          totaltaxamt: -(1 * x.taxamount!),
+          totalnett: -(1 * x.amount!),
+          optioncode: x.optioncode,
+          optiondesc: x.optiondesc,
+          qtystarted: -1));
+    }
+    setState(() {});
+
+    // print(poscondimentchoice);
+  }
+
   posCodimentTopping() {
     setState(() {});
     // print(poscondimenttopping);
@@ -204,7 +233,9 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                       mainindex: i,
                                       subindex: index,
                                       selectedChoice: listchoice,
-                                      posCodimentChoice: posCodimentChoice,
+                                      posCodimentChoice: refundmode == false
+                                          ? posCodimentChoice
+                                          : posCodimentChoiceRefundMode,
                                       condimentlist: condiment,
                                       condiment: x[index],
                                     );
@@ -222,18 +253,14 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                             ),
                           );
                         })),
-            
-                 Row(
-                   children: [
+                Row(
+                  children: [
                     SizedBox(
-
-                           width: MediaQuery.of(context).size.width * 0.02,
+                      width: MediaQuery.of(context).size.width * 0.02,
                     ),
-                     Text('Catatan'),
-                   ],
-                 ),
-                 
-             
+                    Text('Catatan'),
+                  ],
+                ),
                 TextFieldTab2(
                     height: MediaQuery.of(context).size.height * 0.05,
                     hint: 'Contoh : gak pake sayur',

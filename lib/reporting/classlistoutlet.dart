@@ -34,7 +34,7 @@ class _ClassPilihOutletMobileState extends State<ClassPilihOutletMobile> {
         title: Text('List Outlet'),
       ),
       body: FutureBuilder(
-          future: ClassApi.getOutlets(usercd),
+          future: ClassApi.getOutlets(emaillogin),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.data.isNotEmpty) {

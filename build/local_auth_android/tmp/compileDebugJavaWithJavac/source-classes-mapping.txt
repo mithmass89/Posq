@@ -1,0 +1,26 @@
+io/flutter/plugins/localauth/AuthenticationHelper.java
+ io.flutter.plugins.localauth.AuthenticationHelper
+ io.flutter.plugins.localauth.AuthenticationHelper$AuthCompletionHandler
+ io.flutter.plugins.localauth.AuthenticationHelper$UiThreadExecutor
+io/flutter/plugins/localauth/BuildConfig.java
+ io.flutter.plugins.localauth.BuildConfig
+io/flutter/plugins/localauth/Messages.java
+ io.flutter.plugins.localauth.Messages
+ io.flutter.plugins.localauth.Messages$AuthClassification
+ io.flutter.plugins.localauth.Messages$AuthClassificationWrapper
+ io.flutter.plugins.localauth.Messages$AuthClassificationWrapper$Builder
+ io.flutter.plugins.localauth.Messages$AuthOptions
+ io.flutter.plugins.localauth.Messages$AuthOptions$Builder
+ io.flutter.plugins.localauth.Messages$AuthResult
+ io.flutter.plugins.localauth.Messages$AuthResultWrapper
+ io.flutter.plugins.localauth.Messages$AuthResultWrapper$Builder
+ io.flutter.plugins.localauth.Messages$AuthStrings
+ io.flutter.plugins.localauth.Messages$AuthStrings$Builder
+ io.flutter.plugins.localauth.Messages$FlutterError
+ io.flutter.plugins.localauth.Messages$LocalAuthApi
+ io.flutter.plugins.localauth.Messages$LocalAuthApi$1
+ io.flutter.plugins.localauth.Messages$LocalAuthApiCodec
+ io.flutter.plugins.localauth.Messages$Result
+io/flutter/plugins/localauth/LocalAuthPlugin.java
+ io.flutter.plugins.localauth.LocalAuthPlugin
+ io.flutter.plugins.localauth.LocalAuthPlugin$1
