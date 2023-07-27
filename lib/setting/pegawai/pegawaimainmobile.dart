@@ -178,7 +178,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                             return DialogOutletStaff();
                           });
 
-                      outlet.text = selectedOutlet![0]['outletdesc']!;
+                      outlet.text = selectedOutlet![0]!;
                       if (selectedOutlet![0]['outletcode'] == 'All') {
                         selectedOutlet!.removeAt(0);
                       }
@@ -259,7 +259,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                           expireddate!, email.text, referrals, telp);
                       for (var x in selectedOutlet!) {
                         await ClassApi.insertAccessOutlet(
-                            x['outletcd'], email.text);
+                            x, email.text);
                       }
 
                       await ClassApi.insertAccessUser(accesspegawai);

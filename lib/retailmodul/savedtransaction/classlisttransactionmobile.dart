@@ -41,6 +41,10 @@ class _ListtransactionState extends State<Listtransaction> {
     // checkPending();
   }
 
+  Setter() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +69,8 @@ class _ListtransactionState extends State<Listtransaction> {
             typekeyboard: TextInputType.text,
           ),
           FutureBuilder(
-              future: ClassApi.getSummaryCashierDetail(formattedDate,formattedDate, dbname,query! ),
+              future: ClassApi.getSummaryCashierDetail(
+                  formattedDate, formattedDate, dbname, query!),
               builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
                 var x = snapshot.data ?? [];
                 if (x.isNotEmpty) {
@@ -80,6 +85,7 @@ class _ListtransactionState extends State<Listtransaction> {
                               return GestureDetector(
                                 onTap: () {},
                                 child: DetailTrno(
+                                  setter: Setter,
                                   fromsaved: widget.fromsaved,
                                   datatransaksi: IafjrnhdClass(
                                     pymtmthd: x[index].pymtmthd,

@@ -289,19 +289,19 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         title: Text('Integrasi '),
                         onTap: accesslistuser.contains('integrasi') == true
                             ? () {
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (BuildContext context) {
-                                //   return ClassListIntegrasi();
-                                // }));
-                                Fluttertoast.showToast(
-                                    msg: "Oops Sedang Maintenence",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 11, 12, 14),
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return ClassListIntegrasi();
+                                }));
+                                // Fluttertoast.showToast(
+                                //     msg: "Oops Sedang Maintenence",
+                                //     toastLength: Toast.LENGTH_LONG,
+                                //     gravity: ToastGravity.CENTER,
+                                //     timeInSecForIosWeb: 1,
+                                //     backgroundColor:
+                                //         Color.fromARGB(255, 11, 12, 14),
+                                //     textColor: Colors.white,
+                                //     fontSize: 16.0);
                               }
                             : () {
                                 Fluttertoast.showToast(

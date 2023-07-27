@@ -129,8 +129,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
         setState(() {
           totalbarang = isi.length;
           amounttotal = totalSlsNett;
-          ClassRetailMainMobile.of(context)!.string =
-              IafjrndtClass(totalaftdisc: totalSlsNett);
+          ClassRetailMainMobile.of(context)!.string = IafjrndtClass(
+              totalaftdisc: totalSlsNett, totalcost: 0, ratecostamt: 0);
         });
       } else {
         setState(() {
@@ -313,6 +313,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                     widget.datatransaksi[index].transtype)
                                 .toList();
                             var result = IafjrndtClass(
+                                ratecostamt: element.ratecostamt,
                                 salestype:
                                     widget.datatransaksi[index].transdesc,
                                 condimenttype: element.condimenttype,
@@ -365,7 +366,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                             100) -
                                         element.discamt!
                                     : element.totalaftdisc,
-                                id: element.id);
+                                id: element.id,
+                                totalcost: 0);
 
                             ClassApi.updatePosDetail(result, pscd);
                           }
@@ -384,7 +386,9 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                   totalaftdisc: 0,
                                   transno: datadetail.length == 0
                                       ? null
-                                      : widget.trnoinfo!.transno);
+                                      : widget.trnoinfo!.transno,
+                                  totalcost: 0,
+                                  ratecostamt: 0);
                           setState(() {});
                         },
                         child: Text(widget.datatransaksi[index].transdesc!)),
@@ -454,7 +458,9 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                       description: '',
                                                       totalaftdisc: 0,
                                                       transno: widget
-                                                          .trnoinfo!.transno);
+                                                          .trnoinfo!.transno,
+                                                      totalcost: 0,
+                                                      ratecostamt: 0);
                                               await getDetailTrnos()
                                                   .then((value) {
                                                 setState(() {
@@ -472,7 +478,9 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                         description: '',
                                                         totalaftdisc: 0,
                                                         transno: widget
-                                                            .trnoinfo!.transno);
+                                                            .trnoinfo!.transno,
+                                                        totalcost: 0,
+                                                        ratecostamt: 0);
                                               } else {
                                                 ClassRetailMainMobile.of(
                                                         context)!
@@ -558,7 +566,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                       description: '',
                                                       totalaftdisc: 0,
                                                       transno: widget
-                                                          .trnoinfo!.transno);
+                                                          .trnoinfo!.transno,
+                                                      totalcost: 0, ratecostamt: 0);
                                               await getDetailTrnos()
                                                   .then((value) {
                                                 setState(() {
@@ -576,7 +585,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                         description: '',
                                                         totalaftdisc: 0,
                                                         transno: widget
-                                                            .trnoinfo!.transno);
+                                                            .trnoinfo!.transno,
+                                                        totalcost: 0, ratecostamt: 0);
                                               } else {
                                                 ClassRetailMainMobile.of(
                                                         context)!
@@ -677,7 +687,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                               builder:
                                                                   (context) {
                                                             return PasswordDialog(
-                                                              guestname: widget.guestname,
+                                                              guestname: widget
+                                                                  .guestname,
                                                               frompaymentmobile:
                                                                   false,
                                                               frompayment:
@@ -770,7 +781,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                       ? null
                                                                       : widget
                                                                           .trnoinfo!
-                                                                          .transno);
+                                                                          .transno,
+                                                                  totalcost: 0, ratecostamt: 0);
                                                             });
                                                             await getDetails!
                                                                 .then((value) {
@@ -816,7 +828,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                     ? null
                                                                     : widget
                                                                         .trnoinfo!
-                                                                        .transno);
+                                                                        .transno,
+                                                                totalcost: 0, ratecostamt: 0);
                                                           }
                                                         }
                                                       });
@@ -876,12 +889,13 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                       context)!
                                                                   .string =
                                                               IafjrndtClass(
-                                                                  trdt: widget
-                                                                      .trnoinfo!
-                                                                      .trdt,
-                                                                  pscd: widget
-                                                                      .trnoinfo!
-                                                                      .pscd,
+                                                                  trdt:
+                                                                      widget
+                                                                          .trnoinfo!
+                                                                          .trdt,
+                                                                  pscd:
+                                                                      widget
+                                                                          .trnoinfo!.pscd,
                                                                   description:
                                                                       '',
                                                                   totalaftdisc:
@@ -892,7 +906,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                       ? null
                                                                       : widget
                                                                           .trnoinfo!
-                                                                          .transno);
+                                                                          .transno,
+                                                                  totalcost: 0, ratecostamt: 0);
                                                         });
                                                         await getDetails!
                                                             .then((value) {
@@ -939,7 +954,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                     ? null
                                                                     : widget
                                                                         .trnoinfo!
-                                                                        .transno);
+                                                                        .transno,
+                                                                totalcost: 0, ratecostamt: 0);
                                                       }
                                                     }
                                                   },
@@ -988,8 +1004,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               ? Expanded(
                   flex: 1,
                   child: SummaryOrderSlidemobile(
-                    guestname:
-                        widget.guestname == '' ?'' : widget.guestname,
+                    guestname: widget.guestname == '' ? '' : widget.guestname,
                     datatransaksi: datadetail,
                     summary: summary,
                     fromsaved: widget.fromsaved,

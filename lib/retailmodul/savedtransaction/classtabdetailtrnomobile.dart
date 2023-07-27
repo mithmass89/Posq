@@ -37,7 +37,7 @@ class _TabDetailTrnoState extends State<TabDetailTrno> {
   }
 
   checkTransaction() {
-    handler.retriveListDetailPayment(widget.trno).then((value) {
+    ClassApi.retriveListDetailPayment(widget.trno,dbname,'').then((value) {
       if (value.first.pymtmthd != null) {
         setState(() {
           haspayment = true;

@@ -270,6 +270,7 @@ class _MainCondimentState extends State<MainCondiment> {
                                                   .width *
                                               0.15,
                                           child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               Text(
                                                   condiment[index]

@@ -146,11 +146,11 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/cart1.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
-                onpressed: () {
+                onpressed: () async {
                   setState(() {
                     selected = !selected;
                   });
-                  Navigator.push(
+                  var x = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => ClassRetailMainMobile(
@@ -161,6 +161,7 @@ class _MenuMainState extends State<MenuMain> {
                               outletinfo: widget.outletinfo!,
                             )),
                   );
+                
                 },
                 name: 'Transaksi ',
               ),
@@ -187,6 +188,7 @@ class _MenuMainState extends State<MenuMain> {
                                   )),
                         );
                         // callbackTitle(result);
+                          await checkTrno();
                         AppsMobile.of(context)!.string = result;
                         print('ini result : $result');
                       }
@@ -391,6 +393,7 @@ class _MenuMainState extends State<MenuMain> {
                   );
                   setState(() {});
                   // callbackTitle(result);
+                    await checkTrno();
                   AppsMobile.of(context)!.string = result;
 
                   print(result);
@@ -523,7 +526,6 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.04,
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
-        
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
                 width: MediaQuery.of(context).size.width * 0.05,

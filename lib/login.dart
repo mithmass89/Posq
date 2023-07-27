@@ -373,13 +373,16 @@ class _LoginState extends State<Login> {
                                                   accesslist.add(x['access']);
                                                 }
                                               });
+                                              accesslistuser = [];
                                               await ClassApi
                                                       .getAccessUserOutlet(
                                                           email.text, pscd, '')
                                                   .then((valuesx) {
-                                                for (var x in valuesx) {
+                                                for (var z in valuesx) {
+                                                  print(
+                                                      'ini access : $valuesx');
                                                   accesslistuser
-                                                      .add(x['accesscode']);
+                                                      .add(z['accesscode']);
                                                 }
                                               });
                                               await ClassApi
@@ -718,15 +721,16 @@ class _LoginState extends State<Login> {
                                                     accesslist.add(x['access']);
                                                   }
                                                 });
+                                                accesslistuser = [];
                                                 await ClassApi
                                                         .getAccessUserOutlet(
                                                             email.text,
                                                             pscd,
                                                             '')
                                                     .then((valuesx) {
-                                                  for (var x in valuesx) {
+                                                  for (var z in valuesx) {
                                                     accesslistuser
-                                                        .add(x['accesscode']);
+                                                        .add(z['accesscode']);
                                                   }
                                                 });
                                                 await ClassApi
@@ -781,12 +785,13 @@ class _LoginState extends State<Login> {
                                                 accesslist.add(x['access']);
                                               }
                                             });
+                                            accesslistuser = [];
                                             await ClassApi.getAccessUserOutlet(
                                                     email.text, pscd, '')
                                                 .then((valuesx) {
-                                              for (var x in valuesx) {
+                                              for (var z in valuesx) {
                                                 accesslistuser
-                                                    .add(x['accesscode']);
+                                                    .add(z['accesscode']);
                                               }
                                             });
                                             await ClassApi

@@ -14,6 +14,8 @@ import 'package:posq/reporting/classlistoutlet.dart';
 import 'package:posq/reporting/classringkasan.dart';
 import 'package:posq/reporting/classringkasancombine.dart';
 import 'package:posq/reporting/detailitemterjaulmobile.dart';
+import 'package:posq/reporting/marginitemcost.dart';
+import 'package:posq/reporting/refundtransaksi.dart';
 import 'package:posq/userinfo.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -55,13 +57,17 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   late void Function() ringkasan;
   late void Function() ringkasancombine;
   late void Function() detailmenu;
+  late void Function() refund;
+  late void Function() marginitem;
   List<IafjrnhdClass> listdatapayment = [];
   List<CombineDataRingkasan> data = [];
   var wsUrl;
   WebSocketChannel? channel;
+  bool buttonprint = false;
 
   void initState() {
     super.initState();
+
     wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
@@ -73,9 +79,13 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
         ringkasancombine.call();
       } else if (type == 'Detail Item Terjual') {
         detailmenu.call();
+      } else if (type == 'Refund transaksi') {
+        refund.call();
+      } else if (type == 'Margin Item') {
+        marginitem.call();
       }
       if (outletdata![0]['outletdesc'] == 'All Outlet') {
-        outletdata = [];
+        // outletdata = [];
       }
     });
     type = 'Summary Cashier';
@@ -83,7 +93,6 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     formatdate = formatter.format(now);
     periode = formaterprd.format(now);
     startDate();
-    handler = DatabaseHandler();
     _controllerpilihan.text = 'Summary Cashier';
     fromdatenamed = formattedDate;
     todatenamed = formattedDate;
@@ -106,6 +115,17 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   void dispose() {
     super.dispose();
     channel!.sink.close();
+  }
+
+  checkButton() {
+    if (type == 'Summary Cashier') {
+      buttonprint = true;
+    } else if (type == 'Detail Item Terjual') {
+      buttonprint = true;
+    } else {
+      buttonprint = false;
+    }
+    setState(() {});
   }
 
 /////fungsi pengambilan tanggal////
@@ -131,7 +151,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
         _controllerdate.text = '$fromdatenamed - $todatenamed';
       });
     }
-    getDataReport();
+    // getDataReport();
   }
 
   getDataReport() async {
@@ -171,12 +191,18 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                           ringkasan.call();
                         } else if (type == 'Ringkasan Combine') {
                           ringkasancombine.call();
+                        } else if (type == 'Refund transaksi') {
+                          refund.call();
                         } else if (type == 'Detail Item Terjual') {
                           detailmenu.call();
+                        } else if (type == 'Margin Item') {
+                          marginitem.call();
                         }
+
                         if (outletdata![0]['outletdesc'] == 'All Outlet') {
                           outletdata = [];
                         }
+                        checkButton();
                       },
                       typekeyboard: TextInputType.text,
                     ),
@@ -199,12 +225,18 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                           ringkasan.call();
                         } else if (type == 'Ringkasan Combine') {
                           ringkasancombine.call();
+                        } else if (type == 'Refund transaksi') {
+                          refund.call();
                         } else if (type == 'Detail Item Terjual') {
                           detailmenu.call();
+                        } else if (type == 'Margin Item') {
+                          marginitem.call();
                         }
                         if (outletdata![0]['outletdesc'] == 'All Outlet') {
                           outletdata = [];
                         }
+                        getDataReport();
+                        checkButton();
                         print('ini selcted outlet $outletdata');
                         setState(() {});
                       },
@@ -234,12 +266,17 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                     ringkasan.call();
                   } else if (type == 'Ringkasan Combine') {
                     ringkasancombine.call();
+                  } else if (type == 'Refund transaksi') {
+                    refund.call();
                   } else if (type == 'Detail Item Terjual') {
                     detailmenu.call();
+                  } else if (type == 'Margin Item') {
+                    marginitem.call();
                   }
                   if (outletdata![0]['outletdesc'] == 'All Outlet') {
                     outletdata = [];
                   }
+                  checkButton();
                   setState(() {});
                 },
                 typekeyboard: TextInputType.text,
@@ -275,13 +312,17 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         ringkasan.call();
                       } else if (type == 'Ringkasan Combine') {
                         ringkasancombine.call();
+                      } else if (type == 'Refund transaksi') {
+                        refund.call();
                       } else if (type == 'Detail Item Terjual') {
                         detailmenu.call();
+                      } else if (type == 'Margin Item') {
+                        marginitem.call();
                       }
                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
                         outletdata = [];
                       }
-
+                      checkButton();
                       setState(() {});
                     },
                   ),
@@ -316,13 +357,17 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         ringkasan.call();
                       } else if (type == 'Ringkasan Combine') {
                         ringkasancombine.call();
+                      } else if (type == 'Refund transaksi') {
+                        refund.call();
                       } else if (type == 'Detail Item Terjual') {
                         detailmenu.call();
+                      } else if (type == 'Margin Item') {
+                        marginitem.call();
                       }
                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
                         outletdata = [];
                       }
-
+                      checkButton();
                       setState(() {});
                     },
                   ),
@@ -354,13 +399,17 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         ringkasan.call();
                       } else if (type == 'Ringkasan Combine') {
                         ringkasancombine.call();
+                      } else if (type == 'Refund transaksi') {
+                        refund.call();
                       } else if (type == 'Detail Item Terjual') {
                         detailmenu.call();
+                      } else if (type == 'Margin Item') {
+                        marginitem.call();
                       }
                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
                         outletdata = [];
                       }
-
+                      checkButton();
                       setState(() {});
                     },
                   ),
@@ -408,6 +457,32 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                       fromdate: fromdate!,
                       todate: todate!,
                     )
+                  : Container(),
+              type == 'Refund transaksi'
+                  ? RefundTransaksi(
+                      listoutlets: outletdata!.isEmpty
+                          ? listoutlets
+                          : List.generate(outletdata!.length,
+                              (index) => outletdata![index]['outletcode']),
+                      builder: (BuildContext context, void Function() methodA) {
+                        refund = methodA;
+                      },
+                      fromdate: fromdate!,
+                      todate: todate!,
+                    )
+                  : Container(),
+              type == 'Margin Item'
+                  ? GrossMarginItem(
+                      listoutlets: outletdata!.isEmpty
+                          ? listoutlets
+                          : List.generate(outletdata!.length,
+                              (index) => outletdata![index]['outletcode']),
+                      builder: (BuildContext context, void Function() methodA) {
+                        marginitem = methodA;
+                      },
+                      fromdate: fromdate!,
+                      todate: todate!,
+                    )
                   : Container()
             ],
           ),
@@ -417,51 +492,55 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
             child: Container(
               width: MediaQuery.of(context).size.width * 1,
               height: MediaQuery.of(context).size.width * 0.2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ButtonNoIcon2(
-                    width: MediaQuery.of(context).size.width * 0.35,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    color: Colors.white,
-                    textcolor: Colors.orange,
-                    name: 'Print',
-                    onpressed: () {
-                      Fluttertoast.showToast(
-                          msg: "Segera hadir",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    },
-                  ),
-                  ButtonNoIcon2(
-                    width: MediaQuery.of(context).size.width * 0.35,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    color: Colors.orange,
-                    textcolor: Colors.white,
-                    name: 'Kirim Laporan',
-                    onpressed: () {
-                      Fluttertoast.showToast(
-                          msg: "Segera hadir",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                      // Navigator.of(context).push(
-                      //     MaterialPageRoute(builder: (BuildContext context) {
-                      //   return ClassKirimLaporan(
-                      //     datapayment: listdatapayment,
-                      //   );
-                      // }));
-                    },
-                  ),
-                ],
-              ),
+              child: buttonprint == true
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ButtonNoIcon2(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          color: Colors.white,
+                          textcolor: Colors.orange,
+                          name: 'Print',
+                          onpressed: () {
+                            Fluttertoast.showToast(
+                                msg: "Segera hadir",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor:
+                                    Color.fromARGB(255, 11, 12, 14),
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          },
+                        ),
+                        ButtonNoIcon2(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          color: Colors.orange,
+                          textcolor: Colors.white,
+                          name: 'Kirim Laporan',
+                          onpressed: () {
+                            Fluttertoast.showToast(
+                                msg: "Segera hadir",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor:
+                                    Color.fromARGB(255, 11, 12, 14),
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            // Navigator.of(context).push(
+                            //     MaterialPageRoute(builder: (BuildContext context) {
+                            //   return ClassKirimLaporan(
+                            //     datapayment: listdatapayment,
+                            //   );
+                            // }));
+                          },
+                        ),
+                      ],
+                    )
+                  : null,
             ),
           ),
         ],

@@ -77,7 +77,8 @@ class _SlideupPaymentState extends State<SlideupPayment> {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.15,
-                                        child: Text(data[index].totalamt.toString())),
+                                        child: Text(
+                                            data[index].totalamt.toString())),
                                     IconButton(
                                         icon: Icon(
                                           Icons.close,
@@ -91,6 +92,8 @@ class _SlideupPaymentState extends State<SlideupPayment> {
                                               .whenComplete(() async {
                                             await widget.callback();
                                           });
+                                         await getPaymentList();
+                                          setState(() {});
                                         }),
                                   ],
                                 ),

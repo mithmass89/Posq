@@ -8,6 +8,7 @@ import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/integrasipayment/classpaymentmidtrans.dart';
 import 'package:posq/model.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
 PaymentGate? paymentapi;
@@ -132,7 +133,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: widget.compdescription == 'gopay'
+                      color: widget.compdescription == 'QRIS'
                           ? Colors.blue
                           : Colors.transparent,
                     ),
@@ -144,7 +145,7 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
                       print(serverkeymidtrans);
-                      if (widget.midtransonline == true) {
+                      if (widget.midtransonline == true && refundmode==false) {
                         await showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -163,6 +164,14 @@ class _EWalletClassNonTunaiState extends State<EWalletClassNonTunai> {
                                 outletinfo: widget.outletinfo,
                               );
                             });
+                      } else {
+                        setState(() {
+                          compcd = 'QRIS';
+                          compdesc = 'QRIS';
+                        });
+
+                        widget.checkselected(widget.compcode = 'QRIS',
+                            widget.compdescription = 'QRIS', 'QRIS');
                       }
                       ;
                     },

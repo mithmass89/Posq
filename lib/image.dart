@@ -84,31 +84,35 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                     ? Container(
                         width: widget.width,
                         height: widget.height,
-                        child: Image.network(
-                          widget.imagepath!,
-                          fit: BoxFit.fill,
-                          filterQuality: FilterQuality.low,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
-                            return Image.network(
-                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
-                              fit: BoxFit.fill,
-                            );
-                          },
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                        ),
+                        child: Image.file(File(_image.path)),
+                        // child: Image.network(
+                          
+                        //   widget.imagepath!,
+                        //   isAntiAlias: true,
+                        //   fit: BoxFit.fill,
+                        //   filterQuality: FilterQuality.high,
+                        //   errorBuilder: (BuildContext context, Object exception,
+                        //       StackTrace? stackTrace) {
+                        //         print(stackTrace);
+                        //     return Image.network(
+                        //       'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                        //       fit: BoxFit.fill,
+                        //     );
+                        //   },
+                        //   loadingBuilder: (BuildContext context, Widget child,
+                        //       ImageChunkEvent? loadingProgress) {
+                        //     if (loadingProgress == null) return child;
+                        //     return Center(
+                        //       child: CircularProgressIndicator(
+                        //         value: loadingProgress.expectedTotalBytes !=
+                        //                 null
+                        //             ? loadingProgress.cumulativeBytesLoaded /
+                        //                 loadingProgress.expectedTotalBytes!
+                        //             : null,
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
                       )
                     : Container(
                         // decoration: BoxDecoration(color: Colors.grey[200]),
@@ -132,8 +136,8 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                         preferredCameraDevice: CameraDevice.front);
 
                     setState(() {
-                      // _image = File(image.path);
-                      // print('ini imagepath ${image.path}');
+                      _image = File(image.path);
+                      print('ini imagepath ${image.path}');
                     });
                     namefile = image.name;
                     _selectedFile = await image.readAsBytes();
@@ -146,7 +150,7 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                       //     '$api/getfile/$namefile';
                       // print('ini url barang : $api/getfile/$namefile');
                       setState(() {});
-                    });
+                    }).whenComplete(() {
 
                     if (widget.fromedit == true) {
                       Editproduct.of(context)!.string =
@@ -164,6 +168,8 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                       Createproduct.of(context)!.string =
                           '$api/getfile/$namefile';
                     }
+                    });
+
                   },
                   child: Text('Pilih Foto'))
             ],

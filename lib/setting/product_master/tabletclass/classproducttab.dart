@@ -244,7 +244,7 @@ class _ClassproductTabState extends State<ClassproductTab> {
                           child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
+                                    maxCrossAxisExtent: 250,
                                     childAspectRatio: 3 / 2,
                                     crossAxisSpacing: 10,
                                     mainAxisSpacing: 10),

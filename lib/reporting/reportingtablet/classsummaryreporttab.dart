@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -13,12 +14,13 @@ import 'package:posq/reporting/classkirimlaporan.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
 import 'package:posq/reporting/classlistoutlet.dart';
 import 'package:posq/reporting/classringkasan.dart';
+import 'package:posq/reporting/marginitemcost.dart';
+import 'package:posq/reporting/refundtransaksi.dart';
 import 'package:posq/reporting/reportingtablet/classcashierreporttab.dart';
 import 'package:posq/reporting/reportingtablet/classdetailmenuterjual.dart';
 import 'package:posq/reporting/reportingtablet/classringkasancombinetab.dart';
 import 'package:posq/reporting/reportingtablet/classringkasanreporttab.dart';
 import 'package:posq/userinfo.dart';
-import 'package:toast/toast.dart';
 
 typedef MyBuilder = void Function(
     BuildContext context, void Function() methodA);
@@ -56,6 +58,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   late void Function() ringkasan;
   late void Function() ringkasancombine;
   late void Function() detailmenu;
+  late void Function() refund;
+  late void Function() marginitem;
   List<IafjrnhdClass> listdatapayment = [];
   List<IafjrndtClass> data = [];
   List<IafjrndtClass> topMenu = [];
@@ -83,9 +87,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
     fromdatenamed = formattedDate;
     todatenamed = formattedDate;
     _controllerdate.text = '$fromdatenamed - $todatenamed';
-    ToastContext().init(context);
     selected = 'Hari ini';
-    getDataRingkasan();
+    // getDataRingkasan();
   }
 
   startDate() {
@@ -195,7 +198,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           setState(() {
                             _controllerpilihan.text = type;
                           });
-                          getDataReport();
+                          // getDataReport();
                           print(type);
                           if (type == 'Summary Cashier') {
                             myMethod.call();
@@ -203,6 +206,10 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                             ringkasan.call();
                           } else if (type == 'Ringkasan Combine') {
                             ringkasancombine.call();
+                          } else if (type == 'Refund transaksi') {
+                            refund.call();
+                          } else if (type == 'Margin Item') {
+                            marginitem.call();
                           }
                           setState(() {});
                         },
@@ -230,6 +237,10 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                             ringkasancombine.call();
                           } else if (type == 'Detail Item Terjual') {
                             detailmenu.call();
+                          } else if (type == 'Refund transaksi') {
+                            refund.call();
+                          } else if (type == 'Margin Item') {
+                            marginitem.call();
                           }
                           if (outletdata![0]['outletdesc'] == 'All Outlet') {
                             outletdata = [];
@@ -272,6 +283,12 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           ringkasan.call();
                         } else if (type == 'Ringkasan Combine') {
                           ringkasancombine.call();
+                        } else if (type == 'Detail Item Terjual') {
+                          detailmenu.call();
+                        } else if (type == 'Refund transaksi') {
+                          refund.call();
+                        } else if (type == 'Margin Item') {
+                          marginitem.call();
                         }
 
                         setState(() {});
@@ -312,6 +329,12 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           ringkasan.call();
                         } else if (type == 'Ringkasan Combine') {
                           ringkasancombine.call();
+                        } else if (type == 'Detail Item Terjual') {
+                          detailmenu.call();
+                        } else if (type == 'Refund transaksi') {
+                          refund.call();
+                        } else if (type == 'Margin Item') {
+                          marginitem.call();
                         }
                         setState(() {});
                       },
@@ -346,6 +369,12 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           ringkasan.call();
                         } else if (type == 'Ringkasan Combine') {
                           ringkasancombine.call();
+                        } else if (type == 'Detail Item Terjual') {
+                          detailmenu.call();
+                        } else if (type == 'Refund transaksi') {
+                          refund.call();
+                        } else if (type == 'Margin Item') {
+                          marginitem.call();
                         }
 
                         setState(() {});
@@ -358,12 +387,20 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                       textcolor: Colors.white,
                       name: 'Kirim Laporan',
                       onpressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return ClassKirimLaporan(
-                            datapayment: listdatapayment,
-                          );
-                        }));
+                        Fluttertoast.showToast(
+                            msg: "Segera hadir",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        // Navigator.of(context).push(
+                        //     MaterialPageRoute(builder: (BuildContext context) {
+                        //   return ClassKirimLaporan(
+                        //     datapayment: listdatapayment,
+                        //   );
+                        // }));
                       },
                     ),
                     ButtonNoIcon2(
@@ -372,7 +409,16 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                       color: Colors.white,
                       textcolor: Color.fromARGB(255, 0, 155, 160),
                       name: 'Print',
-                      onpressed: () {},
+                      onpressed: () {
+                        Fluttertoast.showToast(
+                            msg: "Segera hadir",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
                     ),
                   ],
                 ),
@@ -408,16 +454,6 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                         todate: todate!,
                       )
                     : Container(),
-                type == 'Ringkasan Combine'
-                    ? ClassRingkasanAllTab(
-                        builder:
-                            (BuildContext context, void Function() methodA) {
-                          ringkasancombine = methodA;
-                        },
-                        fromdate: fromdate!,
-                        todate: todate!,
-                      )
-                    : Container(),
                 type == 'Detail Item Terjual'
                     ? ClasMeuTerjualtab(
                         listoutlets: outletdata!.isEmpty
@@ -427,6 +463,34 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                         builder:
                             (BuildContext context, void Function() methodA) {
                           detailmenu = methodA;
+                        },
+                        fromdate: fromdate!,
+                        todate: todate!,
+                      )
+                    : Container(),
+                type == 'Refund transaksi'
+                    ? RefundTransaksi(
+                        listoutlets: outletdata!.isEmpty
+                            ? listoutlets
+                            : List.generate(outletdata!.length,
+                                (index) => outletdata![index]['outletcode']),
+                        builder:
+                            (BuildContext context, void Function() methodA) {
+                          refund = methodA;
+                        },
+                        fromdate: fromdate!,
+                        todate: todate!,
+                      )
+                    : Container(),
+                type == 'Margin Item'
+                    ? GrossMarginItem(
+                        listoutlets: outletdata!.isEmpty
+                            ? listoutlets
+                            : List.generate(outletdata!.length,
+                                (index) => outletdata![index]['outletcode']),
+                        builder:
+                            (BuildContext context, void Function() methodA) {
+                          marginitem = methodA;
                         },
                         fromdate: fromdate!,
                         todate: todate!,

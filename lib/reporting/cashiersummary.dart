@@ -31,10 +31,12 @@ class _CashierSummaryState extends State<CashierSummary> {
   String? query = '';
   List<IafjrnhdClass> data = [];
   List<IafjrnhdClass> datatemp = [];
+  List<IafjrnhdClass> detail = [];
   Map<String, int> sumByPymtmthd = {};
 
   void initState() {
     super.initState();
+
     data = [];
     datatemp = [];
     sumByPymtmthd = {};
@@ -42,13 +44,17 @@ class _CashierSummaryState extends State<CashierSummary> {
   }
 
   void methodA() {
+    detail = [];
     data = [];
     datatemp = [];
     sumByPymtmthd = {};
-    setState(() {});
-    print('from voidmethod ${widget.listoutlets}');
+    // setState(() {});
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
   Future<List<IafjrnhdClass>> olahData() async {
     for (var x in widget.listoutlets) {
       await ClassApi.getCashierSummary(
@@ -57,6 +63,7 @@ class _CashierSummaryState extends State<CashierSummary> {
         x,
       ).then((value) {
         datatemp.addAll(value);
+        detail.addAll(value);
       });
     }
     ;
@@ -78,7 +85,6 @@ class _CashierSummaryState extends State<CashierSummary> {
       print('pymtmthd: $key, sum: $value');
       data.add(IafjrnhdClass(transno1: '', pymtmthd: key, ftotamt: value));
     });
-    print(data);
     return data;
   }
 
@@ -143,6 +149,11 @@ class _CashierSummaryState extends State<CashierSummary> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
                             return ClassCashierSummaryDetail(
+                              listoutlets: widget.listoutlets.isEmpty
+                          ? listoutlets
+                          : List.generate(widget.listoutlets.length,
+                              (index) => widget.listoutlets[index]),
+                              datatemp: detail,
                               fromdate: widget.fromdate,
                               todate: widget.todate,
                             );

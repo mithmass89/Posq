@@ -105,32 +105,28 @@ class _MainMenuPackageMobileState extends State<MainMenuPackageMobile> {
                           itemBuilder: (context, index) {
                             return Card(
                               child: ListTile(
-                                trailing: IconButton(
-                                    onPressed: () async {
-                                      await showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return DialogDeactivePackage(
-                                              itemcode: listpaket[index]
-                                                  .packagecd!,
-                                            );
-                                          });
-                                      setState(() {});
-                                    },
-                                    icon: Icon(Icons.close)),
+                                // trailing: IconButton(
+                                //     onPressed: () async {
+                                //       await showDialog(
+                                //           context: context,
+                                //           builder: (BuildContext context) {
+                                //             return DialogDeactivePackage(
+                                //               itemcode:
+                                //                   listpaket[index].packagecd!,
+                                //             );
+                                //           });
+                                //       await getData().then((value) {
+                                //         setState(() {});
+                                //       });
+                                //     },
+                                //     icon: Icon(Icons.close)),
                                 title: Text(
                                   listpaket[index].packagedesc,
-                                  style: TextStyle(
-                                      color: listpaket[index].slsfl == 1
-                                          ? Colors.black
-                                          : Colors.red),
+                                  style: TextStyle(color: Colors.black),
                                 ),
                                 subtitle: Text(
                                     'Item / produk di dalam paket ${listpaket[index].qty}',
-                                    style: TextStyle(
-                                        color: listpaket[index].slsfl == 1
-                                            ? Colors.black
-                                            : Colors.red)),
+                                    style: TextStyle(color: Colors.black)),
                               ),
                             );
                           }),

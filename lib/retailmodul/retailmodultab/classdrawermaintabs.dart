@@ -149,29 +149,29 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                               fontSize: 16.0);
                         },
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.attach_money,
-                  ),
-                  title: Text('Refund / Retur'),
-                  onTap: accesslistuser.contains('kelolapromo') == true
-                      ? () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return ClassPromoTab();
-                          }));
-                        }
-                      : () {
-                          Fluttertoast.showToast(
-                              msg: "Tidak punya akses kelola promo",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        },
-                ),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.attach_money,
+                //   ),
+                //   title: Text('Refund / Retur'),
+                //   onTap: accesslistuser.contains('kelolapromo') == true
+                //       ? () {
+                //           Navigator.of(context).push(MaterialPageRoute(
+                //               builder: (BuildContext context) {
+                //             return ClassPromoTab();
+                //           }));
+                //         }
+                //       : () {
+                //           Fluttertoast.showToast(
+                //               msg: "Tidak punya akses kelola promo",
+                //               toastLength: Toast.LENGTH_LONG,
+                //               gravity: ToastGravity.CENTER,
+                //               timeInSecForIosWeb: 1,
+                //               backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                //               textColor: Colors.white,
+                //               fontSize: 16.0);
+                //         },
+                // ),
                 ListTile(
                   leading: Icon(
                     Icons.history_outlined,

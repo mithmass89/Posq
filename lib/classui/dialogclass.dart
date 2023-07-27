@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sized_box_for_whitespace, prefer_typing_uninitialized_variables, avoid_unnecessary_containers, prefer_generic_function_type_aliases, avoid_print, must_be_immutable, non_constant_identifier_names, unused_import, unused_field
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -682,8 +683,6 @@ class _DialogSetPackageState extends State<DialogSetPackage>
                                   setState(() {});
                                 } else {
                                   selecteditem.add(Package(
-                                      slsfl: 1,
-                                      active: 1,
                                       packagecd: widget.packagecode,
                                       packagedesc:
                                           widget.controllerpackage.text,
@@ -1490,7 +1489,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             ratecurcd: 'Rupiah',
             ratebs1: 1,
             ratebs2: 1,
-            rateamtcost: widget.result!.toDouble(),
+            ratecostamt: widget.result!.toDouble(),
             rateamtitem: widget.result!.toDouble(),
             rateamtservice: pctservice.text != ''
                 ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
@@ -1524,7 +1523,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             svchgpct: 0,
             statustrans: 'prosess',
             createdt: now.toString(),
-            guestname: 'No Guest Name'),
+            guestname: 'No Guest Name', totalcost: widget.result!.toDouble()*1),
         pscd);
   }
 
@@ -1548,7 +1547,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             ratecurcd: 'Rupiah',
             ratebs1: 1,
             ratebs2: 1,
-            rateamtcost: -(widget.result!.toDouble()),
+            ratecostamt: -(widget.result!.toDouble()),
             rateamtitem: -(widget.result!.toDouble()),
             rateamtservice: -(pctservice.text != ''
                 ? widget.result!.toDouble() * num.parse(pctservice.text) / 100
@@ -1582,7 +1581,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             svchgpct: 0,
             statustrans: 'prosess',
             createdt: now.toString(),
-            guestname: 'No Guest Name'),
+            guestname: 'No Guest Name', totalcost: -(widget.result!.toDouble())*(-1)),
         pscd);
   }
 
@@ -1642,7 +1641,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       ratecurcd: 'Rupiah',
                       ratebs1: 1,
                       ratebs2: 1,
-                      rateamtcost: widget.result!.toDouble(),
+                      ratecostamt: widget.result!.toDouble(),
                       rateamtitem: widget.result!.toDouble(),
                       rateamtservice: 0,
                       rateamttax: 0,
@@ -1669,7 +1668,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       confirmed: '1',
                       description: widget.controller.text,
                       taxpct: 0,
-                      svchgpct: 0,
+                      svchgpct: 0, totalcost:widget.result!.toDouble()*1 ,
                     );
                     // ClassRetailMainMobile.of(context)!.string = hasil;
                   });
@@ -1695,7 +1694,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     ratecurcd: hasil.ratecurcd,
                     ratebs1: hasil.ratebs1,
                     ratebs2: hasil.ratebs2,
-                    rateamtcost: hasil.rateamtcost,
+                    ratecostamt: hasil.ratecostamt,
                     rateamtitem: hasil.rateamtitem,
                     rateamtservice: hasil.rateamtservice,
                     rateamttax: hasil.rateamttax,
@@ -1716,7 +1715,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     prnkitchen: hasil.prnkitchen,
                     prnkitchentm: hasil.prnkitchentm,
                     confirmed: hasil.confirmed,
-                    description: hasil.description,
+                    description: hasil.description, totalcost: hasil.totalcost,
                   ));
 
                   widget.cleartext();
@@ -1740,7 +1739,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       ratecurcd: 'Rupiah',
                       ratebs1: 1,
                       ratebs2: 1,
-                      rateamtcost: -(widget.result!.toDouble()),
+                      ratecostamt: -(widget.result!.toDouble()),
                       rateamtitem: -(widget.result!.toDouble()),
                       rateamtservice: 0,
                       rateamttax: 0,
@@ -1767,7 +1766,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       confirmed: '1',
                       description: widget.controller.text,
                       taxpct: 0,
-                      svchgpct: 0,
+                      svchgpct: 0, totalcost: -(widget.result!.toDouble())*1,
                     );
                     // ClassRetailMainMobile.of(context)!.string = hasil;
                   });
@@ -1793,7 +1792,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     ratecurcd: hasil.ratecurcd,
                     ratebs1: hasil.ratebs1,
                     ratebs2: hasil.ratebs2,
-                    rateamtcost: -hasil.rateamtcost!,
+                    ratecostamt: -hasil.ratecostamt,
                     rateamtitem: -hasil.rateamtitem!,
                     rateamtservice: -hasil.rateamtservice!,
                     rateamttax: -hasil.rateamttax!,
@@ -1814,7 +1813,7 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     prnkitchen: hasil.prnkitchen,
                     prnkitchentm: hasil.prnkitchentm,
                     confirmed: hasil.confirmed,
-                    description: hasil.description,
+                    description: hasil.description, totalcost: hasil.totalcost,
                   ));
 
                   widget.cleartext();
@@ -1901,7 +1900,7 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
                 await ClassApi.updateTrnoGuest(
                     pscd, widget.trno, 'no guest $randomNumber');
                 await handler.activeZeroiafjrndttrno(
-                    IafjrndtClass(active: 1, transno: widget.trno));
+                    IafjrndtClass(active: 1, transno: widget.trno, totalcost: 0, ratecostamt: 0));
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/Dashboard', (Route<dynamic> route) => false);
               },
@@ -2182,6 +2181,81 @@ class _DialogClassRefundorderState extends State<DialogClassRefundorder> {
                 await ClassApi.deactivePromoTrno(trno, dbname);
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.remove('savecostmrs');
+                EasyLoading.dismiss();
+                Navigator.of(context).pop();
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
+class DialogRefund extends StatefulWidget {
+  final String trno;
+  final String outletcd;
+  final Outlet outletinfo;
+  final bool? fromsaved;
+
+  const DialogRefund({
+    Key? key,
+    required this.trno,
+    required this.outletcd,
+    required this.outletinfo,
+    this.fromsaved,
+  }) : super(key: key);
+
+  @override
+  State<DialogRefund> createState() => _DialogRefundState();
+}
+
+class _DialogRefundState extends State<DialogRefund> {
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  var formattedDate;
+  TextEditingController _controller = TextEditingController();
+  String trno = '';
+  int? selected;
+  final TextEditingController reason = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    formattedDate = formatter.format(now);
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextFieldMobileLogin(
+                  showpassword: true,
+                  hint: 'Alasan?',
+                  controller: reason,
+                  onChanged: (String value) {},
+                  typekeyboard: null,
+                ),
+              ],
+            )),
+        title: Text('Refund Transaksi'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Batal')),
+          TextButton(
+              onPressed: () async {
+                EasyLoading.show(status: 'loading...');
+                await ClassApi.refundTrans(widget.trno, reason.text, dbname);
+                setState(() {});
                 EasyLoading.dismiss();
                 Navigator.of(context).pop();
               },
@@ -2560,24 +2634,45 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
   var formattedDate;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
-  
+
   String initialUrl = 'https://google.com'; // Replace with your desired URL
   bool isLoading = true;
-  String trnotemp='';
+  String trnotemp = '';
+  bool complatepay = false;
 
   @override
   void initState() {
     super.initState();
-    trnotemp= '${widget.trno}-$now';
+
+    trnotemp = '${widget.trno}-$now';
     formattedDate = formatter.format(now);
     PaymentGate.snapWeb(widget.trno, widget.result.toString()).then((value) {
       print('test $value');
     });
+    getStatusTransaction();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  getStatusTransaction() {
+    Timer periodicTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      // This function will be called every 1 second (adjust the duration as needed).
+      // Put your code here to perform the periodic tasks.
+      PaymentGate.getStatusTransaction(trnotemp).then((value) {
+        print(value);
+        if (value == 'settlement') {
+          print(value);
+          complatepay = true;
+        } else {
+          complatepay = false;
+        }
+      });
+      setState(() {});
+      print('Periodic task executed at ${complatepay}');
+    });
   }
 
   Future<dynamic> insertIafjrnhd() async {
@@ -2620,21 +2715,19 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
-          insetPadding: EdgeInsets.zero,
-          contentPadding: EdgeInsets.zero,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-         shape: RoundedRectangleBorder(
-    borderRadius:
-      BorderRadius.all(
-        Radius.circular(10.0))),
+        insetPadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.zero,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
         content: Form(
             key: _formKey,
             child: Container(
               height: MediaQuery.of(context).size.height * 1,
               width: MediaQuery.of(context).size.width * 1.1,
               child: FutureBuilder(
-                  future: PaymentGate.snapWeb(
-                      trnotemp, widget.result.toString()),
+                  future:
+                      PaymentGate.snapWeb(trnotemp, widget.result.toString()),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
                       print(snapshot.hasData);
@@ -2643,17 +2736,20 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                       String url = snapshot.data['redirect_url'];
                       // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
 
-                      return WebView(
-                        initialUrl: '$url#/gopay-qris',
-                        // initialUrl: 'https://www.google.com',
-                        // initialUrl: '$url',
-                        javascriptMode: JavascriptMode.unrestricted,
-                        onPageFinished: (String url) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        },
-                      );
+                      return complatepay == false
+                          ? WebView(
+                              initialUrl: '$url#/gopay-qris',
+                              // initialUrl: 'https://www.google.com',
+                              // initialUrl: '$url',
+                              javascriptMode: JavascriptMode.unrestricted,
+                              onPageFinished: (String url) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              },
+                            )
+                          : Container(
+                              child: Center(child: Text('Payment Success')));
                     }
                     return Center(child: CircularProgressIndicator());
                   }),
@@ -2683,13 +2779,13 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                   );
                 });
               },
-              child: Text('Lanjutkan!',style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)))
+              child: Text('Lanjutkan!',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
         ],
       );
     });
   }
 }
-
 
 class DialogClassEwalletTab extends StatefulWidget {
   final String trno;
@@ -2737,18 +2833,38 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
   var formattedDate;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
-  
+  bool complatepay = false;
+
   String initialUrl = 'https://google.com'; // Replace with your desired URL
   bool isLoading = true;
-  String trnotemp='';
+  String trnotemp = '';
 
   @override
   void initState() {
     super.initState();
-    trnotemp= '${widget.trno}-$now';
+    trnotemp = '${widget.trno}-$now';
     formattedDate = formatter.format(now);
     PaymentGate.snapWeb(widget.trno, widget.result.toString()).then((value) {
       print('test $value');
+    });
+    getStatusTransaction();
+  }
+
+  getStatusTransaction() {
+    Timer periodicTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      // This function will be called every 1 second (adjust the duration as needed).
+      // Put your code here to perform the periodic tasks.
+      PaymentGate.getStatusTransaction(trnotemp).then((value) {
+        print(value);
+        if (value == 'settlement') {
+          print(value);
+          complatepay = true;
+        } else {
+          complatepay = false;
+        }
+      });
+      setState(() {});
+      print('Periodic task executed at ${complatepay}');
     });
   }
 
@@ -2797,21 +2913,19 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
-          insetPadding: EdgeInsets.zero,
-          contentPadding: EdgeInsets.zero,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-         shape: RoundedRectangleBorder(
-    borderRadius:
-      BorderRadius.all(
-        Radius.circular(10.0))),
+        insetPadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.zero,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
         content: Form(
             key: _formKey,
             child: Container(
               height: MediaQuery.of(context).size.height * 1,
               width: MediaQuery.of(context).size.width * 1.1,
               child: FutureBuilder(
-                  future: PaymentGate.snapWeb(
-                      trnotemp, widget.result.toString()),
+                  future:
+                      PaymentGate.snapWeb(trnotemp, widget.result.toString()),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
                       print(snapshot.hasData);
@@ -2820,17 +2934,20 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
                       String url = snapshot.data['redirect_url'];
                       // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
 
-                      return WebView(
-                        initialUrl: '$url#/gopay-qris',
-                        // initialUrl: 'https://www.google.com',
-                        // initialUrl: '$url',
-                        javascriptMode: JavascriptMode.unrestricted,
-                        onPageFinished: (String url) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        },
-                      );
+                      return complatepay == false
+                          ? WebView(
+                              initialUrl: '$url#/gopay-qris',
+                              // initialUrl: 'https://www.google.com',
+                              // initialUrl: '$url',
+                              javascriptMode: JavascriptMode.unrestricted,
+                              onPageFinished: (String url) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              },
+                            )
+                          : Container(
+                              child: Center(child: Text('Payment Success')));
                     }
                     return Center(child: CircularProgressIndicator());
                   }),
@@ -2860,7 +2977,8 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
                   );
                 });
               },
-              child: Text('Lanjutkan!',style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)))
+              child: Text('Lanjutkan!',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
         ],
       );
     });

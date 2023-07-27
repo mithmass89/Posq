@@ -64,6 +64,28 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
           ),
           Divider(),
           ListTile(
+            subtitle: Text('melihat refund transaksi'),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+            onTap: () {
+              Navigator.of(context).pop('Refund transaksi');
+            },
+            title: Text('Refund transaksi'),
+          ),
+          Divider(),
+          ListTile(
+            subtitle: Text('Analisa Antara harga item terhadap COGS / COST'),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+            onTap: () {
+              Navigator.of(context).pop('Margin Item');
+            },
+            title: Text('Gross margin item'),
+          ),
+          Divider(),
+          ListTile(
             subtitle: Text('Top 10 product/item yg paling laku terjual'),
             trailing: Icon(
               Icons.arrow_forward_ios_rounded,

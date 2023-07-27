@@ -1,4 +1,6 @@
 // ignore_for_file: no_logic_in_create_state, prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this, must_be_immutable
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:posq/classui/api.dart';
@@ -44,15 +46,14 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
   }
 
   String urlpic = '';
-
+  var _image;
   @override
   void initState() {
     super.initState();
     host = ClassApi();
     print(widget.imagepath);
     imagePicker = ImagePicker();
-    if (widget.savingimage != null) {
-    }
+    if (widget.savingimage != null) {}
   }
 
   @override
@@ -68,30 +69,30 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
                 height: widget.height,
                 // decoration: BoxDecoration(color: Colors.red[200]),
                 child: widget.imagepath != ''
-                    ? Image.network(
-                        widget.imagepath,
-                        fit: BoxFit.fill,
-                             filterQuality: FilterQuality.low,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
-                            return Image.network(
-                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
-                              fit: BoxFit.fill,
-                            );
-                          },
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                      )
+                    ? Image.file(File(_image.path)) // ? Image.network(
+                    //     widget.imagepath,
+                    //     fit: BoxFit.fill,
+                    //          filterQuality: FilterQuality.low,
+                    //       errorBuilder: (BuildContext context, Object exception,
+                    //           StackTrace? stackTrace) {
+                    //         return Image.network(
+                    //           'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                    //           fit: BoxFit.fill,
+                    //         );
+                    //       },
+                    //     loadingBuilder: (BuildContext context, Widget child,
+                    //         ImageChunkEvent? loadingProgress) {
+                    //       if (loadingProgress == null) return child;
+                    //       return Center(
+                    //         child: CircularProgressIndicator(
+                    //           value: loadingProgress.expectedTotalBytes != null
+                    //               ? loadingProgress.cumulativeBytesLoaded /
+                    //                   loadingProgress.expectedTotalBytes!
+                    //               : null,
+                    //         ),
+                    //       );
+                    //     },
+                    //   )
                     : Container(
                         // decoration: BoxDecoration(color: Colors.grey[200]),
                         width: widget.width,
@@ -113,7 +114,10 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
                         imageQuality: 50,
                         preferredCameraDevice: CameraDevice.front);
                     print('ini imagepath ${image.path}');
-
+                    setState(() {
+                      _image = File(image.path);
+                      print('ini imagepath ${image.path}');
+                    });
                     namefile = image.name;
                     _selectedFile = await image.readAsBytes();
                     print(_selectedFile);
@@ -123,14 +127,13 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
                       widget.imagepath = '$api/getfile/$namefile';
                       EditproductTab.of(context)!.string =
                           '$api/getfile/$namefile';
-                        print('ini url barang : $api/getfile/$namefile');
+                      print('ini url barang : $api/getfile/$namefile');
                       setState(() {});
                     });
                     if (widget.fromedit == true) {
                       EditproductTab.of(context)!.string =
                           '$api/getfile/$namefile';
                       // await host!.uploadFiles(_selectedFile, namefile);
-
                     } else {
                       Createproducttab.of(context)!.string =
                           '$api/getfile/$namefile';

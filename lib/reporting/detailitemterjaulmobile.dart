@@ -51,6 +51,11 @@ class _DetailMenuTerjualMobileState extends State<DetailMenuTerjualMobile> {
     setState(() {});
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<List<dynamic>> olahData() async {
     for (var x in widget.listoutlets) {
       await ClassApi.DetailMenuItemTerjual(
@@ -141,14 +146,16 @@ class _DetailMenuTerjualMobileState extends State<DetailMenuTerjualMobile> {
                       child: ListView.builder(
                         itemCount: data.length,
                         itemBuilder: ((context, index) {
-                          return ListTile(
-                            dense: true,
-                            title: Text(data[index]['itemdesc']),
-                            subtitle: Text(
-                                'Terjual X ${data[index]['qty'].toString()}'),
-                            trailing: Text(CurrencyFormat.convertToIdr(
-                                data[index]['nettrevenue'], 0)),
-                          );
+                          return data[index]['qty'] != 0
+                              ? ListTile(
+                                  dense: true,
+                                  title: Text(data[index]['itemdesc']),
+                                  subtitle: Text(
+                                      'Terjual X ${data[index]['qty'].toString()}'),
+                                  trailing: Text(CurrencyFormat.convertToIdr(
+                                      data[index]['nettrevenue'], 0)),
+                                )
+                              : ListTile();
                         }),
                       )
 

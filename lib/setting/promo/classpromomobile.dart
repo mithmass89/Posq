@@ -82,11 +82,12 @@ class _ClassPromoMobileState extends State<ClassPromoMobile> {
                                           ))).then((_) {
                                 setState(() {});
                               });
+                              setState(() {});
                             },
                             contentPadding: EdgeInsets.all(8.0),
                             title: Text(snapshot.data![index].promodesc!),
                             subtitle:
-                                Text(snapshot.data![index].amount.toString()),
+                                Text(snapshot.data![index].amount==0?snapshot.data![index].pct.toString() :snapshot.data![index].amount.toString()),
                           )),
                         );
                       },
@@ -110,7 +111,7 @@ class _ClassPromoMobileState extends State<ClassPromoMobile> {
                       MaterialPageRoute(
                           builder: (context) => ClassCreatePromoMobile()))
                   .then((_) async {
-                await handler.retrievePromo(query);
+                await  ClassApi.getPromoList(dbname, query);
 
                 setState(() {});
               });

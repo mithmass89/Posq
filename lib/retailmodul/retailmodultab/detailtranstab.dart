@@ -139,8 +139,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
         setState(() {
           totalbarang = isi.length;
           amounttotal = totalSlsNett;
-          ClassRetailMainMobile.of(context)!.string =
-              IafjrndtClass(totalaftdisc: totalSlsNett);
+          ClassRetailMainMobile.of(context)!.string = IafjrndtClass(
+              totalaftdisc: totalSlsNett, totalcost: 0, ratecostamt: 0);
         });
       } else {
         setState(() {
@@ -167,6 +167,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
       print('ini summary : $value');
       if (value.isNotEmpty) {
         setState(() {
+        
           summary = value;
           amounttotal = value.first.totalaftdisc;
         });
@@ -186,7 +187,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.83,
+            height: MediaQuery.of(context).size.height * 0.80,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -374,7 +375,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                   element.svchgpct! /
                                                   100)
                                           : element.totalaftdisc,
-                                      id: element.id);
+                                      id: element.id,
+                                      totalcost: element.totalcost,
+                                      ratecostamt: element.ratecostamt);
 
                                   ClassApi.updatePosDetail(result, pscd);
                                 }
@@ -393,7 +396,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                         totalaftdisc: 0,
                                         transno: widget.listdata.length == 0
                                             ? null
-                                            : widget.trnoinfo!.transno);
+                                            : widget.trnoinfo!.transno,
+                                        totalcost: 0,
+                                        ratecostamt: 0);
                                 setState(() {});
                               },
                               child:
@@ -403,7 +408,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                 ),
                 Container(
                     alignment: Alignment.topCenter,
-                    height: MediaQuery.of(context).size.height * 0.47,
+                    height: MediaQuery.of(context).size.height * 0.38,
                     child: FutureBuilder(
                         future: getDetails,
                         builder: (context,
@@ -456,7 +461,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                           totalaftdisc: 0,
                                                           transno: widget
                                                               .trnoinfo!
-                                                              .transno);
+                                                              .transno,
+                                                          totalcost: 0,
+                                                          ratecostamt: 0);
                                                   await getDetailTrnos()
                                                       .then((value) {
                                                     setState(() {
@@ -476,7 +483,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                             totalaftdisc: 0,
                                                             transno: widget
                                                                 .trnoinfo!
-                                                                .transno);
+                                                                .transno,
+                                                            totalcost: 0,
+                                                            ratecostamt: 0);
                                                   } else {
                                                     ClassRetailMainMobile.of(
                                                             context)!
@@ -578,7 +587,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                           totalaftdisc: 0,
                                                           transno: widget
                                                               .trnoinfo!
-                                                              .transno);
+                                                              .transno,
+                                                          totalcost: 0,
+                                                          ratecostamt: 0);
                                                   await getDetailTrnos()
                                                       .then((value) {
                                                     setState(() {
@@ -598,7 +609,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                             totalaftdisc: 0,
                                                             transno: widget
                                                                 .trnoinfo!
-                                                                .transno);
+                                                                .transno,
+                                                            totalcost: 0,
+                                                            ratecostamt: 0);
                                                   } else {
                                                     ClassRetailMainMobile.of(
                                                             context)!
@@ -701,7 +714,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                 context: context,
                                                                                 builder: (BuildContext context) {
                                                                                   return PasswordDialog(
-                                                                                            guestname: widget.guestname,
+                                                                                    guestname: widget.guestname,
                                                                                     frompaymentmobile: false,
                                                                                     frompayment: false,
                                                                                     dialogcancel: false,
@@ -722,7 +735,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                               widget.updatedata!();
                                                                                               widget.refreshdata;
 
-                                                                                              ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                              ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno, totalcost: 0, ratecostamt: 0);
                                                                                             });
                                                                                             await getDetails!.then((value) {
                                                                                               setState(() {});
@@ -736,7 +749,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                               setState(() {});
                                                                                             });
                                                                                             await getSumm();
-                                                                                            ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: widget.listdata.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                            ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: widget.listdata.length == 0 ? null : widget.trnoinfo!.transno, totalcost: 0, ratecostamt: 0);
                                                                                           }
                                                                                         }
                                                                                       });
@@ -764,7 +777,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                           widget.updatedata!();
                                                                                           widget.refreshdata;
 
-                                                                                          ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                          ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno, totalcost: 0, ratecostamt: 0);
                                                                                         });
                                                                                         await getDetails!.then((value) {
                                                                                           setState(() {});
@@ -778,7 +791,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                           setState(() {});
                                                                                         });
                                                                                         await getSumm();
-                                                                                        ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: widget.listdata.length == 0 ? null : widget.trnoinfo!.transno);
+                                                                                        ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: widget.listdata.length == 0 ? null : widget.trnoinfo!.transno, totalcost: 0, ratecostamt: 0);
                                                                                       }
 
                                                                                       // Lakukan sesuatu dengan password yang dimasukkan di sini

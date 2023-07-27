@@ -545,24 +545,94 @@ class Ctg {
   }
 }
 
+class AksesMain {
+  final String? accessname;
+  final String note;
+  final String? type;
+
+  AksesMain({
+    required this.accessname,
+    required this.note,
+    this.type,
+  });
+
+  AksesMain.fromJson(
+    Map<String, dynamic> res,
+  )   : accessname = res["accessname"],
+        note = res["note"],
+        type = res["type"];
+
+  @override
+  String toString() {
+    return '{"accessname": $accessname, "note": $note,"type": $type}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'accessname': accessname,
+      'note': note,
+      'type': type,
+    };
+  }
+}
+
+class StaffAccess {
+  final String? usercd;
+  final String email;
+  final String roledesc;
+  final String accesscode;
+  final String accessdesc;
+  final int id;
+
+  StaffAccess({
+    required this.usercd,
+    required this.email,
+    required this.roledesc,
+    required this.accesscode,
+    required this.accessdesc,
+    required this.id,
+  });
+
+  StaffAccess.fromJson(
+    Map<String, dynamic> res,
+  )   : usercd = res["usercd"],
+        email = res["email"],
+        roledesc = res["roledesc"],
+        accesscode = res["accesscode"],
+        accessdesc = res["accessdesc"],
+        id = res["id"];
+
+  @override
+  String toString() {
+    return '{"usercd": $usercd, "email": $email,"roledesc": $roledesc,"accesscode": $accesscode,"accessdesc": $accessdesc,"id": $id}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'usercd': usercd,
+      'email': email,
+      'roledesc': roledesc,
+      'accesscode': accesscode,
+      'accessdesc': accessdesc,
+      'id': id,
+    };
+  }
+}
+
 class Package {
   final String? packagecd;
   final String packagedesc;
   final String? packagenote;
   final String itemcode;
   final String itemdesc;
-  final int active;
-  final int slsfl;
   late int qty;
 
   Package({
     required this.packagecd,
     required this.packagedesc,
-    required this.slsfl,
     this.packagenote,
     required this.itemcode,
     required this.itemdesc,
-    required this.active,
     required this.qty,
   });
 
@@ -570,16 +640,14 @@ class Package {
     Map<String, dynamic> res,
   )   : packagecd = res["packagecd"],
         packagedesc = res["packagedesc"],
-        slsfl = res["slsfl"],
         packagenote = res["packagenote"],
         itemcode = res["itemcode"],
         itemdesc = res["itemdesc"],
-        active = res["active"],
         qty = res["qty"];
 
   @override
   String toString() {
-    return '{"packagecd": $packagecd, "packagedesc": $packagedesc,"packagenote": $packagenote,"itemcode": $itemcode,"itemdesc": $itemdesc,"qty": $qty,"active": $active,"slsfl": $slsfl}';
+    return '{"packagecd": $packagecd, "packagedesc": $packagedesc,"packagenote": $packagenote,"itemcode": $itemcode,"itemdesc": $itemdesc,"qty": $qty}';
   }
 
   Map<String, Object?> toJson() {
@@ -589,8 +657,6 @@ class Package {
       'packagenote': packagenote,
       'itemcode': itemcode,
       'itemdesc': itemdesc,
-      'active': active,
-      'slsfl': slsfl,
       'qty': qty,
     };
   }
@@ -891,10 +957,12 @@ class IafjrndtClass {
   final num? discpct;
   final num? discamt;
   final int? qty;
+
   final String? ratecurcd;
   final num? ratebs1;
   final num? ratebs2;
-  final num? rateamtcost;
+  final num ratecostamt;
+  final num totalcost;
   final num? rateamtitem;
   final num? rateamtservice;
   final num? rateamttax;
@@ -931,10 +999,13 @@ class IafjrndtClass {
   final String? salestype;
   final String? tablesid;
   final String? note;
+  final String? reason;
 
   IafjrndtClass(
       {this.salestype,
       this.id,
+      this.reason,
+      required this.totalcost,
       this.trdt,
       this.pscd,
       this.transno,
@@ -952,7 +1023,7 @@ class IafjrndtClass {
       this.ratecurcd,
       this.ratebs1,
       this.ratebs2,
-      this.rateamtcost,
+      required this.ratecostamt,
       this.rateamtitem,
       this.rateamtservice,
       this.rateamttax,
@@ -993,6 +1064,7 @@ class IafjrndtClass {
     Map<String, dynamic> res,
   )   : id = res["id"],
         trdt = res["trdt"],
+        totalcost = res["totalcost"],
         salestype = res["salestype"],
         pscd = res["pscd"],
         transno = res["transno"].toString(),
@@ -1010,7 +1082,7 @@ class IafjrndtClass {
         ratecurcd = res["ratecurcd"],
         ratebs1 = res["ratebs1"],
         ratebs2 = res["ratebs2"],
-        rateamtcost = res["rateamtcost"],
+        ratecostamt = res["ratecostamt"],
         rateamtitem = res["rateamtitem"],
         rateamtservice = res["rateamtservice"],
         rateamttax = res["rateamttax"],
@@ -1045,6 +1117,7 @@ class IafjrndtClass {
         multiprice = res["multiprice"],
         tablesid = res["tablesid"],
         note = res["note"],
+        reason = res["reason"],
         pricelist = res['pricelist'] != null
             ? List<PriceList>.from(
                 jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)))
@@ -1070,7 +1143,7 @@ class IafjrndtClass {
       'ratecurcd': ratecurcd,
       'ratebs1': ratebs1,
       'ratebs2': ratebs2,
-      'rateamtcost': rateamtcost,
+      'ratecostamt': ratecostamt,
       'rateamtitem': rateamtitem,
       'rateamtservice': rateamtservice,
       'rateamttax': rateamttax,
@@ -1106,13 +1179,15 @@ class IafjrndtClass {
       'multiprice': multiprice,
       'salestype': salestype,
       'tablesid': tablesid,
-      'note': note
+      'note': note,
+      'reason': reason,
+      'totalcost': totalcost
     };
   }
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,note:$note,revenueamt:$revenueamt,"itemseq":$itemseq}';
+    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,note:$note,revenueamt:$revenueamt,"itemseq":$itemseq,  "totalcost":$totalcost,"ratecostamt":$ratecostamt}';
   }
 }
 

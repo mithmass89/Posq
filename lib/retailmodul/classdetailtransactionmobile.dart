@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/savedtransaction/classtabdetailtrnomobile.dart';
+import 'package:posq/userinfo.dart';
 
 class ClassDetailTransMobile extends StatefulWidget {
   final String trno;
@@ -18,7 +20,8 @@ class ClassDetailTransMobile extends StatefulWidget {
       required this.outletinfo,
       required this.pscd,
       required this.datatransaksi,
-      required this.status, required this.fromsaved})
+      required this.status,
+      required this.fromsaved})
       : super(key: key);
 
   @override
@@ -44,7 +47,7 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
   }
 
   checkTransaction() {
-    handler.retriveListDetailPayment(widget.trno).then((value) {
+    ClassApi.retriveListDetailPayment(widget.trno, dbname, '').then((value) {
       if (value.first.pymtmthd != null) {
         setState(() {
           haspayment = true;
@@ -122,7 +125,10 @@ class _ClassDetailTransMobileState extends State<ClassDetailTransMobile>
             children: [
               ButtonNoIcon(
                 onpressed: () async {
-                  await checkTrno();
+                  if (haspayment == false) {
+                    await checkTrno();
+                  }
+
                   await Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

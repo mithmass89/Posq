@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -41,10 +42,12 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
   num pctservice = 0;
   bool additional = false;
   bool discbyamount = true;
+  int qtyremain = 0;
 
   @override
   void initState() {
     super.initState();
+
     qty = num.parse(widget.data.qty.toString());
     widget.editdesc.text = widget.data.itemdesc!;
     widget.editamount.text = widget.data.rateamtitem.toString();
@@ -58,6 +61,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
   getInfoItem() async {
     await ClassApi.getItemByCode(pscd, pscd, widget.data.itemcode!, '')
         .then((value) {
+      qtyremain = value.first.stock!.toInt();
       if (value.length == 0) {
         setState(() {
           service.text = '0';
@@ -92,6 +96,13 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
     }
   }
 
+  checkQTY() async {
+    await ClassApi.getItemByCode(pscd, pscd, widget.data.itemcode!, '')
+        .then((value) {
+      qtyremain = value.first.stock!.toInt();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +134,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                             rateamtitem: value.first.rateamtitem,
                             totalaftdisc: value.first.totalaftdisc,
                             transno: value.first.transno,
-                            description: value.first.description);
+                            description: value.first.description, totalcost: 0, ratecostamt: 0);
                       });
                     } else {
                       setState(() {
@@ -132,7 +143,7 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                             trdt: widget.data.trdt,
                             transno: widget.data.transno,
                             totalaftdisc: 0,
-                            description: '');
+                            description: '', totalcost: 0, ratecostamt: 0);
                       });
                     }
                   });
@@ -403,43 +414,30 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
           ),
           ElevatedButton(
               onPressed: () async {
-                await ClassApi.updatePosDetail(
-                        IafjrndtClass(
-                            createdt: widget.data.createdt,
-                            pricelist: widget.data.pricelist,
-                            active: widget.data.active,
-                            trdt: widget.data.trdt,
-                            transno: widget.data.transno,
-                            split: widget.data.split,
-                            multiprice: widget.data.multiprice,
-                            salestype: widget.data.salestype,
-                            typ: widget.data.typ,
-                            optioncode: widget.data.optioncode,
-                            havecond: widget.data.havecond,
-                            itemcode: widget.data.itemcode,
-                            description: widget.editdesc.text,
-                            qty: qty.toInt(),
-                            rateamtitem: int.parse(widget.editamount.text),
-                            discamt: discbyamount == true
-                                ? (discountamount.text == ''
-                                    ? 0
-                                    : qty.toInt() *
-                                        num.parse(discountamount.text))
-                                : (qty.toInt() *
-                                    (int.parse(widget.editamount.text) *
-                                        num.parse(discountpct.text == ''
-                                            ? '0'
-                                            : discountpct.text) /
-                                        100)),
-                            discpct: discountpct.text == ''
-                                ? 0
-                                : num.parse(discountpct.text),
-                            taxpct: tax.text == '' ? 0 : num.parse(tax.text),
-                            svchgpct: service.text == ''
-                                ? 0
-                                : num.parse(service.text),
-                            revenueamt: (qty.toInt() * int.parse(widget.editamount.text)) -
-                                (discbyamount == true
+                await ClassApi.checkStock(
+                    widget.data.itemcode!,dbname,'')
+                    .then((value) async {
+                  if (value.first.trackstock == 1
+                      ? value.first.stock! - qty >= -1
+                      : 9999999 - qty >= -1) {
+                    await ClassApi.updatePosDetail(
+                            IafjrndtClass(
+                                createdt: widget.data.createdt,
+                                pricelist: widget.data.pricelist,
+                                active: widget.data.active,
+                                trdt: widget.data.trdt,
+                                transno: widget.data.transno,
+                                split: widget.data.split,
+                                multiprice: widget.data.multiprice,
+                                salestype: widget.data.salestype,
+                                typ: widget.data.typ,
+                                optioncode: widget.data.optioncode,
+                                havecond: widget.data.havecond,
+                                itemcode: widget.data.itemcode,
+                                description: widget.editdesc.text,
+                                qty: qty.toInt(),
+                                rateamtitem: int.parse(widget.editamount.text),
+                                discamt: discbyamount == true
                                     ? (discountamount.text == ''
                                         ? 0
                                         : qty.toInt() *
@@ -449,29 +447,52 @@ class _ClassEditItemMobileState extends State<ClassEditItemMobile> {
                                             num.parse(discountpct.text == ''
                                                 ? '0'
                                                 : discountpct.text) /
-                                            100))),
-                            taxamt: ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) *
-                                (tax.text == ''
+                                            100)),
+                                discpct: discountpct.text == ''
                                     ? 0
-                                    : num.parse(tax.text) / 100),
-                            serviceamt:
-                                ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) *
-                                    (service.text == ''
+                                    : num.parse(discountpct.text),
+                                taxpct:
+                                    tax.text == '' ? 0 : num.parse(tax.text),
+                                svchgpct: service.text == ''
+                                    ? 0
+                                    : num.parse(service.text),
+                                revenueamt: (qty.toInt() * int.parse(widget.editamount.text)) -
+                                    (discbyamount == true
+                                        ? (discountamount.text == ''
+                                            ? 0
+                                            : qty.toInt() *
+                                                num.parse(discountamount.text))
+                                        : (qty.toInt() *
+                                            (int.parse(widget.editamount.text) *
+                                                num.parse(discountpct.text == ''
+                                                    ? '0'
+                                                    : discountpct.text) /
+                                                100))),
+                                taxamt: ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) *
+                                    (tax.text == ''
                                         ? 0
-                                        : num.parse(service.text) / 100),
-                            totalaftdisc: (qty.toInt() *
-                                    int.parse(widget.editamount.text)) -
-                                (discbyamount == true
-                                    ? (discountamount.text == ''
-                                        ? 0
-                                        : qty.toInt() * num.parse(discountamount.text))
-                                    : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100))) +
-                                ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) * (service.text == '' ? 0 : num.parse(service.text) / 100) +
-                                ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) * (tax.text == '' ? 0 : num.parse(tax.text) / 100),
-                            id: widget.data.id),
-                        pscd)
-                    .whenComplete(() {
-                  Navigator.of(context).pop();
+                                        : num.parse(tax.text) / 100),
+                                serviceamt: ((qty.toInt() * int.parse(widget.editamount.text)) -
+                                        (discbyamount == true
+                                            ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text))
+                                            : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) *
+                                    (service.text == '' ? 0 : num.parse(service.text) / 100),
+                                totalaftdisc: (qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100))) + ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) * (service.text == '' ? 0 : num.parse(service.text) / 100) + ((qty.toInt() * int.parse(widget.editamount.text)) - (discbyamount == true ? (discountamount.text == '' ? 0 : qty.toInt() * num.parse(discountamount.text)) : (qty.toInt() * (int.parse(widget.editamount.text) * num.parse(discountpct.text == '' ? '0' : discountpct.text) / 100)))) * (tax.text == '' ? 0 : num.parse(tax.text) / 100),
+                                id: widget.data.id, totalcost: widget.data.ratecostamt*qty, ratecostamt: 0),
+                            pscd)
+                        .whenComplete(() {
+                      Navigator.of(context).pop();
+                    });
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Stok barang tidak sesuai",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
                 });
               },
               child: Container(

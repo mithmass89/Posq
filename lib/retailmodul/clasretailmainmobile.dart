@@ -133,7 +133,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           ratecurcd: value.ratecurcd,
           ratebs1: value.ratebs1,
           ratebs2: value.ratebs2,
-          rateamtcost: value.rateamtcost,
+          ratecostamt: value.ratecostamt,
           rateamtitem: value.rateamtitem,
           rateamtservice: value.rateamtservice,
           rateamttax: value.rateamttax,
@@ -156,7 +156,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           confirmed: value.confirmed,
           description: value.description,
           taxpct: value.taxpct,
-          svchgpct: value.svchgpct);
+          svchgpct: value.svchgpct, totalcost: value.totalcost);
     });
     print('tersampaikan');
   }
@@ -277,7 +277,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       ratecurcd: '',
       ratebs1: 0,
       ratebs2: 0,
-      rateamtcost: 0,
+      ratecostamt: 0,
       rateamtitem: 0,
       rateamtservice: 0,
       rateamttax: 0,
@@ -298,7 +298,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       prnkitchen: 0,
       prnkitchentm: '',
       confirmed: '',
-      description: '',
+      description: '', totalcost: 0,
     );
     if (widget.trno != null) {
       getDetailData();
@@ -377,7 +377,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
             ratecurcd: 'Rupiah',
             ratebs1: 1,
             ratebs2: 1,
-            rateamtcost: items.costamt,
+            ratecostamt: items.costamt!,
             rateamtitem: items.slsamt,
             rateamtservice: 0,
             rateamttax: 0,
@@ -402,7 +402,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
             taxpct: items.taxpct,
             svchgpct: items.svchgpct,
             guestname: guestname != '' ? 'No Guest' : guestname,
-            createdt: now.toString()),
+            createdt: now.toString(), totalcost: items.costamt!),
         pscd);
   }
 

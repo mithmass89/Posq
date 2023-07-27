@@ -122,6 +122,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
           zerobill = false;
         });
       }
+      setState(() {});
     });
     print('zerobill = $zerobill');
   }
@@ -427,58 +428,114 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                   child: ElevatedButton(
                     onPressed: zerobill == true
                         ? () async {
-                            print('ini compcode $compcode');
-                            if (compcode != '' || compcode.isNotEmpty) {
-                              await insertIafjrnhd().whenComplete(() {
+                            if (refundmode == false) {
+                              print('ini compcode $compcode');
+                              if (compcode != '' || compcode.isNotEmpty) {
+                                await insertIafjrnhd().whenComplete(() {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ClassPaymetSucsessMobile(
+                                                guestname: widget.guestname,
+                                                fromsplit: widget.fromsplit,
+                                                fromsaved: widget.fromsaved,
+                                                datatrans: listdata,
+                                                frombanktransfer: false,
+                                                cash: true,
+                                                outletinfo: widget.outletinfo,
+                                                outletname: widget.outletname,
+                                                outletcd: widget.pscd,
+                                                amount: amountcash.text == '' ||
+                                                        amountcash.text.isEmpty
+                                                    ? widget.balance
+                                                    : double.parse(
+                                                        amountcash.text),
+                                                paymenttype: pymtmthd,
+                                                trno: widget.trno.toString(),
+                                                trdt: formattedDate,
+                                              )));
+                                });
+                              } else {
+                                print('dari  cash');
                                 Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClassPaymetSucsessMobile(
-                                              guestname: widget.guestname,
-                                              fromsplit: widget.fromsplit,
-                                              fromsaved: widget.fromsaved,
-                                              datatrans: listdata,
-                                              frombanktransfer: false,
-                                              cash: true,
-                                              outletinfo: widget.outletinfo,
-                                              outletname: widget.outletname,
-                                              outletcd: widget.pscd,
-                                              amount: amountcash.text == '' ||
-                                                      amountcash.text.isEmpty
-                                                  ? widget.balance
-                                                  : double.parse(
-                                                      amountcash.text),
-                                              paymenttype: pymtmthd,
-                                              trno: widget.trno.toString(),
-                                              trdt: formattedDate,
-                                            )));
-                              });
-                            } else {
-                              print('dari  cash');
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ClassPaymetSucsessMobile(
-                                          guestname: widget.guestname,
-                                          fromsplit: widget.fromsplit,
-                                          fromsaved: widget.fromsaved,
-                                          datatrans: listdata,
-                                          frombanktransfer: false,
-                                          cash: true,
-                                          outletinfo: widget.outletinfo,
-                                          outletname: widget.outletname,
-                                          outletcd: widget.pscd,
-                                          amount: amountcash.text == '' ||
-                                                  amountcash.text.isEmpty
-                                              ? widget.balance
-                                              : double.parse(amountcash.text),
-                                          paymenttype: pymtmthd,
-                                          trno: widget.trno.toString(),
-                                          trdt: formattedDate,
-                                        )),
-                              );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClassPaymetSucsessMobile(
+                                            guestname: widget.guestname,
+                                            fromsplit: widget.fromsplit,
+                                            fromsaved: widget.fromsaved,
+                                            datatrans: listdata,
+                                            frombanktransfer: false,
+                                            cash: true,
+                                            outletinfo: widget.outletinfo,
+                                            outletname: widget.outletname,
+                                            outletcd: widget.pscd,
+                                            amount: amountcash.text == '' ||
+                                                    amountcash.text.isEmpty
+                                                ? widget.balance
+                                                : double.parse(amountcash.text),
+                                            paymenttype: pymtmthd,
+                                            trno: widget.trno.toString(),
+                                            trdt: formattedDate,
+                                          )),
+                                );
+                              }
+                            }else{
+                               print('ini compcode $compcode');
+                              if (compcode != '' || compcode.isNotEmpty) {
+                                await insertIafjrnhdRefundMode().whenComplete(() {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ClassPaymetSucsessMobile(
+                                                guestname: widget.guestname,
+                                                fromsplit: widget.fromsplit,
+                                                fromsaved: widget.fromsaved,
+                                                datatrans: listdata,
+                                                frombanktransfer: false,
+                                                cash: true,
+                                                outletinfo: widget.outletinfo,
+                                                outletname: widget.outletname,
+                                                outletcd: widget.pscd,
+                                                amount: amountcash.text == '' ||
+                                                        amountcash.text.isEmpty
+                                                    ? widget.balance
+                                                    : double.parse(
+                                                        amountcash.text),
+                                                paymenttype: pymtmthd,
+                                                trno: widget.trno.toString(),
+                                                trdt: formattedDate,
+                                              )));
+                                });
+                              } else {
+                                print('dari  cash');
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClassPaymetSucsessMobile(
+                                            guestname: widget.guestname,
+                                            fromsplit: widget.fromsplit,
+                                            fromsaved: widget.fromsaved,
+                                            datatrans: listdata,
+                                            frombanktransfer: false,
+                                            cash: true,
+                                            outletinfo: widget.outletinfo,
+                                            outletname: widget.outletname,
+                                            outletcd: widget.pscd,
+                                            amount: amountcash.text == '' ||
+                                                    amountcash.text.isEmpty
+                                                ? widget.balance
+                                                : double.parse(amountcash.text),
+                                            paymenttype: pymtmthd,
+                                            trno: widget.trno.toString(),
+                                            trdt: formattedDate,
+                                          )),
+                                );
+                              }
                             }
                           }
                         : null,

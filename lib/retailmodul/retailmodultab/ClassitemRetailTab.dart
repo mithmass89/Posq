@@ -61,6 +61,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
 
     await ClassApi.insertPosDetail(
         IafjrndtClass(
+          totalcost: widget.item.costamt!*1,
           trdt: widget.trdt,
           pscd: pscd,
           transno: widget.trno,
@@ -78,7 +79,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
           ratecurcd: 'Rupiah',
           ratebs1: 1,
           ratebs2: 1,
-          rateamtcost: widget.item.costamt,
+          ratecostamt: widget.item.costamt!,
           rateamtitem: widget.item.slsamt,
           rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
           rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
@@ -114,6 +115,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
         ),
         pscd);
     result = IafjrndtClass(
+      totalcost: widget.item.costamt!*1,
       trdt: widget.trdt,
       pscd: pscd,
       transno: widget.trno,
@@ -131,7 +133,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
       ratecurcd: 'Rupiah',
       ratebs1: 1,
       ratebs2: 1,
-      rateamtcost: widget.item.costamt,
+      ratecostamt: widget.item.costamt!,
       rateamtitem: widget.item.slsamt,
       rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
       rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
@@ -173,6 +175,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
 
     await ClassApi.insertPosDetail(
         IafjrndtClass(
+          totalcost:widget.item.costamt!*1,
           trdt: widget.trdt,
           pscd: pscd,
           transno: widget.trno,
@@ -190,7 +193,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
           ratecurcd: 'Rupiah',
           ratebs1: 1,
           ratebs2: 1,
-          rateamtcost: -widget.item.costamt!,
+          ratecostamt: -widget.item.costamt!,
           rateamtitem: -widget.item.slsamt!,
           rateamtservice: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
           rateamttax: -(widget.item.slsamt! * widget.item.taxpct! / 100),
@@ -226,6 +229,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
         ),
         pscd);
     result = IafjrndtClass(
+      totalcost:widget.item.costamt!*(-1),
       trdt: widget.trdt,
       pscd: pscd,
       transno: widget.trno,
@@ -243,7 +247,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
       ratecurcd: 'Rupiah',
       ratebs1: 1,
       ratebs2: 1,
-      rateamtcost: -widget.item.costamt!,
+      ratecostamt: -widget.item.costamt!,
       rateamtitem: -widget.item.slsamt!,
       rateamtservice: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
       rateamttax: -(widget.item.slsamt! * widget.item.taxpct! / 100),

@@ -35473,11 +35473,11 @@ com.google.android.gms.internal.firebase-auth-api.zzfu:
     private final java.lang.Integer zzd
 androidx.appcompat.view.StandaloneActionMode:
     private boolean mFocusable
-io.flutter.view.TextureRegistry$SurfaceTextureEntry$-CC
+androidx.core.view.MenuProvider$-CC
 androidx.lifecycle.DefaultLifecycleObserver$-CC:
     public static void $default$onResume(androidx.lifecycle.DefaultLifecycleObserver,androidx.lifecycle.LifecycleOwner)
+androidx.lifecycle.LifecycleRegistryOwner$-CC
 io.flutter.plugin.common.BinaryMessenger$-CC:
     public static io.flutter.plugin.common.BinaryMessenger$TaskQueue $default$makeBackgroundTaskQueue(io.flutter.plugin.common.BinaryMessenger,io.flutter.plugin.common.BinaryMessenger$TaskQueueOptions)
     public static void $default$setMessageHandler(io.flutter.plugin.common.BinaryMessenger,java.lang.String,io.flutter.plugin.common.BinaryMessenger$BinaryMessageHandler,io.flutter.plugin.common.BinaryMessenger$TaskQueue)
-androidx.lifecycle.LifecycleRegistryOwner$-CC
-androidx.core.view.MenuProvider$-CC
+io.flutter.view.TextureRegistry$SurfaceTextureEntry$-CC

@@ -11,8 +11,14 @@ import 'package:toast/toast.dart';
 class ClassCashierSummaryDetail extends StatefulWidget {
   final String fromdate;
   final String todate;
-  const ClassCashierSummaryDetail(
-      {Key? key, required this.fromdate, required this.todate})
+  final List<IafjrnhdClass> datatemp;
+  late List<String> listoutlets;
+  ClassCashierSummaryDetail(
+      {Key? key,
+      required this.fromdate,
+      required this.listoutlets,
+      required this.todate,
+      required this.datatemp})
       : super(key: key);
 
   @override
@@ -26,16 +32,18 @@ class _ClassCashierSummaryDetailState extends State<ClassCashierSummaryDetail> {
   var formatter2 = DateFormat('dd-MMM-yyyy');
   String? formattedDate;
   var now = DateTime.now();
+  List<IafjrnhdClass> detail = [];
 
   void initState() {
     super.initState();
     handler = DatabaseHandler();
     ToastContext().init(context);
     formattedDate = formatter2.format(now);
+    getDataDetail();
   }
 
   String formatDate(String dateString) {
-     initializeDateFormatting('id', null);
+    initializeDateFormatting('id', null);
     final inputFormat = DateFormat('yyyy-MM-dd');
     final outputFormat =
         DateFormat('dd MMMM yyyy', 'id'); // 'id' for Indonesian language
@@ -46,37 +54,41 @@ class _ClassCashierSummaryDetailState extends State<ClassCashierSummaryDetail> {
     return formattedDate;
   }
 
+  getDataDetail() async {
+    print('generate list : ${widget.listoutlets}');
+    for (var x in widget.listoutlets) {
+      await ClassApi.getSummaryCashierDetail(
+              widget.fromdate, widget.todate, x, query!)
+          .then((value) {
+        print('test value : $value');
+        detail.addAll(value);
+      });
+    }
+    print('ini detail : $detail');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Detail Transaksi')),
       body: Container(
-        child: FutureBuilder(
-            future: ClassApi.getSummaryCashierDetail(
-                widget.fromdate, widget.todate, dbname, query!),
-            builder: (context, AsyncSnapshot<List<IafjrnhdClass>> snapshot) {
-              var x = snapshot.data ?? [];
-              if (x.isNotEmpty) {
-                return ListView.builder(
-                    itemCount: x.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                              dense: true,
-                              leading: Text(formatDate(x[index].trdt!)),
-                              title: Text(x[index].transno!),
-                              subtitle: Text(x[index].pymtmthd!),
-                              trailing: Text(CurrencyFormat.convertToIdr(
-                                  x[index].totalamt, 0))),
-                          Divider(),
-                        ],
-                      );
-                    });
-              }
-              return Container();
-            }),
-      ),
+          child: ListView.builder(
+              itemCount: detail.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    ListTile(
+                        dense: true,
+                        leading: Text(formatDate(detail[index].trdt!)),
+                        title: Text(detail[index].transno!),
+                        subtitle: Text(detail[index].pymtmthd!),
+                        trailing: Text(CurrencyFormat.convertToIdr(
+                            detail[index].totalamt, 0))),
+                    Divider(),
+                  ],
+                );
+              })),
     );
   }
 }

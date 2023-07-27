@@ -12,6 +12,7 @@ class TextFieldMobile extends StatefulWidget {
   final ValueChanged<String>? onSumbit;
   final typekeyboard;
   final bool? enable;
+  final suffixicon;
 
   TextFieldMobile({
     Key? key,
@@ -22,7 +23,7 @@ class TextFieldMobile extends StatefulWidget {
     this.maxline,
     this.hint,
     this.enable = true,
-    this.onSumbit,
+    this.onSumbit, this.suffixicon,
   }) : super(key: key);
 
   @override
@@ -41,12 +42,14 @@ class _TextFieldMobileState extends State<TextFieldMobile> {
           enableInteractiveSelection:
               widget.enable!, // will disable paste operation
           // enabled: widget.enable,
+
           maxLines: widget.maxline,
           keyboardType: widget.typekeyboard,
           onChanged: widget.onChanged,
           onFieldSubmitted: widget.onSumbit,
           controller: widget.controller,
           decoration: InputDecoration(
+            suffix: widget.suffixicon,
               hintText: widget.hint,
               labelText: widget.label.toString(),
               enabledBorder: OutlineInputBorder(

@@ -62,6 +62,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
 
   Future<IafjrndtClass?> insertIafjrndt() async {
     now = DateTime.now();
+    print('ini insert');
     await ClassApi.insertPosDetail(
         IafjrndtClass(
           trdt: widget.trdt,
@@ -81,7 +82,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
           ratecurcd: 'Rupiah',
           ratebs1: 1,
           ratebs2: 1,
-          rateamtcost: widget.item.costamt,
+          ratecostamt: widget.item.costamt!,
           rateamtitem: widget.item.slsamt,
           rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
           rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
@@ -114,9 +115,11 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
           statustrans: 'prosess',
           createdt: now.toString(),
           guestname: widget.guestname,
+          totalcost: 1 * widget.item.costamt!,
         ),
         pscd);
     result = IafjrndtClass(
+      totalcost: widget.item.costamt! * 1,
       trdt: widget.trdt,
       pscd: pscd,
       transno: widget.trno,
@@ -134,7 +137,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       ratecurcd: 'Rupiah',
       ratebs1: 1,
       ratebs2: 1,
-      rateamtcost: widget.item.costamt,
+      ratecostamt: widget.item.costamt!,
       rateamtitem: widget.item.slsamt,
       rateamtservice: widget.item.slsamt! * widget.item.svchgpct! / 100,
       rateamttax: widget.item.slsamt! * widget.item.taxpct! / 100,
@@ -175,6 +178,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
     now = DateTime.now();
     await ClassApi.insertPosDetail(
         IafjrndtClass(
+          totalcost: widget.item.costamt! * (-1),
           trdt: widget.trdt,
           pscd: pscd,
           transno: widget.trno,
@@ -192,7 +196,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
           ratecurcd: 'Rupiah',
           ratebs1: 1,
           ratebs2: 1,
-          rateamtcost: -(widget.item.costamt)!,
+          ratecostamt: -(widget.item.costamt)!,
           rateamtitem: -(widget.item.slsamt)!,
           rateamtservice: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
           rateamttax: -(widget.item.slsamt! * widget.item.taxpct! / 100),
@@ -228,6 +232,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
         ),
         pscd);
     result = IafjrndtClass(
+      totalcost: (-1) * widget.item.costamt!,
       trdt: widget.trdt,
       pscd: pscd,
       transno: widget.trno,
@@ -245,7 +250,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       ratecurcd: 'Rupiah',
       ratebs1: 1,
       ratebs2: 1,
-      rateamtcost: -(widget.item.costamt)!,
+      ratecostamt: -(widget.item.costamt)!,
       rateamtitem: -(widget.item.slsamt)!,
       rateamtservice: -(widget.item.slsamt! * widget.item.svchgpct! / 100),
       rateamttax: -(widget.item.slsamt! * widget.item.taxpct! / 100),

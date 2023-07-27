@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/setting/pegawai/pegawaimainmobile.dart';
 import 'package:posq/setting/pegawai/pegawaimaintab.dart';
+import 'package:posq/setting/pegawai/reviewakses.dart';
 import 'package:posq/setting/pegawai/settingoutletpegawai.dart';
 
 class MainPagePegawai extends StatelessWidget {
@@ -57,17 +58,16 @@ class MainPagePegawai extends StatelessWidget {
                       fontSize: 16.0);
                 },
                 title: Text('Absensi'),
-              )),     Card(
+              )),
+              Card(
                   child: ListTile(
                 onTap: () {
-                  Fluttertoast.showToast(
-                      msg: "Segera Hadir",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ReviewAksesStaf(
+                      
+                    )),
+                  );
                 },
                 title: Text('Akses review'),
               )),
@@ -118,14 +118,12 @@ class MainPagePegawai extends StatelessWidget {
               Card(
                   child: ListTile(
                 onTap: () {
-                  Fluttertoast.showToast(
-                      msg: "Segera Hadir",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+               Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ReviewAksesStaf(
+                      
+                    )),
+                  );
                 },
                 title: Text('Akses review'),
               )),

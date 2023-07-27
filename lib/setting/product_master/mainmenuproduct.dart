@@ -6,11 +6,10 @@ import 'package:posq/model.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
 import 'package:posq/setting/generalsetting/generalsettingmobile.dart';
 import 'package:posq/setting/kelolastock/kelolaproductmains.dart';
-import 'package:posq/setting/kelolastock/mobile/kelolastockmainmobile.dart';
+
 import 'package:posq/setting/menupackage/menupackagemainmobile.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/product_master/tabletclass/PaymentMasterTab.dart';
-import 'package:posq/setting/tablesettings/tablesettings.dart';
 import 'package:posq/setting/tipetransaksi/maintipetransaksi.dart';
 import 'package:posq/userinfo.dart';
 

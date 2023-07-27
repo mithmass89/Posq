@@ -680,6 +680,10 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                                     );
                                                   });
                                             } else {
+                                              selectedpy = 'EDC';
+                                              pymtmthd = 'EDC';
+                                              compcode = pymtmthd;
+                                              setState(() {});
                                               Toast.show(
                                                   "Refund mode tidak tersedia ",
                                                   duration: Toast.lengthLong,
