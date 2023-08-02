@@ -68,7 +68,7 @@ class ImageFromGalleryExTabState extends State<ImageFromGalleryExTab> {
                 width: widget.width,
                 height: widget.height,
                 // decoration: BoxDecoration(color: Colors.red[200]),
-                child: widget.imagepath != ''
+                child: widget.imagepath != '' && _image!=null
                     ? Image.file(File(_image.path)) // ? Image.network(
                     //     widget.imagepath,
                     //     fit: BoxFit.fill,

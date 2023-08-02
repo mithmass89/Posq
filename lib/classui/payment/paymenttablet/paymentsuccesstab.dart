@@ -102,7 +102,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   void initState() {
     print(widget.fromsaved);
     super.initState();
-    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
       print(message);

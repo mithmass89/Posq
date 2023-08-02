@@ -8,6 +8,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "adaptive_number",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/adaptive_number-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "animated_text_kit",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/animated_text_kit-4.2.2",
       "packageUri": "lib/",
@@ -24,6 +30,12 @@
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/async-2.10.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "audioplayers",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/audioplayers-0.20.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "barcode",
@@ -116,10 +128,22 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "dart_jsonwebtoken",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/dart_jsonwebtoken-2.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "dropdown_button2",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/dropdown_button2-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "ed25519_edwards",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/ed25519_edwards-0.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "equatable",
@@ -210,6 +234,12 @@
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_dynamic_links_platform_interface-0.2.6+3",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "fixnum",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/fixnum-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "fl_chart",
@@ -836,7 +866,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-07-25T18:29:27.786773Z",
+  "generated": "2023-08-02T07:36:28.567538Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }

@@ -22,7 +22,6 @@ class ClassCashierMenuSoldDetailTab extends StatefulWidget {
 
 class _ClassCashierMenuSoldDetailTabState
     extends State<ClassCashierMenuSoldDetailTab> {
-  late DatabaseHandler handler;
   String? query = '';
   TextEditingController _controller = TextEditingController();
 

@@ -63,6 +63,8 @@ dependencies:
   web_socket_channel: ^2.4.0
   local_auth: ^1.1.7
   webview_flutter: ^2.0.0
+  audioplayers: ^0.20.1 # Replace with the latest version
+  dart_jsonwebtoken: ^2.0.0
  
 
 
@@ -162,6 +164,7 @@ flutter:
     - assets/package.png
     - assets/fifo.png
     - assets/fingerprint.png
+    - assets/notification_sound.mp3
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

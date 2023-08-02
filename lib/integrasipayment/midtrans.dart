@@ -300,16 +300,6 @@ class PaymentGate {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
     var body = jsonEncode({
       "transaction_details": {"order_id": "$trno", "gross_amount": amount},
-      // "item_details": [{
-      //   "id": "ITEM1",
-      //   "price": 10000,
-      //   "quantity": 1,
-      //   "name": "Midtrans Bear",
-      //   "brand": "Midtrans",
-      //   "category": "Toys",
-      //   "merchant_name": "Midtrans"
-      // }],
-
       "enabled_payments": ["gopay"],
       "credit_card": {
         "secure": true,

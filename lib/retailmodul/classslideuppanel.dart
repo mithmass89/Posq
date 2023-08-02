@@ -280,7 +280,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.01,
           ),
-          Container(
+       widget.datatransaksi.isNotEmpty?   Container(
             height: MediaQuery.of(context).size.height * 0.05,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -394,7 +394,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                         child: Text(widget.datatransaksi[index].transdesc!)),
                   );
                 }),
-          ),
+          ):Container(),
           Container(
               alignment: Alignment.topCenter,
               height: widget.qty! <= 4

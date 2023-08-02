@@ -18,6 +18,7 @@ import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
 import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/promo/tablet/classcreatepromotab.dart';
 import 'package:posq/setting/promo/tablet/classpromotab.dart';
+import 'package:posq/tokoonline.dart/tokoonline.dart';
 import 'package:posq/userinfo.dart';
 
 class DrawerRetailMainTabs extends StatefulWidget {
@@ -63,7 +64,6 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                             widget.outletname.toString(),
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
-                    
                         ],
                       ),
                     ),
@@ -267,7 +267,10 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                   title: const Text('Toko Online'),
                   onTap: accesslistuser.contains('tokoonline') == true
                       ? () {
-                          Navigator.pop(context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return TokoOnlineMain();
+                          }));
                         }
                       : () {
                           Fluttertoast.showToast(

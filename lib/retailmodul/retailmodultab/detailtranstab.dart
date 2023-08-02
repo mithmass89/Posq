@@ -93,6 +93,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
   List<String> ordertype = ['Dine in', 'Take Away'];
   int multiprice = 0;
   int? selectedindex;
+  int? length=0;
 
   @override
   void initState() {
@@ -287,7 +288,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                 //   ),
                 // ),
 
-                Container(
+             widget.datatransaksi.isNotEmpty?   Container(
                   height: MediaQuery.of(context).size.height * 0.05,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -405,10 +406,10 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                   Text(widget.datatransaksi[index].transdesc!)),
                         );
                       }),
-                ),
+                ): Container(),
                 Container(
                     alignment: Alignment.topCenter,
-                    height: MediaQuery.of(context).size.height * 0.38,
+                    height: MediaQuery.of(context).size.height * 0.12*(length==0?4.1:length!<5?length!:4.0),
                     child: FutureBuilder(
                         future: getDetails,
                         builder: (context,
@@ -418,6 +419,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                 itemCount: widget.listdata.length,
                                 itemBuilder: (context, index) {
                                   // widget.listdata = widget.listdata;
+                                  length=widget.listdata.length;
+                                  print(length);
                                   return Column(
                                     children: [
                                       widget.listdata[index].qty != 0
@@ -908,6 +911,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                           }
                           return Center(
                               child: Container(
+                                
                             child: Text('Tidak Ada transaksi'),
                           ));
                         })),

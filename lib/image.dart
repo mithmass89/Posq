@@ -80,7 +80,7 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                 width: widget.width,
                 height: widget.height,
                 // decoration: BoxDecoration(color: Colors.red[200]),
-                child: widget.imagepath != null
+                child: widget.imagepath != null && _image.path!='null'
                     ? Container(
                         width: widget.width,
                         height: widget.height,

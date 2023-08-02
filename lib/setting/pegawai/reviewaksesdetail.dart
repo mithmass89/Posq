@@ -29,7 +29,7 @@ class _ReviewAksesDetailState extends State<ReviewAksesDetail> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Detail Akses ${widget.user}'),
+          title: Text('Detail Akses ${widget.user} ${widget.outletcd}'),
         ),
         body: Column(
           children: [

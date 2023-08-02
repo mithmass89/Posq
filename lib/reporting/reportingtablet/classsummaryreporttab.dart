@@ -228,6 +228,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                                   builder: (BuildContext context) {
                             return ClassPilihOutletMobile();
                           }));
+
                           outlet.text = outletdata![0]['outletdesc'];
                           if (type == 'Summary Cashier') {
                             myMethod.call();
@@ -362,7 +363,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
 
                         _controllerdate.text = '$fromdatenamed - $todatenamed';
                         setState(() {});
-
+                        
                         if (type == 'Summary Cashier') {
                           myMethod.call();
                         } else if (type == 'Ringkasan') {

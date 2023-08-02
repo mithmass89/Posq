@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_const_constructors, sized_box_for_whitespace, unnecessary_string_interpolations, unused_import, avoid_print, unused_local_variable
 
 import 'dart:io';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
@@ -15,6 +16,7 @@ import 'package:posq/setting/product_master/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
 import 'package:posq/setting/product_master/tabletclass/classcreateinformasiproduct.dart';
 import 'package:posq/setting/product_master/tabletclass/kelolastockproducttabs.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -132,7 +134,7 @@ class _CreateproducttabState extends State<Createproducttab>
     print(data);
     await ClassApi.insertProduct(
         Item(
-              packageflag: 0,
+          packageflag: 0,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
           itemdesc: data.itemdesc.toString(),
@@ -241,7 +243,7 @@ class _CreateproducttabState extends State<Createproducttab>
                     : Colors.grey[300],
                 textcolor: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.10,
-                width: MediaQuery.of(context).size.width * 0.90,
+                width: MediaQuery.of(context).size.width * 0.60,
                 onpressed: productname.text != '' &&
                         productcd.text != '' &&
                         amountsales.text != ''
@@ -262,7 +264,7 @@ class _CreateproducttabState extends State<Createproducttab>
                             var random = uuid.v4();
                             await _createProduct(
                                 Item(
-                                      packageflag: 0,
+                                  packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,
                                   itemcode: random,
@@ -303,6 +305,96 @@ class _CreateproducttabState extends State<Createproducttab>
                                   barcode: barcode.text,
                                 ),
                                 widget.pscd!);
+                            Navigator.of(context).pop();
+                          } else {
+                            Toast.show("Not Connect to server",
+                                duration: Toast.lengthLong,
+                                gravity: Toast.bottom);
+                          }
+                        });
+                      }
+                    : null),
+          ),
+          Positioned(
+            left: MediaQuery.of(context).size.width * 0.55,
+            top: MediaQuery.of(context).size.height * 0.70,
+            child: ButtonNoIcon(
+                name: 'Semua Outlet',
+                color: productname.text != '' &&
+                        productcd.text != '' &&
+                        amountsales.text != ''
+                    ? Colors.blue
+                    : Colors.grey[300],
+                textcolor: Colors.white,
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.35,
+                onpressed: productname.text != '' &&
+                        productcd.text != '' &&
+                        amountsales.text != ''
+                    ? () async {
+                        setState(() {
+                          pctnett = pcttax == '' || pctservice == ''
+                              ? (double.parse(
+                                          pcttax == '' ? '0.0' : pcttax.text) +
+                                      double.parse(pctservice == ''
+                                          ? '0.0'
+                                          : pctservice.text)) /
+                                  100
+                              : 0;
+                        });
+                        await checkInternet().whenComplete(() async {
+                          if (connect == true) {
+                            EasyLoading.show(status: 'Memasukan data...');
+                            for (var x in listoutlets) {
+                              var uuid = Uuid();
+                              var random = uuid.v4();
+                              await _createProduct(
+                                  Item(
+                                    packageflag: 0,
+                                    multiprice: multiprice,
+                                    outletcode: widget.pscd!,
+                                    itemcode: random,
+                                    itemdesc: productname.text,
+                                    costcoa: 'COST',
+                                    revenuecoa: 'REVENUE',
+                                    taxcoa: 'TAX',
+                                    svchgcoa: 'SERVICE',
+                                    taxpct: pcttax.text.isEmpty
+                                        ? 0
+                                        : num.parse(pcttax.text),
+                                    svchgpct: pctservice.text.isEmpty
+                                        ? 0
+                                        : num.parse(pctservice.text),
+                                    costamt: amountcost.text.isEmpty
+                                        ? 0
+                                        : num.parse(amountcost.text),
+                                    slsamt: amountsales.text.isEmpty
+                                        ? 0
+                                        : num.parse(amountsales.text),
+                                    slsnett: pctnett != 0
+                                        ? num.parse(amountsales.text) *
+                                                pctnett! +
+                                            num.parse(amountsales.text)
+                                        : amountsales.text.isEmpty
+                                            ? 0
+                                            : num.parse(amountsales.text),
+                                    ctg: selectedctg ?? '',
+                                    slsfl: 1,
+                                    stock: num.parse(adjusmentstock.text.isEmpty
+                                        ? '0'
+                                        : adjusmentstock.text),
+                                    pathimage: pathimage ?? 'Empty',
+                                    description: description.text.isEmpty
+                                        ? 'Empty'
+                                        : description.text,
+                                    trackstock: trackstock,
+                                    sku: sku.text,
+                                    barcode: barcode.text,
+                                  ),
+                                  widget.pscd!);
+                            }
+                            EasyLoading.dismiss();
+
                             Navigator.of(context).pop();
                           } else {
                             Toast.show("Not Connect to server",

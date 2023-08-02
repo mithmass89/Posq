@@ -6,7 +6,7 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = '192.168.56.1';
+var ip = '192.168.88.248';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
@@ -951,6 +951,31 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/updateitem');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateOnlineItem(
+      String itemcode, int onlineflag, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "itemcode": itemcode,
+       "onlineflag": onlineflag,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateOnlineItem');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -3107,14 +3132,14 @@ class ClassApi {
       String fromdate,
       String todate,
       String dbname,
-      String itemcode,
+      String itemdesc,
       String query) async {
     // print(json.encode(pembayaran));
     var data = {
       "dbname": dbname,
       "fromdate": fromdate,
       "todate": todate,
-      "itemcode": itemcode
+      "itemdesc": itemdesc
     };
     final url = Uri.parse('$api/getReportDetailMenuSoldDetail');
     final response = await http.post(url,
@@ -3128,6 +3153,7 @@ class ClassApi {
       List bodyJson = json.decode(response.body);
       // print(bodyJson);
       // print('ringkasan  $bodyJson');
+      print(bodyJson);
       return bodyJson
           .map((json) => IafjrndtClass.fromJson(json))
           .where((items) {

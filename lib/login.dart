@@ -162,10 +162,9 @@ class _LoginState extends State<Login> {
         var sekarang = DateTime.parse(formattedCurrentTime!);
         Duration difference = expired.difference(sekarang);
         differenceInDays = difference.inDays;
-
-        if (differenceInDays > 3) {
+      print('difference : ${differenceInDays > 7}');
+        if (differenceInDays < 7) {
           aktif = 'aktif';
-
           Fluttertoast.showToast(
               msg: "Sisa masa aktif $differenceInDays",
               toastLength: Toast.LENGTH_LONG,
@@ -897,159 +896,6 @@ class _LoginState extends State<Login> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height * 0.02,
-                        // ),
-                        //   ElevatedButton(
-                        //   style: ElevatedButton.styleFrom(
-                        //     backgroundColor: Colors.white, // Background color
-                        //   ),
-                        //   onPressed: () async {
-                        //     await LogOut.signOut(context: context);
-                        //     await Authentication.signInWithGoogle(
-                        //             context: context)
-                        //         .then((value) async {
-                        //       if (value!.email == null) {
-                        //         Fluttertoast.showToast(
-                        //             msg: "Email is not Verified",
-                        //             toastLength: Toast.LENGTH_LONG,
-                        //             gravity: ToastGravity.CENTER,
-                        //             timeInSecForIosWeb: 1,
-                        //             backgroundColor:
-                        //                 Color.fromARGB(255, 11, 12, 14),
-                        //             textColor: Colors.white,
-                        //             fontSize: 16.0);
-                        //       } else {
-                        //         await ClassApi.updateUserGmail(
-                        //             UserInfoSys(
-                        //                 fullname: value.displayName!,
-                        //                 token: '',
-                        //                 lastsignin: '',
-                        //                 urlpic: value.photoURL!,
-                        //                 uuid: value.uid),
-                        //             'profiler');
-                        //         await ClassApi.checkUserFromOauth(
-                        //                 value.email!, 'profiler')
-                        //             .then((values) async {
-                        //           if (values.isNotEmpty) {
-                        //             print(values);
-                        //             setState(() {
-                        //               usercd = values[0]['usercd'];
-                        //               imageurl = value.photoURL!;
-                        //               emaillogin = value.email!;
-                        //               print('ini urlpics : $imageurl');
-                        //             });
-                        //             await ClassApi.checkVerifiedPayment(
-                        //                     emaillogin)
-                        //                 .then((value) async {
-                        //               print(value[0]['paymentcheck']);
-                        //               if (value[0]['paymentcheck'] == 'pending' ||
-                        //                   value[0]['paymentcheck'] == '') {
-                        //                 Navigator.push(
-                        //                   context,
-                        //                   MaterialPageRoute(
-                        //                       builder: (context) => PaymentChecks(
-                        //                             username: username,
-                        //                             email: emaillogin,
-                        //                             trno: value[0]
-                        //                                 ['pytransaction'],
-                        //                           )),
-                        //                 );
-                        //                 Fluttertoast.showToast(
-                        //                     msg: "Memverifikasi pembayaran",
-                        //                     toastLength: Toast.LENGTH_LONG,
-                        //                     gravity: ToastGravity.CENTER,
-                        //                     timeInSecForIosWeb: 1,
-                        //                     backgroundColor:
-                        //                         Color.fromARGB(255, 11, 12, 14),
-                        //                     textColor: Colors.white,
-                        //                     fontSize: 16.0);
-                        //               } else {
-                        //                 await ClassApi.getOutlets(usercd)
-                        //                     .then((valued) async {
-                        //                   if (valued.length != 0) {
-                        //                     dbname = valued[0]['outletcode'];
-                        //                     pscd = valued[0]['outletcode'];
-                        //                     for (var x in valued) {
-                        //                       listoutlets.add(x['outletcode']);
-                        //                     }
-                        //                     await ClassApi.getAccessUser(usercd)
-                        //                         .then((valueds) {
-                        //                       for (var x in valueds) {
-                        //                         accesslist.add(x['access']);
-                        //                       }
-                        //                     });
-                        //                     await ClassApi.getAccessSettingsUser()
-                        //                         .then((valuess) {
-                        //                       strictuser = valuess[0]
-                        //                               ['strictuser']
-                        //                           .toString();
-                        //                     });
-                        //                     Navigator.of(context)
-                        //                         .pushAndRemoveUntil(
-                        //                             MaterialPageRoute(
-                        //                                 builder: (context) =>
-                        //                                     Mainapps()),
-                        //                             (Route<dynamic> route) =>
-                        //                                 false);
-                        //                   } else {
-                        //                     Navigator.push(
-                        //                       context,
-                        //                       MaterialPageRoute(
-                        //                           builder: (context) =>
-                        //                               ClassSetupProfileMobile(
-                        //                                 username: username,
-                        //                               )),
-                        //                     );
-                        //                   }
-                        //                 });
-                        //               }
-                        //             });
-                        //           } else {
-                        //             Fluttertoast.showToast(
-                        //                 msg: "User Not Found",
-                        //                 toastLength: Toast.LENGTH_LONG,
-                        //                 gravity: ToastGravity.CENTER,
-                        //                 timeInSecForIosWeb: 1,
-                        //                 backgroundColor:
-                        //                     Color.fromARGB(255, 11, 12, 14),
-                        //                 textColor: Colors.white,
-                        //                 fontSize: 16.0);
-                        //             LogOut.signOut(context: context);
-                        //           }
-                        //         });
-                        //       }
-                        //     });
-                        //   },
-                        //   child: Container(
-                        //     alignment: Alignment.center,
-                        //     width: MediaQuery.of(context).size.width * 0.24,
-                        //     height: MediaQuery.of(context).size.height * 0.04,
-                        //     child: Wrap(
-                        //       children: <Widget>[
-                        //         SizedBox(
-                        //           height:
-                        //               MediaQuery.of(context).size.height * 0.05,
-                        //           child: ImageIcon(
-                        //             AssetImage("assets/google.png"),
-                        //             size: 20,
-                        //             color: Colors.orange,
-                        //           ),
-                        //         ),
-                        //         SizedBox(
-                        //           width: 10,
-                        //         ),
-                        //         SizedBox(
-                        //           height:
-                        //               MediaQuery.of(context).size.height * 0.05,
-                        //           child: Text("masuk dengan gmail",
-                        //               style: TextStyle(
-                        //                   fontSize: 13, color: Colors.orange)),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                         Container(
                           alignment: Alignment.center,
                           width: MediaQuery.of(context).size.width * 0.70,
@@ -1076,7 +922,390 @@ class _LoginState extends State<Login> {
                     ))
               ]),
             );
-          }
+          } else if (constraints.maxWidth < 800 &&
+              constraints.maxWidth >= 480) {
+                    return Container(
+              color: Colors.white,
+              child: Column(children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.orange),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40.0),
+                          topRight: Radius.circular(40.0),
+                          bottomRight: Radius.circular(40.0),
+                          bottomLeft: Radius.circular(40.0)),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.white, Colors.white])),
+                  height: MediaQuery.of(context).size.height * 0.68,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'AOVIPOS',
+                          style: TextStyle(fontSize: 24, color: Colors.orange),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFieldMobileLogin(
+                          validator: (value) {
+                            final emailRegex =
+                                RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+                            if (!emailRegex.hasMatch(email.text)) {
+                              // Email address is invalid, do something
+                              print(value);
+                            } else {
+                              print(value);
+                            }
+                          },
+                          showpassword: true,
+                          hint: 'e-mail',
+                          prefixIcon: Icon(Icons.email),
+                          controller: email,
+                          onChanged: (String value) {},
+                          typekeyboard: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFieldMobileLogin(
+                          hint: 'password',
+                          showpassword: passwordlock,
+                          prefixIcon: Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              // Based on passwordVisible state choose the icon
+                              passwordlock
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            onPressed: () {
+                              // Update the state i.e. toogle the state of passwordVisible variable
+                              setState(() {
+                                passwordlock = !passwordlock;
+                              });
+                            },
+                          ),
+                          controller: password,
+                          onChanged: (String value) {},
+                          typekeyboard: null,
+                        ),
+                      ),
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height * 0.01,
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.orange, // Background color
+                            ),
+                            onPressed: () async {
+                              aktif = await expiredDate(email.text);
+                              print(aktif);
+                              if (aktif == 'aktif') {
+                                EasyLoading.show(status: 'loading...');
+                                await ClassApi.getUserinfofromManual(
+                                        email.text, password.text)
+                                    .then((value) async {
+                                  if (value.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Username / password salah",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else {
+                                    usercd = value[0]['usercd'];
+                                    corporatecode = value[0]['frenchisecode'];
+                                    await ClassApi.checkUserFromOauth(
+                                            email.text, 'profiler')
+                                        .then((values) async {
+                                      if (values.isNotEmpty) {
+                                        print(values);
+                                        LoginSession.saveLoginInfo(
+                                          email.text,
+                                          password.text,
+                                          dbname,
+                                          pscd,
+                                        );
+                                        // usercd = value[0]['usercd'];
+                                        setState(() {
+                                          usercd = values[0]['usercd'];
+                                          imageurl = values[0]['urlpict'];
+                                          emaillogin = email.text;
+                                          subscribtion =
+                                              value[0]['subscription'];
+                                          paymentcheck =
+                                              value[0]['paymentcheck'];
+                                          corporatecode =
+                                              value[0]['frenchisecode'];
+                                        });
+                                        await ClassApi.checkVerifiedPayment(
+                                                emaillogin)
+                                            .then((value) async {
+                                          if (value[0]['paymentcheck'] ==
+                                                  'pending' ||
+                                              value[0]['paymentcheck'] == '') {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PaymentChecks(
+                                                        fullname: username,
+                                                        email: emaillogin,
+                                                        trno: value[0]
+                                                            ['pytransaction'],
+                                                      )),
+                                            );
+                                          } else if (value[0]['paymentcheck'] ==
+                                              'settlement') {
+                                            await ClassApi.getOutlets(
+                                                    email.text)
+                                                .then((value) async {
+                                              if (value.isNotEmpty) {
+                                                await ClassApi.getOutlets(
+                                                        email.text)
+                                                    .then((valued) {
+                                                  dbname =
+                                                      valued[0]['outletcode'];
+                                                  pscd =
+                                                      valued[0]['outletcode'];
+                                                  outletdesc =
+                                                      valued[0]['outletdesc'];
+                                                  for (var x in valued) {
+                                                    listoutlets
+                                                        .add(x['outletcode']);
+                                                  }
+                                                });
+                                                await ClassApi.getAccessUser(
+                                                        email.text)
+                                                    .then((valueds) {
+                                                  for (var x in valueds) {
+                                                    accesslist.add(x['access']);
+                                                  }
+                                                });
+                                                accesslistuser = [];
+                                                await ClassApi
+                                                        .getAccessUserOutlet(
+                                                            email.text,
+                                                            pscd,
+                                                            '')
+                                                    .then((valuesx) {
+                                                  for (var z in valuesx) {
+                                                    accesslistuser
+                                                        .add(z['accesscode']);
+                                                  }
+                                                });
+                                                await ClassApi
+                                                        .getAccessSettingsUser()
+                                                    .then((valuess) {
+                                                  strictuser = valuess[0]
+                                                          ['strictuser']
+                                                      .toString();
+                                                });
+
+                                                Navigator.of(context)
+                                                    .pushAndRemoveUntil(
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Mainapps(
+                                                                      fromretailmain:
+                                                                          false,
+                                                                    )),
+                                                        (Route<dynamic>
+                                                                route) =>
+                                                            false);
+                                              } else {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ClassSetupProfileMobile(
+                                                              fullname: usercd,
+                                                              email:
+                                                                  email.text)),
+                                                );
+                                              }
+                                            });
+                                          } else {
+                                            await ClassApi.getOutlets(
+                                                    email.text)
+                                                .then((valued) {
+                                              dbname = valued[0]['outletcode'];
+                                              pscd = valued[0]['outletcode'];
+                                              outletdesc =
+                                                  valued[0]['outletdesc'];
+                                              for (var x in valued) {
+                                                listoutlets
+                                                    .add(x['outletcode']);
+                                              }
+                                            });
+                                            await ClassApi.getAccessUser(
+                                                    email.text)
+                                                .then((valueds) {
+                                              for (var x in valueds) {
+                                                accesslist.add(x['access']);
+                                              }
+                                            });
+                                            accesslistuser = [];
+                                            await ClassApi.getAccessUserOutlet(
+                                                    email.text, pscd, '')
+                                                .then((valuesx) {
+                                              for (var z in valuesx) {
+                                                accesslistuser
+                                                    .add(z['accesscode']);
+                                              }
+                                            });
+                                            await ClassApi
+                                                    .getAccessSettingsUser()
+                                                .then((valuess) {
+                                              strictuser = valuess[0]
+                                                      ['strictuser']
+                                                  .toString();
+                                            });
+                                            await ClassApi
+                                                    .getLoyalityProgramActive()
+                                                .then((rules) {
+                                              rulesprogram = PointSystem(
+                                                fromdate: rules[0]['fromdate'],
+                                                type: rules[0]['type'],
+                                                todate: rules[0]['todate'],
+                                                convamount: rules[0]
+                                                    ['convamount'],
+                                                point: rules[0]['point'],
+                                                joinreward: rules[0]
+                                                    ['joinreward'],
+                                              );
+                                            });
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Mainapps(
+                                                              fromretailmain:
+                                                                  false,
+                                                            )),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                          }
+                                        });
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: "Username / password salah",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor:
+                                                Color.fromARGB(255, 11, 12, 14),
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      }
+                                    });
+                                    print(value);
+                                  }
+                                });
+                                emaillogin = email.text;
+                                EasyLoading.dismiss();
+                              } else if (aktif == 'tidak aktif') {
+                                Fluttertoast.showToast(
+                                    msg: "Masa Aktif habis",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else if (aktif == 'tidak terdaftar') {
+                                Fluttertoast.showToast(
+                                    msg: "E-mail tidak valid",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
+                            },
+                            child: Container(
+                                padding: EdgeInsets.all(10),
+                                alignment: Alignment.center,
+                                width: MediaQuery.of(context).size.width * 0.80,
+                                child: Text(
+                                  'Masuk ',
+                                  style: TextStyle(color: Colors.white),
+                                ))),
+                      ),
+
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResetPasswordClass()),
+                            );
+                          },
+                          child: Text('Lupa Password ?',
+                              style: TextStyle(color: Colors.orange)))
+                    ],
+                  ),
+                ),
+                Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 1,
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width * 0.70,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Belum Punya Akun ? ",
+                                  style: TextStyle(fontSize: 14)),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterForm()),
+                                  );
+                                },
+                                child: Text(" Daftar ",
+                                    style: TextStyle(fontSize: 14)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ))
+              ]),
+            );
+              }
           return Center(
             child: Text('Device Not Supported yet'),
           );

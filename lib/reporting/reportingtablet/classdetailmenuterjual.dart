@@ -59,6 +59,7 @@ class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
       ).then((value) {
         datatemp.addAll(value);
       });
+            print(datatemp);
     }
     ;
     Map<String, List<dynamic>> groupedData =
@@ -66,7 +67,9 @@ class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
 
     // Calculating the sum of 'qty' and 'nettrevenue' for each group
 
-    groupedData.forEach((key, value) {
+    groupedData.forEach((key, value) 
+    {
+
       int sumQty = value.fold(0, (previousValue, item) {
         return previousValue + (item['qty'] as int);
       });
@@ -89,6 +92,7 @@ class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
       // print('Sum of net revenue: ${value['sumNetRevenue']}');
       // print('------');
       data.add({
+        "itemcode": value['itemcode'],
         "itemdesc": value['itemdesc'],
         "qty": value['sumQty'],
         "nettrevenue": value["sumNetRevenue"]
@@ -149,7 +153,7 @@ class _ClasMeuTerjualtabState extends State<ClasMeuTerjualtab> {
                                   return ClassCashierMenuSoldDetailTab(
                                     fromdate: widget.fromdate,
                                     todate: widget.todate,
-                                    itemcode: data[index]['itemcode']!,
+                                    itemcode: data[index]['itemdesc']!,
                                   );
                                 }));
                               },

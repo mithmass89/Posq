@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_field, unnecessary_null_comparison, avoid_print
 
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -68,15 +72,31 @@ class _AppsMobileState extends State<AppsMobile> {
   ];
   List chartdata = [];
   Future<dynamic>? checkapps;
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
-    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
       print(message);
-      getSelesToday();
+
+      if (message == 'new order') {
+        Fluttertoast.showToast(
+            msg: "you have new order",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP_RIGHT,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+            textColor: Colors.white,
+            fontSize: 18.0);
+        playSoundNotification();
+        setState(() {});
+      } else {
+        getSelesToday();
+      }
+
       // channel!.sink.add('received!');
       // channel.sink.close(status.goingAway);
     });
@@ -141,6 +161,22 @@ class _AppsMobileState extends State<AppsMobile> {
         await ClassApi.getPenjualanRataRata(date1!, dbname);
     print('oke refresh');
     setState(() {});
+  }
+
+  void playSoundNotification() async {
+    String audioasset = 'assets/notification_sound.mp3';
+    ByteData bytes = await rootBundle.load(audioasset); //load sound from assets
+    Uint8List soundbytes =
+        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
+    int result = await audioPlayer.playBytes(soundbytes);
+
+    if (result == 1) {
+      // Success
+      print("Sound notification played successfully!");
+    } else {
+      // Error
+      print("Error playing sound notification.");
+    }
   }
 
   @override
@@ -255,11 +291,12 @@ class _AppsMobileState extends State<AppsMobile> {
                                                   .size
                                                   .width *
                                               0.65,
-                                          child: Text(usercd+' '+statusabsen,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white,
-                                              )),
+                                          child:
+                                              Text(usercd + ' ' + statusabsen,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                  )),
                                         ),
                                         // SizedBox(
                                         //   height: MediaQuery.of(context)
@@ -267,7 +304,6 @@ class _AppsMobileState extends State<AppsMobile> {
                                         //           .height *
                                         //       0.01,
                                         // ),
-                                       
                                       ],
                                     )),
                                 SizedBox(

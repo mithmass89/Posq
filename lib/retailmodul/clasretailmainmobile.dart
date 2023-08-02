@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
@@ -36,6 +35,7 @@ import 'package:collection/collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ClassRetailMainMobile extends StatefulWidget {
   final String pscd;
@@ -90,12 +90,15 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   Random random = new Random();
   int randomNumber = 0;
   int tabindex = 0;
-
+  List<String> menuItems = ['List tersimpan', 'Posting minus'];
   set discounts(num value) {
     setState(() {
       discount = value;
     });
   }
+
+  var wsUrl;
+  WebSocketChannel? channel;
 
   List<TransactionTipe> data = [];
 
@@ -156,7 +159,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           confirmed: value.confirmed,
           description: value.description,
           taxpct: value.taxpct,
-          svchgpct: value.svchgpct, totalcost: value.totalcost);
+          svchgpct: value.svchgpct,
+          totalcost: value.totalcost);
     });
     print('tersampaikan');
   }
@@ -260,6 +264,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     controller!.animateTo(1);
     tabindex = 1;
     getTransaksiTipe();
+    wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
+    // channel = WebSocketChannel.connect(wsUrl);
+    // channel!.stream.listen((message) {
+    //   print(message);
+    //   // // channel!.sink.add('received!');
+    //   // // channel.sink.close(status.goingAway);
+    // });
     iafjrndt = IafjrndtClass(
       trdt: '',
       pscd: '',
@@ -298,7 +309,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       prnkitchen: 0,
       prnkitchentm: '',
       confirmed: '',
-      description: '', totalcost: 0,
+      description: '',
+      totalcost: 0,
     );
     if (widget.trno != null) {
       getDetailData();
@@ -402,7 +414,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
             taxpct: items.taxpct,
             svchgpct: items.svchgpct,
             guestname: guestname != '' ? 'No Guest' : guestname,
-            createdt: now.toString(), totalcost: items.costamt!),
+            createdt: now.toString(),
+            totalcost: items.costamt!),
         pscd);
   }
 
@@ -501,45 +514,61 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                         },
                                         typekeyboard: TextInputType.text,
                                       )),
-                                  IconButton(
-                                    icon: Image.asset(
-                                      'assets/icons8-barcode-100.png',
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                                    iconSize: 30,
-                                    color: Colors.white,
-                                    splashColor: Colors.transparent,
-                                    onPressed: () {
-                                      scanBarcodeNormal();
-                                    },
-                                  ),
                                   Stack(
                                     children: [
-                                      IconButton(
-                                        icon: Image.asset(
-                                            'assets/icons8-checklist-100.png',
-                                            height: 20,
-                                            width: 20),
-                                        iconSize: 30,
+                                      PopupMenuButton<String>(
                                         color: Colors.white,
-                                        splashColor: Colors.transparent,
-                                        onPressed: () async {
-                                          await checkSF();
-                                          await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ClassSavedTransactionMobile(
-                                                        trno: widget.trno,
-                                                        pscd: widget
-                                                            .outletinfo.alamat,
-                                                        outletinfo:
-                                                            widget.outletinfo,
-                                                      )));
+                                        itemBuilder: (BuildContext context) {
+                                          return menuItems.map((String item) {
+                                            return PopupMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: item == 'Posting minus'
+                                                    ? TextStyle(
+                                                        color: refundmode ==
+                                                                false
+                                                            ? Color.fromARGB(
+                                                                255, 0, 0, 0)
+                                                            : Colors.red,
+                                                      )
+                                                    : null,
+                                              ),
+                                            );
+                                          }).toList();
+                                        },
+                                        onSelected: (String selectedItem) {
+                                          print('You selected: $selectedItem');
+                                          if (selectedItem ==
+                                              'List tersimpan') {
+                                            checkSF();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ClassSavedTransactionMobile(
+                                                          trno: widget.trno,
+                                                          pscd: widget
+                                                              .outletinfo
+                                                              .alamat,
+                                                          outletinfo:
+                                                              widget.outletinfo,
+                                                        )));
+                                          } else if (selectedItem ==
+                                              'Posting minus') {
+                                            if (accesslistuser
+                                                    .contains('refund') ==
+                                                true) {
+                                              refundmode = !refundmode;
+                                            } else {
+                                              Toast.show("Tidak punya akses",
+                                                  duration: Toast.lengthLong,
+                                                  gravity: Toast.center);
+                                            }
+                                          }
                                         },
                                       ),
-                                      pending != 0
+                                      pending != 0 && pending != null
                                           ? Positioned(
                                               top: MediaQuery.of(context)
                                                       .size
@@ -574,6 +603,82 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           : Container(),
                                     ],
                                   ),
+                                  IconButton(
+                                    icon: Image.asset(
+                                      'assets/icons8-barcode-100.png',
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                    iconSize: 30,
+                                    color: Colors.white,
+                                    splashColor: Colors.transparent,
+                                    onPressed: () {
+                                      // scanBarcodeNormal();
+                                      Toast.show("Maintenence mode",
+                                          duration: Toast.lengthLong,
+                                          gravity: Toast.center);
+                                    },
+                                  ),
+                                  // Stack(
+                                  //   children: [
+                                  //     IconButton(
+                                  //       icon: Image.asset(
+                                  //           'assets/icons8-checklist-100.png',
+                                  //           height: 20,
+                                  //           width: 20),
+                                  //       iconSize: 30,
+                                  //       color: Colors.white,
+                                  //       splashColor: Colors.transparent,
+                                  //       onPressed: () async {
+                                  //         await checkSF();
+                                  //         await Navigator.push(
+                                  //             context,
+                                  //             MaterialPageRoute(
+                                  //                 builder: (context) =>
+                                  //                     ClassSavedTransactionMobile(
+                                  //                       trno: widget.trno,
+                                  //                       pscd: widget
+                                  //                           .outletinfo.alamat,
+                                  //                       outletinfo:
+                                  //                           widget.outletinfo,
+                                  //                     )));
+                                  //       },
+                                  //     ),
+                                  //     pending != 0 && pending != null
+                                  //         ? Positioned(
+                                  //             top: MediaQuery.of(context)
+                                  //                     .size
+                                  //                     .height *
+                                  //                 0.01,
+                                  //             right: MediaQuery.of(context)
+                                  //                     .size
+                                  //                     .height *
+                                  //                 0.009,
+                                  //             child: Container(
+                                  //               alignment: Alignment.center,
+                                  //               height: MediaQuery.of(context)
+                                  //                       .size
+                                  //                       .height *
+                                  //                   0.02,
+                                  //               width: MediaQuery.of(context)
+                                  //                       .size
+                                  //                       .height *
+                                  //                   0.02,
+                                  //               decoration: BoxDecoration(
+                                  //                   borderRadius:
+                                  //                       BorderRadius.all(
+                                  //                           Radius.circular(
+                                  //                               20)),
+                                  //                   color: Colors.red),
+                                  //               child: Text(
+                                  //                 pending.toString(),
+                                  //                 style: TextStyle(
+                                  //                     color: Colors.white),
+                                  //               ),
+                                  //             ))
+                                  //         : Container(),
+                                  //   ],
+                                  // ),
                                 ],
                               ),
                             ),
@@ -612,7 +717,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 controller: controller,
                                 children: [
                                   ClassRetailManualMobile(
-                                      guestname: guestname == '' 
+                                      guestname: guestname == ''
                                           ? randomNumber.toString()
                                           : guestname!,
                                       refreshdata: getDataSlide,
@@ -716,48 +821,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                               flex: 1,
                                               child: IconButton(
                                                 icon: Icon(
-                                                  Icons.money_off,
-                                                ),
-                                                iconSize: 25,
-                                                color: refundmode == false
-                                                    ? Colors.grey
-                                                    : Colors.red,
-                                                splashColor: Colors.purple,
-                                                onPressed: accesslistuser
-                                                            .contains(
-                                                                'refund') ==
-                                                        true
-                                                    ? () async {
-                                                        refundmode =
-                                                            !refundmode;
-                                                        // showDialog(
-                                                        //   context: context,
-                                                        //   builder:
-                                                        //       (BuildContext context) {
-                                                        //     return DialogClassRefundorder(
-                                                        //       fromsaved:
-                                                        //           widget.fromsaved,
-                                                        //       outletcd: pscd,
-                                                        //       outletinfo:
-                                                        //           widget.outletinfo,
-                                                        //       trno: widget.trno!,
-                                                        //     );
-                                                        //   },
-                                                        // );
-                                                      }
-                                                    : () async {
-                                                        Toast.show(
-                                                            "Tidak punya akses refund",
-                                                            duration: Toast
-                                                                .lengthLong,
-                                                            gravity:
-                                                                Toast.center);
-                                                      },
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                icon: Icon(
                                                   Icons.people,
                                                 ),
                                                 iconSize: 25,
@@ -770,9 +833,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                           context) {
                                                         return DialogCustomerList();
                                                       });
-                                                      if(guestname==null){
-                                                        guestname='';
-                                                      }
+                                                  if (guestname == null) {
+                                                    guestname = '';
+                                                  }
                                                 },
                                               )),
                                         ],
@@ -980,8 +1043,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               width: MediaQuery.of(context).size.width * 0.65,
                               // decoration: BoxDecoration(color: Colors.grey[200]),
                               child: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TabBar(
+                                    labelPadding:
+                                        EdgeInsets.symmetric(horizontal: 0),
+                                    isScrollable: false,
                                     indicatorColor: Colors.white,
                                     onTap: (int i) {
                                       print(i);
@@ -999,10 +1066,10 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                         alignment: Alignment.center,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.05,
+                                                0.054,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.4,
+                                                0.55,
                                         child: Text(
                                           'Manual',
                                         ),
@@ -1010,11 +1077,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       Container(
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.4,
+                                                0.55,
                                         alignment: Alignment.center,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.05,
+                                                0.054,
                                         child: Text(
                                           'Produk',
                                         ),
@@ -1032,7 +1099,14 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                   .width *
                                               0.6,
                                           child: TextFieldTab1(
-                                            suffixIcon: Icon(Icons.search),
+                                            suffixIcon: search.text.isEmpty
+                                                ? Icon(Icons.search)
+                                                : IconButton(
+                                                    onPressed: () {
+                                                      search.clear();
+                                                      setState(() {});
+                                                    },
+                                                    icon: Icon(Icons.clear)),
                                             hint: 'Cari barang',
                                             controller: search,
                                             onChanged: (value) {

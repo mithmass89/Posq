@@ -15,6 +15,7 @@ import 'package:posq/setting/printer/classprinterBluetooth.dart';
 import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/minibackoffice/classtypeadjusmentstock.dart';
+import 'package:posq/tokoonline.dart/tokoonline.dart';
 import 'package:posq/userinfo.dart';
 
 class DrawerRetailMain extends StatefulWidget {
@@ -238,14 +239,10 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             title: const Text('Toko Online'),
             onTap: accesslist.contains('tokoonline') == true
                 ? () {
-                    Fluttertoast.showToast(
-                        msg: "Segera hadir",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                        textColor: Colors.white,
-                        fontSize: 16.0);
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return TokoOnlineMain();
+                    }));
                   }
                 : () {
                     Fluttertoast.showToast(

@@ -113,7 +113,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   void initState() {
     super.initState();
     checkPrinter();
-    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
       print(message);

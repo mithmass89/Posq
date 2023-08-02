@@ -351,6 +351,7 @@ class Item {
   final List<PriceList>? pricelist;
   final int multiprice;
   final int packageflag;
+  final int? onlineflag;
 
   Item({
     required this.multiprice,
@@ -381,6 +382,7 @@ class Item {
     this.slsnett2,
     this.modifiers,
     this.pricelist,
+    this.onlineflag,
   });
 
   Item.fromJson(
@@ -411,13 +413,14 @@ class Item {
         modifiers = res["modifiers"],
         sku = res["sku"],
         multiprice = res["multiprice"],
+        onlineflag = res["onlineflag"],
         packageflag = res["packageflag"],
         pricelist = List<PriceList>.from(
             jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)));
 
   @override
   String toString() {
-    return '{"id": $id, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers,"pricelist":$pricelist,"multiprice":$multiprice,packageflag:$packageflag}';
+    return '{"id": $id,"onlineflag": $onlineflag, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers,"pricelist":$pricelist,"multiprice":$multiprice,packageflag:$packageflag}';
   }
 
   Map<String, Object?> toJson() {
@@ -449,7 +452,8 @@ class Item {
       'modifiers': modifiers,
       'pricelist': List<dynamic>.from(pricelist!.map((x) => x.toJson())),
       'multiprice': multiprice,
-      'packageflag': packageflag
+      'packageflag': packageflag,
+      'onlineflag': onlineflag
     };
   }
 }

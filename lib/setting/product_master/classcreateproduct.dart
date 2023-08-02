@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_const_constructors, sized_box_for_whitespace, unnecessary_string_interpolations, unused_import, avoid_print, unused_local_variable
 
 import 'dart:io';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
@@ -13,6 +14,7 @@ import 'package:posq/image.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/product_master/classkelolastockmobile.dart';
 import 'package:posq/setting/classtabcreateproductmobile.dart';
+import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -122,7 +124,7 @@ class _CreateproductState extends State<Createproduct>
     print(data);
     await ClassApi.insertProduct(
         Item(
-              packageflag: 0,
+          packageflag: 0,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
           itemdesc: data.itemdesc.toString(),
@@ -181,7 +183,6 @@ class _CreateproductState extends State<Createproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
-                      
                       imagepath: pathimage,
                       multiflag: multiflag,
                       multipriceSet: changeValueMultiPrice,
@@ -225,11 +226,11 @@ class _CreateproductState extends State<Createproduct>
                 color: productname.text != '' &&
                         productcd.text != '' &&
                         amountsales.text != ''
-                    ? Colors.blue
+                    ? Color.fromARGB(255, 255, 166, 2)
                     : Colors.grey[300],
                 textcolor: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.94,
+                width: MediaQuery.of(context).size.width * 0.55,
                 onpressed: productname.text != '' &&
                         productcd.text != '' &&
                         amountsales.text != ''
@@ -250,7 +251,7 @@ class _CreateproductState extends State<Createproduct>
                             var random = uuid.v4();
                             await _createProduct(
                                 Item(
-                                      packageflag: 0,
+                                  packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,
                                   itemcode: random,
@@ -291,6 +292,94 @@ class _CreateproductState extends State<Createproduct>
                                   barcode: barcode.text,
                                 ),
                                 widget.pscd!);
+                            Navigator.of(context).pop();
+                          } else {
+                            Toast.show("Not Connect to server",
+                                duration: Toast.lengthLong,
+                                gravity: Toast.bottom);
+                          }
+                        });
+                      }
+                    : null),
+          ),
+          Positioned(
+            left: MediaQuery.of(context).size.width * 0.65,
+            top: MediaQuery.of(context).size.height * 0.80,
+            child: ButtonNoIcon(
+                name: 'All outlet',
+                color: productname.text != '' &&
+                        productcd.text != '' &&
+                        amountsales.text != ''
+                    ? Color.fromARGB(255, 0, 126, 158)
+                    : Colors.grey[300],
+                textcolor: Colors.white,
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.30,
+                onpressed: productname.text != '' &&
+                        productcd.text != '' &&
+                        amountsales.text != ''
+                    ? () async {
+                        setState(() {
+                          pctnett = pcttax == '' || pctservice == ''
+                              ? (double.parse(
+                                          pcttax == '' ? '0.0' : pcttax.text) +
+                                      double.parse(pctservice == ''
+                                          ? '0.0'
+                                          : pctservice.text)) /
+                                  100
+                              : 0;
+                        });
+                        await checkInternet().whenComplete(() async {
+                          EasyLoading.show(status: 'Memasukan data...');
+                          for (var x in listoutlets) {
+                            var uuid = Uuid();
+                            var random = uuid.v4();
+                            await _createProduct(
+                                Item(
+                                  packageflag: 0,
+                                  multiprice: multiprice,
+                                  outletcode: widget.pscd!,
+                                  itemcode: random,
+                                  itemdesc: productname.text,
+                                  costcoa: 'COST',
+                                  revenuecoa: 'REVENUE',
+                                  taxcoa: 'TAX',
+                                  svchgcoa: 'SERVICE',
+                                  taxpct: pcttax.text.isEmpty
+                                      ? 0
+                                      : num.parse(pcttax.text),
+                                  svchgpct: pctservice.text.isEmpty
+                                      ? 0
+                                      : num.parse(pctservice.text),
+                                  costamt: amountcost.text.isEmpty
+                                      ? 0
+                                      : num.parse(amountcost.text),
+                                  slsamt: amountsales.text.isEmpty
+                                      ? 0
+                                      : num.parse(amountsales.text),
+                                  slsnett: pctnett != 0
+                                      ? num.parse(amountsales.text) * pctnett! +
+                                          num.parse(amountsales.text)
+                                      : amountsales.text.isEmpty
+                                          ? 0
+                                          : num.parse(amountsales.text),
+                                  ctg: selectedctg ?? '',
+                                  slsfl: 1,
+                                  stock: num.parse(adjusmentstock.text.isEmpty
+                                      ? '0'
+                                      : adjusmentstock.text),
+                                  pathimage: pathimage ?? 'Empty',
+                                  description: description.text.isEmpty
+                                      ? 'Empty'
+                                      : description.text,
+                                  trackstock: trackstock,
+                                  sku: sku.text,
+                                  barcode: barcode.text,
+                                ),
+                                x);
+                          }
+                          EasyLoading.dismiss();
+                          if (connect == true) {
                             Navigator.of(context).pop();
                           } else {
                             Toast.show("Not Connect to server",

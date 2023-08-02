@@ -213,7 +213,7 @@ class _EditproductState extends State<Editproduct>
             top: MediaQuery.of(context).size.height * 0.80,
             child: ButtonNoIcon(
                 name: 'Update',
-                color: Colors.blue,
+                color: Color.fromARGB(255, 255, 145, 0),
                 textcolor: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.94,
