@@ -204,6 +204,7 @@ class ListUser {
 
 class CombineDataRingkasan {
   final num? revenuegross;
+  final num? totalcost;
   final num? pajak;
   final num? service;
   final num? totalnett;
@@ -211,6 +212,7 @@ class CombineDataRingkasan {
 
   CombineDataRingkasan({
     this.revenuegross,
+    this.totalcost,
     this.pajak,
     this.service,
     this.totalnett,
@@ -219,6 +221,7 @@ class CombineDataRingkasan {
 
   CombineDataRingkasan.fromJson(Map<String, dynamic> res)
       : revenuegross = res["revenuegross"],
+        totalcost = res["totalcost"],
         pajak = res["pajak"],
         service = res["service"],
         totalnett = res['totalnett'],
@@ -226,12 +229,13 @@ class CombineDataRingkasan {
 
   @override
   String toString() {
-    return '{"revenuegross": $revenuegross, "pajak": $pajak,"service": $service,"totalnett": $totalnett,"totalpayment": $totalpayment}';
+    return '{"revenuegross": $revenuegross,"totalcost":$totalcost "pajak": $pajak,"service": $service,"totalnett": $totalnett,"totalpayment": $totalpayment}';
   }
 
   Map<String, Object?> toJson() {
     return {
       'revenuegross': revenuegross,
+      'totalcost':totalcost,
       'pajak': pajak,
       'service': service,
       'totalnett': totalnett,

@@ -3,11 +3,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:io' show Directory;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path/path.dart' show join;
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/model.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +70,31 @@ class _ClassproductmobileState extends State<Classproductmobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () async {
+                bool download = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DialogCopyItem();
+                    });
+                if (download == true) {
+                  EasyLoading.show(status: 'loading...');
+                  await ClassApi.insertItemFromHO()
+                      .onError((error, stackTrace) {
+                    EasyLoading.dismiss();
+                  });
+                  EasyLoading.dismiss();
+                  await getitemOutlet('').whenComplete(() {
+                    setState(() {});
+                  });
+                }
+              },
+              icon: Icon(
+                Icons.download,
+                color: Colors.white,
+              ))
+        ],
         leading: GestureDetector(
           child: Icon(
             Icons.arrow_back_ios,
@@ -324,8 +351,9 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                             )),
                                         contentPadding: EdgeInsets.all(8.0),
                                         title: Text(x[index].itemdesc!),
-                                        subtitle:
-                                            Text(CurrencyFormat.convertToIdr(x[index].slsnett,0)),
+                                        subtitle: Text(
+                                            CurrencyFormat.convertToIdr(
+                                                x[index].slsnett, 0)),
                                         trailing: Container(
                                           width: MediaQuery.of(context)
                                                   .size

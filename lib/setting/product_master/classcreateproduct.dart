@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -74,12 +75,24 @@ class _CreateproductState extends State<Createproduct>
   bool connect = false;
   int multiprice = 0;
   bool multiflag = false;
+  List<TransaksiBO> databo = [];
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  var formattedDate;
+  String type = '1010';
+  String trno = '';
+  int currenttrno = 0;
 
   set string(String? value) {
     setState(() {
       pathimage = value;
     });
     print("ini value $value");
+  }
+
+  getTrnoBo() async {
+    currenttrno = await ClassApi.getTrnoBO(type, dbname);
+    trno = '$dbname-$currenttrno';
   }
 
   @override
@@ -89,6 +102,7 @@ class _CreateproductState extends State<Createproduct>
     adjusmentstock.addListener(() {});
     trackstock = 0;
     checkInternet();
+    formattedDate = formatter.format(now);
   }
 
   updateStockTrack(value) {
@@ -122,6 +136,7 @@ class _CreateproductState extends State<Createproduct>
 
   Future<void> _createProduct(Item data, String dbname) async {
     print(data);
+
     await ClassApi.insertProduct(
         Item(
           packageflag: 0,
@@ -139,7 +154,7 @@ class _CreateproductState extends State<Createproduct>
           slsfl: data.slsfl,
           costcoa: data.costcoa.toString(),
           ctg: kategory.text,
-          stock: adjusmentstock.text != '' ? num.parse(adjusmentstock.text) : 0,
+          stock: 0,
           pathimage: pathimage.toString(),
           description: description.text.toString(),
           trackstock: trackstock,
@@ -149,6 +164,7 @@ class _CreateproductState extends State<Createproduct>
           multiprice: multiprice,
         ),
         dbname);
+    await ClassApi.insertAdujsmentStock(dbname, databo);
   }
 
   @override
@@ -249,6 +265,29 @@ class _CreateproductState extends State<Createproduct>
                           if (connect == true) {
                             var uuid = Uuid();
                             var random = uuid.v4();
+                            databo.add(TransaksiBO(
+                                trdt: formattedDate,
+                                transno: trno,
+                                documentno: '',
+                                description: 'Begining product',
+                                type_tr: type,
+                                product: random,
+                                proddesc: productname.text,
+                                qty: adjusmentstock.text.isEmpty
+                                    ? 0
+                                    : num.parse(adjusmentstock.text),
+                                unit: 'Unit',
+                                ctr: 'Inventory',
+                                subctr: 'Biaya',
+                                famount: amountcost.text.isEmpty
+                                    ? 0
+                                    : num.parse(amountcost.text),
+                                lamount: amountcost.text.isEmpty
+                                    ? 0
+                                    : num.parse(amountcost.text),
+                                note: 'note',
+                                active: 1,
+                                usercreate: usercd));
                             await _createProduct(
                                 Item(
                                   packageflag: 0,
@@ -280,9 +319,10 @@ class _CreateproductState extends State<Createproduct>
                                           : num.parse(amountsales.text),
                                   ctg: selectedctg ?? '',
                                   slsfl: 1,
-                                  stock: num.parse(adjusmentstock.text.isEmpty
-                                      ? '0'
-                                      : adjusmentstock.text),
+                                  // stock: num.parse(adjusmentstock.text.isEmpty
+                                  //     ? '0'
+                                  //     : adjusmentstock.text),
+                                  stock: 0,
                                   pathimage: pathimage ?? 'Empty',
                                   description: description.text.isEmpty
                                       ? 'Empty'
@@ -292,6 +332,7 @@ class _CreateproductState extends State<Createproduct>
                                   barcode: barcode.text,
                                 ),
                                 widget.pscd!);
+                            // await ClassApi.insertAdujsmentStock(dbname, databo);
                             Navigator.of(context).pop();
                           } else {
                             Toast.show("Not Connect to server",
@@ -334,6 +375,29 @@ class _CreateproductState extends State<Createproduct>
                           for (var x in listoutlets) {
                             var uuid = Uuid();
                             var random = uuid.v4();
+                            databo.add(TransaksiBO(
+                                trdt: formattedDate,
+                                transno: trno,
+                                documentno: '',
+                                description: 'Begining product',
+                                type_tr: type,
+                                product: random,
+                                proddesc: productname.text,
+                                qty: adjusmentstock.text.isEmpty
+                                    ? 0
+                                    : num.parse(adjusmentstock.text),
+                                unit: 'Unit',
+                                ctr: 'Inventory',
+                                subctr: 'Biaya',
+                                famount: amountcost.text.isEmpty
+                                    ? 0
+                                    : num.parse(amountcost.text),
+                                lamount: amountcost.text.isEmpty
+                                    ? 0
+                                    : num.parse(amountcost.text),
+                                note: 'note',
+                                active: 1,
+                                usercreate: usercd));
                             await _createProduct(
                                 Item(
                                   packageflag: 0,
@@ -365,9 +429,10 @@ class _CreateproductState extends State<Createproduct>
                                           : num.parse(amountsales.text),
                                   ctg: selectedctg ?? '',
                                   slsfl: 1,
-                                  stock: num.parse(adjusmentstock.text.isEmpty
-                                      ? '0'
-                                      : adjusmentstock.text),
+                                  // stock: num.parse(adjusmentstock.text.isEmpty
+                                  //     ? '0'
+                                  //     : adjusmentstock.text),
+                                  stock: 0,
                                   pathimage: pathimage ?? 'Empty',
                                   description: description.text.isEmpty
                                       ? 'Empty'
@@ -377,6 +442,7 @@ class _CreateproductState extends State<Createproduct>
                                   barcode: barcode.text,
                                 ),
                                 x);
+                            // await ClassApi.insertAdujsmentStock(dbname, databo);
                           }
                           EasyLoading.dismiss();
                           if (connect == true) {

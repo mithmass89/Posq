@@ -1523,7 +1523,8 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             svchgpct: 0,
             statustrans: 'prosess',
             createdt: now.toString(),
-            guestname: 'No Guest Name', totalcost: widget.result!.toDouble()*1),
+            guestname: 'No Guest Name',
+            totalcost: widget.result!.toDouble() * 1),
         pscd);
   }
 
@@ -1581,7 +1582,8 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
             svchgpct: 0,
             statustrans: 'prosess',
             createdt: now.toString(),
-            guestname: 'No Guest Name', totalcost: -(widget.result!.toDouble())*(-1)),
+            guestname: 'No Guest Name',
+            totalcost: -(widget.result!.toDouble()) * (-1)),
         pscd);
   }
 
@@ -1668,7 +1670,8 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       confirmed: '1',
                       description: widget.controller.text,
                       taxpct: 0,
-                      svchgpct: 0, totalcost:widget.result!.toDouble()*1 ,
+                      svchgpct: 0,
+                      totalcost: widget.result!.toDouble() * 1,
                     );
                     // ClassRetailMainMobile.of(context)!.string = hasil;
                   });
@@ -1715,7 +1718,8 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     prnkitchen: hasil.prnkitchen,
                     prnkitchentm: hasil.prnkitchentm,
                     confirmed: hasil.confirmed,
-                    description: hasil.description, totalcost: hasil.totalcost,
+                    description: hasil.description,
+                    totalcost: hasil.totalcost,
                   ));
 
                   widget.cleartext();
@@ -1766,7 +1770,8 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                       confirmed: '1',
                       description: widget.controller.text,
                       taxpct: 0,
-                      svchgpct: 0, totalcost: -(widget.result!.toDouble())*1,
+                      svchgpct: 0,
+                      totalcost: -(widget.result!.toDouble()) * 1,
                     );
                     // ClassRetailMainMobile.of(context)!.string = hasil;
                   });
@@ -1813,7 +1818,8 @@ class _DialogClassRetailDescState extends State<DialogClassRetailDesc> {
                     prnkitchen: hasil.prnkitchen,
                     prnkitchentm: hasil.prnkitchentm,
                     confirmed: hasil.confirmed,
-                    description: hasil.description, totalcost: hasil.totalcost,
+                    description: hasil.description,
+                    totalcost: hasil.totalcost,
                   ));
 
                   widget.cleartext();
@@ -1899,10 +1905,65 @@ class _DialogClassWillPopState extends State<DialogClassWillPop> {
                     random.nextInt(100); // from 0 upto 99 included
                 await ClassApi.updateTrnoGuest(
                     pscd, widget.trno, 'no guest $randomNumber');
-                await handler.activeZeroiafjrndttrno(
-                    IafjrndtClass(active: 1, transno: widget.trno, totalcost: 0, ratecostamt: 0));
+                await handler.activeZeroiafjrndttrno(IafjrndtClass(
+                    active: 1,
+                    transno: widget.trno,
+                    totalcost: 0,
+                    ratecostamt: 0));
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/Dashboard', (Route<dynamic> route) => false);
+              },
+              child: Text('OK!'))
+        ],
+      );
+    });
+  }
+}
+
+class DialogCopyItem extends StatefulWidget {
+  const DialogCopyItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<DialogCopyItem> createState() => DialogCopyItemState();
+}
+
+class DialogCopyItemState extends State<DialogCopyItem> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ListTile(
+                  title: Text('Anda akan menyinkronkan item dengan pusat ? '),
+                ),
+              ],
+            )),
+        title: Text('Sync Item'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Batal')),
+          TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(true);
               },
               child: Text('OK!'))
         ],

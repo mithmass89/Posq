@@ -422,11 +422,15 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                       for (var x in poscondimenttopping) {
                                         summarycondiment.add(x);
                                       }
-                                      await ClassApi.insert_Poscondiment(
-                                          dbname, summarycondiment);
+                                      if (summarycondiment.isNotEmpty) {
+                                        await ClassApi.insert_Poscondiment(
+                                            dbname, summarycondiment);
+                                      }
+
                                       await ClassApi.insertPosDetail(
                                           IafjrndtClass(
-                                            totalcost:qtyitemmaster*widget.data.costamt!,
+                                            totalcost: qtyitemmaster *
+                                                widget.data.costamt!,
                                             trdt: formattedDate,
                                             pscd: widget.data.outletcode,
                                             transno: widget.transno,
@@ -502,7 +506,7 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                           ),
                                           pscd);
                                       var result = IafjrndtClass(
-                                          totalcost: 1*widget.data.costamt!,
+                                          totalcost: 1 * widget.data.costamt!,
                                           trdt: formattedDate,
                                           pscd: widget.data.outletcode,
                                           transno: widget.transno,
@@ -609,10 +613,13 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                     for (var x in poscondimenttopping) {
                                       summarycondiment.add(x);
                                     }
-                                    await ClassApi.insert_Poscondiment(
-                                        dbname, summarycondiment);
+                                    if (summarycondiment.isNotEmpty) {
+                                      await ClassApi.insert_Poscondiment(
+                                          dbname, summarycondiment);
+                                    }
                                     var result = IafjrndtClass(
-                                      totalcost:widget.data.costamt!*qtyitemmaster ,
+                                        totalcost: widget.data.costamt! *
+                                            qtyitemmaster,
                                         id: widget.iditem,
                                         trdt: formattedDate,
                                         pscd: widget.outletcd,

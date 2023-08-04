@@ -46,10 +46,12 @@ class MyApp extends StatelessWidget {
       builder: EasyLoading.init(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
+          color:  Color.fromARGB(255, 255, 145, 0),
           // <-- SEE HERE
           iconTheme: IconThemeData(color: Colors.black),
         ),
         useMaterial3: true,
+          primaryColor: Color.fromARGB(255, 255, 145, 0),
         textTheme: GoogleFonts.questrialTextTheme(textTheme).copyWith(),
         primarySwatch: Colors.orange,
       ),

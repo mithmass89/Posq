@@ -265,12 +265,12 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     tabindex = 1;
     getTransaksiTipe();
     wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
-    // channel = WebSocketChannel.connect(wsUrl);
-    // channel!.stream.listen((message) {
-    //   print(message);
-    //   // // channel!.sink.add('received!');
-    //   // // channel.sink.close(status.goingAway);
-    // });
+    channel = WebSocketChannel.connect(wsUrl);
+    channel!.stream.listen((message) async {
+      print(message);
+      await checkPending();
+      setState(() {});
+    });
     iafjrndt = IafjrndtClass(
       trdt: '',
       pscd: '',

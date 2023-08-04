@@ -118,7 +118,7 @@ class _MainTransaksiTypeState extends State<MainTransaksiType> {
                       }),
                 ),
                 ButtonNoIcon2(
-                  color: Colors.blue,
+                  color: Colors.orange,
                   textcolor: Colors.white,
                   name: 'Tambah Tipe',
                   height: MediaQuery.of(context).size.height * 0.05,

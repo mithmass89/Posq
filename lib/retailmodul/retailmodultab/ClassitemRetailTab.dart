@@ -440,13 +440,13 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                                       fontSize: 10, color: Colors.white),
                                 ),
                               ),
-                              Container(
+                               widget.item.trackstock=='1'?    Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.03,
                                 width: MediaQuery.of(context).size.width * 0.05,
                                 child: Row(
                                   children: [
-                                    Text('Stk : ',
+                               Text('Stk : ',
                                         style: TextStyle(
                                             fontSize: 10, color: Colors.white)),
                                     Text(
@@ -457,7 +457,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                                   ],
                                 ),
                               )
-                            ],
+                            :Container()],
                           )
                         : Container(
                             width: MediaQuery.of(context).size.width * 0.2,

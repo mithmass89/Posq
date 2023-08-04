@@ -124,7 +124,7 @@ class _MainCondimentState extends State<MainCondiment> {
                       }
                     }),
                 ButtonNoIcon2(
-                  color: Colors.blue,
+                  color: Colors.orange,
                   textcolor: Colors.white,
                   name: 'Add Modifier',
                   height: MediaQuery.of(context).size.height * 0.05,

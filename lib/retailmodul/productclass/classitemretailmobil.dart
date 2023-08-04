@@ -291,140 +291,152 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       children: [
-        ListTile(
-          // dense: true,
-          onTap: caninput == true
-              ? () async {
-                  if (widget.item.modifiers == 0) {
-                    if (widget.item.stock! > 0 && widget.item.trackstock == 1) {
-                      // always check stock  //
-                      await getitemOutlet(widget.item.itemcode)
-                          .then((value) async {
-                        print('ini checking data $value');
-                        if (value.first.stock! > 0) {
-                          if (refundmode == false) {
-                            await insertIafjrndt();
+        Container(
+            // height: MediaQuery.of(context).size.height * 0.1,
+          child: ListTile(
+            // dense: true,
+            onTap: caninput == true
+                ? () async {
+                    if (widget.item.modifiers == 0) {
+                      if (widget.item.stock! > 0 && widget.item.trackstock == 1) {
+                        // always check stock  //
+                        await getitemOutlet(widget.item.itemcode)
+                            .then((value) async {
+                          print('ini checking data $value');
+                          if (value.first.stock! > 0) {
+                            if (refundmode == false) {
+                              await insertIafjrndt();
+                            } else {
+                              await insertIafjrndtRefundMode();
+                            }
+        
+                            ClassRetailMainMobile.of(context)!.string = result!;
                           } else {
-                            await insertIafjrndtRefundMode();
+                            Toast.show("Kamu Kehabisan Stock",
+                                duration: Toast.lengthLong,
+                                gravity: Toast.center);
                           }
-
-                          ClassRetailMainMobile.of(context)!.string = result!;
+                        });
+        
+                        //update to main // callback
+                      } else if (widget.item.trackstock == 0) {
+                        if (refundmode == false) {
+                          await insertIafjrndt();
                         } else {
-                          Toast.show("Kamu Kehabisan Stock",
-                              duration: Toast.lengthLong,
-                              gravity: Toast.center);
+                          await insertIafjrndtRefundMode();
                         }
-                      });
-
-                      //update to main // callback
-                    } else if (widget.item.trackstock == 0) {
-                      if (refundmode == false) {
-                        await insertIafjrndt();
+                        ClassRetailMainMobile.of(context)!.string = result!;
                       } else {
-                        await insertIafjrndtRefundMode();
+                        Toast.show("Kamu Kehabisan Stock",
+                            duration: Toast.lengthLong, gravity: Toast.center);
                       }
-                      ClassRetailMainMobile.of(context)!.string = result!;
                     } else {
-                      Toast.show("Kamu Kehabisan Stock",
-                          duration: Toast.lengthLong, gravity: Toast.center);
+                      var result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ClassInputCondiment(
+                                  guestname: widget.guestname!,
+                                  fromedit: false,
+                                  itemseq: widget.itemseq,
+                                  outletcd: pscd,
+                                  transno: widget.trno,
+                                  data: widget.item,
+                                )),
+                      );
+                      print("ini result $result");
+                      ClassRetailMainMobile.of(context)!.string = result!;
                     }
-                  } else {
-                    var result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ClassInputCondiment(
-                                guestname: widget.guestname!,
-                                fromedit: false,
-                                itemseq: widget.itemseq,
-                                outletcd: pscd,
-                                transno: widget.trno,
-                                data: widget.item,
-                              )),
-                    );
-                    print("ini result $result");
-                    ClassRetailMainMobile.of(context)!.string = result!;
                   }
-                }
-              : () {
-                  Toast.show("masih check stock",
-                      duration: Toast.lengthLong, gravity: Toast.center);
+                : () {
+                    Toast.show("masih check stock",
+                        duration: Toast.lengthLong, gravity: Toast.center);
+                  },
+            leading: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 0.5,
+                ),
+              ),
+              // color: Colors.blue,
+              height: MediaQuery.of(context).size.height * 0.25,
+              width: MediaQuery.of(context).size.width * 0.19,
+              child: Image.network(
+                widget.item.pathimage!,
+                fit: BoxFit.scaleDown,
+                filterQuality: FilterQuality.medium,
+                scale: 0.1,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  print(exception);
+                  return Image.network(
+                    'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                    fit: BoxFit.fill,
+                  );
                 },
-          leading: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              border: Border.all(
-                color: Colors.grey,
-                width: 0.5,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
               ),
             ),
-            // color: Colors.blue,
-            height: MediaQuery.of(context).size.height * 0.20,
-            width: MediaQuery.of(context).size.width * 0.19,
-            child: Image.network(
-              widget.item.pathimage!,
-              fit: BoxFit.fill,
-              filterQuality: FilterQuality.medium,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                print(exception);
-                return Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
-                  fit: BoxFit.fill,
-                );
-              },
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                );
-              },
-            ),
-          ),
-          // contentPadding: EdgeInsets.all(8.0),
-          title: Text(widget.item.itemdesc!),
-          subtitle: widget.item.modifiers != 0
-              ? Text('Bisa Custome : ${widget.item.modifiers.toString()}')
-              : Container(),
-          trailing: widget.item.trackstock == 1
-              ? Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: Text(
-                        '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.036,
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: Row(
-                        children: [
-                          Text(
-                            'Stock : ',
-                          ),
-                          Text(
-                            widget.item.stock.toString(),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              : Container(
+            // contentPadding: EdgeInsets.all(8.0),
+            title: Text(widget.item.itemdesc!),
+            subtitle: widget.item.modifiers != 0
+                ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+        
+                        mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                          // height: MediaQuery.of(context).size.height * 0.036,
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Text(
+                              'Bisa Custome : ${widget.item.modifiers.toString()}')),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: widget.item.trackstock=='1'? Row(
+                                 mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                           Text(
+                              'Stock : ',
+                            ),
+                            Text(
+                              widget.item.stock.toString(),
+                            ),
+                          ],
+                        ):Container(),
+                      )
+                    ],
+                  )
+                : Container(),
+            trailing: widget.item.trackstock == 1
+                ? Container(
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Text(
-                    '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}', style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ),
+                )
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    child: Text(
+                      '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+          ),
         ),
         Divider(
           thickness: 1,

@@ -109,7 +109,7 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
                   children: [
                     LoadingButton(
                         isLoading: _isloading,
-                        color: Colors.pink,
+                        color: Colors.orange,
                         textcolor: Colors.white,
                         name: 'Simpan',
                         height: MediaQuery.of(context).size.height * 0.05,
@@ -128,8 +128,8 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
                       width: MediaQuery.of(context).size.width * 0.05,
                     ),
                     ButtonNoIcon(
-                      textcolor: Colors.white,
-                      color: Colors.blue,
+                      textcolor: Colors.orange,
+                      color: Colors.white,
                       height: MediaQuery.of(context).size.height * 0.05,
                       width: MediaQuery.of(context).size.width * 0.6,
                       name: 'Tambah Tipe',

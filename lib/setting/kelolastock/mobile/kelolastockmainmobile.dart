@@ -38,6 +38,33 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
     super.initState();
     formattedDate = formatter.format(now);
     getTrnoBo();
+     data();
+  }
+
+  data() async {
+    await ClassApi.getItemList(pscd, dbname, search.text).then((value) {
+      for (var x in value) {
+        qty.add(0);
+        _controller.add(TextEditingController(text: '0'));
+        datatrans.add(TransaksiBO(
+            trdt: formattedDate,
+            transno: trno,
+            documentno: '',
+            description: 'adjusment stock $formattedDate',
+            type_tr: type,
+            product: x.itemcode,
+            proddesc: x.itemdesc,
+            qty: 0,
+            unit: 'Unit',
+            ctr: 'Inventory',
+            subctr: 'Biaya',
+            famount: x.costamt,
+            lamount: x.costamt,
+            note: 'Adjusment Stock PreBo',
+            active: 1,
+            usercreate: usercd));
+      }
+    });
   }
 
   @override
@@ -70,8 +97,7 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
                     return ListView.builder(
                         itemCount: data!.length,
                         itemBuilder: (context, index) {
-                          qty.add(0);
-                          _controller.add(TextEditingController(text: '0'));
+                          for (var x in data) {}
 
                           return Container(
                             child: ListTile(
@@ -97,47 +123,16 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
                                             qty[index]++;
                                             _controller[index].text =
                                                 qty[index].toString();
-                                            if (qty[index] >= 0) {
-                                              if (datatrans.any((element) =>
-                                                      element.product ==
-                                                      data[index].itemcode) ==
-                                                  true) {
-                                                datatrans[index].qty =
-                                                    qty[index];
-                                                datatrans[index].famount =
-                                                    data[index].costamt! *
-                                                        qty[index];
-                                                datatrans[index].lamount =
-                                                    data[index].costamt! *
-                                                        qty[index];
-                                              } else {
-                                                datatrans.add(TransaksiBO(
-                                                    trdt: formattedDate,
-                                                    transno: trno,
-                                                    documentno: '',
-                                                    description:
-                                                        'adjusment stock $formattedDate',
-                                                    type_tr: type,
-                                                    product:
-                                                        data[index].itemcode,
-                                                    proddesc:
-                                                        data[index].itemdesc,
-                                                    qty: qty[index],
-                                                    unit: 'Unit',
-                                                    ctr: 'Inventory',
-                                                    subctr: 'Biaya',
-                                                    famount:
-                                                        data[index].costamt,
-                                                    lamount:
-                                                        data[index].costamt,
-                                                    note:
-                                                        'Adjusment Stock PreBo',
-                                                    active: 1,
-                                                    usercreate: usercd));
-                                              }
-                                            }
-
-                                            print(datatrans);
+                                            datatrans[index].qty = qty[index];
+                                            datatrans[index].lamount =
+                                                qty[index] *
+                                                    datatrans[index].lamount!;
+                                            datatrans[index].famount =
+                                                qty[index] *
+                                                    datatrans[index].famount!;
+                                            print(datatrans.where((element) =>
+                                                element.product ==
+                                                data[index].itemcode));
                                             setState(() {});
                                           },
                                           icon: Icon(Icons.add)),
@@ -157,46 +152,16 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
                                             setState(() {});
                                           }
                                           qty[index] = int.parse(value);
-                                          if (qty[index] >= 0) {
-                                            if (datatrans.any((element) =>
-                                                    element.product ==
-                                                    data[index].itemcode) ==
-                                                true) {
-                                              datatrans[index].qty = qty[index];
-                                              datatrans[index].famount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                              datatrans[index].lamount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                            } else {
-                                              datatrans.add(TransaksiBO(
-                                                  trdt: formattedDate,
-                                                  transno: trno,
-                                                  documentno: '',
-                                                  description:
-                                                      'adjusment stock $formattedDate',
-                                                  type_tr: type,
-                                                  product: data[index].itemcode,
-                                                  proddesc:
-                                                      data[index].itemdesc,
-                                                  qty: qty[index],
-                                                  unit: 'Unit',
-                                                  ctr: 'Inventory',
-                                                  subctr: 'Biaya',
-                                                  famount: data[index].costamt,
-                                                  lamount: data[index].costamt,
-                                                  note: 'Adjusment Stock PreBo',
-                                                  active: 1,
-                                                  usercreate: usercd));
-                                            }
-                                          }
-                                          if (qty[index] <= 0) {
-                                            datatrans.removeWhere((element) =>
-                                                element.product ==
-                                                data[index].itemcode);
-                                          }
-                                          print(datatrans);
+                                          datatrans[index].qty = qty[index];
+                                          datatrans[index].lamount =
+                                              qty[index] *
+                                                  datatrans[index].lamount!;
+                                          datatrans[index].famount =
+                                              qty[index] *
+                                                  datatrans[index].famount!;
+                                          print(datatrans.where((element) =>
+                                              element.product ==
+                                              data[index].itemcode));
                                           setState(() {});
                                         },
                                       ),
@@ -215,24 +180,16 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
                                                 : qty[index]--;
                                             _controller[index].text =
                                                 qty[index].toString();
-                                            if (datatrans.any((element) =>
-                                                    element.product ==
-                                                    data[index].itemcode) ==
-                                                true) {
-                                              datatrans[index].qty = qty[index];
-                                              datatrans[index].famount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                              datatrans[index].lamount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                            }
-                                            if (qty[index] <= 0) {
-                                              datatrans.removeWhere((element) =>
-                                                  element.product ==
-                                                  data[index].itemcode);
-                                            }
-                                            print(datatrans);
+                                            datatrans[index].qty = qty[index];
+                                            datatrans[index].lamount =
+                                                qty[index] *
+                                                    datatrans[index].lamount!;
+                                            datatrans[index].famount =
+                                                qty[index] *
+                                                    datatrans[index].famount!;
+                                            print(datatrans.where((element) =>
+                                                element.product ==
+                                                data[index].itemcode));
                                             setState(() {});
                                           },
                                           icon: Icon(Icons.remove)),
@@ -255,6 +212,7 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
               width: MediaQuery.of(context).size.width * 0.94,
               onpressed: () async {
                 EasyLoading.show(status: 'Proses data...');
+              datatrans.removeWhere((item) => item.qty == 0);
                 await ClassApi.insertAdujsmentStock(dbname, datatrans);
                 EasyLoading.dismiss();
                 Navigator.of(context).pop();

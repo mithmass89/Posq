@@ -6,6 +6,7 @@ import 'package:posq/classui/classformat.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
+import 'package:posq/reporting/reportdetail/detailcogs.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
@@ -53,6 +54,7 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
         for (var z in value) {
           datatemp.add(CombineDataRingkasan(
               revenuegross: z.revenuegross == null ? 0 : z.revenuegross,
+              totalcost: z.totalcost == null ? 0 : z.totalcost,
               pajak: z.pajak == null ? 0 : z.pajak,
               service: z.service == null ? 0 : z.service,
               totalnett: z.totalnett == null ? 0 : z.totalnett,
@@ -63,6 +65,8 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
     ;
     num revenuegross = datatemp.fold(
         0, (previousValue, isi) => previousValue + isi.revenuegross!);
+    num totalcost = datatemp.fold(
+        0, (previousValue, isi) => previousValue + isi.totalcost!);
     num pajak =
         datatemp.fold(0, (previousValue, isi) => previousValue + isi.pajak!);
     num service =
@@ -74,6 +78,7 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
     data.add(CombineDataRingkasan(
         revenuegross: revenuegross,
         pajak: pajak,
+        totalcost: totalcost,
         service: service,
         totalnett: totalnett,
         totalpayment: totalpayment));
@@ -97,7 +102,7 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
               borderRadius: BorderRadius.circular(12),
             ),
             width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.50,
+            height: MediaQuery.of(context).size.height * 0.6,
             child: Column(
               children: [
                 Container(
@@ -111,39 +116,56 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
                       width: 1,
                     )),
                   ),
-                  child: Text('Ringkasan semua outlet'),
+                  child: Text('Ringkasan'),
                 ),
                 data.isNotEmpty
                     ? Container(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.44,
+                        height: MediaQuery.of(context).size.height * 0.5,
                         child: Column(
                           children: [
                             ListTile(
+                              onTap: () {},
                               dense: true,
                               title: Text('Pendapatan Bersih'),
                               subtitle: Text(CurrencyFormat.convertToIdr(
                                   data[0].revenuegross, 0)),
                             ),
                             ListTile(
+                              onTap: () {
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (BuildContext context) {
+                                //   return DetailTransaksiCogs();
+                                // }));
+                              },
+                              dense: true,
+                              title: Text('Harga dasar'),
+                              subtitle: Text(CurrencyFormat.convertToIdr(
+                                  data[0].totalcost, 0)),
+                            ),
+                            ListTile(
+                              onTap: () {},
                               dense: true,
                               title: Text('Pajak'),
                               subtitle: Text(CurrencyFormat.convertToIdr(
                                   data[0].pajak, 0)),
                             ),
                             ListTile(
+                              onTap: () {},
                               dense: true,
                               title: Text('Service / gratitude'),
                               subtitle: Text(CurrencyFormat.convertToIdr(
                                   data[0].service, 0)),
                             ),
                             ListTile(
+                              onTap: () {},
                               dense: true,
                               title: Text('Pendapatan kotor'),
                               subtitle: Text(CurrencyFormat.convertToIdr(
                                   data[0].totalnett, 0)),
                             ),
                             ListTile(
+                              onTap: () {},
                               dense: true,
                               title: Text('Total pembayaran di terima'),
                               subtitle: Text(CurrencyFormat.convertToIdr(

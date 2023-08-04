@@ -356,11 +356,14 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                                 for (var x in poscondimenttopping) {
                                   summarycondiment.add(x);
                                 }
-                                await ClassApi.insert_Poscondiment(
-                                    dbname, summarycondiment);
+                                if (summarycondiment.isNotEmpty) {
+                                  await ClassApi.insert_Poscondiment(
+                                      dbname, summarycondiment);
+                                }
                                 await ClassApi.insertPosDetail(
                                     IafjrndtClass(
-                                      totalcost: widget.data.costamt!*qtyitemmaster,
+                                      totalcost:
+                                          widget.data.costamt! * qtyitemmaster,
                                       trdt: formattedDate,
                                       pscd: widget.data.outletcode,
                                       transno: widget.transno,
@@ -434,7 +437,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                                     ),
                                     pscd);
                                 var result = IafjrndtClass(
-                                  totalcost: 1*widget.data.costamt!,
+                                    totalcost: 1 * widget.data.costamt!,
                                     trdt: formattedDate,
                                     pscd: widget.data.outletcode,
                                     transno: widget.transno,
@@ -518,6 +521,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                                 });
                                 // print('ini hasupdate : $hasupdate');
                                 //jadi satu list //
+
                                 await ClassApi.updateCondimentTrno(
                                     widget.transno,
                                     widget.itemseq.toString(),
@@ -540,10 +544,14 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                                 for (var x in poscondimenttopping) {
                                   summarycondiment.add(x);
                                 }
-                                await ClassApi.insert_Poscondiment(
-                                    dbname, summarycondiment);
+                                if (summarycondiment.isNotEmpty) {
+                                  await ClassApi.insert_Poscondiment(
+                                      dbname, summarycondiment);
+                                }
+
                                 var result = IafjrndtClass(
-                                  totalcost:qtyitemmaster*widget.data.costamt!,
+                                  totalcost:
+                                      qtyitemmaster * widget.data.costamt!,
                                   id: widget.iditem,
                                   trdt: formattedDate,
                                   pscd: widget.outletcd,

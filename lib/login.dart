@@ -123,10 +123,8 @@ class _LoginState extends State<Login> {
   bool validateEmail(String email) {
     // regex pattern for validating email address
     final pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-
     // create a RegExp object with the pattern
     final regExp = RegExp(pattern);
-
     // use the RegExp object to match the email address
     return regExp.hasMatch(email);
   }

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/login.dart';
 import 'package:posq/model.dart';
+import 'package:posq/moduledrawer/productmovement.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
 import 'package:posq/retailmodul/savedtransaction/classlisttransactionmobile.dart';
@@ -147,7 +148,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             leading: Icon(
               Icons.history_outlined,
             ),
-            title: const Text('Riwayat Transaksi'),
+            title: const Text('Transaksi hari ini'),
             onTap: accesslistuser.contains('riwayattrans') == true
                 ? () {
                     Navigator.of(context).push(
@@ -208,6 +209,37 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         outletinfo: widget.outletinfo,
                       );
                     }));
+                  }
+                : () {
+                    Fluttertoast.showToast(
+                        msg: "Tidak punya access laporan",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.production_quantity_limits,
+            ),
+            title: const Text('Mutasi barang'),
+            onTap: accesslistuser.contains('setting') == true
+                ? () {
+                    // Navigator.of(context).push(
+                    //     MaterialPageRoute(builder: (BuildContext context) {
+                    //   return ProductMovement();
+                    // }));
+                    Fluttertoast.showToast(
+                        msg: "Segera hadir",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   }
                 : () {
                     Fluttertoast.showToast(
