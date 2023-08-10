@@ -1,26 +1,29 @@
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/cashiersummary.dart';
-import 'package:posq/reporting/classkirimlaporan.dart';
+import 'package:posq/reporting/classdetailpenjualan2mobile.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
 import 'package:posq/reporting/classlistoutlet.dart';
-import 'package:posq/reporting/classringkasan.dart';
 import 'package:posq/reporting/classringkasancombine.dart';
+import 'package:posq/reporting/detailcondimentmobile.dart';
 import 'package:posq/reporting/detailitemterjaulmobile.dart';
 import 'package:posq/reporting/marginitemcost.dart';
 import 'package:posq/reporting/refundtransaksi.dart';
+import 'package:posq/setting/printer/cashiersummary.dart';
+import 'package:posq/setting/printer/classprinterbillpayment.dart';
 import 'package:posq/userinfo.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MyBuilder = void Function(
     BuildContext context, void Function() methodA);
+PrintSmallCashierSummary? cashiersummary;
 
 class ClassSummaryReport extends StatefulWidget {
   final String user;
@@ -57,17 +60,57 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   late void Function() ringkasan;
   late void Function() ringkasancombine;
   late void Function() detailmenu;
+  late void Function() detailmenu2;
   late void Function() refund;
   late void Function() marginitem;
+  late void Function() condiment;
   List<IafjrnhdClass> listdatapayment = [];
+  List<dynamic> cashflow = [];
+  List<dynamic> otherpayment = [];
+  List<dynamic> condiments = [];
   List<CombineDataRingkasan> data = [];
   var wsUrl;
   WebSocketChannel? channel;
   bool buttonprint = false;
+  PrintSmallCashierSummary cashiersummary = PrintSmallCashierSummary();
+  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  bool connected = false;
+  String logourl = '';
+  String header = '';
+  String footer = '';
+
+  checkPrinter() async {
+    connected = await bluetooth.isConnected.then((value) => value!);
+    setState(() {});
+    print(connected);
+  }
+
+  getTemplatePrinter() {
+    ClassApi.getTemplatePrinter().then((value) {
+      if (value.isNotEmpty) {
+        logourl = value[0]['logourl'];
+        header = value[0]['header'];
+        footer = value[0]['footer'];
+      }
+      ;
+    });
+    setState(() {});
+  }
+
+  CLosingCashier() async {
+    cashflow = await ClassApi.ClosingCashFlow(fromdate!, todate!, dbname, '');
+    otherpayment =
+        await ClassApi.ClosingOtherPayment(fromdate!, todate!, dbname, '');
+    condiments =
+        await ClassApi.CLosingCondiment(fromdate!, todate!, dbname, '');
+    print(cashflow);
+    print(otherpayment);
+    print(condiments);
+  }
 
   void initState() {
     super.initState();
-
+    checkPrinter();
     wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
@@ -99,16 +142,18 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     _controllerdate.text = '$fromdatenamed - $todatenamed';
 
     selected = 'Hari ini';
+    checkButton();
   }
 
-  startDate() {
+  startDate() async {
     setState(() {
       fromdate = formatdate;
       todate = formatdate;
     });
-    print("ini formatdate sql $formatdate");
-    print("ini from date$fromdate");
-    print("ini todate $todate");
+    await CLosingCashier();
+    // print("ini formatdate sql $formatdate");
+    // print("ini from date$fromdate");
+    // print("ini todate $todate");
   }
 
   @override
@@ -160,7 +205,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
       setState(() {
         listdatapayment = value;
       });
-      print('Data harusnya terisi');
+      // print('Data harusnya terisi');
     });
   }
 
@@ -195,14 +240,19 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                           refund.call();
                         } else if (type == 'Detail Item Terjual') {
                           detailmenu.call();
+                        } else if (type == 'Detail Item Terjual2') {
+                          detailmenu2.call();
                         } else if (type == 'Margin Item') {
                           marginitem.call();
+                        } else if (type == 'Detail condiment') {
+                          condiment.call();
                         }
 
                         if (outletdata![0]['outletdesc'] == 'All Outlet') {
                           outletdata = [];
                         }
                         checkButton();
+                        setState(() {});
                       },
                       typekeyboard: TextInputType.text,
                     ),
@@ -229,15 +279,19 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                           refund.call();
                         } else if (type == 'Detail Item Terjual') {
                           detailmenu.call();
+                        } else if (type == 'Detail Item Terjual2') {
+                          detailmenu2.call();
                         } else if (type == 'Margin Item') {
                           marginitem.call();
+                        } else if (type == 'Detail condiment') {
+                          condiment.call();
                         }
                         if (outletdata![0]['outletdesc'] == 'All Outlet') {
                           outletdata = [];
                         }
                         getDataReport();
                         checkButton();
-                        print('ini selcted outlet $outletdata');
+                        // print('ini selcted outlet $outletdata');
                         setState(() {});
                       },
                       typekeyboard: TextInputType.text,
@@ -259,7 +313,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                   }));
                   _controllerpilihan.text = type;
                   getDataReport();
-                  print(type);
+                  // print(type);
                   if (type == 'Summary Cashier') {
                     myMethod.call();
                   } else if (type == 'Ringkasan') {
@@ -268,10 +322,14 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                     ringkasancombine.call();
                   } else if (type == 'Refund transaksi') {
                     refund.call();
+                  } else if (type == 'Detail Item Terjual2') {
+                    detailmenu2.call();
                   } else if (type == 'Detail Item Terjual') {
                     detailmenu.call();
                   } else if (type == 'Margin Item') {
                     marginitem.call();
+                  } else if (type == 'Detail condiment') {
+                    condiment.call();
                   }
                   if (outletdata![0]['outletdesc'] == 'All Outlet') {
                     outletdata = [];
@@ -314,10 +372,14 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         ringkasancombine.call();
                       } else if (type == 'Refund transaksi') {
                         refund.call();
+                      } else if (type == 'Detail Item Terjual2') {
+                        detailmenu2.call();
                       } else if (type == 'Detail Item Terjual') {
                         detailmenu.call();
                       } else if (type == 'Margin Item') {
                         marginitem.call();
+                      } else if (type == 'Detail condiment') {
+                        condiment.call();
                       }
                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
                         outletdata = [];
@@ -359,10 +421,14 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         ringkasancombine.call();
                       } else if (type == 'Refund transaksi') {
                         refund.call();
+                      } else if (type == 'Detail Item Terjual2') {
+                        detailmenu2.call();
                       } else if (type == 'Detail Item Terjual') {
                         detailmenu.call();
                       } else if (type == 'Margin Item') {
                         marginitem.call();
+                      } else if (type == 'Detail condiment') {
+                        condiment.call();
                       }
                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
                         outletdata = [];
@@ -401,10 +467,14 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         ringkasancombine.call();
                       } else if (type == 'Refund transaksi') {
                         refund.call();
+                      } else if (type == 'Detail Item Terjual2') {
+                        detailmenu2.call();
                       } else if (type == 'Detail Item Terjual') {
                         detailmenu.call();
                       } else if (type == 'Margin Item') {
                         marginitem.call();
+                      } else if (type == 'Detail condiment') {
+                        condiment.call();
                       }
                       if (outletdata![0]['outletdesc'] == 'All Outlet') {
                         outletdata = [];
@@ -458,6 +528,32 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                       todate: todate!,
                     )
                   : Container(),
+              type == 'Detail Item Terjual2'
+                  ? DetailMenuTerjual2Mobile(
+                      listoutlets: outletdata!.isEmpty
+                          ? listoutlets
+                          : List.generate(outletdata!.length,
+                              (index) => outletdata![index]['outletcode']),
+                      builder: (BuildContext context, void Function() methodA) {
+                        detailmenu2 = methodA;
+                      },
+                      fromdate: fromdate!,
+                      todate: todate!,
+                    )
+                  : Container(),
+              type == 'Detail condiment'
+                  ? DetailCondimentTerjualMobile(
+                      listoutlets: outletdata!.isEmpty
+                          ? listoutlets
+                          : List.generate(outletdata!.length,
+                              (index) => outletdata![index]['outletcode']),
+                      builder: (BuildContext context, void Function() methodA) {
+                        condiment = methodA;
+                      },
+                      fromdate: fromdate!,
+                      todate: todate!,
+                    )
+                  : Container(),
               type == 'Refund transaksi'
                   ? RefundTransaksi(
                       listoutlets: outletdata!.isEmpty
@@ -497,23 +593,24 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ButtonNoIcon2(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          color: Colors.white,
-                          textcolor: Colors.orange,
-                          name: 'Print',
-                          onpressed: () {
-                            Fluttertoast.showToast(
-                                msg: "Segera hadir",
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor:
-                                    Color.fromARGB(255, 11, 12, 14),
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          },
-                        ),
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            color: Colors.white,
+                            textcolor: Colors.orange,
+                            name: 'Print',
+                            onpressed: () async {
+                              Fluttertoast.showToast(
+                                  msg: "Segera hadir",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 11, 12, 14),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                              // await cashiersummary.prints(cashflow,
+                              //     otherpayment, condiments, outlet.text, '');
+                            }),
                         ButtonNoIcon2(
                           width: MediaQuery.of(context).size.width * 0.35,
                           height: MediaQuery.of(context).size.height * 0.05,

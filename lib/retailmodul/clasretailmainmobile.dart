@@ -432,7 +432,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
       context,
       BoxConstraints constraints,
     ) {
-      if (constraints.maxWidth <= 480) {
+      if (constraints.maxWidth <= 800) {
         return Scaffold(
             key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
@@ -817,27 +817,75 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 17),
                                               )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  Icons.people,
+                                          guestname == '' || guestname == null
+                                              ? Expanded(
+                                                  flex: 1,
+                                                  child: IconButton(
+                                                    icon: Icon(
+                                                      Icons.people,
+                                                    ),
+                                                    iconSize: 25,
+                                                    color: Colors.blueGrey,
+                                                    splashColor: Colors.purple,
+                                                    onPressed: () async {
+                                                      guestname =
+                                                          await showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return DialogClassGuest(
+                                                                  trno: widget
+                                                                      .trno!,
+                                                                  outletinfo: widget
+                                                                      .outletinfo,
+                                                                  pscd: pscd,
+                                                                );
+                                                              });
+                                                      if (guestname == null) {
+                                                        guestname = '';
+                                                      }
+                                                    },
+                                                  ))
+                                              : Row(
+                                                  children: [
+                                                    TextButton(
+                                                        onPressed: () async {
+                                                          guestname =
+                                                              await showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return DialogClassGuest(
+                                                                      trno: widget
+                                                                          .trno!,
+                                                                      outletinfo:
+                                                                          widget
+                                                                              .outletinfo,
+                                                                      pscd:
+                                                                          pscd,
+                                                                    );
+                                                                  });
+                                                        },
+                                                        child: Text(
+                                                          guestname!,
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        )),
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          guestname = '';
+                                                          setState(() {});
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.close,
+                                                          size: 20,
+                                                          color: Colors.red,
+                                                        ))
+                                                  ],
                                                 ),
-                                                iconSize: 25,
-                                                color: Colors.blueGrey,
-                                                splashColor: Colors.purple,
-                                                onPressed: () async {
-                                                  guestname = await showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return DialogCustomerList();
-                                                      });
-                                                  if (guestname == null) {
-                                                    guestname = '';
-                                                  }
-                                                },
-                                              )),
                                         ],
                                       ),
                                     ),
@@ -1176,6 +1224,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                   height: MediaQuery.of(context).size.height *
                                       0.056,
                                   child: PopupMenuButton<int>(
+                                    iconSize: 20,
                                     color: Colors.white,
                                     itemBuilder: (context) => [
                                       // popupmenu item 1
@@ -1293,10 +1342,40 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                   ),
                                 ),
                                 Container(
+                                  color: Color.fromARGB(255, 0, 129, 119),
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.056,
+                                  child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      onPressed: () async {
+                                        guestname = await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return DialogClassGuest(
+                                              fromsaved: widget.fromsaved,
+                                              outletinfo: widget.outletinfo,
+                                              trno: widget.trno!,
+                                              // datatrans: listdata!.first,
+                                              pscd: pscd,
+                                            );
+                                          },
+                                        );
+                                        guestname != null ? guestname : '';
+                                      },
+                                      icon: Icon(
+                                        Icons.person,
+                                        size: 20,
+                                        color: Colors.white,
+                                      )),
+                                ),
+                                Container(
                                     color: Color.fromARGB(255, 0, 160, 147),
                                     alignment: Alignment.center,
                                     width: MediaQuery.of(context).size.width *
-                                        0.25,
+                                        0.20,
                                     height: MediaQuery.of(context).size.height *
                                         0.057,
                                     child: Text(

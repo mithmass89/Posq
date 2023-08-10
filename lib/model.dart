@@ -235,7 +235,7 @@ class CombineDataRingkasan {
   Map<String, Object?> toJson() {
     return {
       'revenuegross': revenuegross,
-      'totalcost':totalcost,
+      'totalcost': totalcost,
       'pajak': pajak,
       'service': service,
       'totalnett': totalnett,
@@ -1678,6 +1678,39 @@ class Promo {
       'amount': amount,
       'mindisc': mindisc,
       'maxdisc': maxdisc,
+    };
+  }
+}
+
+class OpenCashier {
+  final String? trdt;
+  final String type;
+  final num? amount;
+  final String? usercd;
+
+  OpenCashier({
+    this.trdt,
+    required this.type,
+    this.amount,
+    this.usercd,
+  });
+
+  OpenCashier.fromJson(Map<String, dynamic> res)
+      : trdt = res["trdt"],
+        type = res["type"],
+        amount = res["amount"],
+        usercd = res["usercd"];
+  @override
+  String toString() {
+    return '{trdt: $trdt,  type: $type, amount: $amount,usercd:$usercd}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'trdt': trdt,
+      'type': type,
+      'amount': amount,
+      'usercd': usercd,
     };
   }
 }

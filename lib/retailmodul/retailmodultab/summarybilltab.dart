@@ -64,10 +64,13 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
   num? amounttotal = 0;
   List<IafjrndtClass> summary = [];
   bool connected = false;
+  PrintSmall printing = PrintSmall();
+
 
   @override
   void initState() {
     super.initState();
+    checkPrinter();
     formattedDate = formatter.format(now);
     print('listdata : summary ${widget.listdata}');
     getSumm();
@@ -76,7 +79,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
   checkPrinter() async {
     connected = await bluetooth.isConnected.then((value) => value!);
     setState(() {});
-    print(connected);
+    print('printer : $connected');
   }
 
   getSumm() async {
@@ -103,7 +106,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
           if (x.isNotEmpty) {
             return Container(
               width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 0.18,
+              height: MediaQuery.of(context).size.height * 0.19,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -405,7 +408,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                   ? () async {
                                       await getSumm();
                                       if (connected == true) {
-                                        await printing!.prints(
+                                        await printing.prints(
                                             widget.listdata,
                                             summary,
                                             widget.outletinfo.outletname!,

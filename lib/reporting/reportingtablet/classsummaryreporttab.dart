@@ -14,6 +14,7 @@ import 'package:posq/reporting/classkirimlaporan.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
 import 'package:posq/reporting/classlistoutlet.dart';
 import 'package:posq/reporting/classringkasan.dart';
+import 'package:posq/reporting/detailcondimentmobile.dart';
 import 'package:posq/reporting/marginitemcost.dart';
 import 'package:posq/reporting/refundtransaksi.dart';
 import 'package:posq/reporting/reportingtablet/classcashierreporttab.dart';
@@ -60,6 +61,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   late void Function() detailmenu;
   late void Function() refund;
   late void Function() marginitem;
+  late void Function() condiment;
   List<IafjrnhdClass> listdatapayment = [];
   List<IafjrndtClass> data = [];
   List<IafjrndtClass> topMenu = [];
@@ -210,6 +212,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                             refund.call();
                           } else if (type == 'Margin Item') {
                             marginitem.call();
+                          } else if (type == 'Detail condiment') {
+                            condiment.call();
                           }
                           setState(() {});
                         },
@@ -242,6 +246,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                             refund.call();
                           } else if (type == 'Margin Item') {
                             marginitem.call();
+                          } else if (type == 'Detail condiment') {
+                            condiment.call();
                           }
                           if (outletdata![0]['outletdesc'] == 'All Outlet') {
                             outletdata = [];
@@ -290,6 +296,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           refund.call();
                         } else if (type == 'Margin Item') {
                           marginitem.call();
+                        } else if (type == 'Detail condiment') {
+                          condiment.call();
                         }
 
                         setState(() {});
@@ -336,6 +344,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           refund.call();
                         } else if (type == 'Margin Item') {
                           marginitem.call();
+                        } else if (type == 'Detail condiment') {
+                          condiment.call();
                         }
                         setState(() {});
                       },
@@ -363,7 +373,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
 
                         _controllerdate.text = '$fromdatenamed - $todatenamed';
                         setState(() {});
-                        
+
                         if (type == 'Summary Cashier') {
                           myMethod.call();
                         } else if (type == 'Ringkasan') {
@@ -376,8 +386,9 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           refund.call();
                         } else if (type == 'Margin Item') {
                           marginitem.call();
+                        } else if (type == 'Detail condiment') {
+                          condiment.call();
                         }
-
                         setState(() {});
                       },
                     ),
@@ -464,6 +475,20 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                         builder:
                             (BuildContext context, void Function() methodA) {
                           detailmenu = methodA;
+                        },
+                        fromdate: fromdate!,
+                        todate: todate!,
+                      )
+                    : Container(),
+                type == 'Detail condiment'
+                    ? DetailCondimentTerjualMobile(
+                        listoutlets: outletdata!.isEmpty
+                            ? listoutlets
+                            : List.generate(outletdata!.length,
+                                (index) => outletdata![index]['outletcode']),
+                        builder:
+                            (BuildContext context, void Function() methodA) {
+                          condiment = methodA;
                         },
                         fromdate: fromdate!,
                         todate: todate!,

@@ -13,6 +13,7 @@ import 'package:posq/retailmodul/classedititemmobile.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
+import 'package:posq/retailmodul/productclass/classretailcondimenttab.dart';
 import 'package:posq/retailmodul/retailmodultab/classretailedittab.dart';
 import 'package:posq/retailmodul/classsumamryorderslidemobile.dart';
 import 'package:posq/retailmodul/productclass/classdialogedittab.dart';
@@ -93,7 +94,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
   List<String> ordertype = ['Dine in', 'Take Away'];
   int multiprice = 0;
   int? selectedindex;
-  int? length=0;
+  int? length = 0;
 
   @override
   void initState() {
@@ -123,7 +124,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
   checkPrinter() async {
     connected = await bluetooth.isConnected.then((value) => value!);
     setState(() {});
-    print(connected);
+    print('connect : $_scaffoldKey');
   }
 
   set refreshtrans(IafjrndtClass value) {
@@ -168,7 +169,6 @@ class _DetailTransTabsState extends State<DetailTransTabs>
       print('ini summary : $value');
       if (value.isNotEmpty) {
         setState(() {
-        
           summary = value;
           amounttotal = value.first.totalaftdisc;
         });
@@ -188,228 +188,144 @@ class _DetailTransTabsState extends State<DetailTransTabs>
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.80,
+            height: MediaQuery.of(context).size.height * 0.8,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Container(
-                //   decoration: BoxDecoration(
-                //       // color: Colors.blue,
-                //       ),
-                //   height: MediaQuery.of(context).size.height * 0.04,
-                //   width: MediaQuery.of(context).size.width * 0.9,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.start,
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       Expanded(
-                //           flex: 4,
-                //           child: Text(
-                //             'BARANG : ${widget.itemlength}',
-                //             style: TextStyle(
-                //                 color: Colors.black,
-                //                 fontWeight: FontWeight.bold,
-                //                 fontSize: 17),
-                //           )),
-                //       Expanded(
-                //           flex: 1,
-                //           child: IconButton(
-                //             icon: Icon(
-                //               connected == true ? Icons.print : Icons.print_disabled,
-                //             ),
-                //             iconSize: 25,
-                //             color: connected == true ? Colors.green : Colors.red,
-                //             splashColor: Colors.purple,
-                //             onPressed: accesslist.contains('settingprinter') == true
-                //                 ? () async {
-                //                     await getSumm();
-                //                     if (connected == true) {
-                //                       await printing.prints(
-                //                           widget.listdata,
-                //                           summary,
-                //                           widget.outletinfo.outletname!,
-                //                           widget.outletinfo);
-                //                     } else {
-                //                       await Navigator.push(
-                //                           context,
-                //                           MaterialPageRoute(
-                //                               builder: (context) =>
-                //                                   ClassMainPrinter()));
-                //                     }
-                //                   }
-                //                 : () {
-                //                     Fluttertoast.showToast(
-                //                         msg: "Tidak Punya Akses Printer",
-                //                         toastLength: Toast.LENGTH_LONG,
-                //                         gravity: ToastGravity.CENTER,
-                //                         timeInSecForIosWeb: 1,
-                //                         backgroundColor:
-                //                             Color.fromARGB(255, 11, 12, 14),
-                //                         textColor: Colors.white,
-                //                         fontSize: 16.0);
-                //                   },
-                //           )),
-                //       Expanded(
-                //           flex: 1,
-                //           child: IconButton(
-                //             icon: Icon(
-                //               Icons.people_alt,
-                //             ),
-                //             iconSize: 25,
-                //             color: Colors.blueGrey,
-                //             splashColor: Colors.blueGrey,
-                //             onPressed: () async {
-                //               await showDialog(
-                //                   context: context,
-                //                   builder: (BuildContext context) {
-                //                     return DialogCustomerList();
-                //                   });
-                //             },
-                //           )),
-                //       Expanded(
-                //           flex: 1,
-                //           child: IconButton(
-                //             icon: Icon(
-                //               Icons.table_bar,
-                //             ),
-                //             iconSize: 25,
-                //             color: Colors.blueGrey,
-                //             splashColor: Colors.blueGrey,
-                //             onPressed: () async {
-                //               await showDialog(
-                //                   context: context,
-                //                   builder: (BuildContext context) {
-                //                     return DialogCustomerList();
-                //                   });
-                //             },
-                //           )),
-                //     ],
-                //   ),
-                // ),
+                widget.datatransaksi.isNotEmpty
+                    ? Container(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.datatransaksi.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: selectedindex != index
+                                          ? Colors.orange
+                                          : Color.fromARGB(
+                                              255, 0, 146, 156), // foreground
+                                    ),
+                                    onPressed: () async {
+                                      selectedindex = index;
+                                      print(index == index);
+                                      Fluttertoast.showToast(
+                                          msg: "Sukses Change",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              Color.fromARGB(255, 11, 12, 14),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                      for (var element in widget.listdata) {
+                                        var amountprice = element.pricelist!
+                                            .where((element) =>
+                                                element.transtype ==
+                                                widget.datatransaksi[index]
+                                                    .transtype)
+                                            .toList();
+                                        var result = IafjrndtClass(
+                                            salestype: widget
+                                                .datatransaksi[index].transdesc,
+                                            condimenttype:
+                                                element.condimenttype,
+                                            svchgpct: element.svchgpct,
+                                            multiprice: element.multiprice,
+                                            pricelist: element.pricelist,
+                                            typ: element.typ,
+                                            optioncode: element.optioncode,
+                                            havecond: element.havecond,
+                                            active: element.active,
+                                            trdt: element.trdt,
+                                            transno: element.transno,
+                                            split: element.split,
+                                            itemdesc: element.itemdesc,
+                                            qty: element.qty,
+                                            description: element.description,
+                                            createdt: element.createdt,
+                                            rateamtitem: amountprice.isNotEmpty
+                                                ? amountprice.first.amount
+                                                : element.rateamtitem,
+                                            discamt: element.discamt,
+                                            discpct: element.discpct,
+                                            taxpct: element.taxpct,
+                                            revenueamt: amountprice.isNotEmpty
+                                                ? element.qty! *
+                                                    amountprice.first.amount
+                                                : element.revenueamt,
+                                            taxamt: amountprice.isNotEmpty
+                                                ? (element.qty! * amountprice.first.amount) *
+                                                    element.taxpct! /
+                                                    100
+                                                : element.taxamt,
+                                            serviceamt: amountprice.isNotEmpty
+                                                ? (element.qty! * amountprice.first.amount) *
+                                                    element.svchgpct! /
+                                                    100
+                                                : element.serviceamt,
+                                            totalaftdisc: amountprice.isNotEmpty
+                                                ? (element.qty! *
+                                                        amountprice
+                                                            .first.amount) +
+                                                    ((element.qty! *
+                                                            amountprice
+                                                                .first.amount) *
+                                                        element.taxpct! /
+                                                        100) +
+                                                    ((element.qty! *
+                                                            amountprice
+                                                                .first.amount) *
+                                                        element.svchgpct! /
+                                                        100)
+                                                : element.totalaftdisc,
+                                            id: element.id,
+                                            totalcost: element.totalcost,
+                                            ratecostamt: element.ratecostamt);
 
-             widget.datatransaksi.isNotEmpty?   Container(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.datatransaksi.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: selectedindex != index
-                                    ? Colors.orange
-                                    : Color.fromARGB(
-                                        255, 0, 146, 156), // foreground
-                              ),
-                              onPressed: () async {
-                                selectedindex = index;
-                                print(index == index);
-                                Fluttertoast.showToast(
-                                    msg: "Sukses Change",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 11, 12, 14),
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                                for (var element in widget.listdata) {
-                                  var amountprice = element.pricelist!
-                                      .where((element) =>
-                                          element.transtype ==
-                                          widget.datatransaksi[index].transtype)
-                                      .toList();
-                                  var result = IafjrndtClass(
-                                      salestype:
-                                          widget.datatransaksi[index].transdesc,
-                                      condimenttype: element.condimenttype,
-                                      svchgpct: element.svchgpct,
-                                      multiprice: element.multiprice,
-                                      pricelist: element.pricelist,
-                                      typ: element.typ,
-                                      optioncode: element.optioncode,
-                                      havecond: element.havecond,
-                                      active: element.active,
-                                      trdt: element.trdt,
-                                      transno: element.transno,
-                                      split: element.split,
-                                      itemdesc: element.itemdesc,
-                                      qty: element.qty,
-                                      description: element.description,
-                                      createdt: element.createdt,
-                                      rateamtitem: amountprice.isNotEmpty
-                                          ? amountprice.first.amount
-                                          : element.rateamtitem,
-                                      discamt: element.discamt,
-                                      discpct: element.discpct,
-                                      taxpct: element.taxpct,
-                                      revenueamt: amountprice.isNotEmpty
-                                          ? element.qty! *
-                                              amountprice.first.amount
-                                          : element.revenueamt,
-                                      taxamt: amountprice.isNotEmpty
-                                          ? (element.qty! *
-                                                  amountprice.first.amount) *
-                                              element.taxpct! /
-                                              100
-                                          : element.taxamt,
-                                      serviceamt: amountprice.isNotEmpty
-                                          ? (element.qty! *
-                                                  amountprice.first.amount) *
-                                              element.svchgpct! /
-                                              100
-                                          : element.serviceamt,
-                                      totalaftdisc: amountprice.isNotEmpty
-                                          ? (element.qty! *
-                                                  amountprice.first.amount) +
-                                              ((element.qty! *
-                                                      amountprice
-                                                          .first.amount) *
-                                                  element.taxpct! /
-                                                  100) +
-                                              ((element.qty! *
-                                                      amountprice
-                                                          .first.amount) *
-                                                  element.svchgpct! /
-                                                  100)
-                                          : element.totalaftdisc,
-                                      id: element.id,
-                                      totalcost: element.totalcost,
-                                      ratecostamt: element.ratecostamt);
+                                        ClassApi.updatePosDetail(result, pscd);
+                                      }
+                                      await getDetailTrnos().then((value) {
+                                        setState(() {});
+                                      });
+                                      await getSumm();
+                                      widget.updatedata!();
+                                      widget.refreshdata;
 
-                                  ClassApi.updatePosDetail(result, pscd);
-                                }
-                                await getDetailTrnos().then((value) {
-                                  setState(() {});
-                                });
-                                await getSumm();
-                                widget.updatedata!();
-                                widget.refreshdata;
-
-                                ClassRetailMainMobile.of(context)!.string =
-                                    IafjrndtClass(
-                                        trdt: widget.trnoinfo!.trdt,
-                                        pscd: widget.trnoinfo!.pscd,
-                                        description: '',
-                                        totalaftdisc: 0,
-                                        transno: widget.listdata.length == 0
-                                            ? null
-                                            : widget.trnoinfo!.transno,
-                                        totalcost: 0,
-                                        ratecostamt: 0);
-                                setState(() {});
-                              },
-                              child:
-                                  Text(widget.datatransaksi[index].transdesc!)),
-                        );
-                      }),
-                ): Container(),
+                                      ClassRetailMainMobile.of(context)!
+                                              .string =
+                                          IafjrndtClass(
+                                              trdt: widget.trnoinfo!.trdt,
+                                              pscd: widget.trnoinfo!.pscd,
+                                              description: '',
+                                              totalaftdisc: 0,
+                                              transno: widget.listdata.length ==
+                                                      0
+                                                  ? null
+                                                  : widget.trnoinfo!.transno,
+                                              totalcost: 0,
+                                              ratecostamt: 0);
+                                      setState(() {});
+                                    },
+                                    child: Text(widget
+                                        .datatransaksi[index].transdesc!)),
+                              );
+                            }),
+                      )
+                    : Container(),
                 Container(
                     alignment: Alignment.topCenter,
-                    height: MediaQuery.of(context).size.height * 0.12*(length==0?4.1:length!<5?length!:4.0),
+                    height: MediaQuery.of(context).size.height *
+                        0.11 *
+                        (length == 0
+                            ? 4.1
+                            : length! < 5
+                                ? length!
+                                : 3.8),
                     child: FutureBuilder(
                         future: getDetails,
                         builder: (context,
@@ -419,7 +335,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                 itemCount: widget.listdata.length,
                                 itemBuilder: (context, index) {
                                   // widget.listdata = widget.listdata;
-                                  length=widget.listdata.length;
+                                  length = widget.listdata.length;
                                   print(length);
                                   return Column(
                                     children: [
@@ -510,7 +426,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  ClassInputCondiment(
+                                                                  ClassInputCondimentTab(
                                                                     guestname:
                                                                         widget
                                                                             .guestname,
@@ -575,8 +491,10 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                             .trno,
                                                                   ))).then(
                                                           (_) async {
-                                                          widget.refreshdata;
-                                                          widget.updatedata!();
+                                                          await widget
+                                                              .refreshdata;
+                                                          await widget
+                                                              .updatedata!();
                                                         })
                                                       : null;
                                                   ClassRetailMainMobile.of(context)!
@@ -656,7 +574,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                         fontSize:
                                                                             12,
                                                                         fontWeight:
-                                                                            FontWeight.normal)
+                                                                            FontWeight.bold)
                                                                     : TextStyle(
                                                                         fontSize:
                                                                             12,
@@ -911,11 +829,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                           }
                           return Center(
                               child: Container(
-                                
                             child: Text('Tidak Ada transaksi'),
                           ));
                         })),
-
                 widget.listdata.isNotEmpty
                     ? Builder(builder: (context) {
                         return Expanded(
@@ -1000,30 +916,6 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                           )))
                                 ],
                               ),
-                              // Row(
-                              //   children: [
-                              //     Text(
-                              //       'Pajak',
-                              //       style: TextStyle(fontSize: 10),
-                              //     ),
-                              //     Text(
-                              //       CurrencyFormat.convertToIdr(x.first.taxamt, 0),
-                              //       style: TextStyle(fontSize: 10),
-                              //     ),
-                              //   ],
-                              // ),
-                              // Row(
-                              //   children: [
-                              //     Text(
-                              //       'Service',
-                              //       style: TextStyle(fontSize: 10),
-                              //     ),
-                              //     Text(
-                              //       CurrencyFormat.convertToIdr(x.first.serviceamt, 0),
-                              //       style: TextStyle(fontSize: 10),
-                              //     ),
-                              //   ],
-                              // ),
                               Row(
                                 children: [
                                   Text(
@@ -1216,39 +1108,6 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                   ),
                                 ],
                               ),
-                              // TextButton(
-                              //     style: TextButton.styleFrom(
-                              //         padding: EdgeInsets.zero,
-                              //         minimumSize: Size(50, 30),
-                              //         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              //         alignment: Alignment.centerLeft),
-                              //     onPressed: accesslist.contains('canceltrans') == true
-                              //         ? () async {
-                              //             await showDialog(
-                              //                 context: context,
-                              //                 builder: (_) => DialogClassCancelorder(
-                              //                     fromsaved: widget.fromsaved,
-                              //                     outletinfo: widget.outletinfo,
-                              //                     outletcd: widget.pscd!,
-                              //                     trno: x.first.transno!)).then((_) {
-                              //               setState(() {});
-                              //             });
-                              //           }
-                              //         : () {
-                              //             Fluttertoast.showToast(
-                              //                 msg: "Tidak Punya Akses Cancel Order",
-                              //                 toastLength: Toast.LENGTH_LONG,
-                              //                 gravity: ToastGravity.CENTER,
-                              //                 timeInSecForIosWeb: 1,
-                              //                 backgroundColor:
-                              //                     Color.fromARGB(255, 11, 12, 14),
-                              //                 textColor: Colors.white,
-                              //                 fontSize: 10.0);
-                              //           },
-                              //     child: Text(
-                              //       'Batalkan transaksi',
-                              //       style: TextStyle(fontSize: 10),
-                              //     ))
                             ],
                           ),
                         )),

@@ -36,12 +36,14 @@ class MenuMain extends StatefulWidget {
   final StringCallback callback;
   late Outlet? outletinfo;
   late final String pscd;
+  final Function setter;
 
   MenuMain(
       {Key? key,
       required this.outletinfo,
       required this.callback,
-      required this.pscd})
+      required this.pscd,
+      required this.setter})
       : super(key: key);
 
   @override
@@ -55,9 +57,27 @@ class _MenuMainState extends State<MenuMain> {
   // Format the date as "yyyy-MM-dd" (e.g., 2023-07-01)
   String? formattedDate;
   String? datetime;
+  bool? open = false;
 
   deleteDatabase() async {
     print('oke');
+  }
+
+  checkOpenCashier() async {
+    await ClassApi.checkOpen_cashier(formattedDate!, usercd, dbname)
+        .then((value) {
+      print(value);
+      if (value.isNotEmpty) {
+        if (value.last.type == 'OPEN') {
+          open = true;
+        } else {
+          open = false;
+        }
+      } else {
+        open = false;
+      }
+    });
+    setState(() {});
   }
 
   void showAttendanceDialog(BuildContext context) async {
@@ -115,6 +135,7 @@ class _MenuMainState extends State<MenuMain> {
     formattedDate = DateFormat('yyyy-MM-dd').format(now);
     datetime = DateFormat('HH:mm:ss').format(now);
     checkTrno();
+    checkOpenCashier();
   }
 
   checkTrno() async {
@@ -125,13 +146,77 @@ class _MenuMainState extends State<MenuMain> {
     print(trno);
   }
 
+  void _showModalAmountDialog(BuildContext context) {
+    TextEditingController _amountController = TextEditingController();
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(open == false ? 'Open Kasir' : 'Close Kasir'),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Text(open == false ? 'Masukan modal' : 'Setor modal'),
+                TextFormField(
+                  controller: _amountController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      labelText:
+                          open == false ? 'Masukan modal' : 'Setor modal'),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              TextButton(
+                child: Text('Submit'),
+                onPressed: () async {
+                  // Process the entered amount here
+                  if (_amountController.text.isNotEmpty) {
+                    double enteredAmount = double.parse(_amountController.text);
+                    if (open == false) {
+                      await ClassApi.insertOpenCashier(
+                          OpenCashier(
+                              type: 'OPEN',
+                              trdt: formattedDate,
+                              amount: enteredAmount,
+                              usercd: usercd),
+                          dbname);
+                      print('Entered Amount: $enteredAmount');
+                    } else {
+                      await ClassApi.insertOpenCashier(
+                          OpenCashier(
+                              type: 'CLOSE',
+                              trdt: formattedDate,
+                              amount: enteredAmount,
+                              usercd: usercd),
+                          dbname);
+                      print('Entered Amount: $enteredAmount');
+                    }
+                  }
+                  setState(() {});
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (
       context,
       BoxConstraints constraints,
     ) {
-      if (constraints.maxWidth <= 480) {
+      if (constraints.maxWidth <= 800) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.4,
           child: ListView(
@@ -150,18 +235,44 @@ class _MenuMainState extends State<MenuMain> {
                   setState(() {
                     selected = !selected;
                   });
-                  var x = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClassRetailMainMobile(
-                              fromsaved: false,
-                              trno: trno,
-                              qty: 0,
-                              pscd: widget.pscd.toString(),
-                              outletinfo: widget.outletinfo!,
-                            )),
-                  );
-                
+                  if (role == 'Owner') {
+                    var x = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ClassRetailMainMobile(
+                                fromsaved: false,
+                                trno: trno,
+                                qty: 0,
+                                pscd: widget.pscd.toString(),
+                                outletinfo: widget.outletinfo!,
+                              )),
+                    );
+                  } else {
+                    await checkOpenCashier();
+                    widget.setter();
+                    if (open == true) {
+                      var x = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ClassRetailMainMobile(
+                                  fromsaved: false,
+                                  trno: trno,
+                                  qty: 0,
+                                  pscd: widget.pscd.toString(),
+                                  outletinfo: widget.outletinfo!,
+                                )),
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Open cashier lebih dulu",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  }
                 },
                 name: 'Transaksi ',
               ),
@@ -188,7 +299,7 @@ class _MenuMainState extends State<MenuMain> {
                                   )),
                         );
                         // callbackTitle(result);
-                          await checkTrno();
+                        await checkTrno();
                         AppsMobile.of(context)!.string = result;
                         print('ini result : $result');
                       }
@@ -203,6 +314,39 @@ class _MenuMainState extends State<MenuMain> {
                             fontSize: 16.0);
                       },
                 name: 'Outlet',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                splash: selected,
+                iconasset: 'assets/cashier-machine.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () async {
+                  if (open == false) {
+                    var x = _showModalAmountDialog(context);
+                    await checkOpenCashier();
+                    widget.setter();
+                    setState(() {});
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Sudah open cashier",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+
+                  selected = !selected;
+                  await checkOpenCashier();
+                  widget.setter();
+                  setState(() {});
+                },
+                name: 'Kasir',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -359,18 +503,36 @@ class _MenuMainState extends State<MenuMain> {
                 iconasset: 'assets/cart1.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClassRetailMainMobile(
-                              fromsaved: false,
-                              trno: trno,
-                              qty: 0,
-                              pscd: widget.pscd.toString(),
-                              outletinfo: widget.outletinfo!,
-                            )),
-                  );
+                onpressed: () async {
+                  if (role == 'Owner') {
+                    var x = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ClassRetailMainMobile(
+                                fromsaved: false,
+                                trno: trno,
+                                qty: 0,
+                                pscd: widget.pscd.toString(),
+                                outletinfo: widget.outletinfo!,
+                              )),
+                    );
+                  } else {
+                    await checkOpenCashier();
+                    widget.setter();
+                    if (open == true) {
+                      var x = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ClassRetailMainMobile(
+                                  fromsaved: false,
+                                  trno: trno,
+                                  qty: 0,
+                                  pscd: widget.pscd.toString(),
+                                  outletinfo: widget.outletinfo!,
+                                )),
+                      );
+                    }
+                  }
                 },
                 name: 'Transaksi ',
               ),
@@ -393,12 +555,29 @@ class _MenuMainState extends State<MenuMain> {
                   );
                   setState(() {});
                   // callbackTitle(result);
-                    await checkTrno();
+                  await checkTrno();
                   AppsMobile.of(context)!.string = result;
 
                   print(result);
                 },
                 name: 'Outlet',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                splash: selected,
+                iconasset: 'assets/cashier-machine.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () async {
+                  _showModalAmountDialog(context);
+                  selected = !selected;
+                  await checkOpenCashier();
+                  setState(() {});
+                },
+                name: 'Kasir',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -437,7 +616,18 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () {
-                  showAttendanceDialog(context);
+                  if (open == false) {
+                    _showModalAmountDialog(context);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Sudah open cashier",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
                 },
                 name: 'Absen',
               ),

@@ -29,15 +29,17 @@ class PrintSmall {
     // Uint8List imageBytesFromAsset = bytesAsset.buffer
     //     .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
 
-    // ///image from Network
-    // var response = await http.get(Uri.parse(
-    //     "https://raw.githubusercontent.com/kakzaki/blue_thermal_printer/master/example/assets/images/yourlogo.png"));
-    // Uint8List bytesNetwork = response.bodyBytes;
-    // Uint8List imageBytesFromNetwork = bytesNetwork.buffer
-    //     .asUint8List(bytesNetwork.offsetInBytes, bytesNetwork.lengthInBytes);
+    ///image from Network
+    var logo = 'http://digims.online:3000/Logo%20Rev%201-01.png';
+    var response = await http.get(Uri.parse(logo));
+    Uint8List bytesNetwork = response.bodyBytes;
+    Uint8List imageBytesFromNetwork = bytesNetwork.buffer
+        .asUint8List(bytesNetwork.offsetInBytes, bytesNetwork.lengthInBytes);
 
     bluetooth.isConnected.then((isConnected) {
       if (isConnected == true) {
+        bluetooth.printNewLine();
+        bluetooth.printImageBytes(imageBytesFromNetwork);
         bluetooth.printNewLine();
         bluetooth.printCustom(
             outletname, Size.boldMedium.val, Align.center.val);
@@ -50,10 +52,15 @@ class PrintSmall {
         List.generate(
             detail.length,
             (index) => bluetooth.printCustom(
-                '${detail[index].itemdesc!.padRight(15)}\n' +
-                    '${detail[index].qty.toString().padLeft(3)} X ' +
-                    '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
-                        '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}',
+                detail[index].typ != 'condiment'
+                    ? '${detail[index].condimenttype == 'menuchoice' ? detail[index].itemdesc!.padRight(15) : detail[index].itemdesc!.padRight(15)}\n' +
+                        '${detail[index].qty.toString().padLeft(3)} X ' +
+                        '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
+                            '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}'
+                    : '*** ${detail[index].itemdesc!.padRight(15)} \n' +
+                        '${detail[index].qty.toString().padLeft(3)} X ' +
+                        '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
+                            '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}',
                 Size.bold.val,
                 Align.left.val));
         bluetooth.printNewLine();
@@ -91,9 +98,8 @@ class PrintSmall {
         bluetooth.printCustom(
             '-------------------------------', Size.bold.val, Align.left.val);
         bluetooth.printNewLine();
-              bluetooth.printCustom(
-            'AOVI POS', Size.medium.val, Align.center.val);
-             bluetooth.printNewLine();
+        bluetooth.printCustom('AOVI POS', Size.medium.val, Align.center.val);
+        bluetooth.printNewLine();
         bluetooth
             .paperCut(); //some printer not supported (sometime making image not centered)
         //bluetooth.drawerPin2(); // or you can use bluetooth.drawerPin5();

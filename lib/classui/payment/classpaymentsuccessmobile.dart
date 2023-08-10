@@ -71,7 +71,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   String? statustransaction = '';
   final bool pending = true;
   final TextEditingController _telp =
-      TextEditingController(text: '82221769478');
+      TextEditingController();
   final TextEditingController _email = TextEditingController();
   List<String> string = [];
   List<ItemMail> itememail = [];
@@ -432,6 +432,7 @@ ${payment.reduce((value, element) => value + element)}
                                                 summarybill!,
                                                 data,
                                                 widget.outletinfo!.outletname!,
+                                                widget.guestname!,
                                                 header,
                                                 footer,
                                                 logourl,

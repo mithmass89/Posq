@@ -3765,150 +3765,438 @@ class _DialogClassSimpanTabState extends State<DialogClassSimpanTab> {
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
-      return AlertDialog(
-        content: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: TextFieldTab1(
-                    label: 'Guest Name',
-                    controller: guestname,
-                    onChanged: (String value) {},
-                    typekeyboard: TextInputType.text,
+      return SingleChildScrollView(
+        child: AlertDialog(
+          content: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: TextFieldTab1(
+                      label: 'Guest Name',
+                      controller: guestname,
+                      onChanged: (String value) {},
+                      typekeyboard: TextInputType.text,
+                    ),
                   ),
-                ),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    isExpanded: true,
-                    hint: Row(
-                      children: [
-                        Icon(
-                          Icons.list,
-                          size: 16,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                          child: Text(
-                            selectedValue == null
-                                ? 'Table No.'
-                                : selectedValue!,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      isExpanded: true,
+                      hint: Row(
+                        children: [
+                          Icon(
+                            Icons.list,
+                            size: 16,
+                            color: Colors.white,
                           ),
-                        ),
-                      ],
-                    ),
-                    items: items
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Expanded(
+                            child: Text(
+                              selectedValue == null
+                                  ? 'Table No.'
+                                  : selectedValue!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                            ))
-                        .toList(),
-                    value: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value as String;
-                      });
-                    },
-                    buttonStyleData: ButtonStyleData(
-                      height: 50,
-                      width: 160,
-                      padding: const EdgeInsets.only(left: 14, right: 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: Colors.black26,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      items: items
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value as String;
+                        });
+                      },
+                      buttonStyleData: ButtonStyleData(
+                        height: 50,
+                        width: 160,
+                        padding: const EdgeInsets.only(left: 14, right: 14),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: Colors.black26,
+                          ),
+                          color: Colors.orange,
                         ),
-                        color: Colors.orange,
+                        elevation: 2,
                       ),
-                      elevation: 2,
-                    ),
-                    iconStyleData: const IconStyleData(
-                      icon: Icon(
-                        Icons.arrow_forward_ios_outlined,
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(
+                          Icons.arrow_forward_ios_outlined,
+                        ),
+                        iconSize: 14,
+                        iconEnabledColor: Colors.yellow,
+                        iconDisabledColor: Colors.white,
                       ),
-                      iconSize: 14,
-                      iconEnabledColor: Colors.yellow,
-                      iconDisabledColor: Colors.white,
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                      maxHeight: 200,
-                      width: 200,
-                      padding: null,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: Colors.redAccent,
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 200,
+                        width: 200,
+                        padding: null,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          color: Colors.redAccent,
+                        ),
+                        elevation: 8,
+                        offset: const Offset(-20, 0),
+                        scrollbarTheme: ScrollbarThemeData(
+                          radius: const Radius.circular(40),
+                          thickness: MaterialStateProperty.all<double>(6),
+                          thumbVisibility:
+                              MaterialStateProperty.all<bool>(true),
+                        ),
                       ),
-                      elevation: 8,
-                      offset: const Offset(-20, 0),
-                      scrollbarTheme: ScrollbarThemeData(
-                        radius: const Radius.circular(40),
-                        thickness: MaterialStateProperty.all<double>(6),
-                        thumbVisibility: MaterialStateProperty.all<bool>(true),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                        padding: EdgeInsets.only(left: 14, right: 14),
                       ),
-                    ),
-                    menuItemStyleData: const MenuItemStyleData(
-                      height: 40,
-                      padding: EdgeInsets.only(left: 14, right: 14),
                     ),
                   ),
-                ),
-              ],
-            )),
-        title: Text('Simpan Sebagai '),
-        actions: <Widget>[
-          TextButton(
-              onPressed: () async {
-                print(selectedValue);
-                if (selectedValue != null) {
-                  await updateTablestrno(selectedValue!);
-                  await ClassApi.updateTables_use(
-                      dbname, widget.trno, selectedValue!);
-                }
-                await updateGuest(
-                    guestname.text.isEmpty ? 'No Guest' : guestname.text);
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.remove('savecostmrs');
-                if (widget.fromsaved == false) {
-                  await updateTrno();
-                } else {
-                  await checkTrno();
-                }
+                ],
+              )),
+          title: Text('Simpan Sebagai '),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () async {
+                  print(selectedValue);
+                  if (selectedValue != null) {
+                    await updateTablestrno(selectedValue!);
+                    await ClassApi.updateTables_use(
+                        dbname, widget.trno, selectedValue!);
+                  }
+                  await updateGuest(
+                      guestname.text.isEmpty ? 'No Guest' : guestname.text);
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('savecostmrs');
+                  if (widget.fromsaved == false) {
+                    await updateTrno();
+                  } else {
+                    await checkTrno();
+                  }
 
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (context) => ClassRetailMainMobile(
-                              fromsaved: widget.fromsaved,
-                              pscd: widget.pscd,
-                              trno: trno,
-                              outletinfo: widget.outletinfo,
-                              qty: 0,
-                            )),
-                    (Route<dynamic> route) => false);
-              },
-              child: Text('OK!'))
-        ],
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => ClassRetailMainMobile(
+                                fromsaved: widget.fromsaved,
+                                pscd: widget.pscd,
+                                trno: trno,
+                                outletinfo: widget.outletinfo,
+                                qty: 0,
+                              )),
+                      (Route<dynamic> route) => false);
+                },
+                child: Text('OK!'))
+          ],
+        ),
       );
     });
+  }
+}
+
+class DialogClassGuest extends StatefulWidget {
+  final String trno;
+  final String pscd;
+  final Outlet outletinfo;
+  final bool? fromsaved;
+
+  DialogClassGuest({
+    Key? key,
+    required this.trno,
+    required this.pscd,
+    required this.outletinfo,
+    this.fromsaved,
+  }) : super(key: key);
+
+  @override
+  State<DialogClassGuest> createState() => _DialogClassGuestTabState();
+}
+
+class _DialogClassGuestTabState extends State<DialogClassGuest> {
+  TextEditingController guestname = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var formattedDate;
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  String trno = '';
+  List<String> table = [];
+  List<String> items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    formattedDate = formatter.format(now);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return SingleChildScrollView(
+        child: AlertDialog(
+          content: Form(
+              key: _formKey,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: TextFieldTab1(
+                  label: 'Guest Name',
+                  controller: guestname,
+                  onChanged: (String value) {},
+                  typekeyboard: TextInputType.text,
+                ),
+              )),
+          title: Text('Isi nama tamu '),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('savecostmrs');
+                  Navigator.of(context).pop(guestname.text);
+                },
+                child: Text('OK!'))
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class DialogForm extends StatefulWidget {
+  final String trdt;
+
+  const DialogForm({Key? key, required this.trdt}) : super(key: key);
+  @override
+  _DialogFormState createState() => _DialogFormState();
+}
+
+class _DialogFormState extends State<DialogForm> {
+  final _formKey = GlobalKey<FormState>();
+  String _description = "";
+  String _amount = "";
+  List<TransaksiBO> databo = [];
+  int _randomNumber = 0;
+
+  void _generateRandomNumber() {
+    setState(() {
+      _randomNumber =
+          Random().nextInt(10000); // Menghasilkan angka acak dari 0 hingga 99
+    });
+  }
+
+  _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      // Lakukan tindakan setelah validasi
+      print("Deskripsi: $_description");
+      print("Jumlah: $_amount");
+      databo.add(TransaksiBO(
+          ctr: '',
+          subctr: '',
+          transno: _randomNumber.toString(),
+          product: '',
+          proddesc: '',
+          trdt: widget.trdt,
+          documentno: _description,
+          description: _description,
+          type_tr: '1030',
+          famount: num.parse(_amount),
+          lamount: num.parse(_amount),
+          note: '',
+          usercreate: usercd,
+          active: 1));
+      await ClassApi.insertAdujsmentStock(dbname, databo);
+
+      Navigator.pop(context); // Tutup dialog setelah selesai
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _generateRandomNumber();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Input Data Pengeluaran"),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  _description = value;
+                });
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Deskripsi tidak boleh kosong';
+                }
+                return null;
+              },
+              decoration: InputDecoration(labelText: 'Deskripsi'),
+            ),
+            TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  _amount = value;
+                });
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Jumlah tidak boleh kosong';
+                }
+                return null;
+              },
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Jumlah'),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Batal'),
+        ),
+        ElevatedButton(
+          onPressed: _submitForm,
+          child: Text('Simpan'),
+        ),
+      ],
+    );
+  }
+}
+
+class DialogFormTambahModal extends StatefulWidget {
+  final String trdt;
+
+  const DialogFormTambahModal({Key? key, required this.trdt}) : super(key: key);
+  @override
+  _DialogFormTambahModalState createState() => _DialogFormTambahModalState();
+}
+
+class _DialogFormTambahModalState extends State<DialogFormTambahModal> {
+  final _formKey = GlobalKey<FormState>();
+  String _description = "";
+  String _amount = "";
+  List<TransaksiBO> databo = [];
+  int _randomNumber = 0;
+
+  void _generateRandomNumber() {
+    setState(() {
+      _randomNumber =
+          Random().nextInt(10000); // Menghasilkan angka acak dari 0 hingga 99
+    });
+  }
+
+  _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      // Lakukan tindakan setelah validasi
+      print("Deskripsi: $_description");
+      print("Jumlah: $_amount");
+      databo.add(TransaksiBO(
+          ctr: '',
+          subctr: '',
+          transno: _randomNumber.toString(),
+          product: '',
+          proddesc: '',
+          trdt: widget.trdt,
+          documentno: _description,
+          description: _description,
+          type_tr: '1040',
+          famount: num.parse(_amount),
+          lamount: num.parse(_amount),
+          note: '',
+          usercreate: usercd,
+          active: 1));
+      await ClassApi.insertAdujsmentStock(dbname, databo);
+
+      Navigator.pop(context); // Tutup dialog setelah selesai
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _generateRandomNumber();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Input Data Pengeluaran"),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  _description = value;
+                });
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Deskripsi tidak boleh kosong';
+                }
+                return null;
+              },
+              decoration: InputDecoration(labelText: 'Deskripsi'),
+            ),
+            TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  _amount = value;
+                });
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Jumlah tidak boleh kosong';
+                }
+                return null;
+              },
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Jumlah'),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Batal'),
+        ),
+        ElevatedButton(
+          onPressed: _submitForm,
+          child: Text('Simpan'),
+        ),
+      ],
+    );
   }
 }

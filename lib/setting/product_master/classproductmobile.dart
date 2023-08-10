@@ -190,7 +190,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.1,
+                                                  0.15,
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
@@ -199,7 +199,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                                                 data![index].pathimage!,
                                                 filterQuality:
                                                     FilterQuality.medium,
-                                                fit: BoxFit.fill,
+                                                fit: BoxFit.scaleDown,
                                                 loadingBuilder:
                                                     (BuildContext context,
                                                         Widget child,

@@ -291,7 +291,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Total tagihan',
+                            'Total tagihan ${widget.guestname}',
                             style: TextStyle(color: Colors.white),
                           ),
                         ],

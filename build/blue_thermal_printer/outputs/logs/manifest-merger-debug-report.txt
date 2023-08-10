@@ -1,0 +1,47 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:1:1-24:12
+INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:1:1-24:12
+INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:1:1-24:12
+	package
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:2:3-44
+		INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:1:11-69
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:3:5-80
+	android:name
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:3:22-78
+uses-permission#android.permission.BLUETOOTH
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:5:5-6:11
+	android:name
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:5:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:7:5-73
+	android:name
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:7:22-71
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:13:5-78
+	android:name
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:13:22-76
+uses-permission#android.permission.BLUETOOTH_SCAN
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:14:5-73
+	android:name
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:14:22-70
+uses-permission#android.permission.BLUETOOTH_ADVERTISE
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:18:5-78
+	android:name
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:18:22-75
+uses-permission#android.permission.BLUETOOTH_CONNECT
+ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:22:5-76
+	android:name
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml:22:22-73
+uses-sdk
+INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Mitro\AppData\Local\Pub\Cache\hosted\pub.dev\blue_thermal_printer-1.2.3\android\src\main\AndroidManifest.xml

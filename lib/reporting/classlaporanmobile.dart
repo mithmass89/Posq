@@ -62,6 +62,28 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
             },
             title: Text('Detail Item Terjual'),
           ),
+          ListTile(
+            subtitle:
+                Text('Rincian Detail Penjualan item / product dengan size cup'),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+            onTap: () {
+              Navigator.of(context).pop('Detail Item Terjual2');
+            },
+            title: Text('Detail Item Terjual(Cup size)'),
+          ),
+          Divider(),
+          ListTile(
+            subtitle: Text('Rincian Detail Condiment Terjual'),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+            onTap: () {
+              Navigator.of(context).pop('Detail condiment');
+            },
+            title: Text('Detail Condiment Terjual'),
+          ),
           Divider(),
           ListTile(
             subtitle: Text('melihat refund transaksi'),

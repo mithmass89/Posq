@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
+    "kind": "Directory"
+  },
+  "applicationId": "id.kakzaki.blue_thermal_printer",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "outputFile": "AndroidManifest.xml"
+    }
+  ]
+}

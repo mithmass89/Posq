@@ -284,6 +284,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_speed_dial",
+      "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_speed_dial-7.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_spinkit",
       "rootUri": "file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_spinkit-5.2.0",
       "packageUri": "lib/",
@@ -866,7 +872,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-08-04T17:33:08.021686Z",
+  "generated": "2023-08-10T07:11:02.627374Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }

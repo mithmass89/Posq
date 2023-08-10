@@ -63,6 +63,14 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
   bool _isloading = false;
   int qtyitemmaster = 1;
   bool hasupdate = false;
+  int trackstock = 0;
+
+  getDataItem() async {
+    await ClassApi.getItemList(pscd, dbname, widget.data.itemcode!)
+        .then((value) {
+      trackstock = value.first.trackstock!;
+    });
+  }
 
 //mengammbil data condiment dari item yg tersetup//
   Future<void> getDetailCondiment() async {
@@ -183,6 +191,7 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
   void initState() {
     super.initState();
     getDetailCondiment();
+    getDataItem();
     _controlllermainitem.text = qtyitemmaster.toString();
     // checkfromedit = checkItemExistFromEdit();
     formattedDate = formatter.format(now);
@@ -198,7 +207,7 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
           child: Container(
             color: Colors.grey[100],
             width: MediaQuery.of(context).size.width * 0.6,
-            child: Column(
+            child: ListView(
               children: [
                 Container(
                     height: MediaQuery.of(context).size.height * 0.5,
@@ -213,10 +222,12 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             subtitle: Container(
-                              height: MediaQuery.of(context).size.height * 0.55,
+                              height: MediaQuery.of(context).size.height *
+                                  x!.length /
+                                  10,
                               child: ListView.builder(
                                   controller: _controllerscroll,
-                                  itemCount: x!.length,
+                                  itemCount: x.length,
                                   itemBuilder: (context, index) {
                                     return SubCondimentV2Tab(
                                       hasUpdate: functionBool,
@@ -254,6 +265,9 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                             ),
                           );
                         })),
+                            SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
                 Row(
                   children: [
                     SizedBox(
@@ -394,119 +408,32 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                         width: MediaQuery.of(context).size.width * 0.3,
                         onpressed: _isloading == false
                             ? () async {
-                                if (poscondimentchoice.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Pilih condiment / topping",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor:
-                                          Color.fromARGB(255, 11, 12, 14),
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                } else {
-                                  await ClassApi.checkStock(
-                                          widget.data.itemcode!, dbname, '')
-                                      .then((value) async {
-                                    if (widget.data.trackstock! == 1
-                                        ? value.first.stock! - qtyitemmaster >=
-                                            0
-                                        : 9999999 - 1 >= -1) {
-                                      setState(() {
-                                        _isloading = true;
-                                      });
-                                      //jadi satu list //
-                                      for (var x in poscondimentchoice) {
-                                        summarycondiment.add(x);
-                                      }
-                                      for (var x in poscondimenttopping) {
-                                        summarycondiment.add(x);
-                                      }
-                                      if (summarycondiment.isNotEmpty) {
-                                        await ClassApi.insert_Poscondiment(
-                                            dbname, summarycondiment);
-                                      }
-
-                                      await ClassApi.insertPosDetail(
-                                          IafjrndtClass(
-                                            totalcost: qtyitemmaster *
-                                                widget.data.costamt!,
-                                            trdt: formattedDate,
-                                            pscd: widget.data.outletcode,
-                                            transno: widget.transno,
-                                            transno1: widget.transno,
-                                            split: 1,
-                                            itemcode: widget.data.itemcode,
-                                            itemdesc: widget.data.itemdesc,
-                                            description:
-                                                widget.data.description,
-                                            itemseq: widget.itemseq,
-                                            qty: qtyitemmaster,
-                                            discpct: 0,
-                                            discamt: 0,
-                                            ratecurcd: 'Rupiah',
-                                            ratebs1: 1,
-                                            ratebs2: 1,
-                                            rateamtitem: widget.data.slsamt,
-                                            ratecostamt: widget.data.costamt!,
-                                            rateamtservice:
-                                                widget.data.slsamt! *
-                                                    widget.data.svchgpct! /
-                                                    100,
-                                            rateamttax: widget.data.slsamt! *
-                                                widget.data.taxpct! /
-                                                100,
-                                            rateamttotal: widget.data.slsamt! +
-                                                (widget.data.slsamt! *
-                                                    widget.data.svchgpct! /
-                                                    100) +
-                                                (widget.data.slsamt! *
-                                                    widget.data.taxpct! /
-                                                    100),
-                                            revenueamt: qtyitemmaster *
-                                                widget.data.slsamt!,
-                                            taxamt: (widget.data.slsamt! *
-                                                    widget.data.taxpct! /
-                                                    100) *
-                                                qtyitemmaster,
-                                            serviceamt: (widget.data.slsamt! *
-                                                    widget.data.svchgpct! /
-                                                    100) *
-                                                qtyitemmaster,
-                                            totalaftdisc: qtyitemmaster *
-                                                    widget.data.slsamt! +
-                                                ((widget.data.slsamt! *
-                                                        widget.data.svchgpct! /
-                                                        100) *
-                                                    qtyitemmaster) +
-                                                ((widget.data.slsamt! *
-                                                        widget.data.taxpct! /
-                                                        100) *
-                                                    qtyitemmaster),
-                                            rebateamt: 0,
-                                            rvncoa: 'REVENUE',
-                                            taxcoa: 'TAX',
-                                            servicecoa: 'SERVICE',
-                                            costcoa: 'COST',
-                                            active: 1,
-                                            usercrt: usercd,
-                                            userupd: '',
-                                            userdel: '',
-                                            prnkitchen: 0,
-                                            prnkitchentm: now.hour.toString() +
-                                                ":" +
-                                                now.minute.toString() +
-                                                ":" +
-                                                now.second.toString(),
-                                            confirmed: '1',
-                                            taxpct: widget.data.taxpct,
-                                            svchgpct: widget.data.svchgpct,
-                                            createdt: now.toString(),
-                                            guestname: widget.guestname,
-                                          ),
-                                          pscd);
-                                      var result = IafjrndtClass(
-                                          totalcost: 1 * widget.data.costamt!,
+                                await ClassApi.checkStock(
+                                        widget.data.itemcode!, dbname, '')
+                                    .then((value) async {
+                                  if (widget.data.trackstock! == 1
+                                      ? value.first.stock! - qtyitemmaster >= 0
+                                      : 9999999 - 1 >= -1) {
+                                    setState(() {
+                                      _isloading = true;
+                                    });
+                                    //jadi satu list //
+                                    for (var x in poscondimentchoice) {
+                                      summarycondiment.add(x);
+                                    }
+                                    for (var x in poscondimenttopping) {
+                                      summarycondiment.add(x);
+                                    }
+                                    if (summarycondiment.isNotEmpty) {
+                                      await ClassApi.insert_Poscondiment(
+                                          dbname, summarycondiment);
+                                    } else {
+                                      print('Empty');
+                                    }
+                                    await ClassApi.insertPosDetail(
+                                        IafjrndtClass(
+                                          totalcost: qtyitemmaster *
+                                              widget.data.costamt!,
                                           trdt: formattedDate,
                                           pscd: widget.data.outletcode,
                                           transno: widget.transno,
@@ -515,20 +442,48 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                           itemcode: widget.data.itemcode,
                                           itemdesc: widget.data.itemdesc,
                                           description: widget.data.description,
-                                          qty: 1,
+                                          itemseq: widget.itemseq,
+                                          qty: qtyitemmaster,
                                           discpct: 0,
                                           discamt: 0,
                                           ratecurcd: 'Rupiah',
                                           ratebs1: 1,
                                           ratebs2: 1,
+                                          rateamtitem: widget.data.slsamt,
                                           ratecostamt: widget.data.costamt!,
-                                          rateamtservice: 0,
-                                          rateamttax: 0,
-                                          rateamttotal: widget.data.slsamt!,
-                                          revenueamt: 1 * widget.data.slsamt!,
-                                          taxamt: 0,
-                                          serviceamt: 0,
-                                          totalaftdisc: 1 * widget.data.slsamt!,
+                                          rateamtservice: widget.data.slsamt! *
+                                              widget.data.svchgpct! /
+                                              100,
+                                          rateamttax: widget.data.slsamt! *
+                                              widget.data.taxpct! /
+                                              100,
+                                          rateamttotal: widget.data.slsamt! +
+                                              (widget.data.slsamt! *
+                                                  widget.data.svchgpct! /
+                                                  100) +
+                                              (widget.data.slsamt! *
+                                                  widget.data.taxpct! /
+                                                  100),
+                                          revenueamt: qtyitemmaster *
+                                              widget.data.slsamt!,
+                                          taxamt: (widget.data.slsamt! *
+                                                  widget.data.taxpct! /
+                                                  100) *
+                                              qtyitemmaster,
+                                          serviceamt: (widget.data.slsamt! *
+                                                  widget.data.svchgpct! /
+                                                  100) *
+                                              qtyitemmaster,
+                                          totalaftdisc: qtyitemmaster *
+                                                  widget.data.slsamt! +
+                                              ((widget.data.slsamt! *
+                                                      widget.data.svchgpct! /
+                                                      100) *
+                                                  qtyitemmaster) +
+                                              ((widget.data.slsamt! *
+                                                      widget.data.taxpct! /
+                                                      100) *
+                                                  qtyitemmaster),
                                           rebateamt: 0,
                                           rvncoa: 'REVENUE',
                                           taxcoa: 'TAX',
@@ -548,25 +503,70 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                           taxpct: widget.data.taxpct,
                                           svchgpct: widget.data.svchgpct,
                                           createdt: now.toString(),
-                                          guestname: widget.guestname);
-                                      // ClassRetailMainMobile.of(context)!.string = result;
-                                      setState(() {
-                                        _isloading = false;
-                                      });
-                                      Navigator.of(context).pop(result);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: "Stok tidak sesuai",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.CENTER,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor:
-                                              Color.fromARGB(255, 11, 12, 14),
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    }
-                                  });
-                                }
+                                          guestname: widget.guestname,
+                                        ),
+                                        pscd);
+                                    var result = IafjrndtClass(
+                                        totalcost: 1 * widget.data.costamt!,
+                                        trdt: formattedDate,
+                                        pscd: widget.data.outletcode,
+                                        transno: widget.transno,
+                                        transno1: widget.transno,
+                                        split: 1,
+                                        itemcode: widget.data.itemcode,
+                                        itemdesc: widget.data.itemdesc,
+                                        description: widget.data.description,
+                                        qty: 1,
+                                        discpct: 0,
+                                        discamt: 0,
+                                        ratecurcd: 'Rupiah',
+                                        ratebs1: 1,
+                                        ratebs2: 1,
+                                        ratecostamt: widget.data.costamt!,
+                                        rateamtservice: 0,
+                                        rateamttax: 0,
+                                        rateamttotal: widget.data.slsamt!,
+                                        revenueamt: 1 * widget.data.slsamt!,
+                                        taxamt: 0,
+                                        serviceamt: 0,
+                                        totalaftdisc: 1 * widget.data.slsamt!,
+                                        rebateamt: 0,
+                                        rvncoa: 'REVENUE',
+                                        taxcoa: 'TAX',
+                                        servicecoa: 'SERVICE',
+                                        costcoa: 'COST',
+                                        active: 1,
+                                        usercrt: usercd,
+                                        userupd: '',
+                                        userdel: '',
+                                        prnkitchen: 0,
+                                        prnkitchentm: now.hour.toString() +
+                                            ":" +
+                                            now.minute.toString() +
+                                            ":" +
+                                            now.second.toString(),
+                                        confirmed: '1',
+                                        taxpct: widget.data.taxpct,
+                                        svchgpct: widget.data.svchgpct,
+                                        createdt: now.toString(),
+                                        guestname: widget.guestname);
+                                    // ClassRetailMainMobile.of(context)!.string = result;
+                                    setState(() {
+                                      _isloading = false;
+                                    });
+                                    Navigator.of(context).pop(result);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: "Stok tidak sesuai",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                });
                               }
                             : null,
                       )
@@ -582,7 +582,7 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                 await ClassApi.checkStock(
                                         widget.data.itemcode!, dbname, '')
                                     .then((value) async {
-                                  if (widget.data.trackstock! == 1
+                                  if (trackstock == 1
                                       ? value.first.stock! - qtyitemmaster >= 0
                                       : 9999999 - 1 >= -1) {
                                     setState(() {
@@ -618,67 +618,72 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
                                           dbname, summarycondiment);
                                     }
                                     var result = IafjrndtClass(
-                                        totalcost: widget.data.costamt! *
-                                            qtyitemmaster,
-                                        id: widget.iditem,
-                                        trdt: formattedDate,
-                                        pscd: widget.outletcd,
-                                        transno: widget.transno,
-                                        transno1: widget.transno,
-                                        split: 1,
-                                        itemcode: widget.data.itemcode,
-                                        itemdesc: widget.data.itemdesc,
-                                        description: widget.data.description,
-                                        qty: qtyitemmaster,
-                                        discpct: 0,
-                                        discamt: 0,
-                                        ratecurcd: 'Rupiah',
-                                        ratebs1: 1,
-                                        ratebs2: 1,
-                                        ratecostamt: widget.data.costamt!,
-                                        rateamtitem: widget.data.slsamt!,
-                                        rateamtservice: (widget.data.slsamt! /
-                                                qtyitemmaster) *
-                                            widget.data.svchgpct! /
-                                            100,
-                                        rateamttax: (widget.data.slsamt! /
-                                                qtyitemmaster) *
-                                            widget.data.taxpct! /
-                                            100,
-                                        rateamttotal:
-                                            widget.data.slsamt! / qtyitemmaster,
-                                        revenueamt:
-                                            qtyitemmaster * widget.data.slsamt!,
-                                        taxamt: (qtyitemmaster *
-                                                widget.data.slsamt!) *
-                                            widget.data.taxpct! *
-                                            100,
-                                        serviceamt: (qtyitemmaster *
-                                                widget.data.slsamt!) *
-                                            widget.data.svchgpct! *
-                                            100,
-                                        totalaftdisc:
-                                            qtyitemmaster * widget.data.slsamt!,
-                                        rebateamt: 0,
-                                        rvncoa: 'REVENUE',
-                                        taxcoa: 'TAX',
-                                        servicecoa: 'SERVICE',
-                                        costcoa: 'COST',
-                                        active: 1,
-                                        usercrt: usercd,
-                                        userupd: '',
-                                        userdel: '',
-                                        prnkitchen: 0,
-                                        prnkitchentm: now.hour.toString() +
-                                            ":" +
-                                            now.minute.toString() +
-                                            ":" +
-                                            now.second.toString(),
-                                        confirmed: '1',
-                                        taxpct: widget.data.taxpct,
-                                        svchgpct: widget.data.svchgpct,
-                                        createdt: now.toString(),
-                                        guestname: widget.guestname);
+                                      totalcost:
+                                          qtyitemmaster * widget.data.costamt!,
+                                      id: widget.iditem,
+                                      trdt: formattedDate,
+                                      pscd: widget.outletcd,
+                                      transno: widget.transno,
+                                      transno1: widget.transno,
+                                      split: 1,
+                                      itemcode: widget.data.itemcode,
+                                      itemdesc: widget.data.itemdesc,
+                                      description: widget.data.description,
+                                      qty: qtyitemmaster,
+                                      discpct: 0,
+                                      discamt: 0,
+                                      ratecurcd: 'Rupiah',
+                                      ratebs1: 1,
+                                      ratebs2: 1,
+                                      ratecostamt: widget.data.costamt!,
+                                      rateamtitem: widget.data.slsamt!,
+                                      rateamtservice: (widget.data.slsamt! /
+                                              qtyitemmaster) *
+                                          widget.data.svchgpct! /
+                                          100,
+                                      rateamttax: (widget.data.slsamt! /
+                                              qtyitemmaster) *
+                                          widget.data.taxpct! /
+                                          100,
+                                      rateamttotal:
+                                          widget.data.slsamt! / qtyitemmaster,
+                                      revenueamt:
+                                          qtyitemmaster * widget.data.slsamt!,
+                                      taxamt: (qtyitemmaster *
+                                              widget.data.slsamt!) *
+                                          widget.data.taxpct! *
+                                          100,
+                                      serviceamt: (qtyitemmaster *
+                                              widget.data.slsamt!) *
+                                          widget.data.svchgpct! *
+                                          100,
+                                      totalaftdisc:
+                                          qtyitemmaster * widget.data.slsamt!,
+                                      rebateamt: 0,
+                                      rvncoa: 'REVENUE',
+                                      taxcoa: 'TAX',
+                                      servicecoa: 'SERVICE',
+                                      costcoa: 'COST',
+                                      active: 1,
+                                      usercrt: usercd,
+                                      userupd: '',
+                                      userdel: '',
+                                      prnkitchen: 0,
+                                      prnkitchentm: now.hour.toString() +
+                                          ":" +
+                                          now.minute.toString() +
+                                          ":" +
+                                          now.second.toString(),
+                                      confirmed: '1',
+                                      taxpct: widget.data.taxpct,
+                                      svchgpct: widget.data.svchgpct,
+                                      createdt: now.toString(),
+                                      guestname: widget.guestname,
+                                      pricelist: [],
+                                      note: '',
+                                      tablesid: '',
+                                    );
+                                    print('ini result: $result');
                                     await ClassApi.updatePosDetail(
                                         result, dbname);
                                     setState(() {

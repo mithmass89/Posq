@@ -61,6 +61,14 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
   int qtyitemmaster = 1;
   bool hasupdate = false;
 
+
+  int trackstock=0;
+
+  getDataItem()async{
+    await ClassApi.getItemList(pscd, dbname, widget.data.itemcode!).then((value) {
+      trackstock = value.first.trackstock!;
+    });
+  }
 //mengammbil data condiment dari item yg tersetup//
   Future<void> getDetailCondiment() async {
     condiment =
@@ -151,6 +159,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
   void initState() {
     super.initState();
     getDetailCondiment();
+    getDataItem();
     _controlllermainitem.text = qtyitemmaster.toString();
     // checkfromedit = checkItemExistFromEdit();
     formattedDate = formatter.format(now);
@@ -512,7 +521,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                             await ClassApi.checkStock(
                                     widget.data.itemcode!, pscd, '')
                                 .then((value) async {
-                              if (widget.data.trackstock! == 1
+                              if (trackstock == 1
                                   ? value.first.stock! - qtyitemmaster >= 0
                                   : 9999999 - 1 >= -1) {
                                 print(9999999 - 1 >= -1);

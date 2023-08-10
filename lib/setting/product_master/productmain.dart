@@ -18,11 +18,11 @@ class _ProductmainState extends State<Productmain> {
       context,
       BoxConstraints constraints,
     ) {
-      if (constraints.maxWidth <= 480) {
+      if (constraints.maxWidth <= 800) {
         return Classproductmobile(
           pscd: widget.pscd,
         );
-      } else if (constraints.maxWidth >= 480) {
+      } else if (constraints.maxWidth >= 800) {
         return ClassproductTab(
           pscd: widget.pscd,
         );

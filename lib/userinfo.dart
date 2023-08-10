@@ -1,6 +1,7 @@
 import 'package:posq/model.dart';
 
 String usercd = '';
+String role='';
 String passcode = '';
 String pscd = '';
 String dbname = '';

@@ -107,10 +107,10 @@ class _ClassRetailProductTabsState extends State<ClassRetailProductTabs> {
               return GridView.builder(
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent:
-                          MediaQuery.of(context).size.width * 0.2,
-                      childAspectRatio: 3 / 3,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10),
+                          MediaQuery.of(context).size.width * 0.25,
+                      childAspectRatio: 4 / 3,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5),
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var _image = File(x[index].pathimage.toString());

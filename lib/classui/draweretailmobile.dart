@@ -3,6 +3,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classui/pengeluaran.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/login.dart';
 import 'package:posq/model.dart';
@@ -54,7 +55,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                     Container(
                       alignment: Alignment.topLeft,
                       height: MediaQuery.of(context).size.height * 0.04,
-                      width: MediaQuery.of(context).size.width * 0.6,
+                      width: MediaQuery.of(context).size.width * 0.45,
                       child: Text(
                         widget.outletname.toString(),
                         style: TextStyle(
@@ -208,6 +209,29 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                         pscd: pscd,
                         outletinfo: widget.outletinfo,
                       );
+                    }));
+                  }
+                : () {
+                    Fluttertoast.showToast(
+                        msg: "Tidak punya access laporan",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.wallet,
+            ),
+            title: const Text('Pengeluaran'),
+            onTap: accesslistuser.contains('laporan') == true
+                ? () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return PengeluaranUang();
                     }));
                   }
                 : () {

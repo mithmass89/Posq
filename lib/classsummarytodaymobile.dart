@@ -32,7 +32,7 @@ class _SummarytodayState extends State<Summarytoday> {
       context,
       BoxConstraints constraints,
     ) {
-      if (constraints.maxWidth <= 480) {
+      if (constraints.maxWidth <= 800) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.4,
           child: Column(

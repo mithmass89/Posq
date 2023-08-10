@@ -160,7 +160,7 @@ class _LoginState extends State<Login> {
         var sekarang = DateTime.parse(formattedCurrentTime!);
         Duration difference = expired.difference(sekarang);
         differenceInDays = difference.inDays;
-      print('difference : ${differenceInDays > 7}');
+        print('difference : ${differenceInDays > 7}');
         if (differenceInDays < 7) {
           aktif = 'aktif';
           Fluttertoast.showToast(
@@ -309,6 +309,7 @@ class _LoginState extends State<Login> {
                                       fontSize: 16.0);
                                 } else {
                                   usercd = value[0]['usercd'];
+                                  role = value[0]['level'];
                                   await ClassApi.checkUserFromOauth(
                                           email.text, 'profiler')
                                       .then((values) async {
@@ -316,6 +317,7 @@ class _LoginState extends State<Login> {
                                       print(values);
 
                                       setState(() {
+                                        role = values[0]['level'];
                                         usercd = values[0]['usercd'];
                                         imageurl = values[0]['urlpict'];
                                         emaillogin = email.text;
@@ -665,6 +667,7 @@ class _LoginState extends State<Login> {
                                         // usercd = value[0]['usercd'];
                                         setState(() {
                                           usercd = values[0]['usercd'];
+                                          role = values[0]['level'];
                                           imageurl = values[0]['urlpict'];
                                           emaillogin = email.text;
                                           subscribtion =
@@ -922,7 +925,7 @@ class _LoginState extends State<Login> {
             );
           } else if (constraints.maxWidth < 800 &&
               constraints.maxWidth >= 480) {
-                    return Container(
+            return Container(
               color: Colors.white,
               child: Column(children: [
                 SizedBox(
@@ -1034,6 +1037,7 @@ class _LoginState extends State<Login> {
                                   } else {
                                     usercd = value[0]['usercd'];
                                     corporatecode = value[0]['frenchisecode'];
+                                    role = value[0]['level'];
                                     await ClassApi.checkUserFromOauth(
                                             email.text, 'profiler')
                                         .then((values) async {
@@ -1047,6 +1051,7 @@ class _LoginState extends State<Login> {
                                         );
                                         // usercd = value[0]['usercd'];
                                         setState(() {
+                                          role = values[0]['level'];
                                           usercd = values[0]['usercd'];
                                           imageurl = values[0]['urlpict'];
                                           emaillogin = email.text;
@@ -1303,7 +1308,7 @@ class _LoginState extends State<Login> {
                     ))
               ]),
             );
-              }
+          }
           return Center(
             child: Text('Device Not Supported yet'),
           );

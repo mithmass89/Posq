@@ -429,6 +429,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                                             summarybill!,
                                             data,
                                             widget.outletinfo!.outletname!,
+                                            widget.guestname,
                                             header,
                                             footer,
                                             logourl,

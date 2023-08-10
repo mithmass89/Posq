@@ -16,6 +16,7 @@ class PrintSmallPayment {
       List<IafjrndtClass> summary,
       List<IafjrnhdClass> listpayment,
       String outletname,
+      String guestname,
       String header,
       String footer,
       String urllogo,
@@ -37,22 +38,26 @@ class PrintSmallPayment {
     //yg dipakai network//
     ///image from Network
     print("urllogo: $urllogo");
-    // var response = await http.get(Uri.parse(urllogo
-    //    /* "https://raw.githubusercontent.com/kakzaki/blue_thermal_printer/master/example/assets/images/yourlogo.png"*/));
-    //    print(response.bodyBytes);
-    // Uint8List bytesNetwork = response.bodyBytes;
-    // Uint8List imageBytesFromNetwork = bytesNetwork.buffer
-    //     .asUint8List(bytesNetwork.offsetInBytes, bytesNetwork.lengthInBytes);
+    var logo = 'http://digims.online:3000/Logo%20Rev%201-01.png';
+    var response = await http.get(Uri.parse(
+        logo /*"https://raw.githubusercontent.com/kakzaki/blue_thermal_printer/master/example/assets/images/yourlogo.png"*/));
+    print(response.bodyBytes);
+    Uint8List bytesNetwork = response.bodyBytes;
+    Uint8List imageBytesFromNetwork = bytesNetwork.buffer
+        .asUint8List(bytesNetwork.offsetInBytes, bytesNetwork.lengthInBytes);
 
     bluetooth.isConnected.then((isConnected) {
       if (isConnected == true) {
-        // bluetooth.printImageBytes(imageBytesFromNetwork);
+        bluetooth.printImageBytes(imageBytesFromNetwork);
         bluetooth.printNewLine();
-        bluetooth.printCustom(
-            outletname, Size.boldMedium.val, Align.center.val);
+        bluetooth.printCustom(outletname, Size.bold.val, Align.center.val);
         bluetooth.printCustom(header, Size.medium.val, Align.center.val);
         bluetooth.printCustom(
             outletinfo.alamat!, Size.medium.val, Align.center.val);
+        bluetooth.printNewLine();
+        bluetooth.printCustom(
+            "Nama : $guestname", Size.bold.val, Align.left.val);
+        bluetooth.printNewLine();
 
         bluetooth.printCustom(
             '-------------------------------', Size.bold.val, Align.left.val);
@@ -60,10 +65,15 @@ class PrintSmallPayment {
         List.generate(
             detail.length,
             (index) => bluetooth.printCustom(
-                '${detail[index].itemdesc!.padRight(15)}\n' +
-                    '${detail[index].qty.toString().padLeft(3)} X ' +
-                    '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
-                        '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}',
+                detail[index].typ != 'condiment'
+                    ? '${detail[index].condimenttype == 'menuchoice' ? detail[index].itemdesc!.padRight(15) : detail[index].itemdesc!.padRight(15)}\n' +
+                        '${detail[index].qty.toString().padLeft(3)} X ' +
+                        '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
+                            '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}'
+                    : '*** ${detail[index].itemdesc!.padRight(15)} \n' +
+                        '${detail[index].qty.toString().padLeft(3)} X ' +
+                        '${CurrencyFormatNo.convertToIdr(detail[index].rateamtitem, 0).toString().padRight(9)}'
+                            '${CurrencyFormat.convertToIdr(detail[index].totalaftdisc, 0).toString().padLeft(15)}',
                 Size.bold.val,
                 Align.left.val));
         bluetooth.printNewLine();
@@ -104,7 +114,7 @@ class PrintSmallPayment {
         List.generate(
             listpayment.length,
             (index) => bluetooth.printCustom(
-                '${listpayment[index].pymtmthd!.padRight(15)}\n' +
+                '${listpayment[index].trdesc!.padRight(15)} ' +
                     '${CurrencyFormatNo.convertToIdr(listpayment[index].totalamt, 0).toString().padRight(9)}',
                 Size.bold.val,
                 Align.left.val));

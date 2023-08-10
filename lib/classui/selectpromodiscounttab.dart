@@ -145,7 +145,7 @@ class _SelectPromoTabState extends State<SelectPromoTab> {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 200,
-                              childAspectRatio: 3 / 2,
+                              childAspectRatio: 3 / 3,
                               crossAxisSpacing: 20,
                               mainAxisSpacing: 20),
                       shrinkWrap: true,

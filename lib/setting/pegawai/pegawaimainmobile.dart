@@ -43,14 +43,16 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
     // print(accesslist);
     for (var x in accesslist) {
       for (var z in outlet) {
+        print('ini Z : $z');
         accesspegawai.add(AccessPegawai(
             usercode: email.text,
             rolecode: x['jobcd'],
             roledesc: x['jobdesc'],
             accesscode: x['accesscode'],
             accessdesc: x['accessdesc'],
-            outletcd: z['outletcode'],
+            outletcd: z,
             subscription: subscribtion));
+        print(accesspegawai);
       }
     }
   }
@@ -148,6 +150,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
               SizedBox(
                 height: 10,
               ),
+             
               TextFieldMobileButton(
                   hint: 'Pilih Role',
                   controller: jabatan,
@@ -163,8 +166,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                     jabatan.text = selectedRoles![0].joblevel;
                     await getAccessRole(selectedOutlet!);
                     setState(() {});
-                  }),
-              TextFieldMobileButton(
+                  }), TextFieldMobileButton(
                   hint: 'Outlet',
                   controller: outlet,
                   typekeyboard: TextInputType.none,
@@ -177,13 +179,12 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                           builder: (BuildContext context) {
                             return DialogOutletStaff();
                           });
-
+                      print(selectedOutlet);
                       outlet.text = selectedOutlet![0]!;
-                      if (selectedOutlet![0]['outletcode'] == 'All') {
+                      if (selectedOutlet![0] == 'All') {
                         selectedOutlet!.removeAt(0);
                       }
-                      print(
-                          'ini outlet terpilih ${selectedOutlet![0]['outletdesc']}');
+                      print('ini outlet terpilih ${selectedOutlet![0]}');
                       // print(selectedOutlet);
                       for (var x in selectedOutlet!) {
                         for (var z in accesspegawai) {
@@ -258,8 +259,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                       await ClassApi.Update7DayActive(
                           expireddate!, email.text, referrals, telp);
                       for (var x in selectedOutlet!) {
-                        await ClassApi.insertAccessOutlet(
-                            x, email.text);
+                        await ClassApi.insertAccessOutlet(x, email.text);
                       }
 
                       await ClassApi.insertAccessUser(accesspegawai);

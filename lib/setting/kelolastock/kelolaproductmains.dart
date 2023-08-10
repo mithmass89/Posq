@@ -16,7 +16,7 @@ class _KelolaMainsStockState extends State<KelolaMainsStock> {
       context,
       BoxConstraints constraints,
     ) {
-      if (constraints.maxWidth <= 480) {
+      if (constraints.maxWidth <= 800) {
         return KelolaProductMainMobile();
       } else if (constraints.maxWidth >= 820) {
         return KelolaProductMainTablet();
