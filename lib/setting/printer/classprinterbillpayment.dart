@@ -20,7 +20,8 @@ class PrintSmallPayment {
       String header,
       String footer,
       String urllogo,
-      Outlet outletinfo) async {
+      Outlet outletinfo,
+      ) async {
     var formatter = NumberFormat('#,##,000');
     //image max 300px X 300px
 

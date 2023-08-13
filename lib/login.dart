@@ -160,8 +160,8 @@ class _LoginState extends State<Login> {
         var sekarang = DateTime.parse(formattedCurrentTime!);
         Duration difference = expired.difference(sekarang);
         differenceInDays = difference.inDays;
-        print('difference : ${differenceInDays > 7}');
-        if (differenceInDays < 7) {
+        print('difference : ${differenceInDays < 7}');
+        if (differenceInDays < 7 && differenceInDays>=0) {
           aktif = 'aktif';
           Fluttertoast.showToast(
               msg: "Sisa masa aktif $differenceInDays",
@@ -172,7 +172,6 @@ class _LoginState extends State<Login> {
               textColor: Colors.white,
               fontSize: 16.0);
           print('masih aktif seharusnya  ');
-
           return aktif;
         } else if (differenceInDays <= 0) {
           aktif = 'tidak aktif';

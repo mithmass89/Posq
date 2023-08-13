@@ -1,7 +1,7 @@
 import 'package:posq/model.dart';
 
 String usercd = '';
-String role='';
+String role = '';
 String passcode = '';
 String pscd = '';
 String dbname = '';
@@ -30,4 +30,5 @@ String corporatecode = '';
 String telp = '';
 String referrals = '';
 String statusabsen = '';
-String midkey='';
+String midkey = '';
+bool opencashier = false;

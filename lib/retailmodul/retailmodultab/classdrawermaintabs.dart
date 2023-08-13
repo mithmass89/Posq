@@ -3,6 +3,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classui/pengeluaran.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/login.dart';
 import 'package:posq/model.dart';
@@ -62,7 +63,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                         children: [
                           Text(
                             widget.outletname.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                         ],
                       ),
@@ -98,21 +99,11 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                     Column(
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.17,
+                          width: MediaQuery.of(context).size.width * 0.1,
                           child: Text(
                             usercd,
                             style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.17,
-                          // child: Text(
-                          //   'SHIFT 1 ',
-                          //   style: TextStyle(color: Colors.white, fontSize: 12),
-                          // ),
                         ),
                       ],
                     )
@@ -122,7 +113,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.38,
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
@@ -209,6 +200,29 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
                             return ClassSummaryReportTab(user: usercd);
+                          }));
+                        }
+                      : () {
+                          Fluttertoast.showToast(
+                              msg: "Tidak punya access laporan",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.wallet,
+                  ),
+                  title: const Text('Pengeluaran'),
+                  onTap: accesslistuser.contains('laporan') == true
+                      ? () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return PengeluaranUang();
                           }));
                         }
                       : () {

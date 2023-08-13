@@ -36,16 +36,14 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
   @override
   void initState() {
     super.initState();
+    data();
     formattedDate = formatter.format(now);
     getTrnoBo();
-     data();
   }
 
   data() async {
     await ClassApi.getItemList(pscd, dbname, search.text).then((value) {
       for (var x in value) {
-        qty.add(0);
-        _controller.add(TextEditingController(text: '0'));
         datatrans.add(TransaksiBO(
             trdt: formattedDate,
             transno: trno,
@@ -63,6 +61,8 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
             note: 'Adjusment Stock PreBo',
             active: 1,
             usercreate: usercd));
+        qty.add(0);
+        _controller.add(TextEditingController(text: '0'));
       }
     });
   }
@@ -93,65 +93,32 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
                 future: ClassApi.getItemList(pscd, dbname, search.text),
                 builder: (context, AsyncSnapshot<List<Item>> snapshot) {
                   List<Item>? data = snapshot.data;
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: data!.length,
-                        itemBuilder: (context, index) {
-                          for (var x in data) {}
-
-                          return Container(
-                            child: ListTile(
-                              dense: true,
-                              title: Text(data[index].itemdesc!),
-                              subtitle:
-                                  Text('Stock Saat Ini : ${data[index].stock}'),
-                              trailing: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.06,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.05,
-                                      child: IconButton(
-                                          iconSize: 20,
-                                          onPressed: () {
-                                            qty[index]++;
-                                            _controller[index].text =
-                                                qty[index].toString();
-                                            datatrans[index].qty = qty[index];
-                                            datatrans[index].lamount =
-                                                qty[index] *
-                                                    datatrans[index].lamount!;
-                                            datatrans[index].famount =
-                                                qty[index] *
-                                                    datatrans[index].famount!;
-                                            print(datatrans.where((element) =>
-                                                element.product ==
-                                                data[index].itemcode));
-                                            setState(() {});
-                                          },
-                                          icon: Icon(Icons.add)),
-                                    ),
-                                    Container(
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                              0.09,
-                                      child: TextFieldMobile3(
-                                        controller: _controller[index],
-                                        typekeyboard: TextInputType.number,
-                                        onChanged: (value) {
-                                          // datatrans = [];
-                                          if (int.parse(value) <= 0) {
-                                            _controller[index].text =
-                                                0.toString();
-                                            setState(() {});
-                                          }
-                                          qty[index] = int.parse(value);
+                  return ListView.builder(
+                      itemCount: data!.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          child: ListTile(
+                            dense: true,
+                            title: Text(data[index].itemdesc!),
+                            subtitle:
+                                Text('Stock Saat Ini : ${data[index].stock}'),
+                            trailing: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.06,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    child: IconButton(
+                                        iconSize: 20,
+                                        onPressed: () {
+                                          qty[index]++;
+                                          _controller[index].text =
+                                              qty[index].toString();
                                           datatrans[index].qty = qty[index];
                                           datatrans[index].lamount =
                                               qty[index] *
@@ -164,44 +131,67 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
                                               data[index].itemcode));
                                           setState(() {});
                                         },
-                                      ),
+                                        icon: Icon(Icons.add)),
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.height *
+                                        0.09,
+                                    child: TextFieldMobile3(
+                                      controller: _controller[index],
+                                      typekeyboard: TextInputType.number,
+                                      onChanged: (value) {
+                                        // datatrans = [];
+                                        if (int.parse(value) <= 0) {
+                                          _controller[index].text =
+                                              0.toString();
+                                          setState(() {});
+                                        }
+                                        qty[index] = int.parse(value);
+                                        datatrans[index].qty = qty[index];
+                                        datatrans[index].lamount = qty[index] *
+                                            datatrans[index].lamount!;
+                                        datatrans[index].famount = qty[index] *
+                                            datatrans[index].famount!;
+                                        print(datatrans.where((element) =>
+                                            element.product ==
+                                            data[index].itemcode));
+                                        setState(() {});
+                                      },
                                     ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.06,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.05,
-                                      child: IconButton(
-                                          iconSize: 20,
-                                          onPressed: () {
-                                            qty[index] <= 0
-                                                ? qty[index]
-                                                : qty[index]--;
-                                            _controller[index].text =
-                                                qty[index].toString();
-                                            datatrans[index].qty = qty[index];
-                                            datatrans[index].lamount =
-                                                qty[index] *
-                                                    datatrans[index].lamount!;
-                                            datatrans[index].famount =
-                                                qty[index] *
-                                                    datatrans[index].famount!;
-                                            print(datatrans.where((element) =>
-                                                element.product ==
-                                                data[index].itemcode));
-                                            setState(() {});
-                                          },
-                                          icon: Icon(Icons.remove)),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.06,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    child: IconButton(
+                                        iconSize: 20,
+                                        onPressed: () {
+                                          qty[index] <= 0
+                                              ? qty[index]
+                                              : qty[index]--;
+                                          _controller[index].text =
+                                              qty[index].toString();
+                                          datatrans[index].qty = qty[index];
+                                          datatrans[index].lamount =
+                                              qty[index] *
+                                                  datatrans[index].lamount!;
+                                          datatrans[index].famount =
+                                              qty[index] *
+                                                  datatrans[index].famount!;
+                                          print(datatrans.where((element) =>
+                                              element.product ==
+                                              data[index].itemcode));
+                                          setState(() {});
+                                        },
+                                        icon: Icon(Icons.remove)),
+                                  )
+                                ],
                               ),
                             ),
-                          );
-                        });
-                  }
-                  return Container();
+                          ),
+                        );
+                      });
                 }),
           ),
           ButtonNoIcon(
@@ -212,7 +202,7 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
               width: MediaQuery.of(context).size.width * 0.94,
               onpressed: () async {
                 EasyLoading.show(status: 'Proses data...');
-              datatrans.removeWhere((item) => item.qty == 0);
+                datatrans.removeWhere((item) => item.qty == 0);
                 await ClassApi.insertAdujsmentStock(dbname, datatrans);
                 EasyLoading.dismiss();
                 Navigator.of(context).pop();

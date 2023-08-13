@@ -17,7 +17,9 @@ import 'package:posq/reporting/detailitemterjaulmobile.dart';
 import 'package:posq/reporting/marginitemcost.dart';
 import 'package:posq/reporting/refundtransaksi.dart';
 import 'package:posq/setting/printer/cashiersummary.dart';
+import 'package:posq/setting/printer/classprinterBluetooth.dart';
 import 'package:posq/setting/printer/classprinterbillpayment.dart';
+import 'package:posq/setting/printer/classprintpengeluarang.dart';
 import 'package:posq/userinfo.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -46,6 +48,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   String? todate;
   String? fromdatenamed;
   String? todatenamed;
+  String? today;
   final TextEditingController _controllerdate = TextEditingController();
   final TextEditingController _controllerpilihan =
       TextEditingController(text: "Pilih tipe report");
@@ -68,6 +71,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   List<dynamic> cashflow = [];
   List<dynamic> otherpayment = [];
   List<dynamic> condiments = [];
+  List<dynamic> itemsold = [];
+  List<dynamic> ringkasanpenjualan = [];
+  List<dynamic> detailpengeluaran = [];
   List<CombineDataRingkasan> data = [];
   var wsUrl;
   WebSocketChannel? channel;
@@ -103,9 +109,16 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
         await ClassApi.ClosingOtherPayment(fromdate!, todate!, dbname, '');
     condiments =
         await ClassApi.CLosingCondiment(fromdate!, todate!, dbname, '');
-    print(cashflow);
-    print(otherpayment);
-    print(condiments);
+    itemsold = await ClassApi.DetailMenuWithSize(
+      fromdate!,
+      todate!,
+      dbname,
+    );
+    ringkasanpenjualan =
+        await ClassApi.getReportRingkasan(fromdate!, todate!, dbname, '');
+    detailpengeluaran = await ClassApi.getDetail_transaksiCashierSummary(
+        fromdate!, usercd, dbname);
+    print('ini detail pengeluaran $detailpengeluaran');
   }
 
   void initState() {
@@ -139,6 +152,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     _controllerpilihan.text = 'Summary Cashier';
     fromdatenamed = formattedDate;
     todatenamed = formattedDate;
+    today = formatdate;
     _controllerdate.text = '$fromdatenamed - $todatenamed';
 
     selected = 'Hari ini';
@@ -599,17 +613,24 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                             textcolor: Colors.orange,
                             name: 'Print',
                             onpressed: () async {
-                              Fluttertoast.showToast(
-                                  msg: "Segera hadir",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(255, 11, 12, 14),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                              // await cashiersummary.prints(cashflow,
-                              //     otherpayment, condiments, outlet.text, '');
+                              if (connected == true) {
+                                await cashiersummary.prints(
+                                    cashflow,
+                                    otherpayment,
+                                    condiments,
+                                    itemsold,
+                                    ringkasanpenjualan,
+                                    detailpengeluaran,
+                                    outlet.text,
+                                    '',
+                                    today!);
+                              } else {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return ClassBluetoothPrinter();
+                                }));
+                                checkPrinter();
+                              }
                             }),
                         ButtonNoIcon2(
                           width: MediaQuery.of(context).size.width * 0.35,

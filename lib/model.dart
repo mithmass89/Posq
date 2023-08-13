@@ -209,6 +209,7 @@ class CombineDataRingkasan {
   final num? service;
   final num? totalnett;
   final num? totalpayment;
+  final num? transno;
 
   CombineDataRingkasan({
     this.revenuegross,
@@ -216,6 +217,7 @@ class CombineDataRingkasan {
     this.pajak,
     this.service,
     this.totalnett,
+    required this.transno,
     this.totalpayment,
   });
 
@@ -225,11 +227,12 @@ class CombineDataRingkasan {
         pajak = res["pajak"],
         service = res["service"],
         totalnett = res['totalnett'],
+        transno = res['transno'],
         totalpayment = res['totalpayment'];
 
   @override
   String toString() {
-    return '{"revenuegross": $revenuegross,"totalcost":$totalcost "pajak": $pajak,"service": $service,"totalnett": $totalnett,"totalpayment": $totalpayment}';
+    return '{"transno": $transno,"revenuegross": $revenuegross,"totalcost":$totalcost "pajak": $pajak,"service": $service,"totalnett": $totalnett,"totalpayment": $totalpayment}';
   }
 
   Map<String, Object?> toJson() {
@@ -240,6 +243,7 @@ class CombineDataRingkasan {
       'service': service,
       'totalnett': totalnett,
       'totalpayment': totalpayment,
+      'transno': transno,
     };
   }
 }

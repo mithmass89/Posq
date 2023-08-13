@@ -4040,6 +4040,7 @@ class _DialogFormState extends State<DialogForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       title: Text("Input Data Pengeluaran"),
       content: Form(
         key: _formKey,
@@ -4149,6 +4150,7 @@ class _DialogFormTambahModalState extends State<DialogFormTambahModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       title: Text("Input Data Pengeluaran"),
       content: Form(
         key: _formKey,
@@ -4195,6 +4197,54 @@ class _DialogFormTambahModalState extends State<DialogFormTambahModal> {
         ElevatedButton(
           onPressed: _submitForm,
           child: Text('Simpan'),
+        ),
+      ],
+    );
+  }
+}
+
+class DialogCancelClosing extends StatefulWidget {
+  final String trdt;
+
+  const DialogCancelClosing({Key? key, required this.trdt}) : super(key: key);
+  @override
+  _DialogCancelClosingState createState() => _DialogCancelClosingState();
+}
+
+class _DialogCancelClosingState extends State<DialogCancelClosing> {
+  final _formKey = GlobalKey<FormState>();
+
+  _submitForm() async {
+    await ClassApi.cancelClosing(widget.trdt,usercd,dbname);
+    Navigator.of(context).pop(true); // Tutup dialog setelah selesai
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      scrollable: true,
+      title: Text("Batalkan closing"),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Batal'),
+        ),
+        ElevatedButton(
+          onPressed: _submitForm,
+          child: Text('Oke'),
         ),
       ],
     );

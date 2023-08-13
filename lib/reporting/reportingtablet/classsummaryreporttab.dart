@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -21,10 +22,13 @@ import 'package:posq/reporting/reportingtablet/classcashierreporttab.dart';
 import 'package:posq/reporting/reportingtablet/classdetailmenuterjual.dart';
 import 'package:posq/reporting/reportingtablet/classringkasancombinetab.dart';
 import 'package:posq/reporting/reportingtablet/classringkasanreporttab.dart';
+import 'package:posq/setting/printer/cashiersummary.dart';
+import 'package:posq/setting/printer/classprinterBluetooth.dart';
 import 'package:posq/userinfo.dart';
 
 typedef MyBuilder = void Function(
     BuildContext context, void Function() methodA);
+PrintSmallCashierSummary? cashiersummary;
 
 class ClassSummaryReportTab extends StatefulWidget {
   final String user;
@@ -66,6 +70,12 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   List<IafjrndtClass> data = [];
   List<IafjrndtClass> topMenu = [];
   List<IafjrndtClass> menukuranglaku = [];
+  List<dynamic> cashflow = [];
+  List<dynamic> otherpayment = [];
+  List<dynamic> condiments = [];
+  List<dynamic> itemsold = [];
+  List<dynamic> ringkasanpenjualan = [];
+  List<dynamic> detailpengeluaran = [];
   List<int> datarev = [];
   int totalKenaikan = 0;
   double persentaseKenaikan = 0;
@@ -76,21 +86,67 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   final TextEditingController outlet =
       TextEditingController(text: "All Outlet");
   List<CombineDataRingkasan> datax = [];
+  PrintSmallCashierSummary cashiersummary = PrintSmallCashierSummary();
+  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  bool connected = false;
+  String logourl = '';
+  String header = '';
+  String footer = '';
+  String today = '';
+
+  checkPrinter() async {
+    connected = await bluetooth.isConnected.then((value) => value!);
+    setState(() {});
+    print(connected);
+  }
 
   void initState() {
     super.initState();
-    type = 'Ringkasan';
+    type = 'Summary Cashier';
     formattedDate = formatter2.format(now);
     formatdate = formatter.format(now);
     periode = formaterprd.format(now);
     startDate();
     handler = DatabaseHandler();
-    _controllerpilihan.text = 'Ringkasan';
+    _controllerpilihan.text = 'Summary Cashier';
     fromdatenamed = formattedDate;
     todatenamed = formattedDate;
+    today = fromdatenamed!;
     _controllerdate.text = '$fromdatenamed - $todatenamed';
     selected = 'Hari ini';
+    CLosingCashier();
     // getDataRingkasan();
+    checkPrinter();
+  }
+
+  getTemplatePrinter() {
+    ClassApi.getTemplatePrinter().then((value) {
+      if (value.isNotEmpty) {
+        logourl = value[0]['logourl'];
+        header = value[0]['header'];
+        footer = value[0]['footer'];
+      }
+      ;
+    });
+    setState(() {});
+  }
+
+  CLosingCashier() async {
+    cashflow = await ClassApi.ClosingCashFlow(fromdate!, todate!, dbname, '');
+    otherpayment =
+        await ClassApi.ClosingOtherPayment(fromdate!, todate!, dbname, '');
+    condiments =
+        await ClassApi.CLosingCondiment(fromdate!, todate!, dbname, '');
+    itemsold = await ClassApi.DetailMenuWithSize(
+      fromdate!,
+      todate!,
+      dbname,
+    );
+    ringkasanpenjualan =
+        await ClassApi.getReportRingkasan(fromdate!, todate!, dbname, '');
+    detailpengeluaran =
+        await ClassApi.getDetail_transaksiCashier(formatdate!, usercd, dbname);
+    print('ini detailpengeluaran : $detailpengeluaran');
   }
 
   startDate() {
@@ -421,15 +477,24 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                       color: Colors.white,
                       textcolor: Color.fromARGB(255, 0, 155, 160),
                       name: 'Print',
-                      onpressed: () {
-                        Fluttertoast.showToast(
-                            msg: "Segera hadir",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                      onpressed: () async {
+                        if (connected == true) {
+                          await cashiersummary.prints(
+                              cashflow,
+                              otherpayment,
+                              condiments,
+                              itemsold,
+                              ringkasanpenjualan,
+                              detailpengeluaran,
+                              outlet.text,
+                              '',
+                              today);
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return ClassBluetoothPrinter();
+                          }));
+                        }
                       },
                     ),
                   ],

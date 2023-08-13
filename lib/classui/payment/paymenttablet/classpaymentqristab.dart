@@ -155,157 +155,86 @@ class _ClassPaymentQrisTabState extends State<ClassPaymentQrisTab> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: _statustransaksi(),
-        builder: (context, AsyncSnapshot<String> snapshot) {
-          return Column(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('Status Transaksi: '),
-                      Text(statustransaction!),
-                    ],
-                  )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: QrImage(
-                  data: widget.qr,
-                  version: QrVersions.auto,
-                  size: MediaQuery.of(context).size.height * 0.50,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.copy),
-                    iconSize: 20,
-                    color: Colors.green,
-                    splashColor: Colors.purple,
-                    onPressed: () {
-                      Clipboard.setData(
-                          ClipboardData(text: widget.qr.toString()));
-                    },
-                  ),
-                  statustransaction != 'finish'
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              height: MediaQuery.of(context).size.height * 0.05,
-                              child: ElevatedButton(
-                                  onPressed: () async {
-                                    await reloadqr();
-                                    setState(() {});
-                                  },
-                                  child: Text('Reload QR'))),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              height: MediaQuery.of(context).size.height * 0.05,
-                              child: ElevatedButton(
-                                  onPressed: () async {
-                                    await widget.insertIafjrnhd!()
-                                        .whenComplete(() async {
-                                      await ClassApi.getSumPyTrno(
-                                              widget.trno.toString())
-                                          .then((value) {
-                                        setState(() {
-                                          widget.result = widget.balance -
-                                              value[0]['totalamt'];
-                                        });
-                                      }).whenComplete(() {
-                                        if (widget.result!.isNegative) {
-                                          widget.insertIafjrnhdRefund!()
-                                              .whenComplete(() {
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ClassPaymetSucsessTabs(
-                                                          guestname:
-                                                              widget.guestname,
-                                                          fromsplit:
-                                                              widget.fromsplit,
-                                                          fromsaved:
-                                                              widget.fromsaved,
-                                                          datatrans:
-                                                              widget.datatrans,
-                                                          frombanktransfer:
-                                                              false,
-                                                          cash: true,
-                                                          outletinfo:
-                                                              widget.outletinfo,
-                                                          outletname:
-                                                              widget.outletname,
-                                                          outletcd: widget.pscd,
-                                                          amount: NumberFormat
-                                                                  .currency(
-                                                                      locale:
-                                                                          'id_ID',
-                                                                      symbol:
-                                                                          'Rp')
-                                                              .parse(widget
-                                                                  .debitcontroller
-                                                                  .text)
-                                                              .toInt(),
-                                                          paymenttype:
-                                                              widget.pymtmthd,
-                                                          trno: widget.trno
-                                                              .toString(),
-                                                          trdt: formattedDate,
-                                                        )));
-                                          });
-                                        } else {
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ClassPaymetSucsessTabs(
-                                                        guestname:
-                                                            widget.guestname,
-                                                        fromsplit:
-                                                            widget.fromsplit,
-                                                        fromsaved:
-                                                            widget.fromsaved,
-                                                        datatrans:
-                                                            widget.datatrans,
-                                                        frombanktransfer: false,
-                                                        cash: true,
-                                                        outletinfo:
-                                                            widget.outletinfo,
-                                                        outletname:
-                                                            widget.outletname,
-                                                        outletcd: widget.pscd,
-                                                        amount: NumberFormat
-                                                                .currency(
-                                                                    locale:
-                                                                        'id_ID',
-                                                                    symbol:
-                                                                        'Rp')
-                                                            .parse(widget
-                                                                .debitcontroller
-                                                                .text)
-                                                            .toInt(),
-                                                        paymenttype:
-                                                            widget.pymtmthd,
-                                                        trno: widget.trno
-                                                            .toString(),
-                                                        trdt: formattedDate,
-                                                      )));
-                                        }
-                                      });
-                                    });
-                                  },
-                                  child: Text('Seleisaikan transaksi'))),
-                        ),
-                ],
-              )
-            ],
-          );
-        });
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        await widget.insertIafjrnhd!().whenComplete(() async {
+                          await ClassApi.getSumPyTrno(widget.trno.toString())
+                              .then((value) {
+                            setState(() {
+                              widget.result =
+                                  widget.balance - value[0]['totalamt'];
+                            });
+                          }).whenComplete(() {
+                            if (widget.result!.isNegative) {
+                              widget.insertIafjrnhdRefund!().whenComplete(() {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassPaymetSucsessTabs(
+                                              guestname: widget.guestname,
+                                              fromsplit: widget.fromsplit,
+                                              fromsaved: widget.fromsaved,
+                                              datatrans: widget.datatrans,
+                                              frombanktransfer: false,
+                                              cash: true,
+                                              outletinfo: widget.outletinfo,
+                                              outletname: widget.outletname,
+                                              outletcd: widget.pscd,
+                                              amount: NumberFormat.currency(
+                                                      locale: 'id_ID',
+                                                      symbol: 'Rp')
+                                                  .parse(widget
+                                                      .debitcontroller.text)
+                                                  .toInt(),
+                                              paymenttype: widget.pymtmthd,
+                                              trno: widget.trno.toString(),
+                                              trdt: formattedDate,
+                                            )));
+                              });
+                            } else {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClassPaymetSucsessTabs(
+                                            guestname: widget.guestname,
+                                            fromsplit: widget.fromsplit,
+                                            fromsaved: widget.fromsaved,
+                                            datatrans: widget.datatrans,
+                                            frombanktransfer: false,
+                                            cash: true,
+                                            outletinfo: widget.outletinfo,
+                                            outletname: widget.outletname,
+                                            outletcd: widget.pscd,
+                                            amount: NumberFormat.currency(
+                                                    locale: 'id_ID',
+                                                    symbol: 'Rp')
+                                                .parse(
+                                                    widget.debitcontroller.text)
+                                                .toInt(),
+                                            paymenttype: widget.pymtmthd,
+                                            trno: widget.trno.toString(),
+                                            trdt: formattedDate,
+                                          )));
+                            }
+                          });
+                        });
+                      },
+                      child: Text('Seleisaikan transaksi'))),
+            ),
+          ],
+        )
+      ],
+    );
   }
 }

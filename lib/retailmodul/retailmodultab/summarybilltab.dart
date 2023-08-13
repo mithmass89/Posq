@@ -66,7 +66,6 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
   bool connected = false;
   PrintSmall printing = PrintSmall();
 
-
   @override
   void initState() {
     super.initState();
@@ -419,6 +418,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ClassMainPrinter()));
+                                        await checkPrinter();
                                       }
                                     }
                                   : () {

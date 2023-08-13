@@ -366,7 +366,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                                     insertIafjrnhdRefund: insertIafjrnhdRefund,
                                     frompayment: true,
                                     dialogcancel: false,
-                                    pymtmthd: 'Cash',
+                                    pymtmthd: 'CASH',
                                     controller: widget.amountcash,
                                     onPasswordEntered: (String password) async {
                                       print('Entered password: $password');
@@ -405,7 +405,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                                           outletcd: widget.pscd,
                                           amount: double.parse(
                                               widget.amountcash.text),
-                                          paymenttype: 'Cash',
+                                          paymenttype: 'CASH',
                                           trno: widget.trno.toString(),
                                           trdt: formattedDate,
                                         )),
@@ -429,7 +429,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                                           outletcd: widget.pscd,
                                           amount: double.parse(
                                               widget.amountcash.text),
-                                          paymenttype: 'Cash',
+                                          paymenttype: 'CASH',
                                           trno: widget.trno.toString(),
                                           trdt: formattedDate,
                                         )),

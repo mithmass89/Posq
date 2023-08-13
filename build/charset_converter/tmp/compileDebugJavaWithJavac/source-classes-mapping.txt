@@ -1,2 +1,0 @@
-pl/pr0gramista/charset_converter/BuildConfig.java
- pl.pr0gramista.charset_converter.BuildConfig

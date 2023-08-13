@@ -50,6 +50,7 @@ class _ClassRingkasantabState extends State<ClassRingkasantab> {
           .then((value) {
         for (var z in value) {
           datatemp.add(CombineDataRingkasan(
+              transno: z.transno == null ? 0 : z.transno,
               revenuegross: z.revenuegross == null ? 0 : z.revenuegross,
               pajak: z.pajak == null ? 0 : z.pajak,
               service: z.service == null ? 0 : z.service,
@@ -59,6 +60,8 @@ class _ClassRingkasantabState extends State<ClassRingkasantab> {
       });
     }
     ;
+    num transno =
+        datatemp.fold(0, (previousValue, isi) => previousValue + isi.transno!);
     num revenuegross = datatemp.fold(
         0, (previousValue, isi) => previousValue + isi.revenuegross!);
     num pajak =
@@ -70,6 +73,7 @@ class _ClassRingkasantabState extends State<ClassRingkasantab> {
     num totalpayment = datatemp.fold(
         0, (previousValue, isi) => previousValue + isi.totalpayment!);
     data.add(CombineDataRingkasan(
+        transno: transno,
         revenuegross: revenuegross,
         pajak: pajak,
         service: service,
@@ -95,8 +99,7 @@ class _ClassRingkasantabState extends State<ClassRingkasantab> {
       height: MediaQuery.of(context).size.height * 0.55,
       child: FutureBuilder(
           future: olahData(),
-          builder:
-              (context, snapshot) {
+          builder: (context, snapshot) {
             print(snapshot.data);
             var x = snapshot.data ?? [];
             if (data.isNotEmpty) {
@@ -126,29 +129,37 @@ class _ClassRingkasantabState extends State<ClassRingkasantab> {
                               crossAxisSpacing: 1,
                               mainAxisSpacing: 1),
                       children: [
+                        data[0].transno != null
+                            ? ListTile(
+                                onTap: () {},
+                                dense: true,
+                                title: Text('Total Transaksi'),
+                                subtitle: Text(data[0].transno.toString()),
+                              )
+                            : Container(),
                         ListTile(
                           dense: true,
                           title: Text('Pendapatan Bersih'),
                           subtitle: Text(CurrencyFormat.convertToIdr(
                               data[0].revenuegross, 0)),
                         ),
-                        ListTile(
+                     data[0].pajak!=null?   ListTile(
                           dense: true,
                           title: Text('Pajak'),
-                          subtitle:
-                              Text(CurrencyFormat.convertToIdr(data[0].pajak, 0)),
-                        ),
-                        ListTile(
+                          subtitle: Text(
+                              CurrencyFormat.convertToIdr(data[0].pajak, 0)),
+                        ):Container(),
+                        data[0].service!=null? ListTile(
                           dense: true,
                           title: Text('Service / gratitude'),
                           subtitle: Text(
                               CurrencyFormat.convertToIdr(data[0].service, 0)),
-                        ),
+                        ):Container(),
                         ListTile(
                           dense: true,
                           title: Text('Pendapatan kotor'),
-                          subtitle: Text(
-                              CurrencyFormat.convertToIdr(data[0].totalnett, 0)),
+                          subtitle: Text(CurrencyFormat.convertToIdr(
+                              data[0].totalnett, 0)),
                         ),
                         ListTile(
                           dense: true,

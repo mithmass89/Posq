@@ -71,29 +71,31 @@ class _ClassproductmobileState extends State<Classproductmobile> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
-          IconButton(
-              onPressed: () async {
-                bool download = await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DialogCopyItem();
-                    });
-                if (download == true) {
-                  EasyLoading.show(status: 'loading...');
-                  await ClassApi.insertItemFromHO()
-                      .onError((error, stackTrace) {
-                    EasyLoading.dismiss();
-                  });
-                  EasyLoading.dismiss();
-                  await getitemOutlet('').whenComplete(() {
-                    setState(() {});
-                  });
-                }
-              },
-              icon: Icon(
-                Icons.download,
-                color: Colors.white,
-              ))
+          corporatecode != ''
+              ? IconButton(
+                  onPressed: () async {
+                    bool download = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DialogCopyItem();
+                        });
+                    if (download == true) {
+                      EasyLoading.show(status: 'loading...');
+                      await ClassApi.insertItemFromHO()
+                          .onError((error, stackTrace) {
+                        EasyLoading.dismiss();
+                      });
+                      EasyLoading.dismiss();
+                      await getitemOutlet('').whenComplete(() {
+                        setState(() {});
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    Icons.download,
+                    color: Colors.white,
+                  ))
+              : Container()
         ],
         leading: GestureDetector(
           child: Icon(

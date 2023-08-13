@@ -70,11 +70,14 @@ class _MenuMainState extends State<MenuMain> {
       if (value.isNotEmpty) {
         if (value.last.type == 'OPEN') {
           open = true;
+          opencashier = true;
         } else {
           open = false;
+          opencashier = false;
         }
       } else {
         open = false;
+        opencashier = false;
       }
     });
     setState(() {});
@@ -340,7 +343,6 @@ class _MenuMainState extends State<MenuMain> {
                         textColor: Colors.white,
                         fontSize: 16.0);
                   }
-
                   selected = !selected;
                   await checkOpenCashier();
                   widget.setter();
@@ -569,8 +571,8 @@ class _MenuMainState extends State<MenuMain> {
               ButtonClassAction(
                 splash: selected,
                 iconasset: 'assets/cashier-machine.png',
-                height: MediaQuery.of(context).size.height * 0.04,
-                widht: MediaQuery.of(context).size.width * 0.19,
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
                   _showModalAmountDialog(context);
                   selected = !selected;

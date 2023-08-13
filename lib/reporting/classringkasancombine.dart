@@ -53,6 +53,7 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
           .then((value) {
         for (var z in value) {
           datatemp.add(CombineDataRingkasan(
+              transno: z.transno == null ? 0 : z.transno,
               revenuegross: z.revenuegross == null ? 0 : z.revenuegross,
               totalcost: z.totalcost == null ? 0 : z.totalcost,
               pajak: z.pajak == null ? 0 : z.pajak,
@@ -63,6 +64,8 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
       });
     }
     ;
+    num transno =
+        datatemp.fold(0, (previousValue, isi) => previousValue + isi.transno!);
     num revenuegross = datatemp.fold(
         0, (previousValue, isi) => previousValue + isi.revenuegross!);
     num totalcost = datatemp.fold(
@@ -77,6 +80,7 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
         0, (previousValue, isi) => previousValue + isi.totalpayment!);
     data.add(CombineDataRingkasan(
         revenuegross: revenuegross,
+        transno: transno,
         pajak: pajak,
         totalcost: totalcost,
         service: service,
@@ -124,6 +128,14 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: Column(
                           children: [
+                            data[0].transno != null
+                                ? ListTile(
+                                    onTap: () {},
+                                    dense: true,
+                                    title: Text('Total Transaksi'),
+                                    subtitle: Text(data[0].transno.toString()),
+                                  )
+                                : Container(),
                             ListTile(
                               onTap: () {},
                               dense: true,
@@ -143,20 +155,24 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAll> {
                               subtitle: Text(CurrencyFormat.convertToIdr(
                                   data[0].totalcost, 0)),
                             ),
-                            ListTile(
-                              onTap: () {},
-                              dense: true,
-                              title: Text('Pajak'),
-                              subtitle: Text(CurrencyFormat.convertToIdr(
-                                  data[0].pajak, 0)),
-                            ),
-                            ListTile(
-                              onTap: () {},
-                              dense: true,
-                              title: Text('Service / gratitude'),
-                              subtitle: Text(CurrencyFormat.convertToIdr(
-                                  data[0].service, 0)),
-                            ),
+                            data[0].pajak != 0
+                                ? ListTile(
+                                    onTap: () {},
+                                    dense: true,
+                                    title: Text('Pajak'),
+                                    subtitle: Text(CurrencyFormat.convertToIdr(
+                                        data[0].pajak, 0)),
+                                  )
+                                : Container(),
+                            data[0].service != 0
+                                ? ListTile(
+                                    onTap: () {},
+                                    dense: true,
+                                    title: Text('Service / gratitude'),
+                                    subtitle: Text(CurrencyFormat.convertToIdr(
+                                        data[0].service, 0)),
+                                  )
+                                : Container(),
                             ListTile(
                               onTap: () {},
                               dense: true,

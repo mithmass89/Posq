@@ -7,7 +7,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/payment/paymentsugestionclass.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentbanktrftab.dart';
-import 'package:posq/classui/payment/paymenttablet/classpaymentcashtab.dart';
+import 'package:posq/classui/payment/paymenttablet/classpaymentCASHtab.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentdebitcard.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentewallet.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentlainlaintab.dart';
@@ -114,9 +114,9 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
     result = widget.balance;
     checkbalance();
     _formatValue(double.parse(controller.text));
-    selectedpy = 'Cash';
-    pymtmthd = 'Cash';
-    compcode ='Cash';
+    selectedpy = 'CASH';
+    pymtmthd = 'CASH';
+    compcode = 'CASH';
     formattedDate = formatter.format(now);
 
     if (widget.fromsplit == true) {
@@ -530,8 +530,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5), // <-- Radius
+                                      borderRadius: BorderRadius.circular(
+                                          5), // <-- Radius
                                     ),
                                     padding: EdgeInsets.zero,
                                     backgroundColor:
@@ -557,14 +557,16 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                 Column(
                                   children: [
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.02,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -574,35 +576,37 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                               ),
                                               padding: EdgeInsets.zero,
                                               backgroundColor: selectedpy ==
-                                                      'Cash'
+                                                      'CASH'
                                                   ? Colors.white
                                                   : Colors
                                                       .orange // Background color
                                               ),
                                           onPressed: () {
-                                            selectedpy = 'Cash';
-                                            pymtmthd = 'Cash';
+                                            selectedpy = 'CASH';
+                                            pymtmthd = 'CASH';
                                             compcode = pymtmthd;
-                                          
+
                                             setState(() {});
                                           },
                                           child: Text(
-                                            'Cash',
+                                            'CASH',
                                             style: TextStyle(
-                                                color: selectedpy == 'Cash'
+                                                color: selectedpy == 'CASH'
                                                     ? Colors.orange
                                                     : Colors.white),
                                           )),
                                     ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.02,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -611,7 +615,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                                         5), // <-- Radius
                                               ),
                                               padding: EdgeInsets.zero,
-                                              backgroundColor: selectedpy == 'EDC'
+                                              backgroundColor: selectedpy ==
+                                                      'EDC'
                                                   ? Colors.white
                                                   : Colors
                                                       .orange // Background color
@@ -631,14 +636,16 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                           )),
                                     ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.02,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -653,47 +660,59 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                                   : Colors
                                                       .orange // Background color
                                               ),
-                                          onPressed: () async {
-                                            if (midkey != '') {
-                                              if (refundmode == false) {
-                                                await showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return DialogClassEwalletTab(
-                                                        guestname:
-                                                            widget.guestname,
-                                                        fromsplit:
-                                                            widget.fromsplit,
-                                                        fromsaved:
-                                                            widget.fromsaved,
-                                                        datatrans:
-                                                            widget.datatrans,
-                                                        url: qr,
-                                                        compcd: compcode,
-                                                        compdesc: compcode,
-                                                        result: result,
-                                                        balance: widget.balance,
-                                                        pscd: widget
-                                                            .outletinfo!.outletcd,
-                                                        trno: widget.trno
-                                                            .toString(),
-                                                        outletinfo:
-                                                            widget.outletinfo,
-                                                      );
-                                                    });
-                                              } else {
-                                                selectedpy = 'EDC';
-                                                pymtmthd = 'EDC';
-                                                compcode = pymtmthd;
-                                                setState(() {});
-                                                Toast.show(
-                                                    "Refund mode tidak tersedia ",
-                                                    duration: Toast.lengthLong,
-                                                    gravity: Toast.center);
-                                              }
-                                            }
-                                          },
+                                          onPressed: midkey != ''
+                                              ? () async {
+                                                  if (midkey != '') {
+                                                    if (refundmode == false) {
+                                                      await showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return DialogClassEwalletTab(
+                                                              guestname: widget
+                                                                  .guestname,
+                                                              fromsplit: widget
+                                                                  .fromsplit,
+                                                              fromsaved: widget
+                                                                  .fromsaved,
+                                                              datatrans: widget
+                                                                  .datatrans,
+                                                              url: qr,
+                                                              compcd: compcode,
+                                                              compdesc:
+                                                                  compcode,
+                                                              result: result,
+                                                              balance: widget
+                                                                  .balance,
+                                                              pscd: widget
+                                                                  .outletinfo!
+                                                                  .outletcd,
+                                                              trno: widget.trno
+                                                                  .toString(),
+                                                              outletinfo: widget
+                                                                  .outletinfo,
+                                                            );
+                                                          });
+                                                    } else {
+                                                      selectedpy = 'EDC';
+                                                      pymtmthd = 'EDC';
+                                                      compcode = pymtmthd;
+                                                      setState(() {});
+                                                      Toast.show(
+                                                          "Refund mode tidak tersedia ",
+                                                          duration:
+                                                              Toast.lengthLong,
+                                                          gravity:
+                                                              Toast.center);
+                                                    }
+                                                  }
+                                                }
+                                              : () {
+                                                  selectedpy = 'QRIS';
+                                                  pymtmthd = 'QRIS';
+                                                  compcode = pymtmthd;
+                                                  setState(() {});
+                                                },
                                           child: Text(
                                             'QRIS',
                                             style: TextStyle(
@@ -703,14 +722,16 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                           )),
                                     ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.02,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -740,14 +761,16 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                           )),
                                     ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.02,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -771,21 +794,23 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                           child: Text(
                                             'Bank transfer',
                                             style: TextStyle(
-                                                color:
-                                                    selectedpy == 'Bank transfer'
-                                                        ? Colors.orange
-                                                        : Colors.white),
+                                                color: selectedpy ==
+                                                        'Bank transfer'
+                                                    ? Colors.orange
+                                                    : Colors.white),
                                           )),
                                     ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.02,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -815,14 +840,16 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                           )),
                                     ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.02,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -852,14 +879,16 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                           )),
                                     ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -868,8 +897,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                                         5), // <-- Radius
                                               ),
                                               padding: EdgeInsets.zero,
-                                              backgroundColor:
-                                                  Color.fromARGB(255, 0, 159, 170)
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 0, 159, 170)
                                               // Background color
                                               ),
                                           onPressed: () {
@@ -882,7 +911,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                           },
                                           child: Text(
                                             'Integrasi',
-                                            style: TextStyle(color: Colors.white),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           )),
                                     ),
                                   ],
@@ -898,7 +928,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                               color: Colors.grey[200],
                               child: Builder(builder: (context) {
                                 switch (selectedpy) {
-                                  case 'Cash':
+                                  case 'CASH':
                                     return PaymenCashTab(
                                       guestname: widget.guestname,
                                       fromsplit: widget.fromsplit,
@@ -992,7 +1022,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                         'OTHER'
                                       ],
                                     );
-        
+
                                   case 'E-wallet':
                                     return PaymentEwalletTab(
                                       guestname: widget.guestname,
@@ -1155,7 +1185,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                   children: [
                                     Text('Tagihan'),
                                     Spacer(),
-                                    Text(_formatValue(widget.balance.toDouble())),
+                                    Text(_formatValue(
+                                        widget.balance.toDouble())),
                                   ],
                                 ),
                                 SizedBox(
@@ -1165,7 +1196,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                 Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.08,
-                                  width: MediaQuery.of(context).size.width * 0.29,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.29,
                                   child: FutureBuilder(
                                       future: ClassApi.getDetailPayment(
                                           widget.trno, dbname, ''),
@@ -1178,8 +1210,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                               itemBuilder: ((context, index) {
                                                 return Row(
                                                   children: [
-                                                    Text(snapshot
-                                                        .data![index].pymtmthd!),
+                                                    Text(snapshot.data![index]
+                                                        .pymtmthd!),
                                                     Spacer(),
                                                     Text(_formatValue(snapshot
                                                         .data![index].totalamt!
@@ -1221,8 +1253,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                                                           'totalamt'];
                                                                 });
                                                               }
-                                                              result =
-                                                                  widget.balance;
+                                                              result = widget
+                                                                  .balance;
                                                               setState(() {});
                                                             });
                                                           });
@@ -1243,7 +1275,8 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                 Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.1,
-                                  width: MediaQuery.of(context).size.width * 0.29,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.29,
                                   child: Row(
                                     children: [
                                       Text(

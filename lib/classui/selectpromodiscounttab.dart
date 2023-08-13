@@ -155,20 +155,8 @@ class _SelectPromoTabState extends State<SelectPromoTab> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                await insertIafjrnhdPromo(snapshot.data![index])
-                                    .then((_) async {
-                                  await handler
-                                      .checktotalAmountNett(
-                                          widget.trno.toString())
-                                      .then((value) async {
-                                    setState(() {
-                                      // widget.sum = value.first.nettamt!;
-                                    });
-                                    Navigator.of(context)
-                                        .pop(snapshot.data![index]);
-                                    print('ini ${value}');
-                                  });
-                                });
+                                await insertIafjrnhdPromo(snapshot.data![index]);
+                          
                                 await ClassApi.getSumTrans(
                                         widget.trno!, pscd, '')
                                     .then((value) async {
@@ -178,6 +166,8 @@ class _SelectPromoTabState extends State<SelectPromoTab> {
                                   print('ini ${value}');
                                   await widget.refreshdata;
                                   await widget.updatedata;
+                                  Navigator.of(context)
+                                      .pop(snapshot.data![index]);
                                   ClassRetailMainMobile.of(context)!.string =
                                       value.first;
                                 });

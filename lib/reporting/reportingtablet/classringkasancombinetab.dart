@@ -46,6 +46,7 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAllTab> {
           .then((value) {
         for (var z in value) {
           datatemp.add(CombineDataRingkasan(
+              transno: z.transno == null ? 0 : z.transno,
               revenuegross: z.revenuegross == null ? 0 : z.revenuegross,
               pajak: z.pajak == null ? 0 : z.pajak,
               service: z.service == null ? 0 : z.service,
@@ -53,6 +54,8 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAllTab> {
               totalpayment: z.totalpayment == null ? 0 : z.totalpayment));
         }
       });
+      num transno = datatemp.fold(
+          0, (previousValue, isi) => previousValue + isi.transno!);
       num revenuegross = datatemp.fold(
           0, (previousValue, isi) => previousValue + isi.revenuegross!);
       num pajak =
@@ -64,6 +67,7 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAllTab> {
       num totalpayment = datatemp.fold(
           0, (previousValue, isi) => previousValue + isi.totalpayment!);
       data.add(CombineDataRingkasan(
+          transno: transno,
           revenuegross: revenuegross,
           pajak: pajak,
           service: service,
@@ -118,6 +122,15 @@ class _ClassRingkasanAllState extends State<ClassRingkasanAllTab> {
                                   crossAxisSpacing: 1,
                                   mainAxisSpacing: 1),
                           children: [
+                               data[0].transno != null
+                                ? ListTile(
+                                    onTap: () {},
+                                    dense: true,
+                                    title: Text('Total Transaksi'),
+                                    subtitle: Text(data[0].transno.toString()),
+                                  )
+                                : Container(),
+                          
                             ListTile(
                               dense: true,
                               title: Text('Pendapatan Bersih'),

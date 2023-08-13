@@ -3,10 +3,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:io' show Directory;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path/path.dart' show join;
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/model.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +82,7 @@ class _ClassproductTabState extends State<ClassproductTab> {
             MaterialPageRoute(
                 builder: (context) => Createproducttab(
                       productcode: Item(
-                            packageflag: 0,
+                          packageflag: 0,
                           pathimage:
                               'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
                           multiprice: 0),
@@ -107,6 +109,33 @@ class _ClassproductTabState extends State<ClassproductTab> {
           'List produk',
           style: TextStyle(color: Colors.black),
         ),
+        actions: [
+          corporatecode != ''
+              ? IconButton(
+                  onPressed: () async {
+                    bool download = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DialogCopyItem();
+                        });
+                    if (download == true) {
+                      EasyLoading.show(status: 'loading...');
+                      await ClassApi.insertItemFromHO()
+                          .onError((error, stackTrace) {
+                        EasyLoading.dismiss();
+                      });
+                      EasyLoading.dismiss();
+                      await getitemOutlet('').whenComplete(() {
+                        setState(() {});
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    Icons.download,
+                    color: Colors.white,
+                  ))
+              : Container()
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -294,8 +323,9 @@ class _ClassproductTabState extends State<ClassproductTab> {
                                                 Object exception,
                                                 StackTrace? stackTrace) {
                                               return Image.network(
-                                           'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
-                                            fit: BoxFit.fill,);
+                                                'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                                                fit: BoxFit.fill,
+                                              );
                                             },
                                             loadingBuilder:
                                                 (BuildContext context,

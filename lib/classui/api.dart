@@ -283,6 +283,32 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       List status = json.decode(response.body);
+      print(status);
+      return status.map((json) => OpenCashier.fromJson(json)).toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<OpenCashier>> checkCloseCashier(
+      String trdt, String usercd, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": trdt,
+      "usercd": usercd,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/checkCloseCashier');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List status = json.decode(response.body);
+      print(status);
       return status.map((json) => OpenCashier.fromJson(json)).toList();
     } else {
       throw Exception();
@@ -298,6 +324,80 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/getDetail_transaksiCashier');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List status = json.decode(response.body);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+    static Future<dynamic> cancelClosing(
+      String trdt, String usercd, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": trdt,
+      "usercd": usercd,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/cancelClosing');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+
+
+    static Future<List<dynamic>> totalpengeluaranCashier(
+      String trdt, String usercd, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": trdt,
+      "usercd": usercd,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/totalpengeluaranCashier');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List status = json.decode(response.body);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getDetail_transaksiCashierSummary(
+      String trdt, String usercd, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": trdt,
+      "usercd": usercd,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/getDetail_transaksiCashierSummary');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

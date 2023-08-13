@@ -19,13 +19,14 @@ class SelectPromoMobile extends StatefulWidget {
   final VoidCallback? refreshdata;
   late num sum;
 
-   SelectPromoMobile(
+  SelectPromoMobile(
       {Key? key,
       required this.trno,
       required this.pscd,
       required this.databill,
       required this.updatedata,
-      required this.refreshdata, required this.sum})
+      required this.refreshdata,
+      required this.sum})
       : super(key: key);
 
   @override
@@ -62,8 +63,8 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
             ? 0 - data.amount!
             : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
         totalamt: data.amount != 0
-            ?  data.amount!
-            :  ((widget.databill!.revenueamt! * data.pct!) / 100),
+            ? data.amount!
+            : ((widget.databill!.revenueamt! * data.pct!) / 100),
         framtrmn: data.amount != 0
             ? 0 - data.amount!
             : 0 - ((widget.databill!.revenueamt! * data.pct!) / 100),
@@ -127,30 +128,22 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                             ListTile(
                               dense: true,
                               onTap: () async {
-                                await insertIafjrnhdPromo(snapshot.data![index])
-                                    .then((_) async {
-                                  await handler
-                                      .checktotalAmountNett(
-                                          widget.trno.toString())
-                                      .then((value) async {
-                                    setState(() {
-                                      // widget.sum = value.first.nettamt!;
-                                    });
-                                    Navigator.of(context)
-                                        .pop(snapshot.data![index]);
-                                    print('ini ${value}');
-                                  });
-                                });
-                                await ClassApi.getSumTrans(widget.trno!,pscd,'')
+                                await insertIafjrnhdPromo(
+                                    snapshot.data![index]);
+
+                                await ClassApi.getSumTrans(
+                                        widget.trno!, pscd, '')
                                     .then((value) async {
                                   setState(() {
                                     widget.sum = value.first.totalaftdisc!;
                                   });
-                                  print('ini ${value}');
+                                  print('ini ${value.first}');
                                   await widget.refreshdata;
                                   await widget.updatedata;
-                                  ClassRetailMainMobile.of(context)!.string =
-                                      value.first;
+
+                                  // ClassRetailMainMobile.of(context)!.string =
+                                  //     value.first;
+                                  Navigator.of(context).pop();
                                 });
                               },
                               // contentPadding: EdgeInsets.all(8.0),
