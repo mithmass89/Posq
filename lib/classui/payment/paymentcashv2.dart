@@ -56,7 +56,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
-
+  bool paymentenable = true;
   generateSugestion(List Amount) {
     if (widget.balance >= 1000 && widget.balance <= 10000) {
       setState(() {
@@ -71,6 +71,11 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         amount.add([50000, 100000]);
       });
     }
+  }
+
+  functionCheckPayEnable() async {
+    paymentenable = false;
+    setState(() {});
   }
 
   @override
@@ -305,12 +310,18 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 name: 'Terima',
                 color: Colors.orange,
                 //// checking balance //////
-                onpressed: widget.result <= 0 || widget.result == 0
+                onpressed: paymentenable == true ||
+                        widget.result <= 0 ||
+                        widget.result == 0
                     ? () async {
+                        // await functionCheckPayEnable();
                         if (refundmode == false) {
-                          await insertIafjrnhd().whenComplete(() {
-                            setState(() {});
-                          });
+                          if (paymentenable == true) {
+                            await insertIafjrnhd().whenComplete(() {
+                              paymentenable=false;
+                              setState(() {});
+                            });
+                          }
                         } else {
                           await insertIafjrnhdRefundMode().whenComplete(() {
                             setState(() {});

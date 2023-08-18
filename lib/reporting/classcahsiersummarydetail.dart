@@ -11,7 +11,7 @@ import 'package:toast/toast.dart';
 class ClassCashierSummaryDetail extends StatefulWidget {
   final String fromdate;
   final String todate;
-  final List<IafjrnhdClass> datatemp;
+  final List<dynamic> datatemp;
   late List<String> listoutlets;
   ClassCashierSummaryDetail(
       {Key? key,

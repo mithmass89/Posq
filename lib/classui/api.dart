@@ -3137,7 +3137,7 @@ class ClassApi {
     }
   }
 
-  static Future<List<IafjrnhdClass>> getCashierSummary(
+  static Future<List<dynamic>> getCashierSummary(
       String fromdate, String todate, String dbname) async {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
@@ -3151,8 +3151,8 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
-      print("ini data json summary $bodyJson");
-      return bodyJson.map((json) => IafjrnhdClass.fromJson(json)).toList();
+      // print("ini data json summary $bodyJson");
+      return bodyJson;
     } else {
       throw Exception();
     }
@@ -3172,7 +3172,7 @@ class ClassApi {
 
     if (response.statusCode == 200) {
       List bodyJson = json.decode(response.body);
-      print("ini data json summary $bodyJson");
+      // print("ini data json summary $bodyJson");
       return bodyJson;
     } else {
       throw Exception();
@@ -3265,6 +3265,27 @@ class ClassApi {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
     final url = Uri.parse('$api/ClosingCashFlow');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      print('summary $bodyJson');
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+    static Future<List<dynamic>> ClosingCashFlowEsteh(
+      String fromdate, String todate, String dbname, String query) async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
+    final url = Uri.parse('$api/ClosingCashFlowEsteh');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

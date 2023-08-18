@@ -273,102 +273,99 @@ class _ClassproductTabState extends State<ClassproductTab> {
                           child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 250,
+                                    maxCrossAxisExtent: 230,
                                     childAspectRatio: 3 / 2,
                                     crossAxisSpacing: 10,
                                     mainAxisSpacing: 10),
                             itemCount: x.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  EditproductTab(
-                                                    productcode: x[index],
-                                                  )),
-                                        ).then((_) {
-                                          setState(() {});
-                                        });
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10)),
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 0.5,
-                                          ),
+                              return Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditproductTab(
+                                                  productcode: x[index],
+                                                )),
+                                      ).then((_) {
+                                        setState(() {});
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 0.5,
                                         ),
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.15,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10)),
-                                          child: Image.network(
-                                            x[index].pathimage!,
-                                            fit: BoxFit.fill,
-                                            errorBuilder: (BuildContext context,
-                                                Object exception,
-                                                StackTrace? stackTrace) {
-                                              return Image.network(
-                                                'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
-                                                fit: BoxFit.fill,
-                                              );
-                                            },
-                                            loadingBuilder:
-                                                (BuildContext context,
-                                                    Widget child,
-                                                    ImageChunkEvent?
-                                                        loadingProgress) {
-                                              if (loadingProgress == null)
-                                                return child;
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  value: loadingProgress
-                                                              .expectedTotalBytes !=
-                                                          null
-                                                      ? loadingProgress
-                                                              .cumulativeBytesLoaded /
-                                                          loadingProgress
-                                                              .expectedTotalBytes!
-                                                      : null,
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                      ),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.15,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.2,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                        child: Image.network(
+                                          x[index].pathimage!,
+                                          fit: BoxFit.fitHeight,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace? stackTrace) {
+                                            return Image.network(
+                                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                                              fit: BoxFit.fitHeight,
+                                            );
+                                          },
+                                          loadingBuilder:
+                                              (BuildContext context,
+                                                  Widget child,
+                                                  ImageChunkEvent?
+                                                      loadingProgress) {
+                                            if (loadingProgress == null)
+                                              return child;
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                        alignment: Alignment.center,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 0.5,
-                                          ),
+                                  ),
+                                  Container(
+                                      alignment: Alignment.center,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.2,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 0.5,
                                         ),
-                                        child: Text(x[index].itemdesc!))
-                                  ],
-                                ),
+                                      ),
+                                      child: Text(x[index].itemdesc!))
+                                ],
                               );
                             },
                           ),

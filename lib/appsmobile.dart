@@ -83,7 +83,7 @@ class _AppsMobileState extends State<AppsMobile> {
   @override
   void initState() {
     super.initState();
-    wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
+    wsUrl = Uri.parse('wss://digims.online:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
       print(message);

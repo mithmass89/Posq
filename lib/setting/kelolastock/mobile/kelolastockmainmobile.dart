@@ -21,24 +21,31 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
   TextEditingController search = TextEditingController();
   List<int> qty = [];
   List<TransaksiBO> datatrans = [];
+  List<TransaksiBOTemp> datatemp = [];
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
   var formattedDate;
   String type = '1010';
   String trno = '';
   int currenttrno = 0;
-
+  List<Item>? datax = [];
   getTrnoBo() async {
     currenttrno = await ClassApi.getTrnoBO(type, dbname);
     trno = '$dbname-$currenttrno';
   }
 
+  FocusNode _focusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
-    data();
+
     formattedDate = formatter.format(now);
     getTrnoBo();
+    data();
+    // search.addListener(() {
+    //   print('oke');
+    // });
   }
 
   data() async {
@@ -61,10 +68,12 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
             note: 'Adjusment Stock PreBo',
             active: 1,
             usercreate: usercd));
-        qty.add(0);
+
         _controller.add(TextEditingController(text: '0'));
       }
     });
+    print(datatrans);
+    setState(() {});
   }
 
   @override
@@ -79,10 +88,13 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
           Container(
             height: MediaQuery.of(context).size.height * 0.08,
             child: TextFieldMobile2(
+              focus: _focusNode,
               label: 'Search',
               controller: search,
               typekeyboard: TextInputType.text,
               onChanged: (value) {
+                print(search.hasListeners);
+
                 setState(() {});
               },
             ),
@@ -92,106 +104,116 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
             child: FutureBuilder(
                 future: ClassApi.getItemList(pscd, dbname, search.text),
                 builder: (context, AsyncSnapshot<List<Item>> snapshot) {
-                  List<Item>? data = snapshot.data;
-                  return ListView.builder(
-                      itemCount: data!.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          child: ListTile(
-                            dense: true,
-                            title: Text(data[index].itemdesc!),
-                            subtitle:
-                                Text('Stock Saat Ini : ${data[index].stock}'),
-                            trailing: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.06,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    child: IconButton(
-                                        iconSize: 20,
-                                        onPressed: () {
-                                          qty[index]++;
-                                          _controller[index].text =
-                                              qty[index].toString();
-                                          datatrans[index].qty = qty[index];
-                                          datatrans[index].lamount =
-                                              qty[index] *
-                                                  datatrans[index].lamount!;
-                                          datatrans[index].famount =
-                                              qty[index] *
-                                                  datatrans[index].famount!;
-                                          print(datatrans.where((element) =>
-                                              element.product ==
-                                              data[index].itemcode));
-                                          setState(() {});
-                                        },
-                                        icon: Icon(Icons.add)),
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.height *
-                                        0.09,
-                                    child: TextFieldMobile3(
-                                      controller: _controller[index],
-                                      typekeyboard: TextInputType.number,
-                                      onChanged: (value) {
-                                        // datatrans = [];
-                                        if (int.parse(value) <= 0) {
-                                          _controller[index].text =
-                                              0.toString();
-                                          setState(() {});
-                                        }
-                                        qty[index] = int.parse(value);
-                                        datatrans[index].qty = qty[index];
-                                        datatrans[index].lamount = qty[index] *
-                                            datatrans[index].lamount!;
-                                        datatrans[index].famount = qty[index] *
-                                            datatrans[index].famount!;
-                                        print(datatrans.where((element) =>
-                                            element.product ==
-                                            data[index].itemcode));
-                                        setState(() {});
-                                      },
+                  datax = snapshot.data;
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        itemCount: datax!.length,
+                        itemBuilder: (context, index) {
+                          if (search.hasListeners == true) {
+                            for (var x in datax!) {
+                              _controller[datax!.indexWhere((element) =>
+                                      element.itemcode == x.itemcode)]
+                                  .text = datatrans[datatrans.indexWhere(
+                                      (element) =>
+                                          element.product == x.itemcode)]
+                                  .qty
+                                  .toString();
+                            }
+                          }
+
+                          return Container(
+                            child: ListTile(
+                              dense: true,
+                              title: Text(datax![index].itemdesc!),
+                              subtitle: Text(
+                                  'Stock Saat Ini : ${datax![index].stock}'),
+                              trailing: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
+                                      child: IconButton(
+                                          iconSize: 20,
+                                          onPressed: () {
+                                        
+
+                                            datatrans[datatrans.indexWhere(
+                                                    (element) =>
+                                                        element.product ==
+                                                        datax![index].itemcode)]
+                                                .qty++;
+
+                                            print(datatrans.where((element) =>
+                                                element.product ==
+                                                datax![index].itemcode));
+                                            // print(datax!.length);
+                                            setState(() {});
+                                          },
+                                          icon: Icon(Icons.add)),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.06,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    child: IconButton(
-                                        iconSize: 20,
-                                        onPressed: () {
-                                          qty[index] <= 0
-                                              ? qty[index]
-                                              : qty[index]--;
-                                          _controller[index].text =
-                                              qty[index].toString();
-                                          datatrans[index].qty = qty[index];
-                                          datatrans[index].lamount =
-                                              qty[index] *
-                                                  datatrans[index].lamount!;
-                                          datatrans[index].famount =
-                                              qty[index] *
-                                                  datatrans[index].famount!;
-                                          print(datatrans.where((element) =>
-                                              element.product ==
-                                              data[index].itemcode));
-                                          setState(() {});
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.21,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      child: TextFieldMobile3(
+                                        controller: _controller[index],
+                                        typekeyboard: TextInputType.number,
+                                        onChanged: (value) {
+                                          // datatrans = [];
+
+                                          datatrans[datatrans.indexWhere(
+                                                  (element) =>
+                                                      element.product ==
+                                                      datax![index].itemcode)]
+                                              .qty = num.parse(value);
+
+                                          print(datatrans);
+                                          // setState(() {});
                                         },
-                                        icon: Icon(Icons.remove)),
-                                  )
-                                ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
+                                      child: IconButton(
+                                          iconSize: 20,
+                                          onPressed: () {
+                                            if( datatrans[datatrans.indexWhere(
+                                                    (element) =>
+                                                        element.product ==
+                                                        datax![index].itemcode)]
+                                                .qty>0)
+                                                      datatrans[datatrans.indexWhere(
+                                                    (element) =>
+                                                        element.product ==
+                                                        datax![index].itemcode)]
+                                                .qty--;
+
+                                            setState(() {});
+                                          },
+                                          icon: Icon(Icons.remove)),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      });
+                          );
+                        });
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
                 }),
           ),
           ButtonNoIcon(

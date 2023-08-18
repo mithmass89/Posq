@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print
 
+import 'dart:convert';
+
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classfungsi/classhitungreward.dart';
 import 'package:posq/classui/api.dart';
@@ -14,7 +18,8 @@ import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterbillpayment.dart';
 import 'package:posq/userinfo.dart';
-import 'package:toast/toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -97,7 +102,9 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   List<IafjrnhdClass> data = [];
   var wsUrl;
   WebSocketChannel? channel;
-
+  BluetoothDevice? _device;
+  List<BluetoothDevice> _devices = [];
+  
   @override
   void initState() {
     print(widget.fromsaved);
@@ -109,6 +116,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
 
       // channel.sink.close(status.goingAway);
     });
+    initPlatformState();
     formattedDate = formatter.format(now);
     generateDataWA();
     removeDiscount();
@@ -135,6 +143,147 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
     }
   }
 
+  Future<void> initPlatformState() async {
+    bool? isConnected = await bluetooth.isConnected;
+    print(isConnected);
+    List<BluetoothDevice> devices = [];
+    try {
+      devices = await bluetooth.getBondedDevices();
+    } on PlatformException {}
+
+    bluetooth.onStateChanged().listen((state) {
+      print(state);
+      switch (state) {
+        case BlueThermalPrinter.CONNECTED:
+          setState(() {
+            connected = true;
+            print("bluetooth device state: connected");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: connected",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        case BlueThermalPrinter.DISCONNECTED:
+          setState(() {
+            connected = false;
+            print("bluetooth device state: disconnected");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: disconnected",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        case BlueThermalPrinter.DISCONNECT_REQUESTED:
+          setState(() {
+            connected = false;
+            print("bluetooth device state: disconnect requested");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: disconnect requested",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        case BlueThermalPrinter.STATE_TURNING_OFF:
+          setState(() {
+            connected = false;
+            print("bluetooth device state: bluetooth turning off");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: bluetooth turning off",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        case BlueThermalPrinter.STATE_OFF:
+          setState(() {
+            connected = false;
+            print("bluetooth device state: bluetooth off");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: bluetooth off",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        case BlueThermalPrinter.STATE_ON:
+          setState(() {
+            connected = false;
+            print("bluetooth device state: bluetooth on");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: bluetooth on",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        case BlueThermalPrinter.STATE_TURNING_ON:
+          setState(() {
+            connected = false;
+            print("bluetooth device state: bluetooth turning on");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: bluetooth turning on",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        case BlueThermalPrinter.ERROR:
+          setState(() {
+            connected = false;
+            print("bluetooth device state: error");
+            Fluttertoast.showToast(
+                msg: "bluetooth device state: error : restart printer",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                textColor: Colors.white,
+                fontSize: 16.0);
+          });
+          break;
+        default:
+          print(state);
+          break;
+      }
+    });
+
+    if (!mounted) return;
+    setState(() {
+      _devices = devices;
+    });
+
+    if (isConnected == true) {
+      setState(() {
+        connected = true;
+      });
+    }
+  }
+
   getPaymentList() async {
     data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
   }
@@ -143,6 +292,36 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
     connected = await bluetooth.isConnected.then((value) => value!);
     setState(() {});
     print(connected);
+    if (connected == false) {
+      final prefs = await SharedPreferences.getInstance();
+      Map<dynamic, dynamic> printer = json
+          .decode(prefs.getString('bluetoothdevice')!) as Map<String, dynamic>;
+      if (printer.isNotEmpty) {
+        Fluttertoast.showToast(
+            msg: "try to connect printer",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+            textColor: Colors.white,
+            fontSize: 16.0);
+        await bluetooth
+            .connect(BluetoothDevice(
+                printer.values.elementAt(0), printer.values.elementAt(1)))
+            .catchError((error) {
+          print('ini error : $error');
+        });
+      } else {
+        Fluttertoast.showToast(
+            msg: "printer belum di setting",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    }
   }
 
   getTemplatePrinter() {
@@ -302,9 +481,15 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                               color: Colors.blue,
                               splashColor: Colors.purple,
                               onPressed: () {
-                                    Toast.show("Segera hadir",
-                                    duration: Toast.lengthLong,
-                                    gravity: Toast.center);
+                                Fluttertoast.showToast(
+                                    msg: "Segera hadir",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
 //                                 // String subtotal = 'subtotal';
 //                                 // String discount = 'Discount';
 //                                 // String taxs = 'Pajak';
@@ -319,7 +504,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
 // Trx    : ${widget.trno}
 
 // item
-// -----------------------------------------          
+// -----------------------------------------
 // ${string.reduce((value, element) => value + element)}
 // -----------------------------------------
 // ${summary.reduce((value, element) => value + element)}
@@ -351,9 +536,15 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                               color: Colors.blue,
                               splashColor: Colors.purple,
                               onPressed: () {
-                                Toast.show("Segera hadir",
-                                    duration: Toast.lengthLong,
-                                    gravity: Toast.center);
+                                Fluttertoast.showToast(
+                                    msg: "Segera hadir",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
                               },
                               // onPressed: emailValid == true
                               //     ? () async {
@@ -422,6 +613,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                           onPressed:
                               accesslist.contains('settingprinter') == true
                                   ? () async {
+                                      checkPrinter();
                                       await getSumm();
                                       if (connected == true) {
                                         await printing.prints(
@@ -443,9 +635,16 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                                       }
                                     }
                                   : () {
-                                      Toast.show("Tidak Punya access printer",
-                                          duration: Toast.lengthLong,
-                                          gravity: Toast.center);
+                                      checkPrinter();
+                                   Fluttertoast.showToast(
+                                    msg: "Tidak punya access printer",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
                                     },
                           child: Container(
                               padding: EdgeInsets.all(10),

@@ -67,8 +67,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
   late void Function() refund;
   late void Function() marginitem;
   late void Function() condiment;
-  List<IafjrnhdClass> listdatapayment = [];
+  List<dynamic> listdatapayment = [];
   List<dynamic> cashflow = [];
+  List<dynamic> cashflowesteh = [];
   List<dynamic> otherpayment = [];
   List<dynamic> condiments = [];
   List<dynamic> itemsold = [];
@@ -105,6 +106,8 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
 
   CLosingCashier() async {
     cashflow = await ClassApi.ClosingCashFlow(fromdate!, todate!, dbname, '');
+    cashflowesteh =
+        await ClassApi.ClosingCashFlowEsteh(fromdate!, todate!, dbname, '');
     otherpayment =
         await ClassApi.ClosingOtherPayment(fromdate!, todate!, dbname, '');
     condiments =
@@ -123,40 +126,43 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
 
   void initState() {
     super.initState();
+    // outletdata!.add(listoutlets.first);
+    // outlet.text=listoutlets.first;
     checkPrinter();
-    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
-    channel = WebSocketChannel.connect(wsUrl);
-    channel!.stream.listen((message) {
-      if (type == 'Summary Cashier') {
-        myMethod.call();
-      } else if (type == 'Ringkasan') {
-        ringkasan.call();
-      } else if (type == 'Ringkasan Combine') {
-        ringkasancombine.call();
-      } else if (type == 'Detail Item Terjual') {
-        detailmenu.call();
-      } else if (type == 'Refund transaksi') {
-        refund.call();
-      } else if (type == 'Margin Item') {
-        marginitem.call();
-      }
-      if (outletdata![0]['outletdesc'] == 'All Outlet') {
-        // outletdata = [];
-      }
-    });
     type = 'Summary Cashier';
+
+    // wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
+    // channel = WebSocketChannel.connect(wsUrl);
+    // channel!.stream.listen((message) {
+    //   if (type == 'Summary Cashier') {
+    //     myMethod.call();
+    //   } else if (type == 'Ringkasan') {
+    //     ringkasan.call();
+    //   } else if (type == 'Ringkasan Combine') {
+    //     ringkasancombine.call();
+    //   } else if (type == 'Detail Item Terjual') {
+    //     detailmenu.call();
+    //   } else if (type == 'Refund transaksi') {
+    //     refund.call();
+    //   } else if (type == 'Margin Item') {
+    //     marginitem.call();
+    //   }
+    //   if (outletdata![0]['outletdesc'] == 'All Outlet') {
+    //     outletdata = [];
+    //   }
+    // });
+
     formattedDate = formatter2.format(now);
     formatdate = formatter.format(now);
     periode = formaterprd.format(now);
-    startDate();
     _controllerpilihan.text = 'Summary Cashier';
     fromdatenamed = formattedDate;
     todatenamed = formattedDate;
     today = formatdate;
     _controllerdate.text = '$fromdatenamed - $todatenamed';
-
     selected = 'Hari ini';
     checkButton();
+    startDate();
   }
 
   startDate() async {
@@ -165,9 +171,6 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
       todate = formatdate;
     });
     await CLosingCashier();
-    // print("ini formatdate sql $formatdate");
-    // print("ini from date$fromdate");
-    // print("ini todate $todate");
   }
 
   @override
@@ -213,14 +216,45 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     // getDataReport();
   }
 
-  getDataReport() async {
-    //mengambil data list payment cashier summary//
-    await ClassApi.getCashierSummary(fromdate!, todate!, dbname).then((value) {
-      setState(() {
-        listdatapayment = value;
-      });
-      // print('Data harusnya terisi');
-    });
+  // getDataReport() async {
+  //   //mengambil data list payment cashier summary//
+  //   await ClassApi.getCashierSummary(fromdate!, todate!, dbname).then((value) {
+  //     setState(() {
+  //       listdatapayment = value;
+  //     });
+  //     // print('Data harusnya terisi');
+  //   });
+  // }
+
+  defaultCheck() {
+    selected = 'Hari ini';
+    fromdatenamed = formatter2.format(now);
+    todatenamed = formatter2.format(now);
+    formatdate = formatter.format(now);
+    fromdate = formatdate;
+    todate = formatdate;
+    _controllerdate.text = '$fromdatenamed - $todatenamed';
+    if (type == 'Summary Cashier') {
+      myMethod.call();
+    } else if (type == 'Ringkasan') {
+      ringkasan.call();
+    } else if (type == 'Ringkasan Combine') {
+      ringkasancombine.call();
+    } else if (type == 'Refund transaksi') {
+      refund.call();
+    } else if (type == 'Detail Item Terjual2') {
+      detailmenu2.call();
+    } else if (type == 'Detail Item Terjual') {
+      detailmenu.call();
+    } else if (type == 'Margin Item') {
+      marginitem.call();
+    } else if (type == 'Detail condiment') {
+      condiment.call();
+    }
+    if (outletdata![0]['outletdesc'] == 'All Outlet') {
+      outletdata = [];
+    }
+    checkButton();
   }
 
   @override
@@ -244,8 +278,10 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                       onChanged: (value) {},
                       ontap: () async {
                         await _selectDate(context);
+
                         if (type == 'Summary Cashier') {
                           myMethod.call();
+                          CLosingCashier();
                         } else if (type == 'Ringkasan') {
                           ringkasan.call();
                         } else if (type == 'Ringkasan Combine') {
@@ -303,9 +339,9 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         if (outletdata![0]['outletdesc'] == 'All Outlet') {
                           outletdata = [];
                         }
-                        getDataReport();
+                        // getDataReport();
                         checkButton();
-                        // print('ini selcted outlet $outletdata');
+                        print('ini selcted outlet $outletdata');
                         setState(() {});
                       },
                       typekeyboard: TextInputType.text,
@@ -326,7 +362,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                     return ClassLaporanMobile();
                   }));
                   _controllerpilihan.text = type;
-                  getDataReport();
+                  setState(() {});
                   // print(type);
                   if (type == 'Summary Cashier') {
                     myMethod.call();
@@ -615,7 +651,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                             onpressed: () async {
                               if (connected == true) {
                                 await cashiersummary.prints(
-                                    cashflow,
+                                   corporatecode!='ESTEHUNTUKKITA'? cashflow:cashflowesteh,
                                     otherpayment,
                                     condiments,
                                     itemsold,

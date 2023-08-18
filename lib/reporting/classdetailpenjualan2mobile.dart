@@ -153,7 +153,7 @@ class _DetailMenuTerjual2MobileState extends State<DetailMenuTerjual2Mobile> {
                                   subtitle: Text(
                                       'Terjual X ${data[index]['qty'].toString()}'),
                                   trailing: Text(CurrencyFormat.convertToIdr(
-                                      data[index]['nettrevenue'], 0)),
+                                      data[index]['totalaftdisc'], 0)),
                                 )
                               : ListTile();
                         }),

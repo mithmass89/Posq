@@ -52,6 +52,7 @@ class _SubCondimentV2State extends State<SubCondimentV2> {
   String itemselected = '';
   TextEditingController _controller = TextEditingController(text: '0');
   int qty = 0;
+  List<Condiment> classchoice = [];
 
   @override
   void initState() {
@@ -79,6 +80,10 @@ class _SubCondimentV2State extends State<SubCondimentV2> {
         }
       }
       setState(() {});
+    } else {
+      // widget.condimentlist.first.isSelected = true;
+      // widget.posCodimentChoice!();
+      // classchoice.add(widget.condimentlist.first);
     }
   }
 
@@ -259,13 +264,12 @@ class _SubCondimentV2State extends State<SubCondimentV2> {
                 trailing: Checkbox(
                     value: widget.condiment.isSelected,
                     onChanged: (bool? value) {
-                      List<Condiment> classchoice = [];
                       for (var x in widget.condimentlist.where((element) =>
                           element.itemcode == widget.condiment.itemcode)) {
                         x.isSelected = false;
                         classchoice.add(x);
                       }
-                      // print(classchoice);
+                      print(classchoice);
                       for (var x in widget.condimentlist.where((element) =>
                           element.optioncode == widget.condiment.optioncode)) {
                         x.isSelected = true;

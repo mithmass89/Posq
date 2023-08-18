@@ -613,10 +613,10 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     color: Colors.white,
                                     splashColor: Colors.transparent,
                                     onPressed: () {
-                                      // scanBarcodeNormal();
-                                      Toast.show("Maintenence mode",
-                                          duration: Toast.lengthLong,
-                                          gravity: Toast.center);
+                                      scanBarcodeNormal();
+                                      // Toast.show("Maintenence mode",
+                                      //     duration: Toast.lengthLong,
+                                      //     gravity: Toast.center);
                                     },
                                   ),
                                   // Stack(

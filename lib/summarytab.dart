@@ -103,7 +103,7 @@ class _SummaryTodayTabsState extends State<SummaryTodayTabs> {
                         elevation: 5,
                         child: ListTile(
                           dense: true,
-                          title: Text('Penjualan Rata Rata'),
+                          title: Text('Penjualan Rata-rata / 30 hari / bill'),
                           trailing: Text(
                             widget.penjualanratarata.isNotEmpty? '${CurrencyFormat.convertToIdr(widget.penjualanratarata[0]['totalaftdisc'], 0)}':'Rp 0',
                             style: TextStyle(fontWeight: FontWeight.bold),

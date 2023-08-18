@@ -32,3 +32,4 @@ String referrals = '';
 String statusabsen = '';
 String midkey = '';
 bool opencashier = false;
+num closingending=0;

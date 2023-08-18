@@ -20,6 +20,7 @@ ClassApi? apicloud;
 class ClassSetupProfileMobile extends StatefulWidget {
   final String email;
   final String fullname;
+
   const ClassSetupProfileMobile(
       {Key? key, required this.email, required this.fullname})
       : super(key: key);
@@ -496,7 +497,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                 if (outletcd.text == '') {
                                                   print('Empty code outlet');
                                                 } else {
-                                                  emaillogin=widget.email;
+                                                  emaillogin = widget.email;
                                                   EasyLoading.show(
                                                       status: 'loading...');
                                                   await _createProfile(Outlet(
@@ -515,6 +516,13 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                                       .insertAccessOutlet(
                                                           outletcd.text,
                                                           widget.email);
+                                                  if (corporatecode ==
+                                                      'ESTEHUNTUKKITA') {
+                                                    await ClassApi
+                                                        .insertAccessOutlet(
+                                                            outletcd.text,
+                                                            'estehuntukkita@gmail.com');
+                                                  }
                                                   // await _insertGntrantp(outletcd.text);
                                                   setState(() {
                                                     _isloading = false;

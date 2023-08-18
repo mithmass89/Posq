@@ -61,19 +61,22 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
   int qtyitemmaster = 1;
   bool hasupdate = false;
 
+  int trackstock = 0;
 
-  int trackstock=0;
-
-  getDataItem()async{
-    await ClassApi.getItemList(pscd, dbname, widget.data.itemcode!).then((value) {
+  getDataItem() async {
+    await ClassApi.getItemList(pscd, dbname, widget.data.itemcode!)
+        .then((value) {
       trackstock = value.first.trackstock!;
     });
   }
+
 //mengammbil data condiment dari item yg tersetup//
   Future<void> getDetailCondiment() async {
     condiment =
         await ClassApi.getItemCondiment(widget.data.itemcode!, dbname, query);
     // print(condiment);
+    // posCodimentChoice(); // setting agar menu choice pertama sebagai default
+
     groupedData();
     if (widget.fromedit == true) {
       await checkFromEdit();
@@ -117,7 +120,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
     }
     setState(() {});
 
-    // print(poscondimentchoice);
+    print('awal condiment choice : $poscondimentchoice');
   }
 
   posCodimentTopping() {
@@ -133,6 +136,8 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
     for (var x in data) {
       if (x.condimenttype == 'menuchoice') {
         poscondimentchoice.add(x);
+
+        print('ini summary condiment awal :$summarycondiment ');
       } else {
         poscondimenttopping.add(x);
       }

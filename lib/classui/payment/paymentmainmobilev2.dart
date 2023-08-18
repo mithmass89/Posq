@@ -68,6 +68,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
   String compcode = '';
   String compdescription = '';
   int lastsplit = 1;
+  bool paymentenable = true;
 
   @override
   void initState() {
@@ -426,8 +427,9 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                   height: MediaQuery.of(context).size.height * 0.06,
                   width: MediaQuery.of(context).size.width * 0.85,
                   child: ElevatedButton(
-                    onPressed: zerobill == true
+                    onPressed: zerobill == true && paymentenable == true
                         ? () async {
+                            paymentenable = false;
                             if (refundmode == false) {
                               print('ini compcode $compcode');
                               if (compcode != '' || compcode.isNotEmpty) {
@@ -482,10 +484,11 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                                           )),
                                 );
                               }
-                            }else{
-                               print('ini compcode $compcode');
+                            } else {
+                              print('ini compcode $compcode');
                               if (compcode != '' || compcode.isNotEmpty) {
-                                await insertIafjrnhdRefundMode().whenComplete(() {
+                                await insertIafjrnhdRefundMode()
+                                    .whenComplete(() {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(

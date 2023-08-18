@@ -256,6 +256,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               fontSize: 16.0);
                         } else {
                           EasyLoading.show(status: 'loading...');
+                          corporatecode = frenchise.text;
                           // await FirebaseAuth.instance
                           //     .createUserWithEmailAndPassword(
                           //         email: email.text, password: password.text);
@@ -268,6 +269,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                   refferal.text,
                                   phone.text)
                               .then((_) async {
+                            level = 'Owner';
                             usercd = namalengkap.text;
                             print('ini usercode $usercd');
                             // Navigator.of(context).pushAndRemoveUntil(

@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/services.dart';
 import 'package:posq/setting/printer/testprint.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 TestPrint? testprint;
 
@@ -18,12 +21,19 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
   List<BluetoothDevice> _devices = [];
   BluetoothDevice? _device;
   bool _connected = false;
+  String address = '';
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
     testprint = TestPrint();
+  }
+
+  getpref() async {
+    final prefs = await SharedPreferences.getInstance();
+    Map<dynamic, dynamic> printer = json
+        .decode(prefs.getString('bluetoothdevice')!) as Map<String, dynamic>;
   }
 
   Future<void> initPlatformState() async {
@@ -38,52 +48,43 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
       print(state);
       switch (state) {
         case BlueThermalPrinter.CONNECTED:
-          setState(() {
-            _connected = true;
-            print("bluetooth device state: connected");
-          });
+          _connected = true;
+          setState(() {});
           break;
         case BlueThermalPrinter.DISCONNECTED:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: disconnected");
-          });
+          _connected = false;
+          print("bluetooth device state: disconnected");
+          setState(() {});
           break;
         case BlueThermalPrinter.DISCONNECT_REQUESTED:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: disconnect requested");
-          });
+          _connected = false;
+          print("bluetooth device state: disconnect requested");
+          setState(() {});
           break;
         case BlueThermalPrinter.STATE_TURNING_OFF:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: bluetooth turning off");
-          });
+          _connected = false;
+          print("bluetooth device state: bluetooth turning off");
+          setState(() {});
           break;
         case BlueThermalPrinter.STATE_OFF:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: bluetooth off");
-          });
+          _connected = false;
+          print("bluetooth device state: bluetooth off");
+          setState(() {});
           break;
         case BlueThermalPrinter.STATE_ON:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: bluetooth on");
-          });
+          _connected = false;
+          print("bluetooth device state: bluetooth on");
+          setState(() {});
           break;
         case BlueThermalPrinter.STATE_TURNING_ON:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: bluetooth turning on");
-          });
+          _connected = false;
+          print("bluetooth device state: bluetooth turning on");
+          setState(() {});
           break;
         case BlueThermalPrinter.ERROR:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: error");
-          });
+          _connected = false;
+          print("bluetooth device state: error");
+          setState(() {});
           break;
         default:
           print(state);
@@ -97,9 +98,8 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
     });
 
     if (isConnected == true) {
-      setState(() {
-        _connected = true;
-      });
+      _connected = true;
+      setState(() {});
     }
   }
 
@@ -134,8 +134,15 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
                     Expanded(
                       child: DropdownButton(
                         items: _getDeviceItems(),
-                        onChanged: (BluetoothDevice? value) {
+                        onChanged: (BluetoothDevice? value) async {
                           setState(() => _device = value);
+                          SharedPreferences bluetoothdevice =
+                              await SharedPreferences.getInstance();
+                          // final removes = await SharedPreferences.getInstance();
+                          // removes.remove('bluetoothdevice');
+                          bluetoothdevice.setString(
+                              'bluetoothdevice', json.encode(_device));
+                          print(value!.connected);
                         },
                         value: _device,
                       ),
@@ -166,16 +173,18 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              _connected ? Colors.red : Colors.green),
-                      onPressed: _connected ? _disconnect : _connect,
+                              _connected == true ? Colors.red : Colors.green),
+                      onPressed: _connected == true ? _disconnect : _connect,
                       child: Text(
-                        _connected ? 'Disconnect' : 'Connect',
+                        _connected == true ? 'Disconnect' : 'Connect',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ],
                 ),
-                       SizedBox(height: MediaQuery.of(context).size.height*0.06,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -209,7 +218,15 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
                     ],
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.35,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [Text('''4. Setting printer hanya sekali''')],
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                ),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 10.0, right: 10.0, top: 50),

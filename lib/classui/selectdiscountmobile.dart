@@ -10,7 +10,7 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
-
+typedef void StringCallback(IafjrndtClass val);
 class SelectPromoMobile extends StatefulWidget {
   final String? trno;
   final String? pscd;
@@ -34,7 +34,6 @@ class SelectPromoMobile extends StatefulWidget {
 }
 
 class _SelectPromoMobileState extends State<SelectPromoMobile> {
-  late DatabaseHandler handler;
   final search = TextEditingController();
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
@@ -44,7 +43,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHandler();
+
     formattedDate = formatter.format(now);
   }
 
@@ -140,10 +139,44 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                                   print('ini ${value.first}');
                                   await widget.refreshdata;
                                   await widget.updatedata;
-
-                                  // ClassRetailMainMobile.of(context)!.string =
-                                  //     value.first;
-                                  Navigator.of(context).pop();
+                                  // var z = IafjrndtClass(
+                                  //     split: 1,
+                                  //     tablesid: '',
+                                  //     rateamtitem: 0,
+                                  //     rateamtservice: 0,
+                                  //     rateamttax: 0,
+                                  //     rateamttotal: 0,
+                                  //     ratebs1: 1,
+                                  //     ratebs2: 2,
+                                  //     ratecurcd: 'IDR',
+                                  //     reason: '',
+                                  //     revenueamt: value.first.totalaftdisc,
+                                  //     multiprice: 0,
+                                  //     salestype: '',
+                                  //     guestname: '',
+                                  //     note: '',
+                                  //     id: 0,
+                                  //     itemcode: '',
+                                  //     itemdesc: '',
+                                  //     itemseq: 0,
+                                  //     description: '',
+                                  //     pscd: '',
+                                  //     svchgpct: 0,
+                                  //     taxpct: 0,
+                                  //     qty: 0,
+                                  //     condimenttype: '',
+                                  //     condimentlist: [],
+                                  //     pricelist: [],
+                                  //     trdt: widget.databill!.trdt,
+                                  //     totalaftdisc: value.first.totalaftdisc,
+                                  //     transno: value.first.transno,
+                                  //     transno1: value.first.transno,
+                                  //     trno1: value.first.transno,
+                                  //     totalcost: 0,
+                                  //     ratecostamt: 0);
+                                  // print('value z : $z');
+                                  // ClassRetailMainMobile.of(context)!.string = z;
+                                  Navigator.of(context).pop(x[index]);
                                 });
                               },
                               // contentPadding: EdgeInsets.all(8.0),
@@ -176,8 +209,6 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
                       MaterialPageRoute(
                           builder: (context) => ClassCreatePromoMobile()))
                   .then((_) async {
-                await handler.retrievePromo(query);
-
                 setState(() {});
               });
             },

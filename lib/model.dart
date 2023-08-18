@@ -256,7 +256,7 @@ class TransaksiBO {
   final String? type_tr;
   final String? product;
   final String? proddesc;
-  late num? qty;
+  late num qty;
   final String? unit;
   final String? ctr;
   final String? subctr;
@@ -274,7 +274,7 @@ class TransaksiBO {
     this.type_tr,
     this.product,
     this.proddesc,
-    this.qty,
+    this.qty=0,
     this.unit,
     this.ctr,
     this.subctr,
@@ -326,6 +326,104 @@ class TransaksiBO {
       'note': note,
       'active': active,
       'usercreate': usercreate
+    };
+  }
+}
+
+class TransaksiBOTemp {
+  final String? trdt;
+  final String? transno;
+  final String? documentno;
+  final String? description;
+  final String? type_tr;
+  final String? product;
+  final String? proddesc;
+  late num qty;
+  final String? unit;
+  final String? ctr;
+  final String? subctr;
+  late num? famount;
+  late num? lamount;
+  final String? note;
+  final String? usercreate;
+  final int? active;
+  late TextEditingController? controller;
+  final String? itemcode;
+  final String? itemdesc;
+  final num? stokterakhir;
+
+  TransaksiBOTemp({
+    this.trdt,
+    this.transno,
+    this.documentno,
+    this.description,
+    this.type_tr,
+    this.product,
+    this.proddesc,
+    required this.qty,
+    this.unit,
+    this.ctr,
+    this.subctr,
+    this.famount,
+    this.lamount,
+    this.note,
+    this.active,
+    this.usercreate,
+    this.controller,
+    this.itemcode,
+    this.itemdesc,
+    this.stokterakhir,
+  });
+
+  TransaksiBOTemp.fromJson(Map<String, dynamic> res)
+      : trdt = res["trdt"],
+        transno = res["transno"],
+        documentno = res["documentno"],
+        description = res['description'],
+        type_tr = res['type_tr'],
+        product = res['product'],
+        proddesc = res['proddesc'],
+        qty = res["qty"],
+        unit = res["unit"],
+        ctr = res['ctr'],
+        subctr = res["subctr"],
+        famount = res["famount"],
+        lamount = res['lamount'],
+        note = res["note"],
+        active = res["active"],
+        controller = res["controller"],
+        itemcode = res["itemcode"],
+        itemdesc = res["itemdesc"],
+        stokterakhir = res["stokterakhir"],
+        usercreate = res["usercreate"];
+
+  @override
+  String toString() {
+    return '{"trdt": $trdt,"itemcode":$itemcode,"itemdesc":$itemdesc,"stokterakhir":$stokterakhir,"controller":$controller, "transno": $transno,"documentno": $documentno,"description": $description,"type_tr": $type_tr,"product": $product,"proddesc": $proddesc,"qty": $qty,"unit": $unit,"ctr": $ctr,"subctr": $subctr,"famount": $famount,"lamount": $lamount,"note": $note,"active": $active,"usercreate":$usercreate}';
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'trdt': trdt,
+      'transno': transno,
+      'documentno': documentno,
+      'description': description,
+      'type_tr': type_tr,
+      'product': product,
+      'proddesc': proddesc,
+      'qty': qty,
+      'unit': unit,
+      'ctr': ctr,
+      'subctr': subctr,
+      'famount': famount,
+      'lamount': lamount,
+      'note': note,
+      'active': active,
+      'usercreate': usercreate,
+      'controller': controller,
+      'itemcode': itemcode,
+      'itemdesc': itemdesc,
+      'stokterakhir': stokterakhir,
     };
   }
 }
@@ -969,7 +1067,6 @@ class IafjrndtClass {
   final num? discpct;
   final num? discamt;
   final int? qty;
-
   final String? ratecurcd;
   final num? ratebs1;
   final num? ratebs2;
@@ -1014,62 +1111,62 @@ class IafjrndtClass {
   final String? reason;
 
   IafjrndtClass(
-      {this.salestype,
-      this.id,
-      this.reason,
+      {this.salestype = '',
+      this.id = 0,
+      this.reason = '',
       required this.totalcost,
-      this.trdt,
-      this.pscd,
-      this.transno,
+      this.trdt = '',
+      this.pscd = '',
+      this.transno = '',
       this.split,
       this.transno1,
       this.itemcode,
       this.itemdesc,
       this.trno1,
       this.itemseq,
-      this.cono,
-      this.waitercd,
+      this.cono = '',
+      this.waitercd = '',
       this.discpct,
       this.discamt,
       this.qty,
-      this.ratecurcd,
-      this.ratebs1,
-      this.ratebs2,
+      this.ratecurcd = '',
+      this.ratebs1 = 1,
+      this.ratebs2 = 1,
       required this.ratecostamt,
-      this.rateamtitem,
-      this.rateamtservice,
-      this.rateamttax,
-      this.rateamttotal,
+      this.rateamtitem = 0,
+      this.rateamtservice = 0,
+      this.rateamttax = 0,
+      this.rateamttotal = 0,
       this.revenueamt,
-      this.taxamt,
-      this.serviceamt,
+      this.taxamt = 0,
+      this.serviceamt = 0,
       this.totalaftdisc,
-      this.rebateamt,
-      this.rvncoa,
-      this.taxcoa,
-      this.servicecoa,
-      this.costcoa,
-      this.active,
-      this.usercrt,
-      this.userupd,
-      this.userdel,
-      this.prnkitchen,
-      this.prnkitchentm,
-      this.confirmed,
-      this.description,
-      this.taxpct,
-      this.svchgpct,
-      this.statustrans,
-      this.createdt,
-      this.guestname,
+      this.rebateamt = 0,
+      this.rvncoa = '',
+      this.taxcoa = '',
+      this.servicecoa = '',
+      this.costcoa = '',
+      this.active = 1,
+      this.usercrt = '',
+      this.userupd = '',
+      this.userdel = '',
+      this.prnkitchen = 0,
+      this.prnkitchentm = '',
+      this.confirmed = '',
+      this.description = '',
+      this.taxpct = 0,
+      this.svchgpct = 0,
+      this.statustrans = '',
+      this.createdt = '',
+      this.guestname = '',
       this.condimentlist,
-      this.typ,
-      this.optioncode,
-      this.havecond,
+      this.typ = '',
+      this.optioncode = '',
+      this.havecond = 0,
       this.condimenttype,
       this.pricelist,
       this.multiprice,
-      this.tablesid,
+      this.tablesid = '',
       this.note});
 
   IafjrndtClass.fromJson(

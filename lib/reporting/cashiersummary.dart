@@ -29,62 +29,122 @@ class CashierSummary extends StatefulWidget {
 
 class _CashierSummaryState extends State<CashierSummary> {
   String? query = '';
-  List<IafjrnhdClass> data = [];
-  List<IafjrnhdClass> datatemp = [];
-  List<IafjrnhdClass> detail = [];
-  Map<String, int> sumByPymtmthd = {};
+  List<dynamic> detail = [];
+  List<dynamic> data = [];
+  List<dynamic> datatemp = [];
+  Map<String, Map<String, dynamic>> sumsByItem = {};
+  Future? olahdata;
+  List<dynamic> outletnewlist = [];
 
   void initState() {
     super.initState();
-
+    detail = [];
     data = [];
     datatemp = [];
-    sumByPymtmthd = {};
-    ToastContext().init(context);
+    sumsByItem = {};
+    // olahdata = olahData();
+    var z = widget.listoutlets;
+    outletnewlist = z.toSet().toList();
   }
 
   void methodA() {
     detail = [];
     data = [];
     datatemp = [];
-    sumByPymtmthd = {};
-    // setState(() {});
+    sumsByItem = {};
+    print('data dari void $data');
   }
 
   @override
   void dispose() {
     super.dispose();
   }
-  Future<List<IafjrnhdClass>> olahData() async {
-    for (var x in widget.listoutlets) {
+
+  bool areEqual(Map<String, dynamic> map1, Map<String, dynamic> map2) {
+    if (map1.length != map2.length) {
+      return false;
+    }
+
+    for (var key in map1.keys) {
+      if (map1[key] != map2[key]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  List<dynamic> removeDuplicates(List<dynamic> dataList) {
+    List<dynamic> uniqueList = [];
+
+    for (var data in dataList) {
+      if (data is Map<String, dynamic>) {
+        bool isDuplicate = false;
+        for (var uniqueData in uniqueList) {
+          if (uniqueData is Map<String, dynamic> &&
+              areEqual(data, uniqueData)) {
+            isDuplicate = true;
+            break;
+          }
+        }
+        if (!isDuplicate) {
+          uniqueList.add(data);
+        }
+      }
+    }
+
+    return uniqueList;
+  }
+
+  Future<List<dynamic>> olahData() async {
+    int count = 0;
+    datatemp = [];
+    data = [];
+    sumsByItem = {};
+
+    print('new outletlist: $outletnewlist');
+    for (var x in outletnewlist) {
+      count++;
+      print('pengulangan : $count');
       await ClassApi.getCashierSummary(
         widget.fromdate,
         widget.todate,
         x,
       ).then((value) {
         datatemp.addAll(value);
-        detail.addAll(value);
       });
     }
     ;
-    // Grouping transactions by 'pymtmthd'
-    Map<String, List<IafjrnhdClass>> groupedTransactions =
-        groupBy(datatemp, (transaction) => transaction.pymtmthd!);
 
-    // Calculating the sum of transaction amounts for each 'pymtmthd'
-
-    groupedTransactions.forEach((key, value) {
-      int sum = value.fold(0, (previousValue, transaction) {
-        return previousValue + (transaction.ftotamt as int);
+    print(datatemp);
+    List<dynamic> uniqueDataList = removeDuplicates(datatemp);
+    Map<String, List<dynamic>> groupedData =
+        groupBy(uniqueDataList, (item) => item['pymtmthd']);
+    print('ini unique data : $uniqueDataList');
+    // Calculating the sum of 'qty' and 'nettrevenue' for each group
+    groupedData.forEach((key, value) {
+      int ftotamt = value.fold(0, (previousValue, item) {
+        return previousValue + (item['ftotamt'] as int);
       });
-      sumByPymtmthd[key] = sum;
+
+      sumsByItem[key] = {
+        'pymtmthd': key,
+        'ftotamt': ftotamt,
+      };
     });
 
-    // Printing the sums by 'pymtmthd'
-    sumByPymtmthd.forEach((key, value) {
-      print('pymtmthd: $key, sum: $value');
-      data.add(IafjrnhdClass(transno1: '', pymtmthd: key, ftotamt: value));
+    sumsByItem.forEach((key, value) {
+      print('ftotamt: ${value['ftotamt']}');
+      data.add({
+        "pymtmthd": value['pymtmthd'],
+        "ftotamt": value['ftotamt'],
+      });
     });
+    // print(sumsByItem);
+
+    // print('ini datax $data');
+    
+
     return data;
   }
 
@@ -105,6 +165,7 @@ class _CashierSummaryState extends State<CashierSummary> {
           future: olahData(),
           builder: (context, snapshot) {
             if (data.isNotEmpty) {
+              var x = removeDuplicates(data);
               return Column(
                 children: [
                   Container(
@@ -130,13 +191,13 @@ class _CashierSummaryState extends State<CashierSummary> {
                                 childAspectRatio: 5 / 2,
                                 crossAxisSpacing: 1,
                                 mainAxisSpacing: 1),
-                        itemCount: data.length,
+                        itemCount: x.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             dense: true,
-                            title: Text(data[index].pymtmthd!),
+                            title: Text(x[index]['pymtmthd']),
                             subtitle: Text(CurrencyFormat.convertToIdr(
-                                data[index].ftotamt, 0)),
+                                x[index]['ftotamt'], 0)),
                           );
                         }),
                   ),
@@ -150,9 +211,9 @@ class _CashierSummaryState extends State<CashierSummary> {
                               builder: (BuildContext context) {
                             return ClassCashierSummaryDetail(
                               listoutlets: widget.listoutlets.isEmpty
-                          ? listoutlets
-                          : List.generate(widget.listoutlets.length,
-                              (index) => widget.listoutlets[index]),
+                                  ? listoutlets
+                                  : List.generate(widget.listoutlets.length,
+                                      (index) => widget.listoutlets[index]),
                               datatemp: detail,
                               fromdate: widget.fromdate,
                               todate: widget.todate,

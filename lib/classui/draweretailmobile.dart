@@ -48,7 +48,9 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               color: Colors.orange,
             ),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -67,7 +69,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                   ],
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.01,
+                  height: MediaQuery.of(context).size.height * 0.03,
                   width: MediaQuery.of(context).size.width * 0.3,
                 ),
                 Container(
@@ -76,23 +78,6 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.white,
-                        // backgroundImage: AssetImage(
-                        //   'assets/sheryl.png',
-                        // ),
-                        child: Text(
-                          usercd.substring(0, 1),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.03,
-                      ),
                       Column(
                         children: [
                           SizedBox(

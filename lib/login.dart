@@ -161,7 +161,7 @@ class _LoginState extends State<Login> {
         Duration difference = expired.difference(sekarang);
         differenceInDays = difference.inDays;
         print('difference : ${differenceInDays < 7}');
-        if (differenceInDays < 7 && differenceInDays>=0) {
+        if (differenceInDays < 7 && differenceInDays >= 0) {
           aktif = 'aktif';
           Fluttertoast.showToast(
               msg: "Sisa masa aktif $differenceInDays",
@@ -292,6 +292,7 @@ class _LoginState extends State<Login> {
                             aktif = await expiredDate(email.text);
                             print(aktif);
                             if (aktif == 'aktif') {
+                              listoutlets = [];
                               EasyLoading.show(status: 'loading...');
                               await ClassApi.getUserinfofromManual(
                                       email.text, password.text)
@@ -635,6 +636,7 @@ class _LoginState extends State<Login> {
                               aktif = await expiredDate(email.text);
                               print(aktif);
                               if (aktif == 'aktif') {
+                                listoutlets = [];
                                 EasyLoading.show(status: 'loading...');
                                 await ClassApi.getUserinfofromManual(
                                         email.text, password.text)

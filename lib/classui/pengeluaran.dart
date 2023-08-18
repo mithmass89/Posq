@@ -130,11 +130,13 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
       totals =
           total.fold(0.0, (sum, transaction) => sum! + transaction['lamount']);
     }
-       await totalexpense();
-    if (data.isNotEmpty) {
-      endings = data[0]!.amount! + totals! - dataclose[0]!.amount!;
-    }
- 
+    await totalexpense();
+
+    endings = data.isNotEmpty
+        ? data[0]!.amount!
+        : 0 + (total.isNotEmpty ? totals! : 0) - dataclose[0]!.amount!;
+    closingending = endings!;
+
     setState(() {});
   }
 
@@ -202,7 +204,9 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
                       EasyLoading.dismiss();
                     });
                     print('Entered Amount: $enteredAmount');
-                    Navigator.pop(context);
+                    opencashier=false;
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/Dashboard', (Route<dynamic> route) => false);
                   }
                 },
               ),
@@ -218,7 +222,7 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
       await getDataDetail();
       EasyLoading.dismiss();
       Navigator.of(context).pop(true); // Tutup dialog setelah selesai
-               Navigator.pop(context);
+      Navigator.pop(context);
     }
 
     showDialog(
@@ -246,7 +250,7 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
                   _submitForm();
                   await getDataDetail();
                   await checkalldata();
-         
+
                   setState(() {});
                 },
               ),

@@ -21,13 +21,12 @@ class ClassCashierSummaryDetailTab extends StatefulWidget {
 
 class _ClassCashierSummaryDetailTabState
     extends State<ClassCashierSummaryDetailTab> {
-  late DatabaseHandler handler;
   String? query = '';
   TextEditingController _controller = TextEditingController();
 
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
+    // handler = DatabaseHandler();
     ToastContext().init(context);
   }
 
@@ -82,7 +81,7 @@ class _ClassCashierSummaryDetailTabState
                                     title: Text(x[index].transno!),
                                     subtitle: Text(x[index].pymtmthd!),
                                     trailing: Text(CurrencyFormat.convertToIdr(
-                                        x[index].totalamt, 0))),
+                                        x[index].ftotamt, 0))),
                                 Divider(),
                               ],
                             );

@@ -22,9 +22,11 @@ import 'package:posq/reporting/reportingtablet/classcashierreporttab.dart';
 import 'package:posq/reporting/reportingtablet/classdetailmenuterjual.dart';
 import 'package:posq/reporting/reportingtablet/classringkasancombinetab.dart';
 import 'package:posq/reporting/reportingtablet/classringkasanreporttab.dart';
+import 'package:posq/reporting/reportingtablet/detailpenjualan2tab.dart';
 import 'package:posq/setting/printer/cashiersummary.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
 import 'package:posq/userinfo.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MyBuilder = void Function(
     BuildContext context, void Function() methodA);
@@ -66,11 +68,13 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   late void Function() refund;
   late void Function() marginitem;
   late void Function() condiment;
+  late void Function() detailmenu2;
   List<IafjrnhdClass> listdatapayment = [];
   List<IafjrndtClass> data = [];
   List<IafjrndtClass> topMenu = [];
   List<IafjrndtClass> menukuranglaku = [];
   List<dynamic> cashflow = [];
+  List<dynamic> cashflowesteh = [];
   List<dynamic> otherpayment = [];
   List<dynamic> condiments = [];
   List<dynamic> itemsold = [];
@@ -93,6 +97,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   String header = '';
   String footer = '';
   String today = '';
+  var wsUrl;
+  WebSocketChannel? channel;
 
   checkPrinter() async {
     connected = await bluetooth.isConnected.then((value) => value!);
@@ -102,12 +108,33 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
 
   void initState() {
     super.initState();
+    wsUrl = Uri.parse('ws://$ip:8080?property=$dbname');
     type = 'Summary Cashier';
+    channel = WebSocketChannel.connect(wsUrl);
+    channel!.stream.listen((message) {
+      if (type == 'Summary Cashier') {
+        myMethod.call();
+      } else if (type == 'Ringkasan') {
+        ringkasan.call();
+      } else if (type == 'Ringkasan Combine') {
+        ringkasancombine.call();
+      } else if (type == 'Detail Item Terjual') {
+        detailmenu.call();
+      } else if (type == 'Refund transaksi') {
+        refund.call();
+      } else if (type == 'Margin Item') {
+        marginitem.call();
+      }
+      if (outletdata![0]['outletdesc'] == 'All Outlet') {
+        outletdata = [];
+      }
+    });
+    checkPrinter();
+
     formattedDate = formatter2.format(now);
     formatdate = formatter.format(now);
     periode = formaterprd.format(now);
     startDate();
-    handler = DatabaseHandler();
     _controllerpilihan.text = 'Summary Cashier';
     fromdatenamed = formattedDate;
     todatenamed = formattedDate;
@@ -115,8 +142,6 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
     _controllerdate.text = '$fromdatenamed - $todatenamed';
     selected = 'Hari ini';
     CLosingCashier();
-    // getDataRingkasan();
-    checkPrinter();
   }
 
   getTemplatePrinter() {
@@ -133,6 +158,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
 
   CLosingCashier() async {
     cashflow = await ClassApi.ClosingCashFlow(fromdate!, todate!, dbname, '');
+    cashflowesteh =
+        await ClassApi.ClosingCashFlowEsteh(fromdate!, todate!, dbname, '');
     otherpayment =
         await ClassApi.ClosingOtherPayment(fromdate!, todate!, dbname, '');
     condiments =
@@ -184,31 +211,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
         _controllerdate.text = '$fromdatenamed - $todatenamed';
       });
     }
-    getDataReport();
-  }
-
-  getDataReport() {
-    //mengambil data list payment cashier summary//
-    ClassApi.getSummaryCashierDetail(fromdate!, todate!, dbname, '')
-        .then((value) {
-      setState(() {
-        listdatapayment = value;
-      });
-      print('Data harusnya terisi');
-    });
-  }
-
-  getDataRingkasan() async {
-    data =
-        await ClassApi.getAnalisaRingkasan(fromdate!, todate!, dbname, query);
-    print('terpanggil');
-
-    topMenu = await ClassApi.getAnalisaRingkasanTopitem(
-        fromdate!, todate!, dbname, query);
-
-    menukuranglaku = await ClassApi.getAnalisaRingkasanItemKuranglaku(
-        fromdate!, todate!, dbname, query);
-    setState(() {});
+    // getDataReport();
   }
 
   @override
@@ -270,6 +273,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                             marginitem.call();
                           } else if (type == 'Detail condiment') {
                             condiment.call();
+                          } else if (type == 'Detail Item Terjual2') {
+                            detailmenu2.call();
                           }
                           setState(() {});
                         },
@@ -304,6 +309,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                             marginitem.call();
                           } else if (type == 'Detail condiment') {
                             condiment.call();
+                          } else if (type == 'Detail Item Terjual2') {
+                            detailmenu2.call();
                           }
                           if (outletdata![0]['outletdesc'] == 'All Outlet') {
                             outletdata = [];
@@ -354,6 +361,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           marginitem.call();
                         } else if (type == 'Detail condiment') {
                           condiment.call();
+                        } else if (type == 'Detail Item Terjual2') {
+                          detailmenu2.call();
                         }
 
                         setState(() {});
@@ -402,6 +411,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           marginitem.call();
                         } else if (type == 'Detail condiment') {
                           condiment.call();
+                        } else if (type == 'Detail Item Terjual2') {
+                          detailmenu2.call();
                         }
                         setState(() {});
                       },
@@ -444,6 +455,8 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                           marginitem.call();
                         } else if (type == 'Detail condiment') {
                           condiment.call();
+                        } else if (type == 'Detail Item Terjual2') {
+                          detailmenu2.call();
                         }
                         setState(() {});
                       },
@@ -480,7 +493,9 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                       onpressed: () async {
                         if (connected == true) {
                           await cashiersummary.prints(
-                              cashflow,
+                              corporatecode != 'ESTEHUNTUKKITA'
+                                  ? cashflow
+                                  : cashflowesteh,
                               otherpayment,
                               condiments,
                               itemsold,
@@ -554,6 +569,20 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                         builder:
                             (BuildContext context, void Function() methodA) {
                           condiment = methodA;
+                        },
+                        fromdate: fromdate!,
+                        todate: todate!,
+                      )
+                    : Container(),
+                type == 'Detail Item Terjual2'
+                    ? DetailMenuTerjual2Tab(
+                        listoutlets: outletdata!.isEmpty
+                            ? listoutlets
+                            : List.generate(outletdata!.length,
+                                (index) => outletdata![index]['outletcode']),
+                        builder:
+                            (BuildContext context, void Function() methodA) {
+                          detailmenu2 = methodA;
                         },
                         fromdate: fromdate!,
                         todate: todate!,

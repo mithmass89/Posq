@@ -27,10 +27,13 @@ class _KelolaProductMainTabletState extends State<KelolaProductMainTablet> {
   String type = '1010';
   String trno = '';
   int currenttrno = 0;
+  FocusNode _focusNode = FocusNode();
+  List<Item>? datax = [];
 
   @override
   void initState() {
     super.initState();
+    data();
     formattedDate = formatter.format(now);
     getTrnoBo();
   }
@@ -38,6 +41,32 @@ class _KelolaProductMainTabletState extends State<KelolaProductMainTablet> {
   getTrnoBo() async {
     currenttrno = await ClassApi.getTrnoBO(type, dbname);
     trno = '$dbname-$currenttrno';
+  }
+
+  data() async {
+    await ClassApi.getItemList(pscd, dbname, search.text).then((value) {
+      for (var x in value) {
+        datatrans.add(TransaksiBO(
+            trdt: formattedDate,
+            transno: trno,
+            documentno: '',
+            description: 'adjusment stock $formattedDate',
+            type_tr: type,
+            product: x.itemcode,
+            proddesc: x.itemdesc,
+            qty: 0,
+            unit: 'Unit',
+            ctr: 'Inventory',
+            subctr: 'Biaya',
+            famount: x.costamt,
+            lamount: x.costamt,
+            note: 'Adjusment Stock PreBo',
+            active: 1,
+            usercreate: usercd));
+
+        _controller.add(TextEditingController(text: '0'));
+      }
+    });
   }
 
   @override
@@ -49,23 +78,23 @@ class _KelolaProductMainTabletState extends State<KelolaProductMainTablet> {
         splashColor: Colors.yellow,
         hoverColor: Colors.red,
         onPressed: () async {
-            EasyLoading.show(status: 'Proses data...');
+          EasyLoading.show(status: 'Proses data...');
           await ClassApi.insertAdujsmentStock(dbname, datatrans);
-            EasyLoading.dismiss();
-                  Navigator.of(context).pop();
+          EasyLoading.dismiss();
+          Navigator.of(context).pop();
         },
         child: Icon(Icons.save),
       ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Kelola Stock'),
-      ),
-      body: Column(
-        children: [
+        actions: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.08,
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: MediaQuery.of(context).size.width * 0.5,
             child: TextFieldMobile2(
-              label: 'Search',
+              focus: _focusNode,
+              hint: 'Cari barang?',
               controller: search,
               typekeyboard: TextInputType.text,
               onChanged: (value) {
@@ -73,25 +102,38 @@ class _KelolaProductMainTabletState extends State<KelolaProductMainTablet> {
               },
             ),
           ),
+        ],
+      ),
+      body: Column(
+        children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: FutureBuilder(
                 future: ClassApi.getItemList(pscd, dbname, search.text),
                 builder: (context, AsyncSnapshot<List<Item>> snapshot) {
-                  List<Item>? data = snapshot.data;
+                  datax = snapshot.data;
                   if (snapshot.hasData) {
                     return ListView.builder(
-                        itemCount: data!.length,
+                        itemCount: datax!.length,
                         itemBuilder: (context, index) {
-                          qty.add(0);
-                          _controller.add(TextEditingController(text: '0'));
+                          if (search.hasListeners == true) {
+                            for (var x in datax!) {
+                              _controller[datax!.indexWhere((element) =>
+                                      element.itemcode == x.itemcode)]
+                                  .text = datatrans[datatrans.indexWhere(
+                                      (element) =>
+                                          element.product == x.itemcode)]
+                                  .qty
+                                  .toString();
+                            }
+                          }
 
                           return Container(
                             child: ListTile(
                               dense: true,
-                              title: Text(data[index].itemdesc!),
-                              subtitle:
-                                  Text('Stock Saat Ini : ${data[index].stock}'),
+                              title: Text(datax![index].itemdesc!),
+                              subtitle: Text(
+                                  'Stock Saat Ini : ${datax![index].stock}'),
                               trailing: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.4,
                                 child: Row(
@@ -105,112 +147,36 @@ class _KelolaProductMainTabletState extends State<KelolaProductMainTablet> {
                                           MediaQuery.of(context).size.height *
                                               0.05,
                                       child: IconButton(
+                                          padding: EdgeInsets.zero,
                                           iconSize: 20,
                                           onPressed: () {
-                                            qty[index]++;
-                                            _controller[index].text =
-                                                qty[index].toString();
-                                            if (qty[index] >= 0) {
-                                              if (datatrans.any((element) =>
-                                                      element.product ==
-                                                      data[index].itemcode) ==
-                                                  true) {
-                                                datatrans[index].qty =
-                                                    qty[index];
-                                                datatrans[index].famount =
-                                                    data[index].costamt! *
-                                                        qty[index];
-                                                datatrans[index].lamount =
-                                                    data[index].costamt! *
-                                                        qty[index];
-                                              } else {
-                                                datatrans.add(TransaksiBO(
-                                                    trdt: formattedDate,
-                                                    transno: trno,
-                                                    documentno: '',
-                                                    description:
-                                                        'adjusment stock $formattedDate',
-                                                    type_tr: type,
-                                                    product:
-                                                        data[index].itemcode,
-                                                    proddesc:
-                                                        data[index].itemdesc,
-                                                    qty: qty[index],
-                                                    unit: 'Unit',
-                                                    ctr: 'Inventory',
-                                                    subctr: 'Biaya',
-                                                    famount:
-                                                        data[index].costamt,
-                                                    lamount:
-                                                        data[index].costamt,
-                                                    note:
-                                                        'Adjusment Stock PreBo',
-                                                    active: 1,
-                                                    usercreate: usercd));
-                                              }
-                                            }
+                                            datatrans[datatrans.indexWhere(
+                                                    (element) =>
+                                                        element.product ==
+                                                        datax![index].itemcode)]
+                                                .qty++;
+
+                                            print(datatrans.where((element) =>
+                                                element.product ==
+                                                datax![index].itemcode));
+                                            // print(datax!.length);
                                             setState(() {});
-                                            print(datatrans);
                                           },
                                           icon: Icon(Icons.add)),
                                     ),
                                     Container(
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                              0.14,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.15,
                                       child: TextFieldMobile3(
                                         controller: _controller[index],
                                         typekeyboard: TextInputType.number,
                                         onChanged: (value) {
                                           // datatrans = [];
-                                          if (int.parse(value) <= 0) {
-                                            _controller[index].text =
-                                                0.toString();
-                                            setState(() {});
-                                          }
-                                          qty[index] = int.parse(value);
-                                          if (qty[index] >= 0) {
-                                            if (datatrans.any((element) =>
-                                                    element.product ==
-                                                    data[index].itemcode) ==
-                                                true) {
-                                              datatrans[index].qty = qty[index];
-                                              datatrans[index].famount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                              datatrans[index].lamount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                            } else {
-                                              datatrans.add(TransaksiBO(
-                                                  trdt: formattedDate,
-                                                  transno: trno,
-                                                  documentno: '',
-                                                  description:
-                                                      'adjusment stock $formattedDate',
-                                                  type_tr: type,
-                                                  product: data[index].itemcode,
-                                                  proddesc:
-                                                      data[index].itemdesc,
-                                                  qty: qty[index],
-                                                  unit: 'Unit',
-                                                  ctr: 'Inventory',
-                                                  subctr: 'Biaya',
-                                                  famount: data[index].costamt,
-                                                  lamount: data[index].costamt,
-                                                  note: 'Adjusment Stock PreBo',
-                                                  active: 1,
-                                                  usercreate: usercd));
-                                            }
-                                          } 
-                                          if (qty[index] <= 0) {
-                                            datatrans.removeWhere((element) =>
-                                                element.product ==
-                                                data[index].itemcode);
-                                          }
-                                          print(datatrans);
-                                          setState(() {});
-                                    
+                                          datatrans[datatrans.indexWhere(
+                                                  (element) =>
+                                                      element.product ==
+                                                      datax![index].itemcode)]
+                                              .qty = num.parse(value);
                                         },
                                       ),
                                     ),
@@ -221,31 +187,23 @@ class _KelolaProductMainTabletState extends State<KelolaProductMainTablet> {
                                           MediaQuery.of(context).size.height *
                                               0.05,
                                       child: IconButton(
+                                          padding: EdgeInsets.zero,
                                           iconSize: 20,
                                           onPressed: () {
-                                            qty[index] <= 0
-                                                ? qty[index]
-                                                : qty[index]--;
-                                            _controller[index].text =
-                                                qty[index].toString();
-                                            if (datatrans.any((element) =>
-                                                    element.product ==
-                                                    data[index].itemcode) ==
-                                                true) {
-                                              datatrans[index].qty = qty[index];
-                                              datatrans[index].famount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                              datatrans[index].lamount =
-                                                  data[index].costamt! *
-                                                      qty[index];
-                                            }
-                                            if (qty[index] <= 0) {
-                                              datatrans.removeWhere((element) =>
-                                                  element.product ==
-                                                  data[index].itemcode);
-                                            }
-                                            print(datatrans);
+                                            if (datatrans[datatrans.indexWhere(
+                                                        (element) =>
+                                                            element.product ==
+                                                            datax![index]
+                                                                .itemcode)]
+                                                    .qty >
+                                                0)
+                                              datatrans[datatrans.indexWhere(
+                                                      (element) =>
+                                                          element.product ==
+                                                          datax![index]
+                                                              .itemcode)]
+                                                  .qty--;
+
                                             setState(() {});
                                           },
                                           icon: Icon(Icons.remove)),
