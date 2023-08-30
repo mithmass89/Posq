@@ -11,11 +11,11 @@ var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
 // var api = 'http://147.139.163.18:3000';
-
+var apiuploadPDF='http://digims.online:5005';
 var serverkey = '';
 String username = 'mitro';
 String password = '@Mitro100689';
-var basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 var basicAuthMID = 'Basic ' + base64Encode(utf8.encode(serverkeymidtrans));
 
 class ClassApi {
@@ -339,7 +339,7 @@ class ClassApi {
     }
   }
 
-    static Future<dynamic> cancelClosing(
+  static Future<dynamic> cancelClosing(
       String trdt, String usercd, String dbname) async {
     var body = {
       "dbname": dbname,
@@ -363,9 +363,7 @@ class ClassApi {
     }
   }
 
-
-
-    static Future<List<dynamic>> totalpengeluaranCashier(
+  static Future<List<dynamic>> totalpengeluaranCashier(
       String trdt, String usercd, String dbname) async {
     var body = {
       "dbname": dbname,
@@ -3281,7 +3279,7 @@ class ClassApi {
     }
   }
 
-    static Future<List<dynamic>> ClosingCashFlowEsteh(
+  static Future<List<dynamic>> ClosingCashFlowEsteh(
       String fromdate, String todate, String dbname, String query) async {
     // print(json.encode(pembayaran));
     var data = {"dbname": dbname, "fromdate": fromdate, "todate": todate};
@@ -3949,5 +3947,34 @@ class ClassApi {
     } else {
       return response.statusCode;
     }
+  }
+
+static  Future<dynamic> uploadFilesLogoPDF(selectedFile, String namefile) async {
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+    var url = Uri.parse("$apiuploadPDF/upload_files");
+    print(url);
+    var request = http.MultipartRequest("POST", url);
+  
+    request.headers.addAll({
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers":
+          "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      'Content-Type': 'application/json',
+      'Accept': '*/*',
+      'authorization': basicAuth,
+    });
+    request.files.add(
+        http.MultipartFile.fromBytes("file", selectedFile, filename: namefile));
+
+    request.send().then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.request);
+        return 'upload complate';
+      }
+    });
   }
 }

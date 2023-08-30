@@ -4,8 +4,11 @@ import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
 
 class LoyalityMainMobile extends StatefulWidget {
+  final List<RewardCLass> datareward;
+  
   const LoyalityMainMobile({
-    Key? key,
+    
+    Key? key, required this.datareward,
   }) : super(key: key);
 
   @override
@@ -21,6 +24,7 @@ class _LoyalityMainMobileState extends State<LoyalityMainMobile> {
     super.initState();
     getProgram();
     getDataReward();
+    print('data widget oke : ${widget.datareward}');
   }
 
   getProgram() async {
@@ -102,8 +106,8 @@ class _LoyalityMainMobileState extends State<LoyalityMainMobile> {
               itemCount: datareward.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  trailing: Text('${CurrencyFormat.convertToIdr(
-                          datareward[index].note, 0)}'),
+                  trailing: Text('${
+                         datareward[index].note}'),
                   title: Row(
                     children: [
                       Text('Point : '),
@@ -112,7 +116,7 @@ class _LoyalityMainMobileState extends State<LoyalityMainMobile> {
                   ),
                   subtitle: datareward[index].rewaradtype == '0'
                       ? Text(CurrencyFormat.convertToIdr(
-                          datareward[index].reward, 0))
+                         datareward[index].reward, 0))
                       : Text('${datareward[index].reward} %'),
                   // trailing: Text(datareward[index].rewaradtype.toString()),
                 );

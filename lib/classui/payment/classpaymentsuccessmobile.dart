@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print
 
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:posq/classfungsi/classhitungreward.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/fungsipdf/billpdf.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
@@ -102,7 +104,9 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   String header = '';
   String footer = '';
   var wsUrl;
+  var wsUrlWa;
   WebSocketChannel? channel;
+  WebSocketChannel? channelwa;
   BluetoothDevice? _device;
   List<BluetoothDevice> _devices = [];
 
@@ -295,6 +299,13 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
 
       // channel.sink.close(status.goingAway);
     });
+    wsUrlWa = Uri.parse('ws://digims.online:8085?id=${widget.trno}');
+    channelwa = WebSocketChannel.connect(wsUrlWa);
+    channelwa!.stream.listen((message) {
+      print(message);
+
+      // channel.sink.close(status.goingAway);
+    });
     getSumm();
     formattedDate = formatter.format(now);
     generateDataWA();
@@ -303,7 +314,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     handler = DatabaseHandler();
     handler.initializeDB(databasename);
     // getSummary();
-    getListPayament();
+
     getPaymentList();
     getTemplatePrinter();
     if (widget.cash == false) {
@@ -418,23 +429,6 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     });
   }
 
-  getListPayament() {
-    handler.retriveListDetailPayment(widget.trno).then((value) {
-      setState(() {
-        totalcharge = value.first.ftotamt!;
-      });
-      List.generate(value.length, (index) {
-        payment.add(
-            '${value[index].compdesc.toString().padRight(15, '  ')}${value[index].ftotamt.toString().padLeft(23, ' ')}\n');
-      });
-
-      List.generate(value.length, (index) {
-        paymentemail.add(PaymentEmail(
-            metode: value[index].trdesc!, jumlah: value[index].ftotamt!));
-      });
-    });
-  }
-
   getPaymentList() async {
     data = await ClassApi.getDetailPayment(widget.trno, dbname, '');
   }
@@ -485,34 +479,35 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                             iconSize: 20,
                             color: Colors.blue,
                             splashColor: Colors.purple,
-                            onPressed: () {
-                              // String subtotal = 'subtotal';
-                              // String discount = 'Discount';
-                              // String taxs = 'Pajak';
-                              // String services = 'Service';
-                              // String grandtotal = 'Grand Total';
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              var whatsappUrl =
-                                  "whatsapp://send?phone=${"+62" + _telp.text}" +
-                                      "&text=" +
-                                      '''
-Outlet : ${widget.outletname}
-Trx    : ${widget.trno}
-
-item
------------------------------------------          
-${string.reduce((value, element) => value + element)}
------------------------------------------
-${summary.reduce((value, element) => value + element)}
------------------------------------------
-${payment.reduce((value, element) => value + element)}
-''';
-                              try {
-                                launch(whatsappUrl);
-                              } catch (e) {
-                                //To handle error and display error message
-                                print('gagal kirim $e');
-                              }
+                            onPressed: () async {
+                              final pdfGenerator = BillPdfGenerator();
+                              final pdfFile = await pdfGenerator.generatePDF(
+                                  widget.outletname!,
+                                  widget.outletinfo!.alamat!,
+                                  widget.datatrans,
+                                  summarybill!,
+                                  data);
+                              final output = await getTemporaryDirectory();
+                              final file = File('${output.path}/example.pdf');
+                              final Uint8List uint8List =
+                                  await File(file.path).readAsBytes();
+                              print(uint8List);
+                              await ClassApi.uploadFilesLogoPDF(
+                                  uint8List, '${widget.trno}.pdf');
+                              channelwa!.sink.add(json.encode({
+                                "function": "sendfile",
+                                "number": "+6281223083900",
+                                "chat": "Margin Call",
+                                "index": "6282221769478",
+                                "attachment": '${widget.trno}.pdf'
+                              }));
+                              // channelwa!.sink.close();
+                              // Navigator.of(context).push(
+                              //   MaterialPageRoute(
+                              //     builder: (context) => PdfViewer(pdfFile.path),
+                              //   ),
+                              // );
+                              // Lakukan sesuatu dengan file PDF, seperti menampilkan atau membagikannya.
                             },
                           ),
                           label: 'Whatsapp',
@@ -643,7 +638,7 @@ ${payment.reduce((value, element) => value + element)}
                                               textColor: Colors.white,
                                               fontSize: 16.0);
                                         },
-                              name:connected==true? 'Print':'Offline',
+                              name: connected == true ? 'Print' : 'Offline',
                             ),
                             ButtonNoIcon(
                               textcolor: Colors.white,

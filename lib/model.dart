@@ -1725,6 +1725,10 @@ class PointSystem {
         convamount = res["convamount"],
         point = res["point"],
         joinreward = res["joinreward"];
+  @override
+  String toString() {
+    return '{fromdate: $fromdate,  todate: $todate, convamount: $convamount,point:$point,joinreward:$joinreward}';
+  }
 
   Map<String, Object?> toJson() {
     return {

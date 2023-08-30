@@ -117,7 +117,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
       body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
-        if (constraints.maxWidth <= 480) {
+        if (constraints.maxWidth <= 800) {
           return Form(
             key: formKey,
             child: Stack(

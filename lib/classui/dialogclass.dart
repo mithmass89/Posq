@@ -1156,7 +1156,7 @@ class _DialogRewardState extends State<DialogReward>
           actions: [
             TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop('');
                 },
                 child: Text('Batal')),
             TextButton(
@@ -1173,7 +1173,7 @@ class _DialogRewardState extends State<DialogReward>
                           : 'Discount by percentage',
                       minimum.text == '0' ? 0 : 1,
                       num.parse(minimum.text.replaceAll(',', '')));
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop('');
                 },
                 child: Text('Simpan'))
           ],

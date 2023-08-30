@@ -379,7 +379,7 @@ class _MenuMainState extends State<MenuMain> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                       },
-                name: 'Customer',
+                name: 'Member',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -607,7 +607,7 @@ class _MenuMainState extends State<MenuMain> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                       },
-                name: 'Customer',
+                name: 'Member',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,

@@ -737,7 +737,7 @@ packages:
     source: hosted
     version: "2.0.7"
   pdf:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: pdf
       sha256: "51d855ffc6ba3bd029f279590134230d4243b35a2cc9d54b3101ec6ef69ef572"

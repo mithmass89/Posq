@@ -162,7 +162,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
           svchgpct: value.svchgpct,
           totalcost: value.totalcost);
     });
-    print('tersampaikan');
+    print('');
   }
 
   getTransaksiTipe() async {
@@ -206,15 +206,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
         num totalSlsNett = isi.fold(
             0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
 
-        setState(() {
-          item = isi.length;
-          itemlength = isi
-              .where((element) => element.condimenttype == '')
-              .toList()
-              .length;
-          sum = totalSlsNett + discount;
-        });
+        item = isi.length;
+        itemlength =
+            isi.where((element) => element.condimenttype == '').toList().length;
+        sum = totalSlsNett + discount;
+        setState(() {});
         print('ini length item${itemlength}');
+         print('ini summary item${sum}');
       } else {
         setState(() {
           item = 0;

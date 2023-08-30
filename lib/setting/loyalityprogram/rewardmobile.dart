@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/model.dart';
 
@@ -31,7 +32,7 @@ class _RewardMobileState extends State<RewardMobile> {
   @override
   void initState() {
     super.initState();
-     getDataReward();
+    getDataReward();
   }
 
   getDataReward() async {
@@ -55,12 +56,11 @@ class _RewardMobileState extends State<RewardMobile> {
                 itemCount: datareward.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Row(
-                      children: [
-                        Text(datareward[index].redempoint!.toString()),
-                        Text(datareward[index].reward!.toString()),
-                      ],
-                    ),
+                    title: Text('Point : ${datareward[index].redempoint!}'),
+                    subtitle: datareward[index].rewaradtype == 0
+                        ? Text("Reward : ${datareward[index].reward}")
+                        : Text("Reward : ${datareward[index].reward} %"),
+                    trailing: Text(" Type : ${datareward[index].rewaradtype}"),
                   );
                 }),
           ),
