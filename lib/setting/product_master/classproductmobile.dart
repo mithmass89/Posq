@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:io' show Directory;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path/path.dart' show join;
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
@@ -418,7 +419,7 @@ class _ClassproductmobileState extends State<Classproductmobile> {
                 bottom: MediaQuery.of(context).size.height * 0.01,
                 left: MediaQuery.of(context).size.height * 0.02,
                 child: ButtonNoIcon2(
-                  color: Colors.orange,
+                  color: AppColors.primaryColor,
                   textcolor: Colors.white,
                   name: 'Buat Produk',
                   height: MediaQuery.of(context).size.height * 0.05,

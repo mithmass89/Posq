@@ -83,11 +83,11 @@ class _SearchWidgetSmallState extends State<SearchWidgetSmall> {
           controller: widget.controller,
           onChanged: widget.onChanged,
           decoration: InputDecoration(
-            hintStyle: const TextStyle(fontSize: 15.0, color: Colors.white),
+            hintStyle: const TextStyle(fontSize: 15.0, color: Colors.black),
               hintText: widget.hint,
               // labelText: widget.label.toString(),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(width: 1, color: Colors.white),
+                borderSide: const BorderSide(width: 1, color: Colors.black),
                 borderRadius: BorderRadius.circular(15),
               ),
               focusedBorder: OutlineInputBorder(

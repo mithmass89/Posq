@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classformat.dart';
@@ -484,7 +485,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               width: MediaQuery.of(context).size.width * 1,
                             ),
                             Container(
-                              decoration: BoxDecoration(color: Colors.orange),
+                              decoration: BoxDecoration(color: AppColors.primaryColor),
                               child: Row(
                                 children: [
                                   IconButton(
@@ -683,6 +684,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                             Container(
                               // decoration: BoxDecoration(color: Colors.grey[200]),
                               child: TabBar(
+                                indicatorColor: AppColors.secondaryColor,
                                 controller: controller,
                                 tabs: [
                                   Container(
@@ -743,6 +745,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           switch (_scrollisanimated) {
                             case true:
                               return SlideUpPanel(
+                                summarybill: sum,
                                 guestname: guestname!.isEmpty
                                     ? randomNumber.toString()
                                     : guestname!,
@@ -900,11 +903,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           curve: Curves.linear,
                           duration: 300,
                           textcolor: _scrollisanimated == true
-                              ? Colors.orange
+                              ? AppColors.primaryColor
                               : Colors.white,
                           color: _scrollisanimated == true
                               ? Colors.white
-                              : Colors.orange,
+                              : AppColors.primaryColor,
                           height: MediaQuery.of(context).size.height * 0.06,
                           width: _scrollisanimated == false
                               ? MediaQuery.of(context).size.width * 0.95
@@ -943,7 +946,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                           curve: Curves.linear,
                           duration: 400,
                           textcolor: Colors.white,
-                          color: Colors.orange,
+                          color: AppColors.primaryColor,
                           height: MediaQuery.of(context).size.height * 0.06,
                           width: _scrollisanimated == false
                               ? MediaQuery.of(context).size.width * 0.0
@@ -1022,7 +1025,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                   //       Scaffold.of(context).openDrawer();
                   //     }),
 
-                  backgroundColor: Colors.orange,
+                  backgroundColor: AppColors.primaryColor,
                   title: Text(
                     'Transaksi',
                     style: TextStyle(color: Colors.white),
@@ -1392,7 +1395,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                     child: Icon(
                                       Icons.close,
                                       size: 22,
-                                      color: Colors.orange,
+                                      color: AppColors.primaryColor,
                                     ),
                                     onTap: accesslistuser
                                                 .contains('canceltrans') ==

@@ -1,16 +1,19 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print
 
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classfungsi/classhitungreward.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
+import 'package:posq/fungsipdf/billpdf.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
@@ -104,14 +107,15 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
   WebSocketChannel? channel;
   BluetoothDevice? _device;
   List<BluetoothDevice> _devices = [];
-  
+    WebSocketChannel? channelwa;
+
   @override
   void initState() {
     print(widget.fromsaved);
     super.initState();
     wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
-    channel = WebSocketChannel.connect(wsUrl);
-    channel!.stream.listen((message) {
+    channelwa = WebSocketChannel.connect(wsUrl);
+    channelwa!.stream.listen((message) {
       print(message);
 
       // channel.sink.close(status.goingAway);
@@ -480,9 +484,30 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                               iconSize: 20,
                               color: Colors.blue,
                               splashColor: Colors.purple,
-                              onPressed: () {
+                              onPressed: () async {
+                                final pdfGenerator = BillPdfGenerator();
+                                final pdfFile = await pdfGenerator.generatePDF(
+                                    widget.outletname!,
+                                    widget.outletinfo!.alamat!,
+                                    widget.datatrans,
+                                    summarybill!,
+                                    data);
+                                final output = await getTemporaryDirectory();
+                                final file = File('${output.path}/example.pdf');
+                                final Uint8List uint8List =
+                                    await File(file.path).readAsBytes();
+                                print(uint8List);
+                                await ClassApi.uploadFilesLogoPDF(
+                                    uint8List, '${widget.trno}.pdf');
+                                channelwa!.sink.add(json.encode({
+                                  "function": "sendfile",
+                                  "number": _telp.text,
+                                  "chat": "E-bill",
+                                  "index": "6282221769478",
+                                  "attachment": '${widget.trno}.pdf'
+                                }));
                                 Fluttertoast.showToast(
-                                    msg: "Segera hadir",
+                                    msg: "Upload bill",
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.CENTER,
                                     timeInSecForIosWeb: 1,
@@ -490,33 +515,6 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                                         Color.fromARGB(255, 11, 12, 14),
                                     textColor: Colors.white,
                                     fontSize: 16.0);
-//                                 // String subtotal = 'subtotal';
-//                                 // String discount = 'Discount';
-//                                 // String taxs = 'Pajak';
-//                                 // String services = 'Service';
-//                                 // String grandtotal = 'Grand Total';
-//                                 FocusManager.instance.primaryFocus?.unfocus();
-//                                 var whatsappUrl =
-//                                     "whatsapp://send?phone=${"+62" + _telp.text}" +
-//                                         "&text=" +
-//                                         '''
-// Outlet : ${widget.outletname}
-// Trx    : ${widget.trno}
-
-// item
-// -----------------------------------------
-// ${string.reduce((value, element) => value + element)}
-// -----------------------------------------
-// ${summary.reduce((value, element) => value + element)}
-// -----------------------------------------
-// ${payment.reduce((value, element) => value + element)}
-// ''';
-//                                 try {
-//                                   launch(whatsappUrl);
-//                                 } catch (e) {
-//                                   //To handle error and display error message
-//                                   print('gagal kirim $e');
-//                                 }
                               },
                             ),
                             label: 'Whatsapp',
@@ -608,7 +606,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange, // Background color
+                            backgroundColor: AppColors.primaryColor, // Background color
                           ),
                           onPressed:
                               accesslist.contains('settingprinter') == true
@@ -636,15 +634,15 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                                     }
                                   : () {
                                       checkPrinter();
-                                   Fluttertoast.showToast(
-                                    msg: "Tidak punya access printer",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 11, 12, 14),
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
+                                      Fluttertoast.showToast(
+                                          msg: "Tidak punya access printer",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              Color.fromARGB(255, 11, 12, 14),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
                                     },
                           child: Container(
                               padding: EdgeInsets.all(10),
@@ -669,7 +667,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                                 width: MediaQuery.of(context).size.width * 0.35,
                                 child: Text(
                                   'Transaksi baru ',
-                                  style: TextStyle(color: Colors.orange),
+                                  style: TextStyle(color: AppColors.primaryColor),
                                 )),
                             onPressed: () async {
                               // if (Pembelian(widget.amount)

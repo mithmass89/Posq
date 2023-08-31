@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:posq/classfungsi/classbiometrik.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classfungsi/classsesilogin.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -217,7 +218,7 @@ class _LoginState extends State<Login> {
                       gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Colors.orange, Colors.orange])),
+                          colors: [AppColors.primaryColor, AppColors.primaryColor])),
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -462,7 +463,7 @@ class _LoginState extends State<Login> {
                               width: MediaQuery.of(context).size.width * 0.80,
                               child: Text(
                                 'Masuk ',
-                                style: TextStyle(color: Colors.orange),
+                                style: TextStyle(color: AppColors.primaryColor),
                               ))),
                       TextButton(
                           onPressed: () async {
@@ -487,7 +488,7 @@ class _LoginState extends State<Login> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange, // Background color
+                          backgroundColor: AppColors.primaryColor, // Background color
                         ),
                         onPressed: () async {
                           Navigator.push(
@@ -513,7 +514,7 @@ class _LoginState extends State<Login> {
                       ),
                       // ElevatedButton(
                       //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: Colors.orange, // Background color
+                      //     backgroundColor: AppColors.primaryColor, // Background color
                       //   ),
                       //   onPressed: () async {
                       //     // _registerBiometrics();
@@ -549,7 +550,7 @@ class _LoginState extends State<Login> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.orange),
+                      border: Border.all(color: AppColors.primaryColor),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(40.0),
                           topRight: Radius.circular(40.0),
@@ -568,7 +569,7 @@ class _LoginState extends State<Login> {
                         alignment: Alignment.center,
                         child: Text(
                           'AOVIPOS',
-                          style: TextStyle(fontSize: 24, color: Colors.orange),
+                          style: TextStyle(fontSize: 24, color: AppColors.primaryColor),
                         ),
                       ),
                       SizedBox(
@@ -630,7 +631,7 @@ class _LoginState extends State<Login> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Colors.orange, // Background color
+                                  AppColors.primaryColor, // Background color
                             ),
                             onPressed: () async {
                               aktif = await expiredDate(email.text);
@@ -815,6 +816,7 @@ class _LoginState extends State<Login> {
                                                 joinreward: rules[0]
                                                     ['joinreward'],
                                               );
+                                              print('ini rulesprogram : $rulesprogram');
                                             });
                                             Navigator.of(context)
                                                 .pushAndRemoveUntil(
@@ -886,7 +888,7 @@ class _LoginState extends State<Login> {
                             );
                           },
                           child: Text('Lupa Password ?',
-                              style: TextStyle(color: Colors.orange)))
+                              style: TextStyle(color: AppColors.primaryColor)))
                     ],
                   ),
                 ),
@@ -934,7 +936,7 @@ class _LoginState extends State<Login> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.orange),
+                      border: Border.all(color: AppColors.primaryColor),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(40.0),
                           topRight: Radius.circular(40.0),
@@ -953,7 +955,7 @@ class _LoginState extends State<Login> {
                         alignment: Alignment.center,
                         child: Text(
                           'AOVIPOS',
-                          style: TextStyle(fontSize: 24, color: Colors.orange),
+                          style: TextStyle(fontSize: 24, color: AppColors.primaryColor),
                         ),
                       ),
                       SizedBox(
@@ -1015,7 +1017,7 @@ class _LoginState extends State<Login> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Colors.orange, // Background color
+                                  AppColors.primaryColor, // Background color
                             ),
                             onPressed: () async {
                               aktif = await expiredDate(email.text);
@@ -1271,7 +1273,7 @@ class _LoginState extends State<Login> {
                             );
                           },
                           child: Text('Lupa Password ?',
-                              style: TextStyle(color: Colors.orange)))
+                              style: TextStyle(color: AppColors.primaryColor)))
                     ],
                   ),
                 ),

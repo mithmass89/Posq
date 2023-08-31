@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -70,7 +71,7 @@ class _ClassCashierMenuSoldDetailTabState
                                     dense: true,
                                     leading: CircleAvatar(
                                       radius: 40,
-                                      backgroundColor: Colors.orange,
+                                      backgroundColor: AppColors.primaryColor,
                                       // backgroundImage: AssetImage(
                                       //   'assets/sheryl.png',
                                       // ),

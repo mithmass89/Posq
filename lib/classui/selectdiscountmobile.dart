@@ -54,7 +54,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
         transno1: widget.trno!,
         split: 1,
         pscd: '${widget.pscd}',
-        trtm: '00:00',
+        trtm: now.toString(),
         disccd: data.promocd,
         pax: '1',
         pymtmthd: 'Discount',
@@ -75,7 +75,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
         compcd: 'Discount',
         compdesc: 'Discount',
         active: 1,
-        usercrt: 'Admin',
+        usercrt: usercd,
         slstp: '1',
         currcd: 'IDR');
     IafjrnhdClass listiafjrnhd = iafjrnhd;

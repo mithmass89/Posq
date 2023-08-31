@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/login.dart';
 import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/userinfo.dart';
@@ -83,7 +84,7 @@ class DrawerWidgetMain extends StatelessWidget {
 
 Widget _drawerHeader() {
   return UserAccountsDrawerHeader(
-    decoration: BoxDecoration(color: Colors.orange),
+    decoration: BoxDecoration(color: AppColors.primaryColor),
     // currentAccountPicture: ClipOval(
     //   child: Image(
     //       image: AssetImage('assets/images/orang2.jpeg'),

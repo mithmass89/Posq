@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/pagefretrial.dart';
@@ -241,7 +242,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange, // Background color
+                      backgroundColor: AppColors.primaryColor, // Background color
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {

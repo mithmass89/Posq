@@ -1,4 +1,5 @@
 // ignore_for_file: unused_field
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:toast/toast.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -535,7 +536,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                     ),
                                     padding: EdgeInsets.zero,
                                     backgroundColor:
-                                        Colors.orange // Background color
+                                        AppColors.primaryColor // Background color
                                     ),
                                 onPressed: () {},
                                 child: Text(
@@ -592,7 +593,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             'CASH',
                                             style: TextStyle(
                                                 color: selectedpy == 'CASH'
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                           )),
                                     ),
@@ -631,7 +632,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             'EDC',
                                             style: TextStyle(
                                                 color: selectedpy == 'EDC'
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                           )),
                                     ),
@@ -717,7 +718,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             'QRIS',
                                             style: TextStyle(
                                                 color: selectedpy == 'QRIS'
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                           )),
                                     ),
@@ -756,7 +757,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             'E-wallet',
                                             style: TextStyle(
                                                 color: selectedpy == 'E-wallet'
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                           )),
                                     ),
@@ -796,7 +797,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             style: TextStyle(
                                                 color: selectedpy ==
                                                         'Bank transfer'
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                           )),
                                     ),
@@ -835,7 +836,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             'Piutang',
                                             style: TextStyle(
                                                 color: selectedpy == 'Piutang'
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                           )),
                                     ),
@@ -874,7 +875,7 @@ class _DialogPaymentTabStateState extends State<DialogPaymentTab> {
                                             'Lain lain',
                                             style: TextStyle(
                                                 color: selectedpy == 'Lain lain'
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                           )),
                                     ),

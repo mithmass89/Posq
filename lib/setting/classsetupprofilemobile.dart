@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/appsmobile.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -242,7 +243,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                               ),
                               LoadingButton(
                                 isLoading: _isloading,
-                                color: Colors.orange,
+                                color: AppColors.primaryColor,
                                 textcolor: Colors.white,
                                 height:
                                     MediaQuery.of(context).size.height * 0.05,
@@ -479,7 +480,7 @@ class _ClassSetupProfileMobileState extends State<ClassSetupProfileMobile> {
                                     ),
                                     LoadingButton(
                                       isLoading: _isloading,
-                                      color: Colors.orange,
+                                      color: AppColors.primaryColor,
                                       textcolor: Colors.white,
                                       height:
                                           MediaQuery.of(context).size.height *

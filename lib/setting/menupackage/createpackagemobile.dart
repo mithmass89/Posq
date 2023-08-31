@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -201,7 +202,7 @@ class _BuatPaketMobileState extends State<BuatPaketMobile> {
             top: MediaQuery.of(context).size.height * 0.80,
             child: ButtonNoIcon(
                 name: 'Simpan',
-                color: Colors.orange,
+                color: AppColors.primaryColor,
                 textcolor: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.94,

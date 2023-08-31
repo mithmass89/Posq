@@ -2,6 +2,7 @@ import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -646,7 +647,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                             width: MediaQuery.of(context).size.width * 0.35,
                             height: MediaQuery.of(context).size.height * 0.05,
                             color: Colors.white,
-                            textcolor: Colors.orange,
+                            textcolor: AppColors.primaryColor,
                             name: 'Print',
                             onpressed: () async {
                               if (connected == true) {
@@ -671,7 +672,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
                         ButtonNoIcon2(
                           width: MediaQuery.of(context).size.width * 0.35,
                           height: MediaQuery.of(context).size.height * 0.05,
-                          color: Colors.orange,
+                          color: AppColors.primaryColor,
                           textcolor: Colors.white,
                           name: 'Kirim Laporan',
                           onpressed: () {

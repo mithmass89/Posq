@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/payment/paymenttablet/paymentsuccesstab.dart';
@@ -161,7 +162,7 @@ class _PaymentPiutangTabsState extends State<PaymentPiutangTabs> {
                                     BorderRadius.circular(5), // <-- Radius
                               ),
                               padding: EdgeInsets.zero,
-                              backgroundColor: Colors.orange
+                              backgroundColor: AppColors.primaryColor
                               // Background color
                               ),
                           onPressed: () async {

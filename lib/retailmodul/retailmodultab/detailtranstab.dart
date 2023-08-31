@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classformat.dart';
@@ -207,7 +208,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                       style: ElevatedButton.styleFrom(
                                         foregroundColor: Colors.white,
                                         backgroundColor: selectedindex != index
-                                            ? Colors.orange
+                                            ? AppColors.primaryColor
                                             : Color.fromARGB(
                                                 255, 0, 146, 156), // foreground
                                       ),

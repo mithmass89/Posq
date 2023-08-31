@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
@@ -105,7 +106,7 @@ class _OptionCreateState extends State<OptionCreate> {
                     LoadingButton(
                       isLoading: false,
                       textcolor: Colors.white,
-                      color: Colors.orange,
+                      color: AppColors.primaryColor,
                       height: MediaQuery.of(context).size.height * 0.05,
                       width: MediaQuery.of(context).size.width * 0.55,
                       name: 'Simpan',
@@ -211,7 +212,7 @@ class _OptionCreateState extends State<OptionCreate> {
                     LoadingButton(
                       isLoading: false,
                       textcolor: Colors.white,
-                      color: Colors.orange,
+                      color: AppColors.primaryColor,
                       height: MediaQuery.of(context).size.height * 0.08,
                       width: MediaQuery.of(context).size.width * 0.55,
                       name: 'Simpan',
@@ -233,7 +234,7 @@ class _OptionCreateState extends State<OptionCreate> {
                     ),
                     LoadingButton(
                       isLoading: false,
-                      textcolor: Colors.orange,
+                      textcolor: AppColors.primaryColor,
                       color: Colors.white,
                       height: MediaQuery.of(context).size.height * 0.08,
                       width: MediaQuery.of(context).size.width * 0.35,

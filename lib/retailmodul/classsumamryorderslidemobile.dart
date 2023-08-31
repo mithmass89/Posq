@@ -165,6 +165,8 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                                 .whenComplete(() {
                                               setState(() {});
                                             });
+                                            await ClassApi.deleteRewardTrans(
+                                                widget.trno, dbname);
                                             await ClassApi.getSumTrans(
                                                     widget.trno.toString(),
                                                     pscd,

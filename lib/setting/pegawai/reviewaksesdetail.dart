@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
@@ -95,7 +96,7 @@ class _ReviewAksesDetailState extends State<ReviewAksesDetail> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange, // Background color
+                    backgroundColor: AppColors.primaryColor, // Background color
                   ),
                   onPressed: () {
                     Navigator.push(

@@ -1,6 +1,7 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
@@ -133,7 +134,7 @@ class _DialogEditTabStateState extends State<DialogEditTab> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.orange,
+                                  color: AppColors.primaryColor,
                                 ),
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
@@ -170,7 +171,7 @@ class _DialogEditTabStateState extends State<DialogEditTab> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.orange,
+                                  color: AppColors.primaryColor,
                                 ),
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
@@ -289,7 +290,7 @@ class _DialogEditTabStateState extends State<DialogEditTab> {
                                               // borderRadius:
                                               //     BorderRadius.all(Radius.circular(20)),
                                               color: discbyamount == true
-                                                  ? Colors.orange
+                                                  ? AppColors.primaryColor
                                                   : Colors.white),
                                           height: MediaQuery.of(context)
                                                   .size
@@ -304,7 +305,7 @@ class _DialogEditTabStateState extends State<DialogEditTab> {
                                             style: TextStyle(
                                                 color: discbyamount == true
                                                     ? Colors.white
-                                                    : Colors.orange,
+                                                    : AppColors.primaryColor,
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -325,7 +326,7 @@ class _DialogEditTabStateState extends State<DialogEditTab> {
                                                     bottomRight:
                                                         Radius.circular(10)),
                                                 color: discbyamount == false
-                                                    ? Colors.orange
+                                                    ? AppColors.primaryColor
                                                     : Colors.white),
                                             height: MediaQuery.of(context)
                                                     .size
@@ -340,7 +341,7 @@ class _DialogEditTabStateState extends State<DialogEditTab> {
                                               style: TextStyle(
                                                   color: discbyamount == false
                                                       ? Colors.white
-                                                      : Colors.orange,
+                                                      : AppColors.primaryColor,
                                                   fontSize: 17,
                                                   fontWeight: FontWeight.bold),
                                             )))
@@ -398,7 +399,7 @@ class _DialogEditTabStateState extends State<DialogEditTab> {
                     borderRadius: BorderRadius.circular(5), // <-- Radius
                   ),
                   padding: EdgeInsets.zero,
-                  backgroundColor: Colors.orange // Background color
+                  backgroundColor: AppColors.primaryColor // Background color
                   ),
               onPressed: () async {
                 print('oke');

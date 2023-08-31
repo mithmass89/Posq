@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -218,7 +219,7 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
           ),
           ButtonNoIcon(
               name: 'Simpan',
-              color: Colors.orange,
+              color: AppColors.primaryColor,
               textcolor: Colors.white,
               height: MediaQuery.of(context).size.height * 0.05,
               width: MediaQuery.of(context).size.width * 0.94,

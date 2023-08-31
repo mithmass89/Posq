@@ -4,6 +4,7 @@ import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
@@ -218,7 +219,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.orange,
+          backgroundColor: AppColors.primaryColor,
           title: Text(
             'Laporan',
             style: TextStyle(color: Colors.white),
@@ -333,9 +334,9 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                       width: MediaQuery.of(context).size.width * 0.20,
                       height: MediaQuery.of(context).size.height * 0.07,
                       color:
-                          selected == 'Hari ini' ? Colors.white : Colors.orange,
+                          selected == 'Hari ini' ? Colors.white : AppColors.primaryColor,
                       textcolor:
-                          selected == 'Hari ini' ? Colors.orange : Colors.white,
+                          selected == 'Hari ini' ? AppColors.primaryColor : Colors.white,
                       name: 'Hari ini',
                       onpressed: () async {
                         selected = 'Hari ini';
@@ -372,9 +373,9 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                       width: MediaQuery.of(context).size.width * 0.20,
                       height: MediaQuery.of(context).size.height * 0.07,
                       color:
-                          selected == '7 Hari' ? Colors.white : Colors.orange,
+                          selected == '7 Hari' ? Colors.white : AppColors.primaryColor,
                       textcolor:
-                          selected == '7 Hari' ? Colors.orange : Colors.white,
+                          selected == '7 Hari' ? AppColors.primaryColor : Colors.white,
                       name: '7 Hari',
                       onpressed: () async {
                         var weeks;
@@ -421,9 +422,9 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
                       width: MediaQuery.of(context).size.width * 0.20,
                       height: MediaQuery.of(context).size.height * 0.07,
                       color:
-                          selected == '30 Hari' ? Colors.white : Colors.orange,
+                          selected == '30 Hari' ? Colors.white : AppColors.primaryColor,
                       textcolor:
-                          selected == '30 Hari' ? Colors.orange : Colors.white,
+                          selected == '30 Hari' ? AppColors.primaryColor : Colors.white,
                       name: '30 Hari',
                       onpressed: () async {
                         var month;

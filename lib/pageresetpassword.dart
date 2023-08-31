@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 
@@ -53,7 +54,7 @@ class _ResetPasswordClassState extends State<ResetPasswordClass> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange, // Background color
+                      backgroundColor: AppColors.primaryColor, // Background color
                     ),
                     onPressed: () async {
                       // await _lo

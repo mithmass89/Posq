@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
@@ -191,7 +192,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Pembayaran', style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppColors.primaryColor,
         ),
         body: Row(
           children: [
@@ -233,7 +234,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                         padding: EdgeInsets.zero,
                                         backgroundColor: selectedpy == 'Cash'
                                             ? Colors.white
-                                            : Colors.orange // Background color
+                                            : AppColors.primaryColor // Background color
                                         ),
                                     onPressed: () {
                                       selectedpy = 'Cash';
@@ -243,7 +244,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                       'Cash',
                                       style: TextStyle(
                                           color: selectedpy == 'Cash'
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.white),
                                     )),
                               ),
@@ -264,7 +265,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                         padding: EdgeInsets.zero,
                                         backgroundColor: selectedpy == 'Debit'
                                             ? Colors.white
-                                            : Colors.orange // Background color
+                                            : AppColors.primaryColor // Background color
                                         ),
                                     onPressed: () {
                                       selectedpy = 'Debit';
@@ -274,7 +275,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                       'Debit',
                                       style: TextStyle(
                                           color: selectedpy == 'Debit'
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.white),
                                     )),
                               ),
@@ -296,7 +297,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                         backgroundColor: selectedpy ==
                                                 'Kartu Kredit'
                                             ? Colors.white
-                                            : Colors.orange // Background color
+                                            : AppColors.primaryColor // Background color
                                         ),
                                     onPressed: () {
                                       selectedpy = 'Kartu Kredit';
@@ -306,7 +307,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                       'Kartu Kredit',
                                       style: TextStyle(
                                           color: selectedpy == 'Kartu Kredit'
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.white),
                                     )),
                               ),
@@ -328,7 +329,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                         backgroundColor: selectedpy ==
                                                 'E-wallet'
                                             ? Colors.white
-                                            : Colors.orange // Background color
+                                            : AppColors.primaryColor // Background color
                                         ),
                                     onPressed: () {
                                       selectedpy = 'E-wallet';
@@ -338,7 +339,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                       'E-wallet',
                                       style: TextStyle(
                                           color: selectedpy == 'E-wallet'
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.white),
                                     )),
                               ),
@@ -360,7 +361,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                         backgroundColor: selectedpy ==
                                                 'Bank transfer'
                                             ? Colors.white
-                                            : Colors.orange // Background color
+                                            : AppColors.primaryColor // Background color
                                         ),
                                     onPressed: () {
                                       selectedpy = 'Bank transfer';
@@ -370,7 +371,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                       'Bank transfer',
                                       style: TextStyle(
                                           color: selectedpy == 'Bank transfer'
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.white),
                                     )),
                               ),
@@ -392,7 +393,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                         backgroundColor: selectedpy ==
                                                 'Lain lain'
                                             ? Colors.white
-                                            : Colors.orange // Background color
+                                            : AppColors.primaryColor // Background color
                                         ),
                                     onPressed: () {
                                       selectedpy = 'Lain lain';
@@ -402,7 +403,7 @@ class _PaymentV2TabClassState extends State<PaymentV2TabClass>
                                       'Lain lain',
                                       style: TextStyle(
                                           color: selectedpy == 'Lain lain'
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.white),
                                     )),
                               ),

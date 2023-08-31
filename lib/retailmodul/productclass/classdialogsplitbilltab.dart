@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/paymentmainmobilev2.dart';
@@ -203,7 +204,7 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                     width: MediaQuery.of(context).size.width * 0.1,
                     child: Text(
                       'Print',
-                      style: TextStyle(color: Colors.orange),
+                      style: TextStyle(color: AppColors.primaryColor),
                     ),
                   )),
               ElevatedButton(
@@ -212,7 +213,7 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                         borderRadius: BorderRadius.circular(5), // <-- Radius
                       ),
                       padding: EdgeInsets.zero,
-                      backgroundColor: Colors.orange // Background color
+                      backgroundColor: AppColors.primaryColor // Background color
                       ),
                   onPressed: () async {
                     final result = await showDialog(
@@ -386,7 +387,7 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                     width: MediaQuery.of(context).size.width * 0.1,
                     child: Text(
                       'Print',
-                      style: TextStyle(color: Colors.orange),
+                      style: TextStyle(color: AppColors.primaryColor),
                     ),
                   )),
               ElevatedButton(
@@ -395,7 +396,7 @@ class _DialogSplitTabStateState extends State<DialogSplitTab> {
                         borderRadius: BorderRadius.circular(5), // <-- Radius
                       ),
                       padding: EdgeInsets.zero,
-                      backgroundColor: Colors.orange // Background color
+                      backgroundColor: AppColors.primaryColor // Background color
                       ),
                   onPressed: () async {
                     final result = await Navigator.push(

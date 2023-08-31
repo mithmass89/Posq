@@ -8,6 +8,7 @@ import 'package:dropdown_button2/src/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
@@ -231,8 +232,8 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
   @override
   void initState() {
     super.initState();
-    handler = DatabaseHandler();
-    handler.initializeDB(databasename);
+    // handler = DatabaseHandler();
+    // handler.initializeDB(databasename);
   }
 
   getSf(String user, String email) async {
@@ -248,88 +249,93 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          content: Container(
-            height: MediaQuery.of(context).size.height * 0.35,
-            child: FutureBuilder(
-              future: ClassApi.getCustomers(query),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Costumers>> snapshot) {
-                x = snapshot.data ?? [];
-                if (x.isNotEmpty) {
-                  print(snapshot.data);
-                  return Container(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SearchWidgetSmall(
-                                label: 'Search',
-                                controller: search,
-                                onChanged: (value) {
-                                  setState(() {
-                                    query = value;
-                                  });
-                                }),
-                          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.08,
+                child: SearchWidgetSmall(
+                    hint: 'Cari',
+                    controller: search,
+                    onChanged: (value) {
+                      setState(() {
+                        query = value;
+                      });
+                    }),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.35,
+                child: FutureBuilder(
+                  future: ClassApi.getCustomers(query),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Costumers>> snapshot) {
+                    x = snapshot.data ?? [];
+                    if (x.isNotEmpty) {
+                      print(snapshot.data);
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              selected = index;
+                                              name = snapshot
+                                                  .data![index].fullname
+                                                  .toString();
+                                              email = snapshot
+                                                  .data![index].phone
+                                                  .toString();
+                                            });
+                                            print(index);
+                                          },
+                                          dense: true,
+                                          visualDensity: VisualDensity(
+                                              vertical: -1), // to compact
+                                          title: Text(
+                                            snapshot.data![index].fullname
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: index == selected
+                                                    ? Colors.blue
+                                                    : Colors.black),
+                                          ),
+                                          subtitle: Text(
+                                            snapshot.data![index].email
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: index == selected
+                                                    ? Colors.blue
+                                                    : Colors.black),
+                                          ),
+                                        ),
+                                        Divider()
+                                      ],
+                                    );
+                                  }),
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          flex: 5,
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    ListTile(
-                                      onTap: () {
-                                        setState(() {
-                                          selected = index;
-                                          name = snapshot.data![index].fullname
-                                              .toString();
-                                          email = snapshot.data![index].phone
-                                              .toString();
-                                        });
-                                        print(index);
-                                      },
-                                      dense: true,
-                                      visualDensity: VisualDensity(
-                                          vertical: -1), // to compact
-                                      title: Text(
-                                        snapshot.data![index].fullname
-                                            .toString(),
-                                        style: TextStyle(
-                                            color: index == selected
-                                                ? Colors.blue
-                                                : Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        snapshot.data![index].email.toString(),
-                                        style: TextStyle(
-                                            color: index == selected
-                                                ? Colors.blue
-                                                : Colors.black),
-                                      ),
-                                    ),
-                                    Divider()
-                                  ],
-                                );
-                              }),
+                      );
+                    } else {
+                      return Center(
+                        child: Container(
+                          child: Text('Tidak ada data pelanggan'),
                         ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Container(
-                      child: Text('Tidak ada data pelanggan'),
-                    ),
-                  );
-                }
-              },
-            ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
           title: Text('Pilih Pelanggan'),
           actions: [
@@ -337,22 +343,22 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
                 ? ButtonNoIcon(
                     textcolor: Colors.white,
                     name: "Save",
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 0, 124, 114),
                     height: MediaQuery.of(context).size.height * 0.05,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
                       await getSf(name, email);
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     },
                   )
                 : ButtonNoIcon(
                     textcolor: Colors.white,
                     name: "Keluar",
-                    color: Colors.blue,
+                    color:Color.fromARGB(255, 0, 124, 114),
                     height: MediaQuery.of(context).size.height * 0.05,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(false);
                     },
                   )
           ]);
@@ -403,8 +409,8 @@ class _DialogTabClassState extends State<DialogTabClass>
                   child: TabBar(
                     // indicator: BoxDecoration(
                     //     borderRadius: BorderRadius.circular(20), // Creates border
-                    //     color: Colors.orange), //Change background color from here
-                    labelColor: Colors.orange,
+                    //     color: AppColors.primaryColor), //Change background color from here
+                    labelColor: AppColors.primaryColor,
                     unselectedLabelColor: Colors.blue,
                     controller: controller,
                     tabs: <Widget>[
@@ -1197,7 +1203,7 @@ class _DialogRewardState extends State<DialogReward>
               ),
             ),
             Card(
-              color: index == 0 ? Colors.orange : Colors.transparent,
+              color: index == 0 ? AppColors.primaryColor : Colors.transparent,
               child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height * 0.1,
@@ -1217,7 +1223,7 @@ class _DialogRewardState extends State<DialogReward>
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             Card(
-              color: index == 1 ? Colors.orange : Colors.transparent,
+              color: index == 1 ? AppColors.primaryColor : Colors.transparent,
               child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height * 0.1,
@@ -2194,7 +2200,7 @@ class _DialogClassRefundorderState extends State<DialogClassRefundorder> {
                               itemCount: x.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
-                                  selectedColor: Colors.orange,
+                                  selectedColor: AppColors.primaryColor,
                                   onTap: () {
                                     trno = x[index].transno!;
                                     selected = index;
@@ -2205,19 +2211,19 @@ class _DialogClassRefundorderState extends State<DialogClassRefundorder> {
                                   title: Text(x[index].transno!,
                                       style: TextStyle(
                                           color: selected == index
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.black)),
                                   subtitle: Text(x[index].pymtmthd!,
                                       style: TextStyle(
                                           color: selected == index
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.black)),
                                   trailing: Text(
                                       CurrencyFormat.convertToIdr(
                                           x[index].totalamt, 0),
                                       style: TextStyle(
                                           color: selected == index
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.black)),
                                 );
                               });
@@ -3609,7 +3615,7 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
                         border: Border.all(
                           color: Colors.black26,
                         ),
-                        color: Colors.orange,
+                        color: AppColors.primaryColor,
                       ),
                       elevation: 2,
                     ),
@@ -3840,7 +3846,7 @@ class _DialogClassSimpanTabState extends State<DialogClassSimpanTab> {
                           border: Border.all(
                             color: Colors.black26,
                           ),
-                          color: Colors.orange,
+                          color: AppColors.primaryColor,
                         ),
                         elevation: 2,
                       ),
@@ -4215,9 +4221,8 @@ class _DialogCancelClosingState extends State<DialogCancelClosing> {
   final _formKey = GlobalKey<FormState>();
 
   _submitForm() async {
-    await ClassApi.cancelClosing(widget.trdt,usercd,dbname);
+    await ClassApi.cancelClosing(widget.trdt, usercd, dbname);
     Navigator.of(context).pop(true); // Tutup dialog setelah selesai
-    
   }
 
   @override

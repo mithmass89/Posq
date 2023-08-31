@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classfungsi/classhitungreward.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -295,7 +296,9 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
-      print(message);
+      print(message[0]['status pesan']);
+      var x = json.decode(message);
+      print('ini : X $x');
 
       // channel.sink.close(status.goingAway);
     });
@@ -496,11 +499,20 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                   uint8List, '${widget.trno}.pdf');
                               channelwa!.sink.add(json.encode({
                                 "function": "sendfile",
-                                "number": "+6281223083900",
-                                "chat": "Margin Call",
+                                "number": _telp.text,
+                                "chat": "E-bill",
                                 "index": "6282221769478",
                                 "attachment": '${widget.trno}.pdf'
                               }));
+                              Fluttertoast.showToast(
+                                  msg: "Upload bill",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 11, 12, 14),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
                               // channelwa!.sink.close();
                               // Navigator.of(context).push(
                               //   MaterialPageRoute(
@@ -511,6 +523,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                             },
                           ),
                           label: 'Whatsapp',
+                          hint: '+621231231231',
                           controller: _telp,
                           onChanged: (String value) {},
                           typekeyboard: TextInputType.phone,
@@ -598,7 +611,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                           children: [
                             ButtonNoIcon(
                               textcolor: connected == true
-                                  ? Colors.orange
+                                  ? AppColors.primaryColor
                                   : Colors.red,
                               color: Colors.white,
                               height: MediaQuery.of(context).size.height * 0.05,
@@ -642,20 +655,46 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                             ),
                             ButtonNoIcon(
                               textcolor: Colors.white,
-                              color: Colors.orange,
+                              color: AppColors.primaryColor,
                               height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.18,
                               onpressed: () async {
-                                // if (Pembelian(widget.amount)
-                                //         .hitungPoin()
-                                //         .toInt() !=
-                                //     '0') {
-                                //   await ClassApi.updatePointCustomers(
-                                //       Pembelian(widget.amount)
-                                //           .hitungPoin()
-                                //           .toInt(),
-                                //       widget.guestname!);
-                                // }
+                                var minconv;
+                                var point;
+                                await ClassApi.getLoyalityProgramActive()
+                                    .then((rules) {
+                                  minconv = rules.first['convamount'];
+                                  point = rules.first['point'];
+                                });
+                                if (Pembelian(summarybill!.first.totalaftdisc!,
+                                            minconv, point)
+                                        .hitungPoin()
+                                        .toInt() !=
+                                    0) {
+                                  final savecostmrs =
+                                      await SharedPreferences.getInstance();
+                                  if (savecostmrs.getString('savecostmrs') !=
+                                      null) {
+                                    Map<String, dynamic> guest = json.decode(
+                                        savecostmrs.getString('savecostmrs')!);
+                                    await ClassApi.insertPointguest(
+                                        Pembelian(
+                                                summarybill!
+                                                    .first.totalaftdisc!,
+                                                minconv,
+                                                point)
+                                            .hitungPoin()
+                                            .toInt(),
+                                        guest['guestname'],
+                                        widget.trdt!,
+                                        widget.trno,
+                                        summarybill!.first.totalaftdisc!);
+
+                                    await savecostmrs.remove("savecostmrs");
+                                    var x = await savecostmrs
+                                        .getString('savecostmrs');
+                                  }
+                                }
                                 channel!.sink
                                     .add(json.encode({"property": dbname}));
                                 await getDetailTrnos().then((value) async {
@@ -664,6 +703,9 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                     await updateTrno();
                                     await ClassApi.cleartable(
                                         dbname, widget.trno);
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.remove("savecostmrs");
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -679,6 +721,9 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                   } else {
                                     if (widget.fromsaved == true) {
                                       await checkTrno();
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.remove("savecostmrs");
                                       await ClassApi.cleartable(
                                           dbname, widget.trno);
                                       Navigator.of(context).pushAndRemoveUntil(
@@ -749,6 +794,10 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                       await updateTrno();
                                       await ClassApi.cleartable(
                                           dbname, widget.trno);
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.remove("savecostmrs");
+
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>

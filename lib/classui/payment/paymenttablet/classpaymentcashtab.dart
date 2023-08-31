@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -88,7 +89,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
               ? IconButton(
                   icon: Icon(
                     Icons.close,
-                    color: Colors.orange,
+                    color: AppColors.primaryColor,
                   ),
                   onPressed: () {
                     widget.controller.clear();
@@ -124,7 +125,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                   },
                   child: Text(
                     'Uang pas',
-                    style: TextStyle(color: Colors.orange),
+                    style: TextStyle(color: AppColors.primaryColor),
                   )),
             ),
             Container(
@@ -136,7 +137,7 @@ class _PaymenCashTabState extends State<PaymenCashTab> {
                         borderRadius: BorderRadius.circular(5), // <-- Radius
                       ),
                       padding: EdgeInsets.zero,
-                      backgroundColor: Colors.orange),
+                      backgroundColor: AppColors.primaryColor),
                   onPressed: strictuser == '0' ||
                           widget.controller.text.isNotEmpty
                       ? () async {

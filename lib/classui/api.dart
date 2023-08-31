@@ -6,12 +6,12 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = 'digims.online';
+var ip = '192.168.1.11';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
 // var api = 'http://147.139.163.18:3000';
-var apiuploadPDF='http://digims.online:5005';
+var apiuploadPDF = 'http://digims.online:5005';
 var serverkey = '';
 String username = 'mitro';
 String password = '@Mitro100689';
@@ -1324,6 +1324,34 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> insertPointguest(num pointconv, String fullname,
+      String date, String transno, num totalbill) async {
+    var body = {
+      "dbname": dbname,
+      "pointconv": pointconv,
+      "guestname": fullname,
+      "date": date,
+      "transno": transno,
+      "totalbill": totalbill
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/insertPointguest');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> checkUserFromOauth(String email, String dbname) async {
     var body = {
       "dbname": dbname,
@@ -1351,7 +1379,7 @@ class ClassApi {
       String fullname, String dbname) async {
     var body = {
       "dbname": dbname,
-      "email": fullname,
+      "fullname": fullname,
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/checkPointCustomer');
@@ -1826,6 +1854,28 @@ class ClassApi {
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/deleteAksesStaff');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+    static Future<dynamic> deleteRewardTrans(
+      String transno, String dbname) async {
+    var body = {"dbname": dbname, "transno": transno,};
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/deleteRewardTrans');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -2466,10 +2516,10 @@ class ClassApi {
       List bodyJson = json.decode(response.body);
       print(bodyJson);
       return bodyJson.map((json) => RewardCLass.fromJson(json)).where((items) {
-        final itemdescLower = items.note!.toLowerCase();
+        // final itemdescLower = items.note!.toLowerCase();
         final itemcodes = items.redempoint!.toString().toLowerCase();
         final searchLower = query.toLowerCase();
-        return itemdescLower.contains(searchLower) ||
+        return itemcodes.contains(searchLower) ||
             itemcodes.contains(searchLower);
       }).toList();
     } else {
@@ -3949,14 +3999,15 @@ class ClassApi {
     }
   }
 
-static  Future<dynamic> uploadFilesLogoPDF(selectedFile, String namefile) async {
+  static Future<dynamic> uploadFilesLogoPDF(
+      selectedFile, String namefile) async {
     String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
     var url = Uri.parse("$apiuploadPDF/upload_files");
     print(url);
     var request = http.MultipartRequest("POST", url);
-  
+
     request.headers.addAll({
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":

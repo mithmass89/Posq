@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_generic_function_type_aliases, sized_box_for_whitespace, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +10,7 @@ import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/dialogdeleteitemtab.dart';
+import 'package:posq/classui/membershiptransmobile.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/classedititemmobile.dart';
 import 'package:posq/databasehandler.dart';
@@ -19,6 +22,7 @@ import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classtextprint.dart';
 import 'package:posq/userinfo.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 typedef void StringCallback(IafjrndtClass val);
 PrintSmall? printing;
@@ -33,13 +37,14 @@ class SlideUpPanel extends StatefulWidget {
   final num? amount;
   late List<IafjrndtClass> listdata;
   final Function? updatedata;
+  final num summarybill;
   final VoidCallback? refreshdata;
   final String trno;
   final bool animated;
   final bool? fromsaved;
   late num? sum;
   final List<TransactionTipe> datatransaksi;
-  final String guestname;
+  late String guestname;
 
   SlideUpPanel(
       {Key? key,
@@ -58,7 +63,8 @@ class SlideUpPanel extends StatefulWidget {
       required this.itemlength,
       this.fromsaved,
       required this.datatransaksi,
-      required this.guestname})
+      required this.guestname,
+      required this.summarybill})
       : super(key: key);
 
   @override
@@ -89,15 +95,18 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   List<String> ordertype = ['Dine in', 'Take Away'];
   int multiprice = 0;
   int? selectedindex;
+  bool hasmember = false;
+  String guestnames = '';
 
   @override
   void initState() {
     super.initState();
-    print('ini listdata ${widget.listdata}');
+    checkGuest();
+    // print('ini listdata ${widget.listdata}');
     trno = widget.trno;
     formattedDate = formatter.format(now);
     getDataSlide();
-    print(widget.trnoinfo!.trdt);
+    // print(widget.trnoinfo!.trdt);
     checkPrinter();
     getSumm();
     getDetails = getDetailTrnos();
@@ -108,11 +117,24 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     if (datadetail.first.salestype != 'normal') {
       selectedindex = widget.datatransaksi.indexWhere(
           (element) => element.transdesc == datadetail.first.salestype);
-      print('ini index : ${datadetail.first}');
+      // print('ini index : ${datadetail.first}');
     }
 
     setState(() {});
     return datadetail;
+  }
+
+  checkGuest() async {
+    final savecostmrs = await SharedPreferences.getInstance();
+    Map<String, dynamic> guest =
+        json.decode(savecostmrs.getString('savecostmrs')!);
+    guestnames = guest['guestname'];
+    if (guest.isNotEmpty) {
+      hasmember = true;
+    } else {
+      hasmember = false;
+    }
+    print('ini guest $guest');
   }
 
   checkPrinter() async {
@@ -145,7 +167,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
           summary = value;
           amounttotal = value.first.totalaftdisc;
         });
-        print('ini summary : $summary');
+        // print('ini summary : $summary');
       } else {
         amounttotal = 0;
       }
@@ -154,7 +176,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
 
   getSumm() async {
     await ClassApi.getSumTrans(widget.trno, dbname, '').then((value) {
-      print('ini summary : $value');
+      // print('ini summary : $value');
       if (value.isNotEmpty) {
         setState(() {
           summary = value;
@@ -240,6 +262,43 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                       fontSize: 16.0);
                                 },
                     )),
+                hasmember == true
+                    ? Expanded(
+                        flex: 1,
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.card_membership,
+                            ),
+                            iconSize: 25,
+                            // color: connected == true ? Colors.green : Colors.red,
+                            splashColor: Colors.purple,
+                            onPressed: () async {
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MembershipsTrans(
+                                          sum: widget.summarybill,
+                                          databill: widget.listdata.first,
+                                          membername: guestnames,
+                                          trno: widget.trno,
+                                        )),
+                              );
+                              await ClassApi.getSumTrans(widget.trno, pscd, '')
+                                  .then(
+                                (hasils) {
+                                  print('refresh main');
+                                  ClassRetailMainMobile.of(context)!.string =
+                                      hasils.first;
+                                  ClassRetailMainMobile.of(context)!.discount =
+                                      hasils.first.discamt!;
+                                  setState(() {
+                                    widget.sum = hasils.first.totalaftdisc;
+                                  });
+                                  setState(() {});
+                                },
+                              );
+                            }))
+                    : Container(),
                 Expanded(
                     flex: 1,
                     child: IconButton(
@@ -250,11 +309,13 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       color: Colors.blueGrey,
                       splashColor: Colors.blueGrey,
                       onPressed: () async {
-                        await showDialog(
+                        hasmember = await showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return DialogCustomerList();
                             });
+                        await checkGuest();
+                        setState(() {});
                       },
                     )),
                 // Expanded(
@@ -280,121 +341,126 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.01,
           ),
-       widget.datatransaksi.isNotEmpty?   Container(
-            height: MediaQuery.of(context).size.height * 0.05,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.datatransaksi.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(7.0),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: selectedindex != index
-                              ? Color.fromARGB(255, 0, 147, 167)
-                              : Colors.pink, // foreground
-                        ),
-                        onPressed: () async {
-                          selectedindex = index;
-                          print(index == index);
-                          Fluttertoast.showToast(
-                              msg: "Sukses Change",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                          for (var element in datadetail) {
-                            var amountprice = element.pricelist!
-                                .where((element) =>
-                                    element.transtype ==
-                                    widget.datatransaksi[index].transtype)
-                                .toList();
-                            var result = IafjrndtClass(
-                                ratecostamt: element.ratecostamt,
-                                salestype:
-                                    widget.datatransaksi[index].transdesc,
-                                condimenttype: element.condimenttype,
-                                svchgpct: element.svchgpct,
-                                multiprice: element.multiprice,
-                                pricelist: element.pricelist,
-                                typ: element.typ,
-                                optioncode: element.optioncode,
-                                havecond: element.havecond,
-                                active: element.active,
-                                trdt: element.trdt,
-                                transno: element.transno,
-                                split: element.split,
-                                itemdesc: element.itemdesc,
-                                qty: element.qty,
-                                description: element.description,
-                                createdt: element.createdt,
-                                rateamtitem: amountprice.isNotEmpty
-                                    ? amountprice.first.amount
-                                    : element.rateamtitem,
-                                discamt: element.discamt,
-                                discpct: element.discpct,
-                                taxpct: element.taxpct,
-                                revenueamt: amountprice.isNotEmpty
-                                    ? element.qty! * amountprice.first.amount -
-                                        element.discamt!
-                                    : element.revenueamt,
-                                taxamt: amountprice.isNotEmpty
-                                    ? (element.qty! *
-                                            amountprice.first.amount) *
-                                        element.taxpct! /
-                                        100
-                                    : element.taxamt,
-                                serviceamt: amountprice.isNotEmpty
-                                    ? (element.qty! *
-                                            amountprice.first.amount) *
-                                        element.svchgpct! /
-                                        100
-                                    : element.serviceamt,
-                                totalaftdisc: amountprice.isNotEmpty
-                                    ? (element.qty! *
-                                            amountprice.first.amount) +
-                                        ((element.qty! *
-                                                amountprice.first.amount) *
-                                            element.taxpct! /
-                                            100) +
-                                        ((element.qty! *
-                                                amountprice.first.amount) *
-                                            element.svchgpct! /
-                                            100) -
-                                        element.discamt!
-                                    : element.totalaftdisc,
-                                id: element.id,
-                                totalcost: 0);
+          widget.datatransaksi.isNotEmpty
+              ? Container(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: widget.datatransaksi.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(7.0),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: selectedindex != index
+                                    ? Color.fromARGB(255, 0, 147, 167)
+                                    : Colors.pink, // foreground
+                              ),
+                              onPressed: () async {
+                                selectedindex = index;
+                                print(index == index);
+                                Fluttertoast.showToast(
+                                    msg: "Sukses Change",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                                for (var element in datadetail) {
+                                  var amountprice = element.pricelist!
+                                      .where((element) =>
+                                          element.transtype ==
+                                          widget.datatransaksi[index].transtype)
+                                      .toList();
+                                  var result = IafjrndtClass(
+                                      ratecostamt: element.ratecostamt,
+                                      salestype:
+                                          widget.datatransaksi[index].transdesc,
+                                      condimenttype: element.condimenttype,
+                                      svchgpct: element.svchgpct,
+                                      multiprice: element.multiprice,
+                                      pricelist: element.pricelist,
+                                      typ: element.typ,
+                                      optioncode: element.optioncode,
+                                      havecond: element.havecond,
+                                      active: element.active,
+                                      trdt: element.trdt,
+                                      transno: element.transno,
+                                      split: element.split,
+                                      itemdesc: element.itemdesc,
+                                      qty: element.qty,
+                                      description: element.description,
+                                      createdt: element.createdt,
+                                      rateamtitem: amountprice.isNotEmpty
+                                          ? amountprice.first.amount
+                                          : element.rateamtitem,
+                                      discamt: element.discamt,
+                                      discpct: element.discpct,
+                                      taxpct: element.taxpct,
+                                      revenueamt: amountprice.isNotEmpty
+                                          ? element.qty! * amountprice.first.amount -
+                                              element.discamt!
+                                          : element.revenueamt,
+                                      taxamt: amountprice.isNotEmpty
+                                          ? (element.qty! *
+                                                  amountprice.first.amount) *
+                                              element.taxpct! /
+                                              100
+                                          : element.taxamt,
+                                      serviceamt: amountprice.isNotEmpty
+                                          ? (element.qty! *
+                                                  amountprice.first.amount) *
+                                              element.svchgpct! /
+                                              100
+                                          : element.serviceamt,
+                                      totalaftdisc: amountprice.isNotEmpty
+                                          ? (element.qty! *
+                                                  amountprice.first.amount) +
+                                              ((element.qty! *
+                                                      amountprice
+                                                          .first.amount) *
+                                                  element.taxpct! /
+                                                  100) +
+                                              ((element.qty! *
+                                                      amountprice.first.amount) *
+                                                  element.svchgpct! /
+                                                  100) -
+                                              element.discamt!
+                                          : element.totalaftdisc,
+                                      id: element.id,
+                                      totalcost: 0);
 
-                            ClassApi.updatePosDetail(result, pscd);
-                          }
-                          await getDetailTrnos().then((value) {
-                            setState(() {});
-                          });
-                          await getSumm();
-                          widget.updatedata!();
-                          widget.refreshdata;
+                                  ClassApi.updatePosDetail(result, pscd);
+                                }
+                                await getDetailTrnos().then((value) {
+                                  setState(() {});
+                                });
+                                await getSumm();
+                                widget.updatedata!();
+                                widget.refreshdata;
 
-                          ClassRetailMainMobile.of(context)!.string =
-                              IafjrndtClass(
-                                  trdt: widget.trnoinfo!.trdt,
-                                  pscd: widget.trnoinfo!.pscd,
-                                  description: '',
-                                  totalaftdisc: 0,
-                                  transno: datadetail.length == 0
-                                      ? null
-                                      : widget.trnoinfo!.transno,
-                                  totalcost: 0,
-                                  ratecostamt: 0);
-                          setState(() {});
-                        },
-                        child: Text(widget.datatransaksi[index].transdesc!)),
-                  );
-                }),
-          ):Container(),
+                                ClassRetailMainMobile.of(context)!.string =
+                                    IafjrndtClass(
+                                        trdt: widget.trnoinfo!.trdt,
+                                        pscd: widget.trnoinfo!.pscd,
+                                        description: '',
+                                        totalaftdisc: 0,
+                                        transno: datadetail.length == 0
+                                            ? null
+                                            : widget.trnoinfo!.transno,
+                                        totalcost: 0,
+                                        ratecostamt: 0);
+                                setState(() {});
+                              },
+                              child:
+                                  Text(widget.datatransaksi[index].transdesc!)),
+                        );
+                      }),
+                )
+              : Container(),
           Container(
               alignment: Alignment.topCenter,
               height: widget.qty! <= 4
@@ -408,7 +474,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       (context, AsyncSnapshot<List<IafjrndtClass>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
                         snapshot.hasData) {
-                      print(datadetail);
+                      // print(datadetail);
                       return SafeArea(
                         child: ListView.builder(
                             controller: widget.controllers,
@@ -567,7 +633,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                       totalaftdisc: 0,
                                                       transno: widget
                                                           .trnoinfo!.transno,
-                                                      totalcost: 0, ratecostamt: 0);
+                                                      totalcost: 0,
+                                                      ratecostamt: 0);
                                               await getDetailTrnos()
                                                   .then((value) {
                                                 setState(() {
@@ -586,7 +653,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                         totalaftdisc: 0,
                                                         transno: widget
                                                             .trnoinfo!.transno,
-                                                        totalcost: 0, ratecostamt: 0);
+                                                        totalcost: 0,
+                                                        ratecostamt: 0);
                                               } else {
                                                 ClassRetailMainMobile.of(
                                                         context)!
@@ -733,7 +801,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                   Colors.white,
                                                               fontSize: 16.0);
                                                         } else {
-                                                          print(value);
+                                                          // print(value);
                                                           if (datadetail[index]
                                                                   .typ !=
                                                               'condiment') {
@@ -782,7 +850,9 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                       : widget
                                                                           .trnoinfo!
                                                                           .transno,
-                                                                  totalcost: 0, ratecostamt: 0);
+                                                                  totalcost: 0,
+                                                                  ratecostamt:
+                                                                      0);
                                                             });
                                                             await getDetails!
                                                                 .then((value) {
@@ -813,23 +883,29 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                               setState(() {});
                                                             });
                                                             await getSumm();
-                                                            ClassRetailMainMobile.of(context)!.string = IafjrndtClass(
-                                                                trdt: widget
-                                                                    .trnoinfo!
-                                                                    .trdt,
-                                                                pscd: widget
-                                                                    .trnoinfo!
-                                                                    .pscd,
-                                                                description: '',
-                                                                totalaftdisc: 0,
-                                                                transno: datadetail
-                                                                            .length ==
-                                                                        0
-                                                                    ? null
-                                                                    : widget
+                                                            ClassRetailMainMobile.of(context)!
+                                                                    .string =
+                                                                IafjrndtClass(
+                                                                    trdt: widget
                                                                         .trnoinfo!
-                                                                        .transno,
-                                                                totalcost: 0, ratecostamt: 0);
+                                                                        .trdt,
+                                                                    pscd: widget
+                                                                        .trnoinfo!
+                                                                        .pscd,
+                                                                    description:
+                                                                        '',
+                                                                    totalaftdisc:
+                                                                        0,
+                                                                    transno: datadetail.length ==
+                                                                            0
+                                                                        ? null
+                                                                        : widget
+                                                                            .trnoinfo!
+                                                                            .transno,
+                                                                    totalcost:
+                                                                        0,
+                                                                    ratecostamt:
+                                                                        0);
                                                           }
                                                         }
                                                       });
@@ -907,7 +983,9 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                       : widget
                                                                           .trnoinfo!
                                                                           .transno,
-                                                                  totalcost: 0, ratecostamt: 0);
+                                                                  totalcost: 0,
+                                                                  ratecostamt:
+                                                                      0);
                                                         });
                                                         await getDetails!
                                                             .then((value) {
@@ -955,7 +1033,8 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                     : widget
                                                                         .trnoinfo!
                                                                         .transno,
-                                                                totalcost: 0, ratecostamt: 0);
+                                                                totalcost: 0,
+                                                                ratecostamt: 0);
                                                       }
                                                     }
                                                   },

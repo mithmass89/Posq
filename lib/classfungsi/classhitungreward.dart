@@ -2,12 +2,16 @@ import 'package:posq/userinfo.dart';
 
 class Pembelian {
   num totalHarga;
+  num minconvamount;
+  num point;
 
-  Pembelian(this.totalHarga);
+  Pembelian(this.totalHarga, this.minconvamount, this.point);
 
   num hitungPoin() {
-    if (totalHarga >= rulesprogram.convamount!) {
-      return (totalHarga ~/ rulesprogram.convamount!) * rulesprogram.point!;
+    print('ini rules active : ${rulesprogram.convamount}');
+    if (totalHarga >= minconvamount) {
+      print('Point bertambah : ${(totalHarga ~/ minconvamount) * point}');
+      return (totalHarga ~/ minconvamount) * point;
     } else {
       return 0;
     }

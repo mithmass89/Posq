@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -213,7 +214,7 @@ class _ClassEditItemTabState extends State<ClassEditItemTab> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Colors.orange,
+                              color: AppColors.primaryColor,
                             ),
                             height: MediaQuery.of(context).size.height * 0.11,
                             width: MediaQuery.of(context).size.width * 0.1,
@@ -247,7 +248,7 @@ class _ClassEditItemTabState extends State<ClassEditItemTab> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Colors.orange,
+                              color: AppColors.primaryColor,
                             ),
                             height: MediaQuery.of(context).size.height * 0.11,
                             width: MediaQuery.of(context).size.width * 0.1,
@@ -365,7 +366,7 @@ class _ClassEditItemTabState extends State<ClassEditItemTab> {
                                         // borderRadius:
                                         //     BorderRadius.all(Radius.circular(20)),
                                         color: discbyamount == true
-                                            ? Colors.orange
+                                            ? AppColors.primaryColor
                                             : Colors.white),
                                     height: MediaQuery.of(context).size.height *
                                         0.06,
@@ -376,7 +377,7 @@ class _ClassEditItemTabState extends State<ClassEditItemTab> {
                                       style: TextStyle(
                                           color: discbyamount == true
                                               ? Colors.white
-                                              : Colors.orange,
+                                              : AppColors.primaryColor,
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -395,7 +396,7 @@ class _ClassEditItemTabState extends State<ClassEditItemTab> {
                                               topRight: Radius.circular(10),
                                               bottomRight: Radius.circular(10)),
                                           color: discbyamount == false
-                                              ? Colors.orange
+                                              ? AppColors.primaryColor
                                               : Colors.white),
                                       height:
                                           MediaQuery.of(context).size.height *
@@ -407,7 +408,7 @@ class _ClassEditItemTabState extends State<ClassEditItemTab> {
                                         style: TextStyle(
                                             color: discbyamount == false
                                                 ? Colors.white
-                                                : Colors.orange,
+                                                : AppColors.primaryColor,
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       )))

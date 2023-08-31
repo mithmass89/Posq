@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
@@ -218,6 +219,8 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
     print('main $compdescription');
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -277,7 +280,7 @@ class _PaymentV2MobileClassState extends State<PaymentV2MobileClass>
                   height: MediaQuery.of(context).size.height * 0.16,
                   width: MediaQuery.of(context).size.width * 1,
                   decoration: const BoxDecoration(
-                    color: Colors.orange,
+                    color: AppColors.primaryColor,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20)),

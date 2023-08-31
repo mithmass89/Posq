@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 
 class ButtonClassAction extends StatefulWidget {
   final VoidCallback? onpressed;
@@ -29,7 +30,7 @@ class _ButtonClassActionState extends State<ButtonClassAction> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: Colors.orange,
+      splashColor: AppColors.primaryColor,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(35),
           topRight: Radius.circular(35),
@@ -330,7 +331,7 @@ class NumPad extends StatelessWidget {
     Key? key,
     this.buttonSizewidth = 80,
     this.buttonSizeheight = 50,
-    this.buttonColor = Colors.blueAccent,
+    this.buttonColor = AppColors.secondaryColor,
     this.iconColor = Colors.white,
     required this.delete,
     required this.onSubmit,
@@ -500,7 +501,7 @@ class NumPadTabs extends StatelessWidget {
     Key? key,
     this.buttonSizewidth = 100,
     this.buttonSizeheight = 55,
-    this.buttonColor = Colors.orange,
+    this.buttonColor = AppColors.primaryColor,
     this.iconColor = Colors.white,
     required this.delete,
     required this.onSubmit,

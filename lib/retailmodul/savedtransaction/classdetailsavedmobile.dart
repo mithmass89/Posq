@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
@@ -106,7 +107,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
                               )));
                 },
                 textcolor: Colors.white,
-                color: Colors.orange,
+                color: AppColors.primaryColor,
                 name: haspayment == true ? 'Reopen' : 'Selesaikan',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
@@ -114,7 +115,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
               ButtonNoIcon(
                 onpressed: () {},
                 textcolor: Colors.white,
-                color: Colors.orange,
+                color: AppColors.primaryColor,
                 name: 'Print',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
@@ -122,7 +123,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
               ButtonNoIcon(
                 onpressed: () {},
                 textcolor: Colors.white,
-                color: Colors.orange,
+                color: AppColors.primaryColor,
                 name: 'Kirim',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,

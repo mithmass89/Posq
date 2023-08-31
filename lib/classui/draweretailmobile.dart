@@ -3,6 +3,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/pengeluaran.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/login.dart';
@@ -45,12 +46,11 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.orange,
+              color: AppColors.primaryColor,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -78,27 +78,16 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            child: Text(
-                              usercd,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ),
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width * 0.2,
-                          //   child: Text(
-                          //     'SHIFT 1 ',
-                          //     style: TextStyle(color: Colors.white, fontSize: 12),
-                          //   ),
-                          // ),
-                        ],
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: Text(
+                          usercd,
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
                       )
                     ],
                   ),

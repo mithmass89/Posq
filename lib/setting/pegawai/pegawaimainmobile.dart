@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -220,7 +221,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
                 height: 10,
               ),
               ButtonNoIcon2(
-                color: Colors.orange,
+                color: AppColors.primaryColor,
                 textcolor: Colors.white,
                 name: 'Buat Staff',
                 height: MediaQuery.of(context).size.height * 0.05,

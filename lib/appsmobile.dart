@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
@@ -206,7 +207,7 @@ class _AppsMobileState extends State<AppsMobile> {
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             key: _scaffoldKey,
-            drawer: constraints.maxWidth <= 480
+            drawer: constraints.maxWidth <= 800
                 ? DrawerWidgetMain()
                 : DrawerWidgetMainTab(),
             body: SingleChildScrollView(
@@ -221,7 +222,7 @@ class _AppsMobileState extends State<AppsMobile> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.orange,
+                          color: AppColors.primaryColor,
                           // borderRadius: BorderRadius.only(
                           //     bottomLeft: Radius.circular(20),
                           //     bottomRight: Radius.circular(20)),
@@ -422,7 +423,7 @@ class _AppsMobileState extends State<AppsMobile> {
                                 height: MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.2,
                                 color: Colors.transparent,
-                                textcolor: Colors.orange,
+                                textcolor: AppColors.primaryColor,
                                 name: '1 Minggu',
                                 onpressed: () async {
                                   // await showDialog(
@@ -456,7 +457,7 @@ class _AppsMobileState extends State<AppsMobile> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.orange,
+                              color: AppColors.primaryColor,
                               // borderRadius: BorderRadius.only(
                               //     bottomLeft: Radius.circular(20),
                               //     bottomRight: Radius.circular(20)),

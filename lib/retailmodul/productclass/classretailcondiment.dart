@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -347,7 +348,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
             widget.fromedit == false || widget.fromedit == null
                 ? LoadingButton(
                     isLoading: _isloading,
-                    color: Colors.orange,
+                    color: AppColors.primaryColor,
                     textcolor: Colors.white,
                     name: 'Simpan',
                     height: MediaQuery.of(context).size.height * 0.05,
@@ -516,7 +517,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                   )
                 : LoadingButton(
                     isLoading: _isloading,
-                    color: Colors.orange,
+                    color: AppColors.primaryColor,
                     textcolor: Colors.white,
                     name: 'Update',
                     height: MediaQuery.of(context).size.height * 0.05,

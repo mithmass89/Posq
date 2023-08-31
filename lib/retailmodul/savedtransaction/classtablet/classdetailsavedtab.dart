@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
@@ -64,7 +65,7 @@ class _DetailSavedTransactionTabState extends State<DetailSavedTransactionTab>
                           )));
             },
             textcolor: Colors.white,
-            color: Colors.orange,
+            color: AppColors.primaryColor,
             name: haspayment == true ? 'Reopen' : 'Selesaikan',
             height: MediaQuery.of(context).size.height * 0.05,
             width: MediaQuery.of(context).size.width * 0.1,

@@ -3,6 +3,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/pengeluaran.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
 import 'package:posq/login.dart';
@@ -47,7 +48,7 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.orange,
+              color: AppColors.primaryColor,
             ),
             child: Column(
               children: [

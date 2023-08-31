@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
@@ -66,7 +67,7 @@ class OutletAccess extends StatelessWidget {
             children: [
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange, // Background color
+                    backgroundColor: AppColors.primaryColor, // Background color
                   ),
                   onPressed: () async {
                     EasyLoading.show(status: 'insert access...');
@@ -101,7 +102,7 @@ class OutletAccess extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.15,
                       child: Text(
                         'Reset',
-                        style: TextStyle(color: Colors.orange),
+                        style: TextStyle(color: AppColors.primaryColor),
                       ))),
             ],
           )

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
@@ -116,6 +117,17 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         uangpas = false;
       });
     }
+  }
+
+  bool _isButtonDisabled = false;
+  String _buttonText = 'My Button';
+
+  void _handleButtonTap() {
+    setState(() {
+      _isButtonDisabled = true;
+      _buttonText = 'Loading...';
+    });
+    // Perform the action that the button triggers here
   }
 
   pesanPaymentTersimpan() {
@@ -293,7 +305,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 textcolor: Colors.white,
                 name: 'Uang Pas',
-                color: Colors.orange,
+                color: AppColors.primaryColor,
                 onpressed: () {
                   checkcontroller();
                   setState(() {
@@ -308,7 +320,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 textcolor: Colors.white,
                 name: 'Terima',
-                color: Colors.orange,
+                color: AppColors.primaryColor,
                 //// checking balance //////
                 onpressed: paymentenable == true ||
                         widget.result <= 0 ||
@@ -317,8 +329,8 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
                         // await functionCheckPayEnable();
                         if (refundmode == false) {
                           if (paymentenable == true) {
+                            paymentenable = false;
                             await insertIafjrnhd().whenComplete(() {
-                              paymentenable=false;
                               setState(() {});
                             });
                           }
@@ -474,7 +486,7 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
         //             style: TextStyle(color: Colors.white),
         //           ),
         //           decoration: BoxDecoration(
-        //               color: Colors.orange,
+        //               color: AppColors.primaryColor,
         //               borderRadius: BorderRadius.circular(15)),
         //         );
         //       }),

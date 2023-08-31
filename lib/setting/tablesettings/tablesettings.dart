@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -104,7 +105,7 @@ class _SettingTableMainState extends State<SettingTableMain> {
                 LoadingButton(
                   isLoading: isLoading,
                   color: Colors.white,
-                  textcolor: Colors.orange,
+                  textcolor: AppColors.primaryColor,
                   name: 'Simpan',
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.3,
@@ -121,7 +122,7 @@ class _SettingTableMainState extends State<SettingTableMain> {
                   },
                 ),
                 ButtonNoIcon2(
-                  color: Colors.orange,
+                  color: AppColors.primaryColor,
                   textcolor: Colors.white,
                   name: 'Add table',
                   height: MediaQuery.of(context).size.height * 0.05,
