@@ -1,6 +1,7 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:math';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,9 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/pagefretrial.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
-import 'package:posq/subscriptionpage.dart';
 import 'package:posq/userinfo.dart';
 
 class RegisterForm extends StatefulWidget {

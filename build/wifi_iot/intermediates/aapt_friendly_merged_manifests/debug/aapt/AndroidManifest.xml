@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.alternadom.wifiiot" >
 
-    <uses-sdk android:minSdkVersion="16" />
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="16" />
 
     <uses-feature android:name="android.hardware.wifi" />
 

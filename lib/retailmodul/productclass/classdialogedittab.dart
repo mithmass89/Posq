@@ -1,12 +1,12 @@
+// ignore_for_file: must_be_immutable, unused_local_variable
+
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/classui/payment/paymenttablet/dialogclasspayment.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 

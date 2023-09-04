@@ -32,6 +32,7 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
 
   getpref() async {
     final prefs = await SharedPreferences.getInstance();
+    // ignore: unused_local_variable
     Map<dynamic, dynamic> printer = json
         .decode(prefs.getString('bluetoothdevice')!) as Map<String, dynamic>;
   }
@@ -289,7 +290,7 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
 
   Future show(
     String message, {
-    Duration duration: const Duration(seconds: 3),
+    Duration duration = const Duration(seconds: 3),
   }) async {
     await new Future.delayed(new Duration(milliseconds: 100));
     ScaffoldMessenger.of(context).showSnackBar(

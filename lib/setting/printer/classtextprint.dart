@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
@@ -14,6 +12,7 @@ class PrintSmall {
   prints(List<IafjrndtClass> detail, List<IafjrndtClass> summary,
       String outletname, Outlet outletinfo) async {
     print('detail from printer : $detail');
+    // ignore: unused_local_variable
     var formatter = NumberFormat('#,##,000');
     //image max 300px X 300px
 

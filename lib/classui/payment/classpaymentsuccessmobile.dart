@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, unused_import, avoid_print, unused_local_variable
 
 import 'dart:convert';
 import 'dart:io';
@@ -108,16 +108,11 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   var wsUrlWa;
   WebSocketChannel? channel;
   WebSocketChannel? channelwa;
-  BluetoothDevice? _device;
-  List<BluetoothDevice> _devices = [];
 
   Future<void> initPlatformState() async {
     bool? isConnected = await bluetooth.isConnected;
     print(isConnected);
-    List<BluetoothDevice> devices = [];
-    try {
-      devices = await bluetooth.getBondedDevices();
-    } on PlatformException {}
+    try {} on PlatformException {}
 
     bluetooth.onStateChanged().listen((state) {
       print(state);
@@ -241,9 +236,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     });
 
     if (!mounted) return;
-    setState(() {
-      _devices = devices;
-    });
+    setState(() {});
 
     if (isConnected == true) {
       setState(() {
@@ -659,42 +652,49 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                               height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.18,
                               onpressed: () async {
-                                var minconv;
-                                var point;
+                                var minconv = 0;
+                                var point = 0;
                                 await ClassApi.getLoyalityProgramActive()
-                                    .then((rules) {
-                                  minconv = rules.first['convamount'];
-                                  point = rules.first['point'];
-                                });
-                                if (Pembelian(summarybill!.first.totalaftdisc!,
-                                            minconv, point)
-                                        .hitungPoin()
-                                        .toInt() !=
-                                    0) {
-                                  final savecostmrs =
-                                      await SharedPreferences.getInstance();
-                                  if (savecostmrs.getString('savecostmrs') !=
-                                      null) {
-                                    Map<String, dynamic> guest = json.decode(
-                                        savecostmrs.getString('savecostmrs')!);
-                                    await ClassApi.insertPointguest(
-                                        Pembelian(
-                                                summarybill!
-                                                    .first.totalaftdisc!,
-                                                minconv,
-                                                point)
-                                            .hitungPoin()
-                                            .toInt(),
-                                        guest['guestname'],
-                                        widget.trdt!,
-                                        widget.trno,
-                                        summarybill!.first.totalaftdisc!);
+                                    .then((rules) async {
+                                  if (rules.isNotEmpty) {
+                                    minconv = rules.first['convamount'];
+                                    point = rules.first['point'];
+                                           if (Pembelian(
+                                              summarybill!.first.totalaftdisc!,
+                                              minconv,
+                                              point)
+                                          .hitungPoin()
+                                          .toInt() !=
+                                      0) {
+                                    final savecostmrs =
+                                        await SharedPreferences.getInstance();
+                                    if (savecostmrs.getString('savecostmrs') !=
+                                        null) {
+                                      Map<String, dynamic> guest = json.decode(
+                                          savecostmrs
+                                              .getString('savecostmrs')!);
+                                      await ClassApi.insertPointguest(
+                                          Pembelian(
+                                                  summarybill!
+                                                      .first.totalaftdisc!,
+                                                  minconv,
+                                                  point)
+                                              .hitungPoin()
+                                              .toInt(),
+                                          guest['guestname'],
+                                          widget.trdt!,
+                                          widget.trno,
+                                          summarybill!.first.totalaftdisc!);
 
-                                    await savecostmrs.remove("savecostmrs");
-                                    var x = await savecostmrs
-                                        .getString('savecostmrs');
+                                      await savecostmrs.remove("savecostmrs");
+                                      var x = await savecostmrs
+                                          .getString('savecostmrs');
+                                    }
                                   }
-                                }
+                                  }
+                           
+                                });
+
                                 channel!.sink
                                     .add(json.encode({"property": dbname}));
                                 await getDetailTrnos().then((value) async {

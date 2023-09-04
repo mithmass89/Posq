@@ -3,7 +3,6 @@ import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';

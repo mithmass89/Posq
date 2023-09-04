@@ -6,7 +6,6 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 

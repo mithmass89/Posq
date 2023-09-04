@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
-import 'package:posq/retailmodul/savedtransaction/classdetailsavedmobile.dart';
 import 'package:posq/retailmodul/savedtransaction/classtablet/classdetailsavedtab.dart';
 
 class ClassListSavedTab extends StatefulWidget {

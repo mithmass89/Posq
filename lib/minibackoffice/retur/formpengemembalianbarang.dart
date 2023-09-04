@@ -4,6 +4,7 @@ import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/minibackoffice/lookupdetailproduct.dart';
+// ignore: unused_import
 import 'package:posq/minibackoffice/selectproduct.dart';
 import 'package:posq/minibackoffice/Receiving/selecttransaksireceiving.dart';
 import 'package:posq/model.dart';

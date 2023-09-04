@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, unused_field
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
@@ -61,6 +63,7 @@ class _NonTunaiMobileQRISV2State extends State<NonTunaiMobileQRISV2> {
   var formatter = DateFormat('yyyy-MM-dd');
   String initialUrl = 'https://google.com'; // Replace with your desired URL
   bool isLoading = true;
+  String? urls;
 
   @override
   void initState() {
@@ -68,6 +71,7 @@ class _NonTunaiMobileQRISV2State extends State<NonTunaiMobileQRISV2> {
     PaymentGate.snapWeb(widget.trno!, widget.result.toString()).then((value) {
       print('test $value');
     });
+    getUrl();
   }
 
   @override
@@ -75,29 +79,38 @@ class _NonTunaiMobileQRISV2State extends State<NonTunaiMobileQRISV2> {
     super.dispose();
   }
 
+  getUrl() async {
+    await PaymentGate.snapWeb(widget.trno!, widget.result.toString())
+        .then((value) {
+      String url = value['redirect_url'];
+      urls = url;
+      _webViewController = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              // Update loading bar.
+            },
+            // onPageStarted: (String url) {
+
+            // },
+            // onPageFinished: (String url) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse('https://flutter.dev'));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: FutureBuilder(
-            future: PaymentGate.snapWeb(widget.trno!, widget.result.toString()),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                print(snapshot.hasData);
-                String url = snapshot.data['redirect_url'];
-                // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
-           
-                return WebView(
-                  initialUrl: '$url#/gopay-qris',
-                  // initialUrl: 'https://www.google.com',
-                  javascriptMode: JavascriptMode.unrestricted,
-                  onPageFinished: (String url) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
-                );
-              }
-              return Center(child: CircularProgressIndicator());
-            }));
+    return Scaffold(body: WebViewWidget(controller: _webViewController));
   }
 }

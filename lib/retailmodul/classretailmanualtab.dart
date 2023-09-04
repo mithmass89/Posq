@@ -1,12 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, prefer_generic_function_type_aliases, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/payment/paymenttablet/paymentcashtab.dart';
 import 'package:posq/model.dart';
-import 'package:posq/retailmodul/clasretailmainmobile.dart';
 
 typedef void StringCallback(IafjrndtClass val);
 

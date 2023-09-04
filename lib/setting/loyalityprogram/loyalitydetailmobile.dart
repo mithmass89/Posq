@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/setting/loyalityprogram/rewardmobile.dart';
 
@@ -23,7 +22,6 @@ class _LoyalityprogramdetailState extends State<Loyalityprogramdetail> {
   TextEditingController point = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController initialjoin = TextEditingController();
-  final NumberFormat _numberFormat = NumberFormat('#,###');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List program = [];
 

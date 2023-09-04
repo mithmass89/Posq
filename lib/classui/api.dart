@@ -6,7 +6,7 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = '192.168.1.11';
+var ip = 'digims.online';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
@@ -396,6 +396,30 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/getDetail_transaksiCashierSummary');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List status = json.decode(response.body);
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+    static Future<dynamic> getSummary_transaksiCashierSummary(
+      String trdt, String usercd, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "trdt": trdt,
+      "usercd": usercd,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/getSummary_transaksiCashierSummary');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

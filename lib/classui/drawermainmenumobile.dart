@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
+import 'package:posq/classui/api.dart';
 import 'package:posq/login.dart';
+import 'package:posq/model.dart';
+import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/userinfo.dart';
 
 class DrawerWidgetMain extends StatelessWidget {
+  final String? today;
+  final num? endings;
+
+  const DrawerWidgetMain({Key? key,required this.today,required this.endings}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -18,7 +26,10 @@ class DrawerWidgetMain extends StatelessWidget {
               icon: Icons.folder,
               text: 'Laporan',
               onTap: accesslist.contains('laporan') == true
-                  ? () => print('Tap My Files')
+                  ? () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return ClassSummaryReport(user: usercd);
+                      }))
                   : () {
                       Fluttertoast.showToast(
                           msg: "Tidak punya akses laporan",
@@ -57,8 +68,15 @@ class DrawerWidgetMain extends StatelessWidget {
           _drawerItem(
               icon: Icons.lock_clock,
               text: 'Tutup kasir',
-              onTap: () => print('Tap Recent menu')),
-      
+              onTap: ()async{
+                        await ClassApi.insertOpenCashier(
+                            OpenCashier(
+                                type: 'CLOSE',
+                                trdt: today,
+                                amount: endings,
+                                usercd: usercd),
+                            dbname);
+              } ),
           Divider(height: 25, thickness: 1),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
@@ -106,7 +124,10 @@ Widget _drawerItem({IconData? icon, String? text, GestureTapCallback? onTap}) {
   return ListTile(
     title: Row(
       children: <Widget>[
-        Icon(icon),
+        Icon(
+          icon,
+          size: 30,
+        ),
         Padding(
           padding: EdgeInsets.only(left: 25.0),
           child: Text(

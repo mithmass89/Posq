@@ -3,10 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
-import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
 class ClassRingkasantab extends StatefulWidget {
@@ -101,6 +99,7 @@ class _ClassRingkasantabState extends State<ClassRingkasantab> {
           future: olahData(),
           builder: (context, snapshot) {
             print(snapshot.data);
+            // ignore: unused_local_variable
             var x = snapshot.data ?? [];
             if (data.isNotEmpty) {
               return Column(

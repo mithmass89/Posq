@@ -1,4 +1,4 @@
-import 'dart:ui';
+
 
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
@@ -7,21 +7,16 @@ import 'package:intl/intl.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
-import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
-import 'package:posq/reporting/cashiersummary.dart';
-import 'package:posq/reporting/classkirimlaporan.dart';
 import 'package:posq/reporting/classlaporanmobile.dart';
 import 'package:posq/reporting/classlistoutlet.dart';
-import 'package:posq/reporting/classringkasan.dart';
 import 'package:posq/reporting/detailcondimentmobile.dart';
 import 'package:posq/reporting/marginitemcost.dart';
 import 'package:posq/reporting/refundtransaksi.dart';
 import 'package:posq/reporting/reportingtablet/classcashierreporttab.dart';
 import 'package:posq/reporting/reportingtablet/classdetailmenuterjual.dart';
-import 'package:posq/reporting/reportingtablet/classringkasancombinetab.dart';
 import 'package:posq/reporting/reportingtablet/classringkasanreporttab.dart';
 import 'package:posq/reporting/reportingtablet/detailpenjualan2tab.dart';
 import 'package:posq/setting/printer/cashiersummary.dart';
@@ -57,6 +52,7 @@ class _ClassSummaryReportTabState extends State<ClassSummaryReportTab> {
   final TextEditingController _controllerdate = TextEditingController();
   final TextEditingController _controllerpilihan =
       TextEditingController(text: "Pilih tipe report");
+  // ignore: unused_field
   DateTimeRange? _selectedDateRange;
   String query = '';
   String type = '';

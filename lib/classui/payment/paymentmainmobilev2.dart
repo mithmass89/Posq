@@ -5,6 +5,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/classpaymentsuccessmobile.dart';
 import 'package:posq/classui/payment/nontunaimobile.dart';
+// ignore: unused_import
 import 'package:posq/classui/payment/nontunaimobileQRISv2.dart';
 import 'package:posq/classui/payment/paymentcashv2.dart';
 import 'package:posq/classui/payment/slideuppanelpaymentmobile.dart';

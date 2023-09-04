@@ -1,14 +1,12 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unused_element
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/payment/paymenttablet/paymentsuccesstab.dart';
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class ClassPaymentQrisTab extends StatefulWidget {
   final String trno;

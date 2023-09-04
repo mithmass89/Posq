@@ -1,9 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/integrasipayment/midtrans.dart';

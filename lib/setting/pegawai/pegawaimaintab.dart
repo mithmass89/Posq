@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/model.dart';

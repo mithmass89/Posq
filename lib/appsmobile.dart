@@ -1,9 +1,6 @@
-// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_field, unnecessary_null_comparison, avoid_print
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_field, unnecessary_null_comparison, avoid_print, must_be_immutable
 
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
@@ -73,17 +70,24 @@ class _AppsMobileState extends State<AppsMobile> {
   ];
   List chartdata = [];
   Future<dynamic>? checkapps;
-  final AudioPlayer audioPlayer = AudioPlayer();
-
-  setter(){
-    setState(() {
-      
-    });
+  // final AudioPlayer audioPlayer = AudioPlayer();
+  num? totals = 0;
+  num? endings = 0;
+  List total = [];
+    String? formatdate;
+  var formatter = DateFormat('yyyy-MM-dd');
+  var now = DateTime.now();
+  num totalpengeluaran = 0;
+  List<OpenCashier?> data = [OpenCashier(amount: 0, type: 'OPEN')];
+  List<OpenCashier?> dataclose = [OpenCashier(amount: 0, type: 'CLOSE')];
+  setter() {
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
+    formatdate = formatter.format(now);
     wsUrl = Uri.parse('wss://digims.online:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
     channel!.stream.listen((message) {
@@ -98,7 +102,7 @@ class _AppsMobileState extends State<AppsMobile> {
             backgroundColor: Color.fromARGB(255, 11, 12, 14),
             textColor: Colors.white,
             fontSize: 18.0);
-        playSoundNotification();
+        // playSoundNotification();
         setState(() {});
       } else {
         getSelesToday();
@@ -170,21 +174,48 @@ class _AppsMobileState extends State<AppsMobile> {
     setState(() {});
   }
 
-  void playSoundNotification() async {
-    String audioasset = 'assets/notification_sound.mp3';
-    ByteData bytes = await rootBundle.load(audioasset); //load sound from assets
-    Uint8List soundbytes =
-        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
-    int result = await audioPlayer.playBytes(soundbytes);
+  // void playSoundNotification() async {
+  //   String audioasset = 'assets/notification_sound.mp3';
+  //   ByteData bytes = await rootBundle.load(audioasset); //load sound from assets
+  //   Uint8List soundbytes =
+  //       bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
+  //   int result = await audioPlayer.playBytes(soundbytes);
 
-    if (result == 1) {
-      // Success
-      print("Sound notification played successfully!");
-    } else {
-      // Error
-      print("Error playing sound notification.");
+  //   if (result == 1) {
+  //     // Success
+  //     print("Sound notification played successfully!");
+  //   } else {
+  //     // Error
+  //     print("Error playing sound notification.");
+  //   }
+  // }
+
+  getDataDetail() async {
+    total =
+        await ClassApi.getDetail_transaksiCashier(formatdate!, usercd, dbname);
+    if (total.isNotEmpty) {
+      totals =
+          total.fold(0.0, (sum, transaction) => sum! + transaction['lamount']);
     }
+    await totalexpense();
+
+    endings = data.isNotEmpty
+        ? data[0]!.amount!
+        : 0 + (total.isNotEmpty ? totals! : 0) - dataclose[0]!.amount!;
+    closingending = endings!;
+
+    setState(() {});
   }
+    totalexpense() async {
+    await ClassApi.totalpengeluaranCashier(formatdate!, usercd, dbname)
+        .then((value) {
+      if (value.isNotEmpty) {
+        totalpengeluaran = value[0]['total'];
+      }
+    });
+    setState(() {});
+  }
+
 
   @override
   void dispose() {
@@ -208,7 +239,7 @@ class _AppsMobileState extends State<AppsMobile> {
             resizeToAvoidBottomInset: false,
             key: _scaffoldKey,
             drawer: constraints.maxWidth <= 800
-                ? DrawerWidgetMain()
+                ? DrawerWidgetMain(endings: endings, today: formatdate,)
                 : DrawerWidgetMainTab(),
             body: SingleChildScrollView(
               child: LayoutBuilder(builder: (
@@ -234,7 +265,8 @@ class _AppsMobileState extends State<AppsMobile> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.014,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.014,
                               width: MediaQuery.of(context).size.width * 1,
                             ),
                             Container(
@@ -243,10 +275,10 @@ class _AppsMobileState extends State<AppsMobile> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.05,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.03,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.03,
                                   ),
                                   imageurl == ''
                                       ? CircleAvatar(
@@ -263,13 +295,14 @@ class _AppsMobileState extends State<AppsMobile> {
                                         )
                                       : CircleAvatar(
                                           radius: 30,
-                                          backgroundImage: NetworkImage(imageurl),
+                                          backgroundImage:
+                                              NetworkImage(imageurl),
                                         ),
                                   SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.05,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.03,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.03,
                                   ),
                                   Container(
                                       width: MediaQuery.of(context).size.width *
@@ -287,7 +320,8 @@ class _AppsMobileState extends State<AppsMobile> {
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.bold)),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                           ),
                                           SizedBox(
                                             height: MediaQuery.of(context)
@@ -316,10 +350,10 @@ class _AppsMobileState extends State<AppsMobile> {
                                         ],
                                       )),
                                   SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.05,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.05,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.05,
                                   ),
                                   IconButton(
                                     icon: Icon(
@@ -350,7 +384,7 @@ class _AppsMobileState extends State<AppsMobile> {
                           height: MediaQuery.of(context).size.height * 0.14,
                           width: MediaQuery.of(context).size.width * 1,
                           child: MenuMain(
-                            setter:setter,
+                              setter: setter,
                               pscd: pscd.toString(),
                               callback: (val) => setState(() {
                                     pscd = val.outletcd;
@@ -377,7 +411,8 @@ class _AppsMobileState extends State<AppsMobile> {
                           child: Row(
                             children: [
                               SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.05,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.02,
                               ),
                               Text('Ringkasan Chart',
@@ -385,7 +420,8 @@ class _AppsMobileState extends State<AppsMobile> {
                                     fontSize: 16,
                                   )),
                               SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.05,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.45,
                               ),
                             ],
@@ -401,7 +437,8 @@ class _AppsMobileState extends State<AppsMobile> {
                           child: Row(
                             children: [
                               SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.05,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.02,
                               ),
                               widget.todaysale.isNotEmpty
@@ -420,7 +457,8 @@ class _AppsMobileState extends State<AppsMobile> {
                                           0.70,
                                       child: Text('0')),
                               ButtonNoIcon(
-                                height: MediaQuery.of(context).size.height * 0.05,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.2,
                                 color: Colors.transparent,
                                 textcolor: AppColors.primaryColor,
@@ -469,16 +507,17 @@ class _AppsMobileState extends State<AppsMobile> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.038,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.038,
                                   width: MediaQuery.of(context).size.width * 1,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                       width: MediaQuery.of(context).size.width *
                                           0.03,
                                     ),
@@ -501,14 +540,16 @@ class _AppsMobileState extends State<AppsMobile> {
                                                 NetworkImage(imageurl),
                                           ),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                       width: MediaQuery.of(context).size.width *
                                           0.03,
                                     ),
                                     Container(
-                                        width: MediaQuery.of(context).size.width *
-                                            0.75,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
                                         alignment: Alignment.centerLeft,
                                         child: Column(
                                           children: [
@@ -556,8 +597,9 @@ class _AppsMobileState extends State<AppsMobile> {
                                           ],
                                         )),
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                       width: MediaQuery.of(context).size.width *
                                           0.05,
                                     ),
@@ -577,7 +619,8 @@ class _AppsMobileState extends State<AppsMobile> {
                                 SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.02,
-                                  width: MediaQuery.of(context).size.width * 0.02,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.02,
                                 ),
                               ],
                             ),
@@ -590,7 +633,7 @@ class _AppsMobileState extends State<AppsMobile> {
                               height: MediaQuery.of(context).size.height * 0.2,
                               width: MediaQuery.of(context).size.width * 1,
                               child: MenuMain(
-                                setter: setter,
+                                  setter: setter,
                                   pscd: pscd.toString(),
                                   callback: (val) => setState(() {
                                         pscd = val.outletcd;
@@ -603,7 +646,8 @@ class _AppsMobileState extends State<AppsMobile> {
                           Row(
                             children: [
                               Container(
-                                height: MediaQuery.of(context).size.height * 0.5,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 child: SummaryTodayTabs(
                                   penjualanratarata: widget.penjualanratarata,
@@ -615,8 +659,8 @@ class _AppsMobileState extends State<AppsMobile> {
                                 children: [
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.08,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.08,
                                     width:
                                         MediaQuery.of(context).size.width * 0.4,
                                     child: Padding(
@@ -657,11 +701,13 @@ class _AppsMobileState extends State<AppsMobile> {
                                     ),
                                   ),
                                   Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.42,
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.5,
-                                      child: LineChartSample1(widget.chartdata)),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.42,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      child:
+                                          LineChartSample1(widget.chartdata)),
                                 ],
                               )
                             ],

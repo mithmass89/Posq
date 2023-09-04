@@ -1,14 +1,14 @@
+// ignore_for_file: unused_local_variable, unused_element
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
-import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/printer/cashiersummary.dart';
-import 'package:posq/setting/printer/classprintpengeluarang.dart';
 import 'package:posq/userinfo.dart';
 
 class PengeluaranUang extends StatefulWidget {
@@ -89,6 +89,7 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
     await checkAmountCLosing();
     await totalexpense();
     await getDataDetail();
+    await getEnding();
     setState(() {});
   }
 
@@ -123,6 +124,15 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
     setState(() {});
   }
 
+  getEnding() async {
+    await ClassApi.getSummary_transaksiCashierSummary(
+            formatdate!, usercd, dbname)
+        .then((value) {
+      endings = value.first['amount'];
+      setState(() {});
+    });
+  }
+
   getDataDetail() async {
     total =
         await ClassApi.getDetail_transaksiCashier(formatdate!, usercd, dbname);
@@ -136,7 +146,7 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
         ? data[0]!.amount!
         : 0 + (total.isNotEmpty ? totals! : 0) - dataclose[0]!.amount!;
     closingending = endings!;
-
+    await getEnding();
     setState(() {});
   }
 
@@ -204,7 +214,7 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
                       EasyLoading.dismiss();
                     });
                     print('Entered Amount: $enteredAmount');
-                    opencashier=false;
+                    opencashier = false;
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/Dashboard', (Route<dynamic> route) => false);
                   }

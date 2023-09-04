@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
 import 'package:printing/printing.dart';
+// ignore: unused_shown_name
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;

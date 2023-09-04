@@ -1,8 +1,9 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';

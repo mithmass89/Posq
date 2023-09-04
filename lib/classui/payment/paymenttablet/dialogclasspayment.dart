@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, unused_local_variable
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:toast/toast.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -15,7 +15,6 @@ import 'package:posq/classui/payment/paymenttablet/classpaymentlainlaintab.dart'
 import 'package:posq/classui/payment/paymenttablet/classpaymentpiutangtab.dart';
 import 'package:posq/classui/payment/paymenttablet/classpaymentqristab.dart';
 import 'package:posq/integrasipayment/classintegrasilist.dart';
-import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_generic_function_type_aliases, sized_box_for_whitespace, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_generic_function_type_aliases, sized_box_for_whitespace, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unused_local_variable
 
 import 'dart:convert';
 
@@ -9,7 +9,6 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
-import 'package:posq/classui/dialogdeleteitemtab.dart';
 import 'package:posq/classui/membershiptransmobile.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/classedititemmobile.dart';

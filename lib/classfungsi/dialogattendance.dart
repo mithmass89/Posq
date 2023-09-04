@@ -5,7 +5,7 @@ class AttendanceDialog extends StatelessWidget {
   final LocalAuthentication auth = LocalAuthentication();
   localAuth() async {
     final bool didAuthenticate = await auth.authenticate(
-      biometricOnly: true,
+      // biometricOnly: true,
       localizedReason: 'Please authenticate AOVIPOS',
     );
     print(didAuthenticate);

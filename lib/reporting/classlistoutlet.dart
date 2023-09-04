@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/model.dart';
-import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 

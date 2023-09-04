@@ -3,7 +3,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
-import 'package:posq/userinfo.dart';
 
 class TambahAksesStaff extends StatefulWidget {
   final String user;

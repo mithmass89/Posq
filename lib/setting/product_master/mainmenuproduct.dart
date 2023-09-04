@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
 import 'package:posq/setting/generalsetting/generalsettingmobile.dart';
@@ -39,6 +40,7 @@ class _MainMenuProductState extends State<MainMenuProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColors.primaryColor,
           leading: GestureDetector(
             child: Icon(
               Icons.arrow_back_ios,

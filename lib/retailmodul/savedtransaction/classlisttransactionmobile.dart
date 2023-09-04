@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
-import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/classdetailtrnomobile.dart';
 import 'package:posq/userinfo.dart';

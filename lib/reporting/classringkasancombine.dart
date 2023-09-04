@@ -6,8 +6,6 @@ import 'package:posq/classui/classformat.dart';
 import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
-import 'package:posq/reporting/reportdetail/detailcogs.dart';
-import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 
 class ClassRingkasanAll extends StatefulWidget {

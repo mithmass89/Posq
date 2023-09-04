@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sized_box_for_whitespace, prefer_typing_uninitialized_variables, avoid_unnecessary_containers, prefer_generic_function_type_aliases, avoid_print, must_be_immutable, non_constant_identifier_names, unused_import, unused_field
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sized_box_for_whitespace, prefer_typing_uninitialized_variables, avoid_unnecessary_containers, prefer_generic_function_type_aliases, avoid_print, must_be_immutable, non_constant_identifier_names, unused_import, unused_field, unused_local_variable
 
 import 'dart:async';
 import 'dart:convert';
@@ -354,7 +354,7 @@ class _DialogCustomerListState extends State<DialogCustomerList> {
                 : ButtonNoIcon(
                     textcolor: Colors.white,
                     name: "Keluar",
-                    color:Color.fromARGB(255, 0, 124, 114),
+                    color: Color.fromARGB(255, 0, 124, 114),
                     height: MediaQuery.of(context).size.height * 0.05,
                     width: MediaQuery.of(context).size.width * 0.2,
                     onpressed: () async {
@@ -2701,21 +2701,25 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
   var formattedDate;
   var now = DateTime.now();
   var formatter = DateFormat('yyyy-MM-dd');
+  WebViewController? _webViewController;
 
   String initialUrl = 'https://google.com'; // Replace with your desired URL
   bool isLoading = true;
   String trnotemp = '';
   bool complatepay = false;
+  // late final WebViewController _controller;
+  String? urls;
 
   @override
   void initState() {
     super.initState();
-
+    getUrl();
     trnotemp = '${widget.trno}-$now';
     formattedDate = formatter.format(now);
     PaymentGate.snapWeb(widget.trno, widget.result.toString()).then((value) {
       print('test $value');
     });
+    getUrl();
     getStatusTransaction();
   }
 
@@ -2739,6 +2743,36 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
       });
       setState(() {});
       print('Periodic task executed at ${complatepay}');
+    });
+  }
+
+  getUrl() async {
+    await PaymentGate.snapWeb(widget.trno, widget.result.toString())
+        .then((value) {
+      String url = value['redirect_url'];
+      urls = url;
+      _webViewController = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              // Update loading bar.
+            },
+            // onPageStarted: (String url) {
+
+            // },
+            // onPageFinished: (String url) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse('$url#/gopay-qris'));
     });
   }
 
@@ -2804,16 +2838,8 @@ class _DialogClassEwalletState extends State<DialogClassEwallet> {
                       // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
 
                       return complatepay == false
-                          ? WebView(
-                              initialUrl: '$url#/gopay-qris',
-                              // initialUrl: 'https://www.google.com',
-                              // initialUrl: '$url',
-                              javascriptMode: JavascriptMode.unrestricted,
-                              onPageFinished: (String url) {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              },
+                          ? WebViewWidget(
+                              controller: _webViewController!,
                             )
                           : Container(
                               child: Center(child: Text('Payment Success')));
@@ -2902,9 +2928,11 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
   var formatter = DateFormat('yyyy-MM-dd');
   bool complatepay = false;
 
+
   String initialUrl = 'https://google.com'; // Replace with your desired URL
   bool isLoading = true;
   String trnotemp = '';
+    WebViewController? _webViewController;
 
   @override
   void initState() {
@@ -2914,6 +2942,7 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
     PaymentGate.snapWeb(widget.trno, widget.result.toString()).then((value) {
       print('test $value');
     });
+      getUrl();
     getStatusTransaction();
   }
 
@@ -2976,6 +3005,36 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
   String qr =
       'https://api.midtrans.com/v2/qris/270c2c13-a548-417b-9a30-06abe9901bfd/qr-code';
 
+       getUrl() async {
+    await PaymentGate.snapWeb(widget.trno, widget.result.toString())
+        .then((value) {
+      String url = value['redirect_url'];
+    
+      _webViewController = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              // Update loading bar.
+            },
+            // onPageStarted: (String url) {
+
+            // },
+            // onPageFinished: (String url) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse('$url#/gopay-qris'));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
@@ -3002,16 +3061,8 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
                       // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
 
                       return complatepay == false
-                          ? WebView(
-                              initialUrl: '$url#/gopay-qris',
-                              // initialUrl: 'https://www.google.com',
-                              // initialUrl: '$url',
-                              javascriptMode: JavascriptMode.unrestricted,
-                              onPageFinished: (String url) {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              },
+                          ? WebViewWidget(
+                              controller:_webViewController!
                             )
                           : Container(
                               child: Center(child: Text('Payment Success')));

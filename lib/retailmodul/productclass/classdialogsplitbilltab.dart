@@ -1,7 +1,8 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
-import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/payment/paymentmainmobilev2.dart';
 import 'package:posq/classui/payment/paymenttablet/dialogclasspayment.dart';

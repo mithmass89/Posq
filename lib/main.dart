@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posq/appsmobile.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/firebase_options.dart';
 import 'package:posq/login.dart';
 import 'package:posq/mainapps.dart';
@@ -46,12 +47,12 @@ class MyApp extends StatelessWidget {
       builder: EasyLoading.init(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          color:  Color.fromARGB(255, 255, 145, 0),
+          color:  AppColors.primaryColor,
           // <-- SEE HERE
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: IconThemeData(color: Colors.white),
         ),
         useMaterial3: true,
-          primaryColor: Color.fromARGB(255, 255, 145, 0),
+          primaryColor: AppColors.primaryColor,
         textTheme: GoogleFonts.questrialTextTheme(textTheme).copyWith(),
         primarySwatch: Colors.orange,
       ),

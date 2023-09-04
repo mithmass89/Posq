@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:im_stepper/stepper.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/setting/loyalityprogram/loyalitydetailmobile.dart';
 

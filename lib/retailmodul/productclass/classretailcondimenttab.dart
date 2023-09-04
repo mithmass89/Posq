@@ -6,6 +6,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
+// ignore: unused_import
 import 'package:posq/retailmodul/productclass/subcondimentv2.dart';
 import 'package:posq/retailmodul/productclass/subcondimentv2tab.dart';
 import 'package:posq/userinfo.dart';

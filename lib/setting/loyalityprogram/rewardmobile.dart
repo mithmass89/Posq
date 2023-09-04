@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/model.dart';
 
@@ -67,6 +66,7 @@ class _RewardMobileState extends State<RewardMobile> {
           Container(
             child: ElevatedButton(
                 onPressed: () async {
+                  // ignore: unused_local_variable
                   final String titles = await showDialog(
                       context: context,
                       builder: (BuildContext context) {

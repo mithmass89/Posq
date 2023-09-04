@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -5,7 +7,6 @@ import 'package:posq/databasehandler.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/savedtransaction/classsaveddetailcustmob.dart';
-import 'package:posq/retailmodul/savedtransaction/classtabdetailtrnomobile.dart';
 import 'package:posq/retailmodul/savedtransaction/classtablet/classtabdetailtrnotab.dart';
 
 class DetailSavedTransactionTab extends StatefulWidget {

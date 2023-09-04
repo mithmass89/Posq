@@ -19,8 +19,6 @@ import 'package:posq/reporting/marginitemcost.dart';
 import 'package:posq/reporting/refundtransaksi.dart';
 import 'package:posq/setting/printer/cashiersummary.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
-import 'package:posq/setting/printer/classprinterbillpayment.dart';
-import 'package:posq/setting/printer/classprintpengeluarang.dart';
 import 'package:posq/userinfo.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 

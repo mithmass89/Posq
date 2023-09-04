@@ -1,4 +1,6 @@
-import 'dart:typed_data';
+// ignore_for_file: unused_local_variable
+
+
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';

@@ -119,13 +119,13 @@ class _PaymentCashV2MobileState extends State<PaymentCashV2Mobile> {
     }
   }
 
+  // ignore: unused_field
   bool _isButtonDisabled = false;
-  String _buttonText = 'My Button';
 
+  // ignore: unused_element
   void _handleButtonTap() {
     setState(() {
       _isButtonDisabled = true;
-      _buttonText = 'Loading...';
     });
     // Perform the action that the button triggers here
   }

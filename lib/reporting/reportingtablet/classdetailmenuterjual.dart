@@ -1,13 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
-import 'package:posq/databasehandler.dart';
-import 'package:posq/model.dart';
-import 'package:posq/reporting/classcahsiersummarydetail.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
-import 'package:posq/reporting/reportingtablet/cashiersummarydetailtab.dart';
 import 'package:posq/reporting/reportingtablet/classdetailitemmenusoldtab.dart';
-import 'package:posq/userinfo.dart';
 import 'package:toast/toast.dart';
 import 'package:collection/collection.dart';
 

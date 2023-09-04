@@ -21,8 +21,7 @@ import 'package:posq/paymentcheck.dart';
 import 'package:posq/registerform.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/userinfo.dart';
-import 'package:flutter/services.dart';
-import 'package:local_auth/error_codes.dart' as auth_error;
+// ignore: duplicate_import
 import 'package:local_auth/local_auth.dart';
 
 class Login extends StatefulWidget {
@@ -114,7 +113,7 @@ class _LoginState extends State<Login> {
   // ···
   localAuth() async {
     final bool didAuthenticate = await auth.authenticate(
-      biometricOnly: true,
+      // biometricOnly: true,
       localizedReason: 'Please authenticate AOVIPOS',
     );
     print(didAuthenticate);

@@ -34,6 +34,22 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
           'Pilih Outlet',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ClassSetupProfileMobile(
+                            email: emaillogin,
+                            fullname: usercd,
+                          )),
+                ).then((_) {
+                  setState(() {});
+                });
+              },
+              icon: Icon(Icons.add))
+        ],
       ),
       body: FutureBuilder(
         future: ClassApi.getOutlets(emaillogin),
@@ -72,21 +88,21 @@ class _SelectoutletmobileState extends State<Selectoutletmobile> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ClassSetupProfileMobile(
-                      email: emaillogin,
-                      fullname:usercd,
-                    )),
-          ).then((_) {
-            setState(() {});
-          });
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (context) => ClassSetupProfileMobile(
+      //                 email: emaillogin,
+      //                 fullname: usercd,
+      //               )),
+      //     ).then((_) {
+      //       setState(() {});
+      //     });
+      //   },
+      // ),
     );
   }
 }
