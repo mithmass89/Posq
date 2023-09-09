@@ -41,7 +41,7 @@ class _OptionCreateState extends State<OptionCreate> {
       if (constraints.maxWidth <= 480) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Option List'),
+            title: Text('Option List',style: TextStyle(color: Colors.white),),
           ),
           body: Container(
             padding: EdgeInsets.all(10),
@@ -147,7 +147,7 @@ class _OptionCreateState extends State<OptionCreate> {
       } else if (constraints.maxWidth >= 820) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Option List'),
+            title: Text('Option List',style: TextStyle(color: Colors.white),),
           ),
           body: Container(
             padding: EdgeInsets.all(10),

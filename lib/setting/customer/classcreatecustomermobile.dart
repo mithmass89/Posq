@@ -66,7 +66,7 @@ class _ClassCreateCustomerMobileState extends State<ClassCreateCustomerMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Buat Customers'),
+        title: const Text('Buat Customers',style: TextStyle(color: Colors.white),),
       ),
       body: Form(
         key: _formKey,

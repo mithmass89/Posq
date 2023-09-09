@@ -108,7 +108,7 @@ class _SelectPromoTabState extends State<SelectPromoTab> {
       ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Pilih Promo Tersedia'),
+        title: Text('Pilih Promo Tersedia',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

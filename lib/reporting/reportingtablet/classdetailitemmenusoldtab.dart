@@ -34,7 +34,7 @@ class _ClassCashierMenuSoldDetailTabState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Detail Transaksi')),
+      appBar: AppBar(title: Text('Detail Transaksi',style: TextStyle(color: Colors.white),)),
       body: Container(
         child: Column(
           children: [

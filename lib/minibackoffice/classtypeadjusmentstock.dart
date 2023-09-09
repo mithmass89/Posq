@@ -31,7 +31,7 @@ class _ClassAdjusmentTypeState extends State<ClassAdjusmentType> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Transaksi'),
+        title: Text('List Transaksi',style: TextStyle(color: Colors.white),),
       ),
       body: FutureBuilder(
           future: handler.retrivegntranstp(),

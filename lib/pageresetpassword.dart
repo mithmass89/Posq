@@ -19,7 +19,7 @@ class _ResetPasswordClassState extends State<ResetPasswordClass> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset password'),
+        title: Text('Reset password',style: TextStyle(color: Colors.white),),
       ),
       body: Center(
         child: Container(

@@ -70,7 +70,7 @@ class _ClassproductmobileV3State extends State<ClassproductmobileV3> {
       appBar: AppBar(
         title: Text(
           'Product List',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Column(

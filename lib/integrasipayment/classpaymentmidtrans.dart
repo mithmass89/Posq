@@ -48,7 +48,7 @@ class _ClassPaymentMidtransState extends State<ClassPaymentMidtrans> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Midtrans'),
+        title: Text('Midtrans',style: TextStyle(color: Colors.white),),
       ),
       body: Stack(
         clipBehavior: Clip.none, children: [

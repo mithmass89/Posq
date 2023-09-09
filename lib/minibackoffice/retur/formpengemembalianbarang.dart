@@ -252,7 +252,7 @@ class _ClassPengembalianPembelianMobileState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Pengembalian Barang'),
+        title: Text('Pengembalian Barang',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -12,7 +12,7 @@ class _ProductMovementState extends State<ProductMovement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pergerakan Barang'),
+        title: Text('Pergerakan Barang',style: TextStyle(color: Colors.white),),
       ),
       body: Container(
         child: Column(

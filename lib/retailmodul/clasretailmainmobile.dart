@@ -894,7 +894,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                 ),
                               );
                           }
-                          return Container();
                         }),
                     Positioned(
                       bottom: MediaQuery.of(context).size.height * 0.02,

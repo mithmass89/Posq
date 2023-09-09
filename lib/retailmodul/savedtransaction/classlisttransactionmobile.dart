@@ -101,7 +101,7 @@ class _ListtransactionState extends State<Listtransaction> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Riwayat Transaksi'),
+        title: Text('Riwayat Transaksi',style: TextStyle(color: Colors.white),),
         actions: [],
       ),
       body: Column(

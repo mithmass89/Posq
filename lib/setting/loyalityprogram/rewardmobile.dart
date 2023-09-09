@@ -45,7 +45,7 @@ class _RewardMobileState extends State<RewardMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Reward Setting'),
+        title: Text('Reward Setting',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

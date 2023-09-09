@@ -26,6 +26,7 @@ import 'package:posq/userinfo.dart';
 import 'package:uuid/uuid.dart';
 import 'package:posq/classui/api.dart';
 
+import 'analisa/analisamainmobile.dart';
 import 'setting/pegawai/pegawaimaintab.dart';
 
 typedef void StringCallback(Outlet val);
@@ -317,6 +318,42 @@ class _MenuMainState extends State<MenuMain> {
                             fontSize: 16.0);
                       },
                 name: 'Outlet',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                splash: selected,
+                iconasset: 'assets/bar-chart.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: accesslistuser.contains('selectoutlet') == true
+                    ? () async {
+                        setState(() {
+                          selected = !selected;
+                        });
+                        final Outlet? result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AnalisaMainMobile()),
+                        );
+                        // callbackTitle(result);
+                        await checkTrno();
+                        AppsMobile.of(context)!.string = result;
+                        print('ini result : $result');
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses analisa",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
+                name: 'Analisa',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,

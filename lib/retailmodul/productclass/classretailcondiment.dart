@@ -175,7 +175,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Menu Modifier'),
+          title: Text('Menu Modifier',style: TextStyle(color: Colors.white),),
         ),
         body: Column(
           children: [

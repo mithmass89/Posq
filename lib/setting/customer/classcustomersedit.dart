@@ -52,7 +52,7 @@ class _ClassEditCustomersState extends State<ClassEditCustomers> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Edit Customers'),
+        title: const Text('Edit Customers',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

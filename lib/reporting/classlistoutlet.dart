@@ -29,7 +29,7 @@ class _ClassPilihOutletMobileState extends State<ClassPilihOutletMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Outlet'),
+        title: Text('List Outlet',style: TextStyle(color: Colors.white),),
       ),
       body: FutureBuilder(
           future: ClassApi.getOutlets(emaillogin),

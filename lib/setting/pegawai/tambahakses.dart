@@ -36,7 +36,7 @@ class _TambahAksesStaffState extends State<TambahAksesStaff> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Tambah akses ${widget.user}'),
+        title: Text('Tambah akses ${widget.user}',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

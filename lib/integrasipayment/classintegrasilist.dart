@@ -14,7 +14,7 @@ class _ClassListIntegrasiState extends State<ClassListIntegrasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Integrasi List'),
+        title: Text('Integrasi List',style: TextStyle(color: Colors.white),),
       ),
       body: ListView(
         children: [

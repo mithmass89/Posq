@@ -337,7 +337,7 @@ class _PengeluaranUangState extends State<PengeluaranUang> {
         ],
       ),
       appBar: AppBar(
-        title: Text('Pengeluaran'),
+        title: Text('Pengeluaran',style: TextStyle(color: Colors.white),),
       ),
       body: Container(
         child: SingleChildScrollView(

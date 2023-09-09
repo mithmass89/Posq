@@ -90,7 +90,7 @@ class _ClassEditTransaksiState extends State<ClassEditTransaksi> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Pembelian Barang'),
+        title: Text('Pembelian Barang',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Column(

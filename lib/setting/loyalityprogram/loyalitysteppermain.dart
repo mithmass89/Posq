@@ -29,7 +29,7 @@ class _StepperLoyalityProgramMobileState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('pilih tipe loyality program'),
+        title: Text('pilih tipe loyality program',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

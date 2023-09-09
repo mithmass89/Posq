@@ -54,7 +54,7 @@ class _CondimentCreateState extends State<CondimentCreate> {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            title: Text('Modifier Creation'),
+            title: Text('Modifier Creation',style: TextStyle(color: Colors.white),),
           ),
           body: Container(
             child: ListView(
@@ -289,7 +289,7 @@ class _CondimentCreateState extends State<CondimentCreate> {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            title: Text('Modifier Creation'),
+            title: Text('Modifier Creation',style: TextStyle(color: Colors.white),),
           ),
           body: Container(
             child: ListView(

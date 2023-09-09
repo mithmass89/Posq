@@ -64,7 +64,7 @@ class _TemplatePrinterState extends State<TemplatePrinter>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setelan'),
+        title: Text('Setelan',style: TextStyle(color: Colors.white),),
       ),
       body: FutureBuilder(
           future: ClassApi.getTemplatePrinter(),

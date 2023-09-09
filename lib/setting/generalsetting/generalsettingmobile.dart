@@ -35,7 +35,7 @@ class _GeneralSettingMobileState extends State<GeneralSettingMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('General Setting'),
+        title: Text('General Setting',style: TextStyle(color: Colors.white),),
       ),
       body: Container(
           child: ListView(

@@ -43,7 +43,7 @@ class _ListPegawaiClassState extends State<ListPegawaiClass> {
             },
             child: Icon(Icons.add),
           ),
-          appBar: AppBar(title: Text('List User')),
+          appBar: AppBar(title: Text('List User',style: TextStyle(color: Colors.white),)),
           body: Container(
             child: ListView.builder(
                 itemCount: pegawai!.length,
@@ -77,7 +77,7 @@ class _ListPegawaiClassState extends State<ListPegawaiClass> {
             },
             child: Icon(Icons.add),
           ),
-          appBar: AppBar(title: Text('List User')),
+          appBar: AppBar(title: Text('List User',style: TextStyle(color: Colors.white),)),
           body: Container(
             child: ListView.builder(
                 itemCount: pegawai!.length,

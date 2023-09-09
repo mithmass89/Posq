@@ -48,7 +48,7 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text('Buat Tipe Transaksi'),
+            title: Text('Buat Tipe Transaksi',style: TextStyle(color: Colors.white),),
             actions: [
               Container(
                 child: IconButton(
@@ -149,7 +149,7 @@ class _CreateTipeTransaksiState extends State<CreateTipeTransaksi> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text('Buat Tipe Transaksi'),
+            title: Text('Buat Tipe Transaksi',style: TextStyle(color: Colors.white),),
             actions: [
               Container(
                 child: IconButton(

@@ -46,7 +46,7 @@ class _ClassPromoTabState extends State<ClassPromoTab> {
         child: Icon(Icons.add),
       ),
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text('Setting promo')),
+      appBar: AppBar(title: Text('Setting promo',style: TextStyle(color: Colors.white),)),
       body: Column(
         children: [
           TextFieldMobile2(

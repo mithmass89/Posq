@@ -85,7 +85,7 @@ String companycode='';
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Buat Company'),
+        title: Text('Buat Company',style: TextStyle(color: Colors.white),),
       ),
       body: Form(
         key: _validation,

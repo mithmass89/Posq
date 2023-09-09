@@ -47,7 +47,7 @@ class _BuatPaketMobileState extends State<BuatPaketMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Buat Paket'),
+        title: Text('Buat Paket',style: TextStyle(color: Colors.white),),
       ),
       body: Stack(
         children: [

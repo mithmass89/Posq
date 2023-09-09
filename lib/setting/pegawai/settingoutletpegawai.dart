@@ -19,7 +19,7 @@ class OutletAccess extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Akses Outlet'),
+        title: Text('Akses Outlet',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

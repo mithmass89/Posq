@@ -6,7 +6,7 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = 'digims.online';
+var ip = '192.168.88.248';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';

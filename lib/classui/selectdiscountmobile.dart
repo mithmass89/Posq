@@ -86,7 +86,7 @@ class _SelectPromoMobileState extends State<SelectPromoMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Pilih Promo'),
+        title: Text('Pilih Promo',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

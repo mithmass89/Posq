@@ -65,7 +65,7 @@ class _ClassEditPromoMobileState extends State<ClassEditPromoMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Buat diskon baru'),
+        title: Text('Buat diskon baru',style: TextStyle(color: Colors.white),),
       ),
       body: Stack(
         clipBehavior: Clip.none,

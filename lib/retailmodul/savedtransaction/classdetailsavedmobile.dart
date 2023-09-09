@@ -48,7 +48,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
       appBar: AppBar(
         title: Column(
           children: [
-            Text(widget.trno),
+            Text(widget.trno,style: TextStyle(color: Colors.white),),
           ],
         ),
       ),

@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.5.1+20
+version: 0.5.1+21
 
 environment:
-  sdk: ">=2.19.6 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -98,6 +98,8 @@ dev_dependencies:
   printing: ^5.11.0
   dropdown_button2: ^2.1.0
   in_app_purchase: ^3.1.5
+  syncfusion_flutter_gauges: ^22.2.12
+  syncfusion_flutter_datepicker: ^22.2.12
   
 
 
@@ -168,6 +170,7 @@ flutter:
     - assets/fingerprint.png
     - assets/notification_sound.mp3
     - assets/cashier-machine.png
+    - assets/bar-chart.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

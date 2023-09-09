@@ -59,7 +59,7 @@ class _LoyalityprogramdetailState extends State<Loyalityprogramdetail> {
     final datetextto = DateFormat('dd-MM-yyyy').format(selectedDate);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail Loyality Program'),
+        title: Text('Detail Loyality Program',style: TextStyle(color: Colors.white),),
       ),
       body: Form(
         key: _formKey,

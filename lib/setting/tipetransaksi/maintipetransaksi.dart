@@ -32,7 +32,7 @@ class _MainTransaksiTypeState extends State<MainTransaksiType> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              'Tipe Transaksi',
+              'Tipe Transaksi',style: TextStyle(color: Colors.white),
             ),
           ),
           body: Container(
@@ -163,7 +163,7 @@ class _MainTransaksiTypeState extends State<MainTransaksiType> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              'Tipe Transaksi',
+              'Tipe Transaksi',style: TextStyle(color: Colors.white),
             ),
           ),
           body: SingleChildScrollView(

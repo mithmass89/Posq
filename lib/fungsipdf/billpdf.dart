@@ -201,7 +201,7 @@ class PdfViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PDF Preview'),
+        title: Text('PDF Preview',style: TextStyle(color: Colors.white),),
       ),
       body: Center(
         child: PdfPreview(

@@ -84,7 +84,7 @@ class _KelolaProductMainMobileState extends State<KelolaProductMainMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Kelola Stock'),
+        title: Text('Kelola Stock',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

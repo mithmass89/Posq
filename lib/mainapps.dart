@@ -194,6 +194,8 @@ class _MainappsState extends State<Mainapps> {
                               kodepos: outletinfo!.kodepos,
                             ),
                           );
+                        case null:
+                          // TODO: Handle this case.
                       }
                     }
                     switch (hasoutlet) {
@@ -219,6 +221,8 @@ class _MainappsState extends State<Mainapps> {
                             kodepos: outletinfo!.kodepos,
                           ),
                         );
+                      case null:
+                        // TODO: Handle this case.
                     }
                     return Container();
                   },

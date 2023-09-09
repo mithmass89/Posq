@@ -61,7 +61,7 @@ class _PegawaiMainTabState extends State<PegawaiMainTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting Pegawai'),
+        title: Text('Setting Pegawai',style: TextStyle(color: Colors.white),),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 0, 173, 150),

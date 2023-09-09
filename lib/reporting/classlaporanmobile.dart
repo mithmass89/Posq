@@ -26,7 +26,7 @@ class _ClassLaporanMobileState extends State<ClassLaporanMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Laporan'),
+        title: Text('List Laporan',style: TextStyle(color: Colors.white),),
       ),
       body: ListView(
         children: [

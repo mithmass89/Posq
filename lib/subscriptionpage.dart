@@ -136,7 +136,7 @@ class _SubScribetionPageState extends State<SubScribetionPage> {
                 appBar: AppBar(
                   title: Text(
                     'Berlangganan (Demo Free)',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),
                   ),
                 ),
                 body: LayoutBuilder(

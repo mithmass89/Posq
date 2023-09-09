@@ -203,7 +203,7 @@ class _ClassInputCondimentTabState extends State<ClassInputCondimentTab> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Menu Modifier'),
+          title: Text('Menu Modifier',style: TextStyle(color: Colors.white),),
         ),
         body: Center(
           child: Container(

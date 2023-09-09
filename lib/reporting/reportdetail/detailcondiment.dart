@@ -22,7 +22,7 @@ class _DetailCondimentCheckState extends State<DetailCondimentCheck> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail transaksi'),
+        title: Text('Detail transaksi',style: TextStyle(color: Colors.white),),
       ),
       body: Container(
         child: FutureBuilder(

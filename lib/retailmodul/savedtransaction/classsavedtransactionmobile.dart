@@ -51,7 +51,7 @@ class _ClassSavedTransactionMobileState
             color: Colors.black54,
           ),
         ),
-        title: Text('Order Management'),
+        title: Text('Order Management',style: TextStyle(color: Colors.white),),
         actions: [],
       ),
       body: Column(

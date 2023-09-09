@@ -11,7 +11,7 @@ class _DetailTransaksiCogsState extends State<DetailTransaksiCogs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Detail transaksi'),),
+      appBar: AppBar(title: Text('Detail transaksi',style: TextStyle(color: Colors.white),),),
       body: Container(),
     );
   }

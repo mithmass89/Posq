@@ -29,7 +29,7 @@ class _ClassPromoMobileState extends State<ClassPromoMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text('Diskon')),
+      appBar: AppBar(title: Text('Diskon',style: TextStyle(color: Colors.white),)),
       body: Column(
         children: [
           TextFieldMobile2(

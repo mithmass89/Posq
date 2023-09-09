@@ -86,7 +86,7 @@ class _ClassScanRegisterProdMobileState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register ${widget.produkname}'),
+        title: Text('Register ${widget.produkname}',style: TextStyle(color: Colors.white),),
       ),
       body: FutureBuilder(
         future: handler.retrieveRegisterItem(widget.produk),

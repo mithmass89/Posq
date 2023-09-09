@@ -32,7 +32,7 @@ class _ReviewAksesStafState extends State<ReviewAksesStaf> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Review Akses staff'),
+        title: Text('Review Akses staff',style: TextStyle(color: Colors.white),),
       ),
       body: Container(
         child: Column(children: [

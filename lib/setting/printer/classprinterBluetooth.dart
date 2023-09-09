@@ -109,7 +109,7 @@ class _ClassBluetoothPrinterState extends State<ClassBluetoothPrinter> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Bluetooth Printer'),
+          title: Text('Bluetooth Printer',style: TextStyle(color: Colors.white),),
         ),
         body: Container(
           child: Padding(

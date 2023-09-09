@@ -41,7 +41,7 @@ class _PrinterMainState extends State<PrinterMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Printer Scanner'),
+        title: Text('Printer Scanner',style: TextStyle(color: Colors.white),),
       ),
       body: Container(),
     );

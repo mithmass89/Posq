@@ -38,7 +38,7 @@ class _ClassListPengembalianPembelianState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Pengembalian Pembelian'),
+        title: Text('List Pengembalian Pembelian',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         // overflow: Overflow.visible,

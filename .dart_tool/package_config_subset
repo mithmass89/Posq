@@ -464,8 +464,16 @@ file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter
 file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_charts-22.2.11/lib/
 syncfusion_flutter_core
 2.17
-file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_core-22.2.11/
-file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_core-22.2.11/lib/
+file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_core-22.2.12/
+file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_core-22.2.12/lib/
+syncfusion_flutter_datepicker
+2.17
+file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_datepicker-22.2.12/
+file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_datepicker-22.2.12/lib/
+syncfusion_flutter_gauges
+2.17
+file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_gauges-22.2.12/
+file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_gauges-22.2.12/lib/
 synchronized
 2.18
 file:///C:/Users/Mitro/AppData/Local/Pub/Cache/hosted/pub.dev/synchronized-3.1.0/
@@ -583,7 +591,7 @@ flutter_web_plugins
 file:///E:/flutter_windows_3.3.0-stable/flutter/packages/flutter_web_plugins/
 file:///E:/flutter_windows_3.3.0-stable/flutter/packages/flutter_web_plugins/lib/
 posq
-2.19
+3.0
 file:///E:/posplay2/posplay2/posplay/posplay/posq/
 file:///E:/posplay2/posplay2/posplay/posplay/posq/lib/
 2

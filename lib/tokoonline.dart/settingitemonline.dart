@@ -40,7 +40,7 @@ class _ItemOnlineSettingState extends State<ItemOnlineSetting> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Setting item/produk online'),
+        title: Text('Setting item/produk online',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

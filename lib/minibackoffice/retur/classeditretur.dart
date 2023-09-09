@@ -96,7 +96,7 @@ class _ClassEditReturnState extends State<ClassEditReturn> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Form Retur '),
+        title: Text('Form Retur ',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -16,7 +16,7 @@ class _ClassMainPrinterState extends State<ClassMainPrinter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Printer Setting'),
+        title: Text('Printer Setting',style: TextStyle(color: Colors.white),),
       ),
       body: Container(
         child: ListView.builder(

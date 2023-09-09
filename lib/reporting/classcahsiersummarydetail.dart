@@ -72,7 +72,7 @@ class _ClassCashierSummaryDetailState extends State<ClassCashierSummaryDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Detail Transaksi')),
+      appBar: AppBar(title: Text('Detail Transaksi',style: TextStyle(color: Colors.white),)),
       body: Container(
           child: ListView.builder(
               itemCount: detail.length,

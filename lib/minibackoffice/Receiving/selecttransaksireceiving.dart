@@ -35,7 +35,7 @@ class _PilihTransaksiReceivingState extends State<PilihTransaksiReceiving> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Pembelian'),
+        title: Text('List Pembelian',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         // overflow: Overflow.visible,

@@ -28,7 +28,7 @@ class _TokoOnlineMainState extends State<TokoOnlineMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting toko online'),
+        title: Text('Setting toko online',style: TextStyle(color: Colors.white),),
       ),
       body: ListView(children: [
         ListTile(

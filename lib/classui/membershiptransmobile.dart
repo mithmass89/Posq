@@ -96,7 +96,7 @@ class _MembershipsTransState extends State<MembershipsTrans> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Pilih redeem points'),
+          title: Text('Pilih redeem points',style: TextStyle(color: Colors.white),),
         ),
         body: Stack(
           children: [

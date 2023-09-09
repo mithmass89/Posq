@@ -88,7 +88,7 @@ class _KelolaProductMainTabletState extends State<KelolaProductMainTablet> {
       ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Kelola Stock'),
+        title: Text('Kelola Stock',style: TextStyle(color: Colors.white),),
         actions: [
           Container(
             height: MediaQuery.of(context).size.height * 0.1,

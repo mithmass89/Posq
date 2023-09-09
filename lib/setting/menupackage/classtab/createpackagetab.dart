@@ -45,7 +45,7 @@ class _BuatPaketTabState extends State<BuatPaketTab> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Buat Paket'),
+        title: Text('Buat Paket',style: TextStyle(color: Colors.white),),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 0, 173, 150),

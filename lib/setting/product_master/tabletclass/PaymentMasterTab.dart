@@ -41,7 +41,7 @@ class _PaymentMasterTabState extends State<PaymentMasterTab> {
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: Text('Setting piutang'),
+        title: Text('Setting piutang',style: TextStyle(color: Colors.white),),
       ),
       body: Column(
         children: [

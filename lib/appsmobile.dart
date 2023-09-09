@@ -462,7 +462,7 @@ class _AppsMobileState extends State<AppsMobile> {
                                 width: MediaQuery.of(context).size.width * 0.2,
                                 color: Colors.transparent,
                                 textcolor: AppColors.primaryColor,
-                                name: '1 Minggu',
+                                name: 'Ganti Chart',
                                 onpressed: () async {
                                   // await showDialog(
                                   //     context: context,

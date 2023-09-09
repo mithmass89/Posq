@@ -55,7 +55,7 @@ class _RegisterFormState extends State<RegisterForm> {
             color: Colors.black54,
           ),
         ),
-        title: Text('DAFTAR'),
+        title: Text('DAFTAR',style: TextStyle(color: Colors.white),),
       ),
       body: Form(
         key: _formKey,

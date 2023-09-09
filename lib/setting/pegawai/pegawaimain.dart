@@ -13,7 +13,7 @@ class MainPagePegawai extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Menu Pegawai',
+          'Menu Pegawai',style: TextStyle(color: Colors.white),
         ),
       ),
       body: LayoutBuilder(builder: (

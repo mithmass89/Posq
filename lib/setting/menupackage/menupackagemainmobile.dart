@@ -55,7 +55,7 @@ class _MainMenuPackageMobileState extends State<MainMenuPackageMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Menu Package List'),
+        title: Text('Menu Package List',style: TextStyle(color: Colors.white),),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 0, 173, 150),

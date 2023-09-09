@@ -575,7 +575,7 @@ class _ClassKirimLaporanState extends State<ClassKirimLaporan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('KIRIM LAPORAN')),
+        appBar: AppBar(title: Text('KIRIM LAPORAN',style: TextStyle(color: Colors.white),)),
         body: PdfPreview(
           build: (format) =>
               _generatePdf(format, 'KIRIM LAPORAN', payment, sumcash),

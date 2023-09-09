@@ -83,7 +83,7 @@ class _AddVariantProductState extends State<AddVariantProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Varian'),
+        title: Text('Add Varian',style: TextStyle(color: Colors.white),),
       ),
       body: ListView(
         children: [

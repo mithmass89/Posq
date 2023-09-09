@@ -61,7 +61,7 @@ class _PegawaiMainMobileState extends State<PegawaiMainMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Setting Pegawai'),
+        title: Text('Setting Pegawai',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Form(

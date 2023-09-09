@@ -261,7 +261,7 @@ class _ClassSummaryReportMobState extends State<ClassSummaryReport> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Laporan'),
+        title: Text('Laporan',style: TextStyle(color: Colors.white),),
       ),
       body: Stack(
         clipBehavior: Clip.none,
