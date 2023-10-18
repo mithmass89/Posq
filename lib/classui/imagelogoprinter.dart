@@ -7,7 +7,6 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/setting/printer/templateprinter.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/menu.dart';
-import 'package:posq/userinfo.dart';
 
 ClassApi? hosts;
 

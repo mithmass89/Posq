@@ -99,7 +99,7 @@ class _PembayaranAoviState extends State<PembayaranAovi> {
                             context: context,
                             builder: (BuildContext context) {
                               return DialogBayarAovi(
-                                amount: 100000,
+                                amount: 150000,
                                 user: usercd,
                                 dateexpired: tanggalHasil,
                               );
@@ -188,7 +188,7 @@ class _PembayaranAoviState extends State<PembayaranAovi> {
                             builder: (BuildContext context) {
                               return DialogBayarAovi(
                                 dateexpired: tanggalHasil,
-                                amount: 900000,
+                                amount: 1400000,
                                 user: usercd,
                               );
                             });

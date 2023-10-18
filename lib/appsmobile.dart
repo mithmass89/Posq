@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/analisa/classchart/chartesian.dart';
 import 'package:posq/analisa/classchart/chartguage.dart';
-import 'package:posq/chatui.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';

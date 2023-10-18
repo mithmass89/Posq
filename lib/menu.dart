@@ -509,12 +509,20 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () async {
-                  selected = !selected;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => KitchenDisplayMain()),
-                  );
+                  // selected = !selected;
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => KitchenDisplayMain()),
+                  // );
+                  Fluttertoast.showToast(
+                      msg: "Proses development",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                 },
                 name: 'Kitchen',
               ),
@@ -789,11 +797,19 @@ class _MenuMainState extends State<MenuMain> {
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => KitchenDisplayMain()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => KitchenDisplayMain()),
+                  // );
+                  Fluttertoast.showToast(
+                      msg: "On Development",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                 },
                 name: 'Kitchen',
               ),
