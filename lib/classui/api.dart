@@ -6,12 +6,14 @@ import 'package:posq/model.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = '192.168.88.248';
+var ip = '153.92.5.25';
 var api = 'http://$ip:3000';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
+var hostchatbot = '153.92.5.25';
+var apichatbot = 'http://$hostchatbot:1055';
 // var api = 'http://147.139.163.18:3000';
-var apiuploadPDF = 'http://digims.online:5005';
+var apiuploadPDF = 'http://153.92.5.25:5005';
 var serverkey = '';
 String username = 'mitro';
 String password = '@Mitro100689';
@@ -258,7 +260,6 @@ class ClassApi {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var status = json.decode(response.body);
-
       return status;
     } else {
       throw Exception();
@@ -411,7 +412,7 @@ class ClassApi {
     }
   }
 
-    static Future<dynamic> getSummary_transaksiCashierSummary(
+  static Future<dynamic> getSummary_transaksiCashierSummary(
       String trdt, String usercd, String dbname) async {
     var body = {
       "dbname": dbname,
@@ -435,10 +436,8 @@ class ClassApi {
     }
   }
 
-  static Future<dynamic> resetPassword(String email) async {
-    Map<String, String> body = {
-      "email": email,
-    };
+  static Future<dynamic> resetPassword(String email, String token) async {
+    Map<String, String> body = {"email": email, "token": token};
     // print(json.encode(pembayaran));
     final url = Uri.parse('$apiemail/reset-password');
     final response = await http.post(url,
@@ -1187,6 +1186,29 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> updateLogo(String imageurl, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "imageurl": imageurl,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateLogo');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> updateOnlineItem(
       String itemcode, int onlineflag, String dbname) async {
     var body = {
@@ -1196,6 +1218,31 @@ class ClassApi {
     };
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/updateOnlineItem');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateKitchenOrder(
+      int proccess, String transno, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "proccess": proccess,
+      "transno": transno,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateKitchenOrder');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1620,6 +1667,31 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> listdataFromtoChart(
+      String fromdate, String todate, String dbname) async {
+    var body = {
+      "dbname": dbname,
+      "fromdate": fromdate,
+      "todate": todate,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/listdataFromtoChart');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> updatePosDetail(
       IafjrndtClass data, String dbname) async {
     var body = {"dbname": dbname, "data": data};
@@ -1894,9 +1966,12 @@ class ClassApi {
     }
   }
 
-    static Future<dynamic> deleteRewardTrans(
+  static Future<dynamic> deleteRewardTrans(
       String transno, String dbname) async {
-    var body = {"dbname": dbname, "transno": transno,};
+    var body = {
+      "dbname": dbname,
+      "transno": transno,
+    };
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/deleteRewardTrans');
@@ -3805,6 +3880,32 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> Update30DayActive(
+      String date, String email, String referral, String telp) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "date": date,
+      "email": email,
+      "referral": referral,
+      "telp": telp
+    };
+    final url = Uri.parse('$api/Update30DayActive');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<List<CombineDataRingkasan>> getReportRingkasan(
       String fromdate, String todate, String dbname, String query) async {
     // print(json.encode(pembayaran));
@@ -3841,6 +3942,79 @@ class ClassApi {
       "dbname": dbname,
     };
     final url = Uri.parse('$api/DetailMenuItemTerjual');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getDataChartDoughnut(
+      String fromdate, String todate, String dbname) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "fromdate": fromdate,
+      "todate": todate,
+      "dbname": dbname,
+    };
+    final url = Uri.parse('$api/getDataChartDoughnut');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> getDataChartCategory(
+      String fromdate, String todate, String dbname) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "fromdate": fromdate,
+      "todate": todate,
+      "dbname": dbname,
+    };
+    final url = Uri.parse('$api/getDataChartCategory');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var bodyJson = json.decode(response.body);
+      print(bodyJson);
+      return bodyJson;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> kitchenData(String trdt, String dbname) async {
+    // print(json.encode(pembayaran));
+    var data = {
+      "trdt": trdt,
+      "dbname": dbname,
+    };
+    final url = Uri.parse('$api/kitchenData');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -4051,5 +4225,29 @@ class ClassApi {
         return 'upload complate';
       }
     });
+  }
+
+  static Future<dynamic> botreply(
+    String message,
+  ) async {
+    var body = {
+      "message": message,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$apichatbot/chat');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+      // print(status);
+      return status;
+    } else {
+      throw Exception();
+    }
   }
 }

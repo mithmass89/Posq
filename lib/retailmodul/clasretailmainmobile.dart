@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
+import 'package:posq/classfungsi/classnotifikasi.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
 import 'package:posq/classui/classformat.dart';
@@ -34,9 +35,11 @@ import 'package:posq/retailmodul/classretailmanualmobil.dart';
 import 'package:posq/classui/searchwidget.dart';
 import 'package:collection/collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 class ClassRetailMainMobile extends StatefulWidget {
   final String pscd;
@@ -53,7 +56,11 @@ class ClassRetailMainMobile extends StatefulWidget {
       this.trno,
       required this.fromsaved})
       : super(key: key);
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
+  static const String name = 'Notifications - Aovipos';
+  static const Color mainColor = Colors.deepPurple;
   @override
   State<ClassRetailMainMobile> createState() => _ClassRetailMainMobileState();
   static _ClassRetailMainMobileState? of(BuildContext context) =>
@@ -91,7 +98,9 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   Random random = new Random();
   int randomNumber = 0;
   int tabindex = 0;
+  int disablenotiffirst = 0;
   List<String> menuItems = ['List tersimpan', 'Posting minus'];
+  final supabase = Supabase.instance.client;
   set discounts(num value) {
     setState(() {
       discount = value;
@@ -206,14 +215,13 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
         print(isi);
         num totalSlsNett = isi.fold(
             0, (previousValue, isi) => previousValue + isi.totalaftdisc!);
-
         item = isi.length;
         itemlength =
             isi.where((element) => element.condimenttype == '').toList().length;
         sum = totalSlsNett + discount;
         setState(() {});
         print('ini length item${itemlength}');
-         print('ini summary item${sum}');
+        print('ini summary item${sum}');
       } else {
         setState(() {
           item = 0;
@@ -263,13 +271,67 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     controller!.animateTo(1);
     tabindex = 1;
     getTransaksiTipe();
-    wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
-    channel = WebSocketChannel.connect(wsUrl);
-    channel!.stream.listen((message) async {
-      print(message);
-      await checkPending();
-      setState(() {});
-    });
+    // wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
+    // channel = WebSocketChannel.connect(wsUrl);
+    // channel!.stream.listen((message) async {
+    //   print(message);
+    //   await checkPending();
+    //   setState(() {});
+    // });
+    AwesomeNotifications().initialize(
+        // set the icon to null if you want to use the default app icon
+        // 'resource://drawable/res_app_icon',
+        null,
+        [
+          NotificationChannel(
+              channelGroupKey: 'basic_channel_group',
+              channelKey: 'basic_channel',
+              channelName: 'Basic notifications',
+              channelDescription: 'Notification channel for basic tests',
+              defaultColor: Color(0xFF9D50DD),
+              ledColor: Colors.white)
+        ],
+        // Channel groups are only visual and are not required
+        channelGroups: [
+          NotificationChannelGroup(
+              channelGroupKey: 'basic_channel_group',
+              channelGroupName: 'Basic group')
+        ],
+        debug: true);
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onNotificationCreatedMethod:
+            NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:
+            NotificationController.onDismissActionReceivedMethod);
+    supabase
+        .from('new_orders')
+        .stream(primaryKey: ['id'])
+        .eq('prfcd', dbname)
+        .order('transno', ascending: false)
+        .limit(1)
+        .listen((List<Map<String, dynamic>> data) {
+          print('ini data : $data');
+          if (disablenotiffirst == 1) {
+            AwesomeNotifications().createNotification(
+                content: NotificationContent(
+                    id: Random().nextInt(1000),
+                    channelKey: 'basic_channel',
+                    bigPicture:
+                        'https://www.freepik.com/free-psd/food-social-media-banner-post-template_11953574.htm#query=kfc&position=6&from_view=search&track=sph',
+                    title: 'New order ${widget.trno}',
+                    body:
+                        'Pesanan baru , segera check list transaksi tersimpan',
+                    notificationLayout: NotificationLayout.BigPicture,
+                    actionType: ActionType.DismissAction));
+            checkPending();
+          }
+          disablenotiffirst = 1;
+
+          // Do something awesome with the data
+        });
     iafjrndt = IafjrndtClass(
       trdt: '',
       pscd: '',
@@ -485,7 +547,8 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                               width: MediaQuery.of(context).size.width * 1,
                             ),
                             Container(
-                              decoration: BoxDecoration(color: AppColors.primaryColor),
+                              decoration:
+                                  BoxDecoration(color: AppColors.primaryColor),
                               child: Row(
                                 children: [
                                   IconButton(
@@ -504,7 +567,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           MediaQuery.of(context).size.height *
                                               0.07,
                                       width: MediaQuery.of(context).size.width *
-                                          0.62,
+                                          0.60,
                                       child: TextFieldMobile2(
                                         hint: 'Searching',
                                         controller: search,
@@ -787,14 +850,6 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                           Icons.menu_sharp,
                                           size: 25,
                                         )),
-                                    // Row(
-                                    //   children: [
-                                    //     Expanded(
-                                    //       child: Divider(),
-                                    //     ),
-                                    //   ],
-                                    // ),
-
                                     Container(
                                       decoration: BoxDecoration(
                                           // color: Colors.blue,

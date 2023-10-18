@@ -309,7 +309,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                 
                 title: Text('Logout'),
                 onTap: () {
-                  LogOut.signOut(context: context);
+       
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/', (Route<dynamic> route) => false);
                 }),

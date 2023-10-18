@@ -680,7 +680,7 @@ class _ClassPaymetSucsessTabsState extends State<ClassPaymetSucsessTabs> {
                               //           .toInt(),
                               //       widget.guestname);
                               // }
-                              channel!.sink.add({"property": dbname});
+                              // channel!.sink.add({"property": dbname});
                               await getDetailTrnos().then((value) async {
                                 print('ini value : $value');
                                 if (value.isEmpty) {

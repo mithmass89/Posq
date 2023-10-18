@@ -96,6 +96,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
   int? selectedindex;
   bool hasmember = false;
   String guestnames = '';
+  TemplatePrinter ?template;
 
   @override
   void initState() {
@@ -109,6 +110,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
     checkPrinter();
     getSumm();
     getDetails = getDetailTrnos();
+     getTemplatePrinter();
   }
 
   Future<List<IafjrndtClass>> getDetailTrnos() async {
@@ -189,6 +191,10 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
 
   checkSalesType() {}
 
+  getTemplatePrinter() async {
+   template=  await ClassApi.getTemplatePrinter();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -240,7 +246,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                         widget.listdata,
                                         summary,
                                         widget.outletinfo.outletname!,
-                                        widget.outletinfo);
+                                        widget.outletinfo,template!);
                                   } else {
                                     await Navigator.push(
                                         context,

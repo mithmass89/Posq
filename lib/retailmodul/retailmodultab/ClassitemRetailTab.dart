@@ -375,7 +375,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                       topRight: Radius.circular(10)),
                   child: Image.network(
                     widget.item.pathimage!,
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
                       return Image.network(
@@ -404,7 +404,7 @@ class _ClassitemRetailTabsState extends State<ClassitemRetailTabs> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
               ),
-              height: MediaQuery.of(context).size.height * 0.076,
+              height: MediaQuery.of(context).size.height * 0.09,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Column(

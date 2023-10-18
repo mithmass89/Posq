@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:posq/classui/classformat.dart';
+import 'package:posq/classui/api.dart';
+// import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/savedtransaction/classdetailsavedmobile.dart';
+import 'package:posq/userinfo.dart';
 
 class ClassListSavedMobile extends StatefulWidget {
   final Outlet outletinfo;
@@ -83,70 +85,83 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: widget.trnoopen != widget.trno
-          ? () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetailSavedTransaction(
-                          outletinfo: widget.outletinfo,
-                          pscd: widget.outletinfo.outletcd,
-                          status: 'Pending',
-                          trno: widget.trno!,
-                        )),
-              );
-            }
-          : () async {
-              await Fluttertoast.showToast(
-                  msg: "Transaksi sudah teropen",
-                  toastLength: Toast.LENGTH_LONG,
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                  textColor: Colors.white,
-                  fontSize: 16.0);
-            },
-      leading: CircleAvatar(
-        child: Text(widget.datatransaksi!.guestname!.substring(0, 1)),
-      ),
-      title: Text(widget.datatransaksi!.guestname == null
-          ? 'No Guest'
-          : widget.datatransaksi!.guestname!),
-      subtitle: Column(
-        children: [
-          Row(
-            children: [
-              Text(widget.datatransaksi!.transno!),
-            ],
-          ),
-          Row(
-            children: [
-              Text(widget.datatransaksi!.tablesid!),
-            ],
-          ),
-        ],
-      ),
-      // subtitle: Text(widget.datatransaksi!.time!),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            alignment: Alignment.centerRight,
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: Text(
-                '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: Text(
-              times!,
-              style:
-                  TextStyle(color: valueTime >= 10 ? Colors.red : Colors.green),
+    return Container(
+      child: ListTile(
+        dense: true,
+        onTap: widget.trnoopen != widget.trno
+            ? () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailSavedTransaction(
+                            outletinfo: widget.outletinfo,
+                            pscd: widget.outletinfo.outletcd,
+                            status: 'Pending',
+                            trno: widget.trno!,
+                          )),
+                );
+              }
+            : () async {
+                await Fluttertoast.showToast(
+                    msg: "Transaksi sudah teropen",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              },
+        leading: CircleAvatar(
+          child: Text("${widget.datatransaksi!.guestname!.substring(0, 1)}"),
+        ),
+        title: Text(widget.datatransaksi!.guestname == null
+            ? 'No Guest'
+            : "Guest : ${widget.datatransaksi!.guestname}"),
+        subtitle: Column(
+          children: [
+            Row(
+              children: [
+                Text(widget.datatransaksi!.transno!),
+              ],
             ),
-          ),
-        ],
+            Row(
+              children: [
+                Text("table : ${widget.datatransaksi!.tablesid!}"),
+              ],
+            ),
+          ],
+        ),
+        // subtitle: Text(widget.datatransaksi!.time!),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                height: MediaQuery.of(context).size.height * 0.05,
+                child: ElevatedButton(
+                    onPressed: widget.datatransaksi!.prnkitchen == 0
+                        ? () async {
+                            await ClassApi.updateKitchenOrder(
+                                1, widget.trno!, dbname);
+                          }
+                        : null,
+                    child: Text('Send kitchen'))),
+            // Container(
+            //   alignment: Alignment.centerRight,
+            //   width: MediaQuery.of(context).size.width * 0.3,
+            //   child: Text(
+            //       '${CurrencyFormat.convertToIdr(widget.datatransaksi!.totalaftdisc, 0)}'),
+            // ),
+            // Container(
+            //   alignment: Alignment.centerRight,
+            //   width: MediaQuery.of(context).size.width * 0.3,
+            //   child: Text(
+            //     times!,
+            //     style: TextStyle(
+            //         color: valueTime >= 10 ? Colors.red : Colors.green),
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }

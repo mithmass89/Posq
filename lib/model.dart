@@ -210,8 +210,10 @@ class CombineDataRingkasan {
   final num? totalnett;
   final num? totalpayment;
   final num? transno;
+  final num? pengeluaran;
 
   CombineDataRingkasan({
+    this.pengeluaran,
     this.revenuegross,
     this.totalcost,
     this.pajak,
@@ -224,6 +226,7 @@ class CombineDataRingkasan {
   CombineDataRingkasan.fromJson(Map<String, dynamic> res)
       : revenuegross = res["revenuegross"],
         totalcost = res["totalcost"],
+        pengeluaran = res["pengeluaran"],
         pajak = res["pajak"],
         service = res["service"],
         totalnett = res['totalnett'],
@@ -232,12 +235,13 @@ class CombineDataRingkasan {
 
   @override
   String toString() {
-    return '{"transno": $transno,"revenuegross": $revenuegross,"totalcost":$totalcost "pajak": $pajak,"service": $service,"totalnett": $totalnett,"totalpayment": $totalpayment}';
+    return '{"transno": $transno,"pengeluaran":$pengeluaran,"revenuegross": $revenuegross,"totalcost":$totalcost "pajak": $pajak,"service": $service,"totalnett": $totalnett,"totalpayment": $totalpayment}';
   }
 
   Map<String, Object?> toJson() {
     return {
       'revenuegross': revenuegross,
+      'pengeluaran': pengeluaran,
       'totalcost': totalcost,
       'pajak': pajak,
       'service': service,
@@ -274,7 +278,7 @@ class TransaksiBO {
     this.type_tr,
     this.product,
     this.proddesc,
-    this.qty=0,
+    this.qty = 0,
     this.unit,
     this.ctr,
     this.subctr,
@@ -2313,4 +2317,94 @@ class UserInfoSys {
         'token': token,
         'lastsignin': lastsignin,
       };
+}
+
+class ChartBarData {
+  final String? x;
+  final num y;
+
+  ChartBarData({
+    this.x,
+    required this.y,
+  });
+
+  ChartBarData.fromJson(Map<String, dynamic> res)
+      : x = res["x"],
+        y = res["y"];
+
+  @override
+  String toString() {
+    return '{"x": $x,"y": $y}';
+  }
+
+  Map<String, dynamic> toJson() => {
+        'x': x,
+        'y': y,
+      };
+}
+
+class ChatMessage {
+  final String text;
+  final String sender;
+  final String timestamp;
+
+  ChatMessage({
+    required this.text,
+    required this.sender,
+    required this.timestamp,
+  });
+
+  factory ChatMessage.fromJson(Map<String, dynamic> json) {
+    return ChatMessage(
+      text: json['text'],
+      sender: json['sender'],
+      timestamp: json['timestamp'],
+    );
+  }
+
+  @override
+  String toString() {
+    return '{"text": $text, "sender": $sender,"timestamp": $timestamp}';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'text': text,
+      'sender': sender,
+      'timestamp': timestamp,
+    };
+  }
+}
+
+class TemplatePrinter {
+  final String? logourl;
+  final String? header;
+  final String? footer;
+
+  TemplatePrinter({
+    required this.logourl,
+    required this.header,
+    required this.footer,
+  });
+
+  factory TemplatePrinter.fromJson(Map<String, dynamic> json) {
+    return TemplatePrinter(
+      logourl: json['logourl'],
+      header: json['header'],
+      footer: json['footer'],
+    );
+  }
+
+  @override
+  String toString() {
+    return '{"logourl": $logourl, "header": $header,"footer": $footer}';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'logourl': logourl,
+      'header': header,
+      'footer': footer,
+    };
+  }
 }

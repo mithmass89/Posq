@@ -1,7 +1,6 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +10,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
 import 'package:posq/userinfo.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key? key}) : super(key: key);
@@ -30,17 +30,33 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController confirmationpass = TextEditingController();
   bool passwordlock = false;
   bool isRegistered = false;
+  final supabase = Supabase.instance.client;
+  final RegExp passwordRegex = RegExp(r'^.{6,}$');
+
   String formatDate(DateTime dateTime) {
     // Format the DateTime object using intl package.
     var formatter = DateFormat('yyyy-MM-dd');
     return formatter.format(dateTime);
   }
 
+  Future AuthSupa() async {
+    final AuthResponse res = await supabase.auth.signUp(
+      phone: phone.text,
+      email: email.text,
+      password: confirmationpass.text,
+    );
+    final Session? session = res.session;
+    final User? user = res.user;
+  }
+
+  bool isPasswordValid(String password) {
+    return passwordRegex.hasMatch(password);
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime currentTime = DateTime.now();
     DateTime futureTime = currentTime.add(Duration(days: 7));
-
     String formattedCurrentTime = formatDate(currentTime);
     String formattedFutureTime = formatDate(futureTime);
     return Scaffold(
@@ -55,7 +71,10 @@ class _RegisterFormState extends State<RegisterForm> {
             color: Colors.black54,
           ),
         ),
-        title: Text('DAFTAR',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'DAFTAR',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -181,6 +200,12 @@ class _RegisterFormState extends State<RegisterForm> {
                       if (value.isEmpty) {
                         return 'password tidak boleh kosong';
                       }
+                      if (isPasswordValid(value)) {
+                        print('Kata sandi valid.');
+                      } else {
+                        print(
+                            'Kata sandi tidak valid. Kata sandi harus memiliki minimal 6 karakter.');
+                      }
                     },
                     showpassword: passwordlock,
                     prefixIcon: Icon(Icons.lock),
@@ -230,6 +255,12 @@ class _RegisterFormState extends State<RegisterForm> {
                       if (value != password.text) {
                         return 'Password tidak sama';
                       }
+                      if (isPasswordValid(value)) {
+                        print('Kata sandi valid.');
+                      } else {
+                        print(
+                            'Kata sandi tidak valid. Kata sandi harus memiliki minimal 6 karakter.');
+                      }
                       return null;
                     },
                     typekeyboard: null,
@@ -241,7 +272,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor, // Background color
+                      backgroundColor:
+                          AppColors.primaryColor, // Background color
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
@@ -289,6 +321,18 @@ class _RegisterFormState extends State<RegisterForm> {
                                 email.text);
                             await ClassApi.Update7DayActive(formattedFutureTime,
                                 email.text, refferal.text, phone.text);
+                            await AuthSupa().then((_) {
+                              Fluttertoast.showToast(
+                                  msg:
+                                      "Konfirmasi email telah di kirim ke email anda",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 11, 12, 14),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            });
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) =>

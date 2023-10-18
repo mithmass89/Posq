@@ -29,14 +29,13 @@ import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/userinfo.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DialogClass1 extends StatefulWidget {
-  final bool fromreopen;
   const DialogClass1({
     Key? key,
-    required this.fromreopen,
   }) : super(key: key);
 
   @override
@@ -44,6 +43,23 @@ class DialogClass1 extends StatefulWidget {
 }
 
 class _DialogClass1State extends State<DialogClass1> {
+  List<String> menuchart = [
+    "Guage",
+    "Statistik",
+    "Tren Pendapatan",
+    "Pendapatan & Bahan baku",
+    "Item terbanyak",
+    "Pendapatan Category"
+  ];
+  List<String> subtitlechart = [
+    "Guage meter untuk mengukur volume transaksi anda",
+    "List analisa penjualan",
+    "Untuk mengetahui tren pendapatan anda",
+    "Tren pendapatan dengan bahan baku",
+    "Melihat penjualan item / produk terbanyak",
+    "Analisa penjualan berdasarkan Category menu"
+  ];
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -51,44 +67,38 @@ class _DialogClass1State extends State<DialogClass1> {
       return AlertDialog(
         content: Form(
             key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    ButtonNoIcon(
-                      name: 'Revenue',
-                      onpressed: () async {},
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                  width: MediaQuery.of(context).size.width * 0.02,
-                ),
-                Row(
-                  children: [
-                    ButtonNoIcon(
-                      name: 'Cover',
-                      onpressed: () async {},
-                    ),
-                  ],
-                )
-              ],
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: ListView.builder(
+                  itemCount: menuchart.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ListTile(
+                        subtitle: Text(subtitlechart[index]),
+                        trailing: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            'assets/${menuchart[index]}.png',
+                            height: 60,
+                            fit: BoxFit.cover,
+                            scale: 1.5,
+                          ),
+                        ),
+                        title: Text(menuchart[index],
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        onTap: () async {
+                          SharedPreferences chart =
+                              await SharedPreferences.getInstance();
+                          chart.setString('chart', menuchart[index]);
+                          Navigator.of(context).pop(menuchart[index]);
+                        },
+                      ),
+                    );
+                  }),
             )),
-        title: Text('Choose Catagory'),
-        actions: <Widget>[
-          // InkWell(
-          //   child: Text('OK   '),
-          //   onTap: () {
-          //     if (_formKey.currentState!.validate()) {
-          //       // Do something like updating SharedPreferences or User Settings etc.
-          //       Navigator.of(context).pop();
-          //     }
-          //   },
-          // ),
-        ],
+        title: Text('Pilih Analisa'),
+        actions: <Widget>[],
       );
     });
   }
@@ -2928,11 +2938,10 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
   var formatter = DateFormat('yyyy-MM-dd');
   bool complatepay = false;
 
-
   String initialUrl = 'https://google.com'; // Replace with your desired URL
   bool isLoading = true;
   String trnotemp = '';
-    WebViewController? _webViewController;
+  WebViewController? _webViewController;
 
   @override
   void initState() {
@@ -2942,7 +2951,7 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
     PaymentGate.snapWeb(widget.trno, widget.result.toString()).then((value) {
       print('test $value');
     });
-      getUrl();
+    getUrl();
     getStatusTransaction();
   }
 
@@ -3005,11 +3014,11 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
   String qr =
       'https://api.midtrans.com/v2/qris/270c2c13-a548-417b-9a30-06abe9901bfd/qr-code';
 
-       getUrl() async {
+  getUrl() async {
     await PaymentGate.snapWeb(widget.trno, widget.result.toString())
         .then((value) {
       String url = value['redirect_url'];
-    
+
       _webViewController = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setBackgroundColor(const Color(0x00000000))
@@ -3061,9 +3070,7 @@ class _DialogClassEwalletTabState extends State<DialogClassEwalletTab> {
                       // String url ='https://app.midtrans.com/snap/v3/redirection/7539cd1c-4326-4ff8-9dc7-6a490c7db922#/gopay-qris';
 
                       return complatepay == false
-                          ? WebViewWidget(
-                              controller:_webViewController!
-                            )
+                          ? WebViewWidget(controller: _webViewController!)
                           : Container(
                               child: Center(child: Text('Payment Success')));
                     }
@@ -3540,6 +3547,7 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
   List<String> table = [];
   List<String> items = [];
   String? selectedValue;
+  final supabase = Supabase.instance.client;
 
   @override
   void initState() {
@@ -3714,10 +3722,18 @@ class _DialogClassSimpanState extends State<DialogClassSimpan> {
                 }
                 await updateGuest(
                     guestname.text.isEmpty ? 'No Guest' : guestname.text);
+                await ClassApi.updateKitchenOrder(1, widget.trno, dbname);
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.remove('savecostmrs');
                 if (widget.fromsaved == false) {
                   await updateTrno();
+                  await supabase.from('new_orders').insert({
+                    'transno': widget.trno,
+                    'table': selectedValue,
+                    'guest': guestname.text,
+                    'status': 'new order',
+                    'prfcd': dbname
+                  });
                 } else {
                   await checkTrno();
                 }
@@ -3946,6 +3962,7 @@ class _DialogClassSimpanTabState extends State<DialogClassSimpanTab> {
                   }
                   await updateGuest(
                       guestname.text.isEmpty ? 'No Guest' : guestname.text);
+                  await ClassApi.updateKitchenOrder(1, widget.trno, dbname);
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.remove('savecostmrs');
                   if (widget.fromsaved == false) {
@@ -4304,5 +4321,175 @@ class _DialogCancelClosingState extends State<DialogCancelClosing> {
         ),
       ],
     );
+  }
+}
+
+class DialogBayarAovi extends StatefulWidget {
+  final String user;
+  final num amount;
+  final String dateexpired;
+  DialogBayarAovi({
+    Key? key,
+    required this.user,
+    required this.amount,
+    required this.dateexpired,
+  }) : super(key: key);
+
+  @override
+  State<DialogBayarAovi> createState() => _DialogBayarAoviEwalletState();
+}
+
+class _DialogBayarAoviEwalletState extends State<DialogBayarAovi> {
+  TextEditingController docno = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late DatabaseHandler handler;
+  var formattedDate;
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  WebViewController? _webViewController;
+
+  String initialUrl = 'https://google.com'; // Replace with your desired URL
+  bool isLoading = true;
+  String trnotemp = '';
+  bool complatepay = false;
+  // late final WebViewController _controller;
+  String? urls;
+  int increment = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    trnotemp = '$dbname-${generateRandomString(5)}-${widget.dateexpired}';
+    print('ini trno  temp: $trnotemp');
+    formattedDate = formatter.format(now);
+    ClassApi.updatePaymentFirst('Pro', '$trnotemp', 'settlement', emaillogin);
+  }
+
+  String generateRandomString(int length) {
+    const String charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    Random random = Random();
+    String result = "";
+    for (int i = 0; i < length; i++) {
+      int randomIndex = random.nextInt(charset.length);
+      result += charset[randomIndex];
+    }
+    return result;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  getStatusTransaction() {
+    Timer periodicTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      PaymentGate.getStatusTransaction(trnotemp).then((value) {
+        print(value);
+        if (value == 'settlement') {
+          print(value);
+          complatepay = true;
+        } else {
+          complatepay = false;
+        }
+      });
+      setState(() {});
+      print('Periodic task executed at ${complatepay}');
+    });
+  }
+
+  getUrl() async {
+    await PaymentGate.BayarAovi(trnotemp, widget.amount.toString())
+        .then((value) {
+      String url = value['redirect_url'];
+      urls = url;
+      _webViewController = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              // Update loading bar.
+            },
+            // onPageStarted: (String url) {
+
+            // },
+            // onPageFinished: (String url) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse('$url'));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        insetPadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.zero,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        content: Form(
+            key: _formKey,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 1,
+              width: MediaQuery.of(context).size.width * 1.1,
+              child: FutureBuilder(
+                  future:
+                      PaymentGate.BayarAovi(trnotemp, widget.amount.toString()),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        String url = snapshot.data['redirect_url'];
+                        _webViewController = WebViewController()
+                          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                          ..setBackgroundColor(const Color(0x00000000))
+                          ..setNavigationDelegate(NavigationDelegate(
+                            onProgress: (int progress) {
+                              // Update loading bar.
+                            },
+                            // onPageStarted: (String url) {
+
+                            // },
+                            // onPageFinished: (String url) {},
+                            onWebResourceError: (WebResourceError error) {},
+                            onNavigationRequest: (NavigationRequest request) {
+                              if (request.url
+                                  .startsWith('https://www.youtube.com/')) {
+                                return NavigationDecision.prevent;
+                              }
+                              return NavigationDecision.navigate;
+                            },
+                          ))
+                          ..loadRequest(Uri.parse('$url'));
+                        ;
+
+                        return WebViewWidget(
+                          controller: _webViewController!,
+                        );
+                      }
+                    }
+
+                    return Center(child: CircularProgressIndicator());
+                  }),
+            )),
+        actions: <Widget>[
+          // TextButton(
+          //     onPressed: () async {
+          //       Navigator.of(context).pop('Proses');
+          //     },
+          //     child: Text('Lanjutkan!',
+          //         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
+        ],
+      );
+    });
   }
 }

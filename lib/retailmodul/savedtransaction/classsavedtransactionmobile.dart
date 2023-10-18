@@ -5,6 +5,7 @@ import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/savedtransaction/classlisttrnosavedmob.dart';
 import 'package:posq/userinfo.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ClassSavedTransactionMobile extends StatefulWidget {
   final String? pscd;
@@ -14,7 +15,8 @@ class ClassSavedTransactionMobile extends StatefulWidget {
   const ClassSavedTransactionMobile({
     Key? key,
     this.pscd,
-    required this.outletinfo, this.trno,
+    required this.outletinfo,
+    this.trno,
   }) : super(key: key);
 
   @override
@@ -30,11 +32,21 @@ class _ClassSavedTransactionMobileState
   int? pending;
   TextEditingController search = TextEditingController();
   String query = '';
+  final supabase = Supabase.instance.client;
 
   @override
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
+    supabase
+        .from('new_orders')
+        .stream(primaryKey: ['id'])
+        .eq('prfcd', dbname)
+        .order('transno', ascending: false)
+        .limit(1)
+        .listen((List<Map<String, dynamic>> data) {
+          setState(() {});
+        });
   }
 
   @override
@@ -51,7 +63,10 @@ class _ClassSavedTransactionMobileState
             color: Colors.black54,
           ),
         ),
-        title: Text('Order Management',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Order Management',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [],
       ),
       body: Column(

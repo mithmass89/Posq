@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
-import 'package:posq/login.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
 import 'package:posq/setting/promo/classpromomobile.dart';
+import 'package:posq/systeminfo.dart';
 import 'package:posq/userinfo.dart';
 
 class DrawerWidgetMain extends StatelessWidget {
   final String? today;
   final num? endings;
 
-  const DrawerWidgetMain({Key? key,required this.today,required this.endings}) : super(key: key);
+  const DrawerWidgetMain({Key? key, required this.today, required this.endings})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +69,15 @@ class DrawerWidgetMain extends StatelessWidget {
           _drawerItem(
               icon: Icons.lock_clock,
               text: 'Tutup kasir',
-              onTap: ()async{
-                        await ClassApi.insertOpenCashier(
-                            OpenCashier(
-                                type: 'CLOSE',
-                                trdt: today,
-                                amount: endings,
-                                usercd: usercd),
-                            dbname);
-              } ),
+              onTap: () async {
+                await ClassApi.insertOpenCashier(
+                    OpenCashier(
+                        type: 'CLOSE',
+                        trdt: today,
+                        amount: endings,
+                        usercd: usercd),
+                    dbname);
+              }),
           Divider(height: 25, thickness: 1),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
@@ -90,10 +91,14 @@ class DrawerWidgetMain extends StatelessWidget {
               icon: Icons.logout,
               text: 'Log Out',
               onTap: () {
-                LogOut.signOut(context: context);
+         
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               }),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text('Version : $versions.$builds'),
+          ),
         ],
       ),
     );
@@ -133,7 +138,7 @@ Widget _drawerItem({IconData? icon, String? text, GestureTapCallback? onTap}) {
           child: Text(
             text!,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              // fontWeight: FontWeight.bold,
             ),
           ),
         ),

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
 import 'package:posq/classui/classtextfield.dart';
@@ -55,10 +56,10 @@ class _ClassCreateCustomerMobileState extends State<ClassCreateCustomerMobile> {
         memberfrom.text);
   }
 
-  bool validatePhoneNumber(String phoneNumber) {
-    // Regular expression pattern for a 10-digit mobile phone number
-    RegExp regExp = RegExp(r'^[0-9]{12}$');
-    return regExp.hasMatch(phoneNumber);
+  bool isValidPhoneNumber(String phoneNumber) {
+    // Regular expression untuk memeriksa nomor telepon dengan panjang antara 11 hingga 12 digit
+    final RegExp regex = RegExp(r'^\d{11,12}$');
+    return regex.hasMatch(phoneNumber);
   }
 
   @override
@@ -66,7 +67,10 @@ class _ClassCreateCustomerMobileState extends State<ClassCreateCustomerMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Buat Customers',style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Buat Customers',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -127,9 +131,10 @@ class _ClassCreateCustomerMobileState extends State<ClassCreateCustomerMobile> {
                   return 'Please enter a phone number.';
                 }
                 // Regular expression pattern for a 10-digit mobile phone number
-                RegExp regExp = RegExp(r'^[0-9]{11,12}$');
-                if (!regExp.hasMatch(value)) {
-                  return 'Please enter a valid 12-digit phone number.';
+                final RegExp regex = RegExp(r'^\d{11,12}$');
+                if (!regex.hasMatch(value)) {
+                  print(regex.hasMatch(value));
+                  return 'Please enter a valid 11-12-digit phone number.';
                 }
                 return null;
               },
@@ -159,7 +164,7 @@ class _ClassCreateCustomerMobileState extends State<ClassCreateCustomerMobile> {
             ),
             ButtonNoIcon(
                 name: 'Simpan',
-                color: Colors.blue,
+                color: AppColors.secondaryColor,
                 textcolor: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.95,

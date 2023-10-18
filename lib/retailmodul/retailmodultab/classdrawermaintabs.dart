@@ -311,7 +311,6 @@ class _DrawerRetailMainTabsState extends State<DrawerRetailMainTabs> {
                     leading: Icon(Icons.logout),
                     title: Text('Logout'),
                     onTap: () {
-                      LogOut.signOut(context: context);
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           '/', (Route<dynamic> route) => false);
                     }),

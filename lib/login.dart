@@ -1,6 +1,5 @@
 // ignore_for_file: unused_field, unused_element, unused_local_variable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -13,16 +12,17 @@ import 'package:posq/classfungsi/classsesilogin.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/classui/color.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
 import 'package:posq/pageresetpassword.dart';
 import 'package:posq/paymentcheck.dart';
 import 'package:posq/registerform.dart';
 import 'package:posq/setting/classsetupprofilemobile.dart';
+import 'package:posq/systeminfo.dart';
 import 'package:posq/userinfo.dart';
 // ignore: duplicate_import
 import 'package:local_auth/local_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -44,28 +44,21 @@ class _LoginState extends State<Login> {
   DateTime currentTime = DateTime.now();
   String? aktif = 'tidak aktif';
   bool isregistered = false;
+  final supabase = Supabase.instance.client;
 
-  Future<void> _login() async {
+  Future _loginSupabase() async {
+    var reponse;
     try {
-      FirebaseAuth.instance
-          .sendPasswordResetEmail(email: 'mithmass89@gmail.com');
-      // AuthCredential credential = EmailAuthProvider.credential(
-      //     email: 'mithmass89@gmail.com', password: '123456');
-      // await FirebaseAuth.instance.currentUser!
-      //     .reauthenticateWithCredential(credential);
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final AuthResponse res = await supabase.auth.signInWithPassword(
         email: email.text,
-        password: 'Mitro100689',
+        password: password.text,
       );
-      print('User Firebase ${userCredential.user!} logged in');
-      // Navigate to home page
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      final Session? session = res.session;
+      final User? user = res.user;
+      print('ini user : $user');
+      return user;
+    } catch (error) {
+      return error;
     }
   }
 
@@ -140,7 +133,6 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    LogOut.signOut(context: context);
     formattedCurrentTime = formatDate(currentTime);
     loadSession();
   }
@@ -217,7 +209,10 @@ class _LoginState extends State<Login> {
                       gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [AppColors.primaryColor, AppColors.primaryColor])),
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.primaryColor
+                          ])),
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -285,139 +280,42 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                           onPressed: () async {
-                            // await _lo
-                            // ClassApi.checkExpiredDate(email.text)
-                            //     .then((value) {});
-
-                            aktif = await expiredDate(email.text);
-                            print(aktif);
-                            if (aktif == 'aktif') {
-                              listoutlets = [];
-                              EasyLoading.show(status: 'loading...');
-                              await ClassApi.getUserinfofromManual(
-                                      email.text, password.text)
-                                  .then((value) async {
-                                if (value.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Username / password salah",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor:
-                                          Color.fromARGB(255, 11, 12, 14),
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                } else {
-                                  usercd = value[0]['usercd'];
-                                  role = value[0]['level'];
-                                  await ClassApi.checkUserFromOauth(
-                                          email.text, 'profiler')
-                                      .then((values) async {
-                                    if (values.isNotEmpty) {
-                                      print(values);
-
-                                      setState(() {
-                                        role = values[0]['level'];
-                                        usercd = values[0]['usercd'];
-                                        imageurl = values[0]['urlpict'];
-                                        emaillogin = email.text;
-                                        subscribtion = value[0]['subscription'];
-                                        paymentcheck = value[0]['paymentcheck'];
-                                        level = value[0]['level'];
-                                        corporatecode =
-                                            value[0]['frenchisecode'];
-                                        referrals = value[0]['referral'];
-                                        telp = value[0]['telp'];
-                                        LoginSession.saveLoginInfo(
-                                          emaillogin,
-                                          password.text,
-                                          dbname,
-                                          pscd,
-                                        );
-                                      });
-                                      await ClassApi.checkVerifiedPayment(
-                                              emaillogin)
-                                          .then((value) async {
-                                        if (value[0]['paymentcheck'] ==
-                                                'pending' ||
-                                            value[0]['paymentcheck'] == '') {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PaymentChecks(
-                                                      email: emaillogin,
-                                                      fullname: values[0]
-                                                          ['usercd'],
-                                                      trno: value[0]
-                                                          ['pytransaction'],
-                                                    )),
-                                          );
-                                        } else {
-                                          await ClassApi.getOutlets(email.text)
-                                              .then((valued) async {
-                                            if (valued.length != 0) {
-                                              dbname = valued[0]['outletcode'];
-                                              pscd = valued[0]['outletcode'];
-                                              outletdesc =
-                                                  valued[0]['outletdesc'];
-                                              for (var x in valued) {
-                                                listoutlets
-                                                    .add(x['outletcode']);
-                                              }
-                                              await ClassApi.getAccessUser(
-                                                      email.text)
-                                                  .then((valueds) {
-                                                for (var x in valueds) {
-                                                  accesslist.add(x['access']);
-                                                }
-                                              });
-                                              accesslistuser = [];
-                                              await ClassApi
-                                                      .getAccessUserOutlet(
-                                                          email.text, pscd, '')
-                                                  .then((valuesx) {
-                                                for (var z in valuesx) {
-                                                  print(
-                                                      'ini access : $valuesx');
-                                                  accesslistuser
-                                                      .add(z['accesscode']);
-                                                }
-                                              });
-                                              await ClassApi
-                                                      .getAccessSettingsUser()
-                                                  .then((valuess) {
-                                                for (var x in valuess) {
-                                                  strictuser = valuess[0]
-                                                          ['strictuser']
-                                                      .toString();
-                                                }
-                                              });
-                                              Navigator.of(context)
-                                                  .pushAndRemoveUntil(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              Mainapps(
-                                                                fromretailmain:
-                                                                    false,
-                                                              )),
-                                                      (Route<dynamic> route) =>
-                                                          false);
-                                            } else {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ClassSetupProfileMobile(
-                                                          email: email.text,
-                                                          fullname: usercd,
-                                                        )),
-                                              );
-                                            }
-                                          });
-                                        }
-                                      });
-                                    } else {
+                            await _loginSupabase().then((value) async {
+                              print('ini value supa :$value');
+                              if (value ==
+                                  AuthException('Invalid login credentials',
+                                      statusCode: '400')) {
+                                Fluttertoast.showToast(
+                                    msg: "invalid login credentials",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else if (value ==
+                                  AuthException('Email not confirmed',
+                                      statusCode: '400')) {
+                                Fluttertoast.showToast(
+                                    msg: "Email not confirmed",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 11, 12, 14),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else {
+                                aktif = await expiredDate(email.text);
+                                print(aktif);
+                                if (aktif == 'aktif') {
+                                  listoutlets = [];
+                                  EasyLoading.show(status: 'loading...');
+                                  await ClassApi.getUserinfofromManual(
+                                          email.text, password.text)
+                                      .then((value) async {
+                                    if (value.isEmpty) {
                                       Fluttertoast.showToast(
                                           msg: "Username / password salah",
                                           toastLength: Toast.LENGTH_LONG,
@@ -427,34 +325,168 @@ class _LoginState extends State<Login> {
                                               Color.fromARGB(255, 11, 12, 14),
                                           textColor: Colors.white,
                                           fontSize: 16.0);
+                                    } else {
+                                      usercd = value[0]['usercd'];
+                                      role = value[0]['level'];
+                                      await ClassApi.checkUserFromOauth(
+                                              email.text, 'profiler')
+                                          .then((values) async {
+                                        if (values.isNotEmpty) {
+                                          print(values);
+
+                                          setState(() {
+                                            role = values[0]['level'];
+                                            usercd = values[0]['usercd'];
+                                            imageurl = values[0]['urlpict'];
+                                            emaillogin = email.text;
+                                            subscribtion =
+                                                value[0]['subscription'];
+                                            paymentcheck =
+                                                value[0]['paymentcheck'];
+                                            level = value[0]['level'];
+                                            corporatecode =
+                                                value[0]['frenchisecode'];
+                                            referrals = value[0]['referral'];
+                                            telp = value[0]['telp'];
+                                            LoginSession.saveLoginInfo(
+                                              emaillogin,
+                                              password.text,
+                                              dbname,
+                                              pscd,
+                                            );
+                                          });
+                                          await ClassApi.checkVerifiedPayment(
+                                                  emaillogin)
+                                              .then((value) async {
+                                            if (value[0]['paymentcheck'] ==
+                                                    'pending' ||
+                                                value[0]['paymentcheck'] ==
+                                                    '') {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PaymentChecks(
+                                                          email: emaillogin,
+                                                          fullname: values[0]
+                                                              ['usercd'],
+                                                          trno: value[0]
+                                                              ['pytransaction'],
+                                                        )),
+                                              );
+                                            } else {
+                                              await ClassApi.getOutlets(
+                                                      email.text)
+                                                  .then((valued) async {
+                                                if (valued.length != 0) {
+                                                  dbname =
+                                                      valued[0]['outletcode'];
+                                                  pscd =
+                                                      valued[0]['outletcode'];
+                                                  outletdesc =
+                                                      valued[0]['outletdesc'];
+                                                  for (var x in valued) {
+                                                    listoutlets
+                                                        .add(x['outletcode']);
+                                                  }
+                                                  await ClassApi.getAccessUser(
+                                                          email.text)
+                                                      .then((valueds) {
+                                                    for (var x in valueds) {
+                                                      accesslist
+                                                          .add(x['access']);
+                                                    }
+                                                  });
+                                                  accesslistuser = [];
+                                                  await ClassApi
+                                                          .getAccessUserOutlet(
+                                                              email.text,
+                                                              pscd,
+                                                              '')
+                                                      .then((valuesx) {
+                                                    for (var z in valuesx) {
+                                                      print(
+                                                          'ini access : $valuesx');
+                                                      accesslistuser
+                                                          .add(z['accesscode']);
+                                                    }
+                                                  });
+                                                  await ClassApi
+                                                          .getAccessSettingsUser()
+                                                      .then((valuess) {
+                                                    for (var x in valuess) {
+                                                      strictuser = valuess[0]
+                                                              ['strictuser']
+                                                          .toString();
+                                                    }
+                                                  });
+                                                  Navigator.of(context)
+                                                      .pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      Mainapps(
+                                                                        fromretailmain:
+                                                                            false,
+                                                                      )),
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false);
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ClassSetupProfileMobile(
+                                                              email: email.text,
+                                                              fullname: usercd,
+                                                            )),
+                                                  );
+                                                }
+                                              });
+                                            }
+                                          });
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg: "Username / password salah",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.CENTER,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 11, 12, 14),
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+                                        }
+                                      });
+                                      print(value);
                                     }
                                   });
-                                  print(value);
+                                  emaillogin = email.text;
+                                  EasyLoading.dismiss();
+                                } else if (aktif == 'tidak aktif') {
+                                  Fluttertoast.showToast(
+                                      msg: "Masa Aktif habis",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 11, 12, 14),
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                } else if (aktif == 'tidak terdaftar') {
+                                  Fluttertoast.showToast(
+                                      msg: "E-mail tidak valid",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 11, 12, 14),
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
                                 }
-                              });
-                              emaillogin = email.text;
-                              EasyLoading.dismiss();
-                            } else if (aktif == 'tidak aktif') {
-                              Fluttertoast.showToast(
-                                  msg: "Masa Aktif habis",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(255, 11, 12, 14),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else if (aktif == 'tidak terdaftar') {
-                              Fluttertoast.showToast(
-                                  msg: "E-mail tidak valid",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(255, 11, 12, 14),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            }
+                              }
+                              ;
+                            });
                           },
                           child: Container(
                               padding: EdgeInsets.all(10),
@@ -487,7 +519,8 @@ class _LoginState extends State<Login> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor, // Background color
+                          backgroundColor:
+                              AppColors.primaryColor, // Background color
                         ),
                         onPressed: () async {
                           Navigator.push(
@@ -511,27 +544,7 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
-                      // ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: AppColors.primaryColor, // Background color
-                      //   ),
-                      //   onPressed: () async {
-                      //     // _registerBiometrics();
-                      //     // _checkBiometric();
-                      //     localAuth();
-                      //   },
-                      //   child: Container(
-                      //     alignment: Alignment.center,
-                      //     width: MediaQuery.of(context).size.width * 0.70,
-                      //     child: Wrap(
-                      //       children: <Widget>[
-                      //         Text("Absensi",
-                      //             style: TextStyle(
-                      //                 fontSize: 20, color: Colors.white)),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
+                      Text('Version : $versions.$builds'),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
@@ -568,7 +581,8 @@ class _LoginState extends State<Login> {
                         alignment: Alignment.center,
                         child: Text(
                           'AOVIPOS',
-                          style: TextStyle(fontSize: 24, color: AppColors.primaryColor),
+                          style: TextStyle(
+                              fontSize: 24, color: AppColors.primaryColor),
                         ),
                       ),
                       SizedBox(
@@ -633,74 +647,164 @@ class _LoginState extends State<Login> {
                                   AppColors.primaryColor, // Background color
                             ),
                             onPressed: () async {
-                              aktif = await expiredDate(email.text);
-                              print(aktif);
-                              if (aktif == 'aktif') {
-                                listoutlets = [];
-                                EasyLoading.show(status: 'loading...');
-                                await ClassApi.getUserinfofromManual(
-                                        email.text, password.text)
-                                    .then((value) async {
-                                  if (value.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: "Username / password salah",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor:
-                                            Color.fromARGB(255, 11, 12, 14),
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                  } else {
-                                    usercd = value[0]['usercd'];
-                                    corporatecode = value[0]['frenchisecode'];
-                                    await ClassApi.checkUserFromOauth(
-                                            email.text, 'profiler')
-                                        .then((values) async {
-                                      if (values.isNotEmpty) {
-                                        print(values);
-                                        LoginSession.saveLoginInfo(
-                                          email.text,
-                                          password.text,
-                                          dbname,
-                                          pscd,
-                                        );
-                                        // usercd = value[0]['usercd'];
-                                        setState(() {
-                                          usercd = values[0]['usercd'];
-                                          role = values[0]['level'];
-                                          imageurl = values[0]['urlpict'];
-                                          emaillogin = email.text;
-                                          subscribtion =
-                                              value[0]['subscription'];
-                                          paymentcheck =
-                                              value[0]['paymentcheck'];
-                                          corporatecode =
-                                              value[0]['frenchisecode'];
-                                        });
-                                        await ClassApi.checkVerifiedPayment(
-                                                emaillogin)
-                                            .then((value) async {
-                                          if (value[0]['paymentcheck'] ==
-                                                  'pending' ||
-                                              value[0]['paymentcheck'] == '') {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PaymentChecks(
-                                                        fullname: username,
-                                                        email: emaillogin,
-                                                        trno: value[0]
-                                                            ['pytransaction'],
-                                                      )),
+                              await _loginSupabase().then((value) async {
+                                print('ini value supa :$value');
+                                if (value ==
+                                    AuthException('Invalid login credentials',
+                                        statusCode: '400')) {
+                                } else if (value ==
+                                    AuthException('Email not confirmed',
+                                        statusCode: '400')) {
+                                  Fluttertoast.showToast(
+                                      msg: "Email not confirmed",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 11, 12, 14),
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                } else {
+                                  aktif = await expiredDate(email.text);
+                                  print(aktif);
+                                  if (aktif == 'aktif') {
+                                    listoutlets = [];
+                                    EasyLoading.show(status: 'loading...');
+                                    await ClassApi.getUserinfofromManual(
+                                            email.text, password.text)
+                                        .then((value) async {
+                                      if (value.isEmpty) {
+                                        Fluttertoast.showToast(
+                                            msg: "Username / password salah",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor:
+                                                Color.fromARGB(255, 11, 12, 14),
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      } else {
+                                        usercd = value[0]['usercd'];
+                                        corporatecode =
+                                            value[0]['frenchisecode'];
+                                        await ClassApi.checkUserFromOauth(
+                                                email.text, 'profiler')
+                                            .then((values) async {
+                                          if (values.isNotEmpty) {
+                                            print(values);
+                                            LoginSession.saveLoginInfo(
+                                              email.text,
+                                              password.text,
+                                              dbname,
+                                              pscd,
                                             );
-                                          } else if (value[0]['paymentcheck'] ==
-                                              'settlement') {
-                                            await ClassApi.getOutlets(
-                                                    email.text)
+                                            // usercd = value[0]['usercd'];
+                                            setState(() {
+                                              usercd = values[0]['usercd'];
+                                              role = values[0]['level'];
+                                              imageurl = values[0]['urlpict'];
+                                              emaillogin = email.text;
+                                              subscribtion =
+                                                  value[0]['subscription'];
+                                              paymentcheck =
+                                                  value[0]['paymentcheck'];
+                                              corporatecode =
+                                                  value[0]['frenchisecode'];
+                                            });
+                                            await ClassApi.checkVerifiedPayment(
+                                                    emaillogin)
                                                 .then((value) async {
-                                              if (value.isNotEmpty) {
+                                              if (value[0]['paymentcheck'] ==
+                                                      'pending' ||
+                                                  value[0]['paymentcheck'] ==
+                                                      '') {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PaymentChecks(
+                                                            fullname: username,
+                                                            email: emaillogin,
+                                                            trno: value[0][
+                                                                'pytransaction'],
+                                                          )),
+                                                );
+                                              } else if (value[0]
+                                                      ['paymentcheck'] ==
+                                                  'settlement') {
+                                                await ClassApi.getOutlets(
+                                                        email.text)
+                                                    .then((value) async {
+                                                  if (value.isNotEmpty) {
+                                                    await ClassApi.getOutlets(
+                                                            email.text)
+                                                        .then((valued) {
+                                                      dbname = valued[0]
+                                                          ['outletcode'];
+                                                      pscd = valued[0]
+                                                          ['outletcode'];
+                                                      outletdesc = valued[0]
+                                                          ['outletdesc'];
+                                                      for (var x in valued) {
+                                                        listoutlets.add(
+                                                            x['outletcode']);
+                                                      }
+                                                    });
+                                                    await ClassApi
+                                                            .getAccessUser(
+                                                                email.text)
+                                                        .then((valueds) {
+                                                      for (var x in valueds) {
+                                                        accesslist
+                                                            .add(x['access']);
+                                                      }
+                                                    });
+                                                    accesslistuser = [];
+                                                    await ClassApi
+                                                            .getAccessUserOutlet(
+                                                                email.text,
+                                                                pscd,
+                                                                '')
+                                                        .then((valuesx) {
+                                                      for (var z in valuesx) {
+                                                        accesslistuser.add(
+                                                            z['accesscode']);
+                                                      }
+                                                    });
+                                                    await ClassApi
+                                                            .getAccessSettingsUser()
+                                                        .then((valuess) {
+                                                      strictuser = valuess[0]
+                                                              ['strictuser']
+                                                          .toString();
+                                                    });
+
+                                                    Navigator.of(context)
+                                                        .pushAndRemoveUntil(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Mainapps(
+                                                                          fromretailmain:
+                                                                              false,
+                                                                        )),
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false);
+                                                  } else {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ClassSetupProfileMobile(
+                                                                  fullname:
+                                                                      usercd,
+                                                                  email: email
+                                                                      .text)),
+                                                    );
+                                                  }
+                                                });
+                                              } else {
                                                 await ClassApi.getOutlets(
                                                         email.text)
                                                     .then((valued) {
@@ -741,7 +845,23 @@ class _LoginState extends State<Login> {
                                                           ['strictuser']
                                                       .toString();
                                                 });
-
+                                                await ClassApi
+                                                        .getLoyalityProgramActive()
+                                                    .then((rules) {
+                                                  rulesprogram = PointSystem(
+                                                    fromdate: rules[0]
+                                                        ['fromdate'],
+                                                    type: rules[0]['type'],
+                                                    todate: rules[0]['todate'],
+                                                    convamount: rules[0]
+                                                        ['convamount'],
+                                                    point: rules[0]['point'],
+                                                    joinreward: rules[0]
+                                                        ['joinreward'],
+                                                  );
+                                                  print(
+                                                      'ini rulesprogram : $rulesprogram');
+                                                });
                                                 Navigator.of(context)
                                                     .pushAndRemoveUntil(
                                                         MaterialPageRoute(
@@ -754,119 +874,49 @@ class _LoginState extends State<Login> {
                                                         (Route<dynamic>
                                                                 route) =>
                                                             false);
-                                              } else {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ClassSetupProfileMobile(
-                                                              fullname: usercd,
-                                                              email:
-                                                                  email.text)),
-                                                );
                                               }
                                             });
                                           } else {
-                                            await ClassApi.getOutlets(
-                                                    email.text)
-                                                .then((valued) {
-                                              dbname = valued[0]['outletcode'];
-                                              pscd = valued[0]['outletcode'];
-                                              outletdesc =
-                                                  valued[0]['outletdesc'];
-                                              for (var x in valued) {
-                                                listoutlets
-                                                    .add(x['outletcode']);
-                                              }
-                                            });
-                                            await ClassApi.getAccessUser(
-                                                    email.text)
-                                                .then((valueds) {
-                                              for (var x in valueds) {
-                                                accesslist.add(x['access']);
-                                              }
-                                            });
-                                            accesslistuser = [];
-                                            await ClassApi.getAccessUserOutlet(
-                                                    email.text, pscd, '')
-                                                .then((valuesx) {
-                                              for (var z in valuesx) {
-                                                accesslistuser
-                                                    .add(z['accesscode']);
-                                              }
-                                            });
-                                            await ClassApi
-                                                    .getAccessSettingsUser()
-                                                .then((valuess) {
-                                              strictuser = valuess[0]
-                                                      ['strictuser']
-                                                  .toString();
-                                            });
-                                            await ClassApi
-                                                    .getLoyalityProgramActive()
-                                                .then((rules) {
-                                              rulesprogram = PointSystem(
-                                                fromdate: rules[0]['fromdate'],
-                                                type: rules[0]['type'],
-                                                todate: rules[0]['todate'],
-                                                convamount: rules[0]
-                                                    ['convamount'],
-                                                point: rules[0]['point'],
-                                                joinreward: rules[0]
-                                                    ['joinreward'],
-                                              );
-                                              print('ini rulesprogram : $rulesprogram');
-                                            });
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Mainapps(
-                                                              fromretailmain:
-                                                                  false,
-                                                            )),
-                                                    (Route<dynamic> route) =>
-                                                        false);
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Username / password salah",
+                                                toastLength: Toast.LENGTH_LONG,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 11, 12, 14),
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
                                           }
                                         });
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg: "Username / password salah",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.CENTER,
-                                            timeInSecForIosWeb: 1,
-                                            backgroundColor:
-                                                Color.fromARGB(255, 11, 12, 14),
-                                            textColor: Colors.white,
-                                            fontSize: 16.0);
+                                        print(value);
                                       }
                                     });
-                                    print(value);
+                                    emaillogin = email.text;
+                                    EasyLoading.dismiss();
+                                  } else if (aktif == 'tidak aktif') {
+                                    Fluttertoast.showToast(
+                                        msg: "Masa Aktif habis",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else if (aktif == 'tidak terdaftar') {
+                                    Fluttertoast.showToast(
+                                        msg: "E-mail tidak valid",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
                                   }
-                                });
-                                emaillogin = email.text;
-                                EasyLoading.dismiss();
-                              } else if (aktif == 'tidak aktif') {
-                                Fluttertoast.showToast(
-                                    msg: "Masa Aktif habis",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 11, 12, 14),
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              } else if (aktif == 'tidak terdaftar') {
-                                Fluttertoast.showToast(
-                                    msg: "E-mail tidak valid",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 11, 12, 14),
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              }
+                                }
+                              });
                             },
                             child: Container(
                                 padding: EdgeInsets.all(10),
@@ -921,6 +971,7 @@ class _LoginState extends State<Login> {
                             ],
                           ),
                         ),
+                        Text('Version : $versions.$builds'),
                       ],
                     ))
               ]),
@@ -954,7 +1005,8 @@ class _LoginState extends State<Login> {
                         alignment: Alignment.center,
                         child: Text(
                           'AOVIPOS',
-                          style: TextStyle(fontSize: 24, color: AppColors.primaryColor),
+                          style: TextStyle(
+                              fontSize: 24, color: AppColors.primaryColor),
                         ),
                       ),
                       SizedBox(
@@ -1019,74 +1071,164 @@ class _LoginState extends State<Login> {
                                   AppColors.primaryColor, // Background color
                             ),
                             onPressed: () async {
-                              aktif = await expiredDate(email.text);
-                              print(aktif);
-                              if (aktif == 'aktif') {
-                                EasyLoading.show(status: 'loading...');
-                                await ClassApi.getUserinfofromManual(
-                                        email.text, password.text)
-                                    .then((value) async {
-                                  if (value.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: "Username / password salah",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor:
-                                            Color.fromARGB(255, 11, 12, 14),
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                  } else {
-                                    usercd = value[0]['usercd'];
-                                    corporatecode = value[0]['frenchisecode'];
-                                    role = value[0]['level'];
-                                    await ClassApi.checkUserFromOauth(
-                                            email.text, 'profiler')
-                                        .then((values) async {
-                                      if (values.isNotEmpty) {
-                                        print(values);
-                                        LoginSession.saveLoginInfo(
-                                          email.text,
-                                          password.text,
-                                          dbname,
-                                          pscd,
-                                        );
-                                        // usercd = value[0]['usercd'];
-                                        setState(() {
-                                          role = values[0]['level'];
-                                          usercd = values[0]['usercd'];
-                                          imageurl = values[0]['urlpict'];
-                                          emaillogin = email.text;
-                                          subscribtion =
-                                              value[0]['subscription'];
-                                          paymentcheck =
-                                              value[0]['paymentcheck'];
-                                          corporatecode =
-                                              value[0]['frenchisecode'];
-                                        });
-                                        await ClassApi.checkVerifiedPayment(
-                                                emaillogin)
-                                            .then((value) async {
-                                          if (value[0]['paymentcheck'] ==
-                                                  'pending' ||
-                                              value[0]['paymentcheck'] == '') {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PaymentChecks(
-                                                        fullname: username,
-                                                        email: emaillogin,
-                                                        trno: value[0]
-                                                            ['pytransaction'],
-                                                      )),
+                              await _loginSupabase().then((value) async {
+                                print('ini value supa :$value');
+                                if (value ==
+                                    AuthException('Invalid login credentials',
+                                        statusCode: '400')) {
+                                } else if (value ==
+                                    AuthException('Email not confirmed',
+                                        statusCode: '400')) {
+                                  Fluttertoast.showToast(
+                                      msg: "Email not confirmed",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 11, 12, 14),
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                } else {
+                                  aktif = await expiredDate(email.text);
+                                  print(aktif);
+                                  if (aktif == 'aktif') {
+                                    listoutlets = [];
+                                    EasyLoading.show(status: 'loading...');
+                                    await ClassApi.getUserinfofromManual(
+                                            email.text, password.text)
+                                        .then((value) async {
+                                      if (value.isEmpty) {
+                                        Fluttertoast.showToast(
+                                            msg: "Username / password salah",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor:
+                                                Color.fromARGB(255, 11, 12, 14),
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      } else {
+                                        usercd = value[0]['usercd'];
+                                        corporatecode =
+                                            value[0]['frenchisecode'];
+                                        await ClassApi.checkUserFromOauth(
+                                                email.text, 'profiler')
+                                            .then((values) async {
+                                          if (values.isNotEmpty) {
+                                            print(values);
+                                            LoginSession.saveLoginInfo(
+                                              email.text,
+                                              password.text,
+                                              dbname,
+                                              pscd,
                                             );
-                                          } else if (value[0]['paymentcheck'] ==
-                                              'settlement') {
-                                            await ClassApi.getOutlets(
-                                                    email.text)
+                                            // usercd = value[0]['usercd'];
+                                            setState(() {
+                                              usercd = values[0]['usercd'];
+                                              role = values[0]['level'];
+                                              imageurl = values[0]['urlpict'];
+                                              emaillogin = email.text;
+                                              subscribtion =
+                                                  value[0]['subscription'];
+                                              paymentcheck =
+                                                  value[0]['paymentcheck'];
+                                              corporatecode =
+                                                  value[0]['frenchisecode'];
+                                            });
+                                            await ClassApi.checkVerifiedPayment(
+                                                    emaillogin)
                                                 .then((value) async {
-                                              if (value.isNotEmpty) {
+                                              if (value[0]['paymentcheck'] ==
+                                                      'pending' ||
+                                                  value[0]['paymentcheck'] ==
+                                                      '') {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PaymentChecks(
+                                                            fullname: username,
+                                                            email: emaillogin,
+                                                            trno: value[0][
+                                                                'pytransaction'],
+                                                          )),
+                                                );
+                                              } else if (value[0]
+                                                      ['paymentcheck'] ==
+                                                  'settlement') {
+                                                await ClassApi.getOutlets(
+                                                        email.text)
+                                                    .then((value) async {
+                                                  if (value.isNotEmpty) {
+                                                    await ClassApi.getOutlets(
+                                                            email.text)
+                                                        .then((valued) {
+                                                      dbname = valued[0]
+                                                          ['outletcode'];
+                                                      pscd = valued[0]
+                                                          ['outletcode'];
+                                                      outletdesc = valued[0]
+                                                          ['outletdesc'];
+                                                      for (var x in valued) {
+                                                        listoutlets.add(
+                                                            x['outletcode']);
+                                                      }
+                                                    });
+                                                    await ClassApi
+                                                            .getAccessUser(
+                                                                email.text)
+                                                        .then((valueds) {
+                                                      for (var x in valueds) {
+                                                        accesslist
+                                                            .add(x['access']);
+                                                      }
+                                                    });
+                                                    accesslistuser = [];
+                                                    await ClassApi
+                                                            .getAccessUserOutlet(
+                                                                email.text,
+                                                                pscd,
+                                                                '')
+                                                        .then((valuesx) {
+                                                      for (var z in valuesx) {
+                                                        accesslistuser.add(
+                                                            z['accesscode']);
+                                                      }
+                                                    });
+                                                    await ClassApi
+                                                            .getAccessSettingsUser()
+                                                        .then((valuess) {
+                                                      strictuser = valuess[0]
+                                                              ['strictuser']
+                                                          .toString();
+                                                    });
+
+                                                    Navigator.of(context)
+                                                        .pushAndRemoveUntil(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Mainapps(
+                                                                          fromretailmain:
+                                                                              false,
+                                                                        )),
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false);
+                                                  } else {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ClassSetupProfileMobile(
+                                                                  fullname:
+                                                                      usercd,
+                                                                  email: email
+                                                                      .text)),
+                                                    );
+                                                  }
+                                                });
+                                              } else {
                                                 await ClassApi.getOutlets(
                                                         email.text)
                                                     .then((valued) {
@@ -1127,7 +1269,23 @@ class _LoginState extends State<Login> {
                                                           ['strictuser']
                                                       .toString();
                                                 });
-
+                                                await ClassApi
+                                                        .getLoyalityProgramActive()
+                                                    .then((rules) {
+                                                  rulesprogram = PointSystem(
+                                                    fromdate: rules[0]
+                                                        ['fromdate'],
+                                                    type: rules[0]['type'],
+                                                    todate: rules[0]['todate'],
+                                                    convamount: rules[0]
+                                                        ['convamount'],
+                                                    point: rules[0]['point'],
+                                                    joinreward: rules[0]
+                                                        ['joinreward'],
+                                                  );
+                                                  print(
+                                                      'ini rulesprogram : $rulesprogram');
+                                                });
                                                 Navigator.of(context)
                                                     .pushAndRemoveUntil(
                                                         MaterialPageRoute(
@@ -1140,118 +1298,49 @@ class _LoginState extends State<Login> {
                                                         (Route<dynamic>
                                                                 route) =>
                                                             false);
-                                              } else {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ClassSetupProfileMobile(
-                                                              fullname: usercd,
-                                                              email:
-                                                                  email.text)),
-                                                );
                                               }
                                             });
                                           } else {
-                                            await ClassApi.getOutlets(
-                                                    email.text)
-                                                .then((valued) {
-                                              dbname = valued[0]['outletcode'];
-                                              pscd = valued[0]['outletcode'];
-                                              outletdesc =
-                                                  valued[0]['outletdesc'];
-                                              for (var x in valued) {
-                                                listoutlets
-                                                    .add(x['outletcode']);
-                                              }
-                                            });
-                                            await ClassApi.getAccessUser(
-                                                    email.text)
-                                                .then((valueds) {
-                                              for (var x in valueds) {
-                                                accesslist.add(x['access']);
-                                              }
-                                            });
-                                            accesslistuser = [];
-                                            await ClassApi.getAccessUserOutlet(
-                                                    email.text, pscd, '')
-                                                .then((valuesx) {
-                                              for (var z in valuesx) {
-                                                accesslistuser
-                                                    .add(z['accesscode']);
-                                              }
-                                            });
-                                            await ClassApi
-                                                    .getAccessSettingsUser()
-                                                .then((valuess) {
-                                              strictuser = valuess[0]
-                                                      ['strictuser']
-                                                  .toString();
-                                            });
-                                            await ClassApi
-                                                    .getLoyalityProgramActive()
-                                                .then((rules) {
-                                              rulesprogram = PointSystem(
-                                                fromdate: rules[0]['fromdate'],
-                                                type: rules[0]['type'],
-                                                todate: rules[0]['todate'],
-                                                convamount: rules[0]
-                                                    ['convamount'],
-                                                point: rules[0]['point'],
-                                                joinreward: rules[0]
-                                                    ['joinreward'],
-                                              );
-                                            });
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Mainapps(
-                                                              fromretailmain:
-                                                                  false,
-                                                            )),
-                                                    (Route<dynamic> route) =>
-                                                        false);
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Username / password salah",
+                                                toastLength: Toast.LENGTH_LONG,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 11, 12, 14),
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
                                           }
                                         });
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg: "Username / password salah",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.CENTER,
-                                            timeInSecForIosWeb: 1,
-                                            backgroundColor:
-                                                Color.fromARGB(255, 11, 12, 14),
-                                            textColor: Colors.white,
-                                            fontSize: 16.0);
+                                        print(value);
                                       }
                                     });
-                                    print(value);
+                                    emaillogin = email.text;
+                                    EasyLoading.dismiss();
+                                  } else if (aktif == 'tidak aktif') {
+                                    Fluttertoast.showToast(
+                                        msg: "Masa Aktif habis",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else if (aktif == 'tidak terdaftar') {
+                                    Fluttertoast.showToast(
+                                        msg: "E-mail tidak valid",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 11, 12, 14),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
                                   }
-                                });
-                                emaillogin = email.text;
-                                EasyLoading.dismiss();
-                              } else if (aktif == 'tidak aktif') {
-                                Fluttertoast.showToast(
-                                    msg: "Masa Aktif habis",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 11, 12, 14),
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              } else if (aktif == 'tidak terdaftar') {
-                                Fluttertoast.showToast(
-                                    msg: "E-mail tidak valid",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 11, 12, 14),
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              }
+                                }
+                              });
                             },
                             child: Container(
                                 padding: EdgeInsets.all(10),
@@ -1315,69 +1404,5 @@ class _LoginState extends State<Login> {
             child: Text('Device Not Supported yet'),
           );
         }));
-  }
-}
-
-class Authentication {
-  static Future<User?> signInWithGoogle({required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-
-    final GoogleSignInAccount? googleSignInAccount =
-        await googleSignIn.signIn();
-
-    if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
-
-      try {
-        final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
-
-        user = userCredential.user;
-        await user?.sendEmailVerification();
-        print(userCredential);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'account-exists-with-different-credential') {
-          // handle the error here
-          print(e);
-        } else if (e.code == 'invalid-credential') {
-          // handle the error here
-          print(e);
-        }
-      } catch (e) {
-        // handle the error here
-        print(e);
-      }
-    }
-
-    return user;
-  }
-}
-
-class LogOut {
-  static Future<void> signOut({required BuildContext context}) async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-
-    try {
-      if (!kIsWeb) {
-        await googleSignIn.signOut();
-      }
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   Authentication.customSnackBar(
-      //     content: 'Error signing out. Try again.',
-      //   ),
-      // );
-      print(e);
-    }
   }
 }

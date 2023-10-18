@@ -48,7 +48,10 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
       appBar: AppBar(
         title: Column(
           children: [
-            Text(widget.trno,style: TextStyle(color: Colors.white),),
+            Text(
+              widget.trno,
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
       ),
@@ -107,7 +110,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
                               )));
                 },
                 textcolor: Colors.white,
-                color: AppColors.primaryColor,
+                color: AppColors.secondaryColor,
                 name: haspayment == true ? 'Reopen' : 'Selesaikan',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
@@ -115,7 +118,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
               ButtonNoIcon(
                 onpressed: () {},
                 textcolor: Colors.white,
-                color: AppColors.primaryColor,
+                color: AppColors.secondaryColor,
                 name: 'Print',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
@@ -123,7 +126,7 @@ class _DetailSavedTransactionState extends State<DetailSavedTransaction>
               ButtonNoIcon(
                 onpressed: () {},
                 textcolor: Colors.white,
-                color: AppColors.primaryColor,
+                color: AppColors.secondaryColor,
                 name: 'Kirim',
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,

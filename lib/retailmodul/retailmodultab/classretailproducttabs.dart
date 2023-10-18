@@ -108,7 +108,7 @@ class _ClassRetailProductTabsState extends State<ClassRetailProductTabs> {
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent:
                           MediaQuery.of(context).size.width * 0.25,
-                      childAspectRatio: 4 / 3,
+                      childAspectRatio: 3 / 3,
                       crossAxisSpacing: 5,
                       mainAxisSpacing: 5),
                   itemCount: snapshot.data!.length,

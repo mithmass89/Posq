@@ -54,12 +54,14 @@ class _RewardMobileState extends State<RewardMobile> {
             child: ListView.builder(
                 itemCount: datareward.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Point : ${datareward[index].redempoint!}'),
-                    subtitle: datareward[index].rewaradtype == 0
-                        ? Text("Reward : ${datareward[index].reward}")
-                        : Text("Reward : ${datareward[index].reward} %"),
-                    trailing: Text(" Type : ${datareward[index].rewaradtype}"),
+                  return Card(
+                    child: ListTile(
+                      title: Text('Point : ${datareward[index].redempoint!}'),
+                      subtitle: datareward[index].rewaradtype == 0
+                          ? Text("Reward : ${datareward[index].reward}")
+                          : Text("Reward : ${datareward[index].reward} %"),
+                      trailing: Text(" Type : ${datareward[index].rewaradtype}"),
+                    ),
                   );
                 }),
           ),

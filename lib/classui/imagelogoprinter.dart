@@ -7,6 +7,7 @@ import 'package:posq/classui/api.dart';
 import 'package:posq/setting/printer/templateprinter.dart';
 import 'package:posq/setting/product_master/classcreateproduct.dart';
 import 'package:posq/menu.dart';
+import 'package:posq/userinfo.dart';
 
 ClassApi? hosts;
 
@@ -53,8 +54,7 @@ class ImageFromGalleryExPrinterState extends State<ImageFromGalleryExPrinter> {
     super.initState();
     hosts = ClassApi();
     imagePicker = ImagePicker();
-    if (widget.savingimage != null) {
-    }
+    if (widget.savingimage != null) {}
     print(widget.fromedit);
   }
 
@@ -129,30 +129,10 @@ class ImageFromGalleryExPrinterState extends State<ImageFromGalleryExPrinter> {
                         print('ini url barang : $api/getlogo/$fileName');
                         setState(() {});
                       });
-
+                      // ClassApi.updateLogo(widget.imagepath!, dbname);
                       TemplatePrinter.of(context)!.string =
                           '$api/getlogo/$fileName';
                     }
-                    // var source = type == ImageSourceType.camera
-                    //     ? ImageSource.camera
-                    //     : ImageSource.gallery;
-                    // XFile image = await imagePicker.pickImage(
-                    //   source: source,
-                    //   imageQuality: 20,
-                    //   preferredCameraDevice: CameraDevice.front,
-                    // );
-
-                    // namefile = image.name;
-                    // _selectedFile = await image.readAsBytes();
-                    // img.Image? jpeg = img.decodeImage(_selectedFile!);
-                    // if (jpeg != null) {
-                    //   // Create a new image in PNG format
-                    //   img.Image png = img.copyResize(jpeg,
-                    //       width: jpeg.width, height: jpeg.height);
-                    //   List<int> pngBytes = img.encodePng(png);
-
-                    // print(namefile);
-                    // String pngFileName = namefile.replaceFirst('.jpg', '.png');
                   },
                   child: Text('Pilih Foto'))
             ],

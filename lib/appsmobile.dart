@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_field, unnecessary_null_comparison, avoid_print, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/analisa/classchart/chartesian.dart';
+import 'package:posq/analisa/classchart/chartguage.dart';
+import 'package:posq/chatui.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
@@ -17,7 +19,43 @@ import 'package:posq/model.dart';
 import 'package:posq/newchart.dart';
 import 'package:posq/summarytab.dart';
 import 'package:posq/userinfo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
+class Sales {
+  Sales(this.x, this.y);
+  final String x;
+  final double y;
+}
+
+class ChartCtg {
+  ChartCtg(this.x, this.y);
+  final String x;
+  final num y;
+  @override
+  String toString() {
+    return '{"x": $x,"y":$y}';
+  }
+}
+
+class ChartSampleData {
+  ChartSampleData(this.x, this.y);
+  final String x;
+  final num y;
+
+  @override
+  String toString() {
+    return '{"x": $x,"y":$y}';
+  }
+}
+
+class _ChartData {
+  _ChartData(this.x, this.y);
+  final String x;
+  final double y;
+}
 
 class AppsMobile extends StatefulWidget {
   late Outlet? profileusaha;
@@ -58,6 +96,7 @@ class _AppsMobileState extends State<AppsMobile> {
   String? date;
   String? date1;
   var wsUrl;
+  List<_ChartData> datadonat = [];
   WebSocketChannel? channel;
   List todaysales = [
     {'totalaftdisc': 0}
@@ -70,17 +109,123 @@ class _AppsMobileState extends State<AppsMobile> {
   ];
   List chartdata = [];
   Future<dynamic>? checkapps;
+  String selectedchart = '';
   // final AudioPlayer audioPlayer = AudioPlayer();
   num? totals = 0;
   num? endings = 0;
   List total = [];
-    String? formatdate;
+  String? formatdate;
   var formatter = DateFormat('yyyy-MM-dd');
   var now = DateTime.now();
   num totalpengeluaran = 0;
   List<OpenCashier?> data = [OpenCashier(amount: 0, type: 'OPEN')];
   List<OpenCashier?> dataclose = [OpenCashier(amount: 0, type: 'CLOSE')];
+  double pointer = 0;
+  late TooltipBehavior _tooltip;
+  var formatter2 = DateFormat('dd-MMM-yyyy');
+  var formaterprd = DateFormat('yyyyMM');
+  String? formattedDate;
+  String? periode;
+  String? fromdate;
+  String? todate;
+  String? today;
+  String? fromdatebar;
+  String? todatebar;
+  String? formatdatebar;
+  List<ChartData> chartdatas = [];
+  List<ChartBarData> chartctg = [];
+  List<Sales> summary = [];
+  double cogspercent = 0;
+  final supabase = Supabase.instance.client;
+
+  getPreferences() async {
+    SharedPreferences chart = await SharedPreferences.getInstance();
+    selectedchart = await chart.getString('chart') ?? '';
+  }
+
   setter() {
+    setState(() {});
+  }
+
+  getDataCategory() async {
+    await ClassApi.getDataChartCategory(fromdate!, todate!, dbname)
+        .then((value) {
+      if (value.isNotEmpty) {
+        for (var z in value) {
+          chartctg.add(ChartBarData(x: z['ctg'], y: z['totalamt']));
+        }
+        setState(() {});
+        print('ini chartctg : $chartctg');
+      }
+    });
+  }
+
+  getDataGuage() async {
+    await ClassApi.getReportRingkasan(fromdate!, todate!, dbname, '')
+        .then((value) {
+      if (value.isNotEmpty) {
+        pointer = value.first.transno!.toDouble();
+        setState(() {});
+      }
+    });
+  }
+
+  getDataDoughnuts() async {
+    datadonat = [];
+    await ClassApi.getDataChartDoughnut(fromdate!, todate!, dbname)
+        .then((value) {
+      for (var x in value) {
+        datadonat.add(
+            _ChartData(x['itemdesc'], double.parse(x['percent'].toString())));
+      }
+    });
+    setState(() {});
+  }
+
+  getChartPenjualan() async {
+    formatdatebar = formatter.format(now.add((Duration(days: -7))));
+    fromdatebar = formatdatebar;
+    todatebar = formatdate;
+    chartdatas = [];
+    await ClassApi.listdataFromtoChart(fromdatebar!, todate!, dbname)
+        .then((value) {
+      for (var x in value) {
+        chartdatas.add(
+          ChartData(x: x['trdt'], yValue1: x['amount'], yValue2: x['costamt']),
+        );
+      }
+      print(chartdatas);
+    });
+    setState(() {});
+  }
+
+  getSummaryPenjualan() async {
+    summary = [];
+    await ClassApi.getReportRingkasan(fromdate!, todate!, dbname, '')
+        .then((value) {
+      if (value.isNotEmpty) {
+        summary.add(
+            Sales('Pendapatan Nett', value.first.revenuegross!.toDouble()));
+        summary.add(Sales('Bahan Baku', value.first.totalcost!.toDouble()));
+        summary.add(Sales('Pengluaran', value.first.pengeluaran!.toDouble()));
+        summary
+            .add(Sales('Pendapatan Gross', value.first.totalnett!.toDouble()));
+        summary.add(Sales('Target Pendapatan', 0));
+      }
+      cogspercent = double.parse((((summary
+                      .where((element) => element.x == 'Bahan Baku')
+                      .toList()
+                      .first
+                      .y) /
+                  (summary
+                      .where((element) => element.x == 'Pendapatan Nett')
+                      .toList()
+                      .first
+                      .y)) *
+              100)
+          .toStringAsFixed(2));
+    });
+
     setState(() {});
   }
 
@@ -88,29 +233,44 @@ class _AppsMobileState extends State<AppsMobile> {
   void initState() {
     super.initState();
     formatdate = formatter.format(now);
-    wsUrl = Uri.parse('wss://digims.online:8080?property=$dbname');
-    channel = WebSocketChannel.connect(wsUrl);
-    channel!.stream.listen((message) {
-      print(message);
+    // wsUrl = Uri.parse('wss://digims.online:8080?property=$dbname');
+    // channel = WebSocketChannel.connect(wsUrl);
+    formattedDate = formatter2.format(now);
+    formatdate = formatter.format(now);
+    periode = formaterprd.format(now);
+    formatdate = formatter.format(now);
+    fromdate = formatdate;
+    todate = formatdate;
+    today = formatdate;
+    _tooltip = TooltipBehavior(enable: true);
+    getPreferences();
+    getDataCategory();
+    getDataGuage();
+    getDataDoughnuts();
+    getChartPenjualan();
+    getSummaryPenjualan();
+    supabase
+        .from('finish_order')
+        .stream(primaryKey: ['id'])
+        .eq('prfcd', dbname)
+        .order('transno')
+        .limit(10)
+        .listen((List<Map<String, dynamic>> data) async {
+          if (selectedchart == 'Tren Pendapatan') {
+            await getSelesToday();
+          } else if (selectedchart == 'Pendapatan Category') {
+            await getDataCategory();
+          } else if (selectedchart == 'Statistik') {
+            await getSummaryPenjualan();
+          } else if (selectedchart == 'Guage') {
+            await getDataGuage();
+          } else if (selectedchart == 'Item terbanyak') {
+            await getDataDoughnuts();
+          } else if (selectedchart == 'Pendapatan & Bahan baku') {
+            await getChartPenjualan();
+          }
+        });
 
-      if (message == 'new order') {
-        Fluttertoast.showToast(
-            msg: "you have new order",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP_RIGHT,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Color.fromARGB(255, 11, 12, 14),
-            textColor: Colors.white,
-            fontSize: 18.0);
-        // playSoundNotification();
-        setState(() {});
-      } else {
-        getSelesToday();
-      }
-
-      // channel!.sink.add('received!');
-      // channel.sink.close(status.goingAway);
-    });
     _scaffoldKey = GlobalKey<ScaffoldState>();
     outlet = Outlet(
       outletcd: widget.profileusaha!.outletcd,
@@ -206,7 +366,8 @@ class _AppsMobileState extends State<AppsMobile> {
 
     setState(() {});
   }
-    totalexpense() async {
+
+  totalexpense() async {
     await ClassApi.totalpengeluaranCashier(formatdate!, usercd, dbname)
         .then((value) {
       if (value.isNotEmpty) {
@@ -215,7 +376,6 @@ class _AppsMobileState extends State<AppsMobile> {
     });
     setState(() {});
   }
-
 
   @override
   void dispose() {
@@ -236,10 +396,28 @@ class _AppsMobileState extends State<AppsMobile> {
                 });
           },
           child: Scaffold(
+            // floatingActionButton: FloatingActionButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => ChatScreen()),
+            //     );
+            //   },
+            //   child: Image.asset(
+            //     'assets/chat.png', // Replace with your image asset path
+            //     width: MediaQuery.of(context).size.width *
+            //         0.1, // Adjust the width as needed
+            //     height: MediaQuery.of(context).size.height *
+            //         0.1, // Adjust the height as needed
+            //   ),
+            // ),
             resizeToAvoidBottomInset: false,
             key: _scaffoldKey,
             drawer: constraints.maxWidth <= 800
-                ? DrawerWidgetMain(endings: endings, today: formatdate,)
+                ? DrawerWidgetMain(
+                    endings: endings,
+                    today: formatdate,
+                  )
                 : DrawerWidgetMainTab(),
             body: SingleChildScrollView(
               child: LayoutBuilder(builder: (
@@ -254,9 +432,6 @@ class _AppsMobileState extends State<AppsMobile> {
                       Container(
                         decoration: BoxDecoration(
                           color: AppColors.primaryColor,
-                          // borderRadius: BorderRadius.only(
-                          //     bottomLeft: Radius.circular(20),
-                          //     bottomRight: Radius.circular(20)),
                         ),
                         height: MediaQuery.of(context).size.height * 0.11,
                         width: MediaQuery.of(context).size.width * 1,
@@ -283,9 +458,6 @@ class _AppsMobileState extends State<AppsMobile> {
                                   imageurl == ''
                                       ? CircleAvatar(
                                           radius: 30,
-                                          // backgroundImage: AssetImage(
-                                          //   'assets/sheryl.png',
-                                          // ),
                                           child: Text(
                                             usercd.substring(0, 1),
                                             style: TextStyle(
@@ -341,20 +513,15 @@ class _AppsMobileState extends State<AppsMobile> {
                                                       color: Colors.white,
                                                     )),
                                           ),
-                                          // SizedBox(
-                                          //   height: MediaQuery.of(context)
-                                          //           .size
-                                          //           .height *
-                                          //       0.01,
-                                          // ),
+                                
                                         ],
                                       )),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.05,
-                                  ),
+                                  // SizedBox(
+                                  //   height: MediaQuery.of(context).size.height *
+                                  //       0.05,
+                                  //   width: MediaQuery.of(context).size.width *
+                                  //       0.05,
+                                  // ),
                                   IconButton(
                                     icon: Icon(
                                       Icons.menu,
@@ -390,10 +557,7 @@ class _AppsMobileState extends State<AppsMobile> {
                                     pscd = val.outletcd;
                                   }),
                               outletinfo: widget.profileusaha)),
-                      // SizedBox(
-                      //   height: MediaQuery.of(context).size.height * 0.01,
-                      //   width: MediaQuery.of(context).size.width * 0.02,
-                      // ),
+               
                       Container(
                           height: MediaQuery.of(context).size.height * 0.30,
                           width: MediaQuery.of(context).size.width * 1,
@@ -402,9 +566,10 @@ class _AppsMobileState extends State<AppsMobile> {
                             monthlysales: widget.monthlysales,
                             todaysale: widget.todaysale,
                           )),
+
                       Container(
                         alignment: Alignment.centerLeft,
-                        height: MediaQuery.of(context).size.height * 0.05,
+                        height: MediaQuery.of(context).size.height * 0.06,
                         width: MediaQuery.of(context).size.width * 1,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -412,45 +577,69 @@ class _AppsMobileState extends State<AppsMobile> {
                             children: [
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                width: MediaQuery.of(context).size.width * 0.02,
-                              ),
-                              Text('Ringkasan Chart',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  )),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                width: MediaQuery.of(context).size.width * 0.45,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        width: MediaQuery.of(context).size.width * 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                    MediaQuery.of(context).size.height * 0.06,
                                 width: MediaQuery.of(context).size.width * 0.02,
                               ),
                               widget.todaysale.isNotEmpty
                                   ? SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.70,
-                                      child: Text(
-                                        '${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
+                                          0.7,
+                                      child: Builder(builder: (context) {
+                                        switch (selectedchart) {
+                                          case 'Pendapatan Category':
+                                            return Text(
+                                              'Analisa Categori',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            );
+                                          case 'Pendapatan':
+                                            return SizedBox(
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    'Hari ini  ${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20),
+                                                  ),
+                                                  Text('Angka di jutaan')
+                                                ],
+                                              ),
+                                            );
+                                          case 'Guage':
+                                            return Text(
+                                              "Transaksi : $pointer",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            );
+
+                                          case 'Item terbanyak':
+                                            return Text(
+                                              "Index menggunakan Persentase",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14),
+                                            );
+                                          case 'Pendapatan & Bahan baku':
+                                            return Text(
+                                              "Perbandingan Pendapatan & COGS ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14),
+                                            );
+                                          default:
+                                            print('It\'s something else.');
+                                        }
+                                        return Text(
+                                          'Hari ini ${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        );
+                                      }),
                                     )
                                   : SizedBox(
                                       width: MediaQuery.of(context).size.width *
@@ -459,18 +648,17 @@ class _AppsMobileState extends State<AppsMobile> {
                               ButtonNoIcon(
                                 height:
                                     MediaQuery.of(context).size.height * 0.05,
-                                width: MediaQuery.of(context).size.width * 0.2,
+                                width: MediaQuery.of(context).size.width * 0.23,
                                 color: Colors.transparent,
                                 textcolor: AppColors.primaryColor,
                                 name: 'Ganti Chart',
                                 onpressed: () async {
-                                  // await showDialog(
-                                  //     context: context,
-                                  //     builder: (BuildContext context) {
-                                  //       return DialogClass1(
-                                  //         fromreopen: false,
-                                  //       );
-                                  //     });
+                                  selectedchart = await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return DialogClass1();
+                                      });
+                                  setState(() {});
                                 },
                               )
                             ],
@@ -479,9 +667,137 @@ class _AppsMobileState extends State<AppsMobile> {
                       ),
                       Container(
                         padding: EdgeInsets.all(10),
-                        height: MediaQuery.of(context).size.height * 0.3,
+                        height: MediaQuery.of(context).size.height * 0.35,
                         width: MediaQuery.of(context).size.width * 1,
-                        child: LineChartSample1(widget.chartdata),
+                        child: Builder(builder: (context) {
+                          switch (selectedchart) {
+                            case 'Tren Pendapatan':
+                              return LineChartSample1(widget.chartdata);
+                            case 'Pendapatan Category':
+                              return SfCartesianChart(
+                                  enableAxisAnimation: true,
+                                  isTransposed: true,
+                                  axes: <ChartAxis>[
+                                    NumericAxis(
+                                        numberFormat: NumberFormat.compact(),
+                                        majorGridLines:
+                                            const MajorGridLines(width: 0),
+                                        opposedPosition: true,
+                                        name: 'yAxis1',
+                                        interval: 1000,
+                                        minimum: 0,
+                                        maximum: 7000)
+                                  ],
+                                  // legend: Legend(
+                                  //     position: LegendPosition.bottom,
+                                  //     isVisible: true,
+                                  //     borderColor: Colors.black,
+                                  //     borderWidth: 2),
+                                  primaryXAxis: CategoryAxis(),
+                                  series: <ChartSeries<ChartBarData, String>>[
+                                    ColumnSeries<ChartBarData, String>(
+                                        animationDuration: 1000,
+                                        dataSource: chartctg,
+                                        xValueMapper: (ChartBarData data, _) =>
+                                            data.x,
+                                        yValueMapper: (ChartBarData data, _) =>
+                                            data.y,
+                                        name: 'Penjualan'),
+                                  ]);
+                            case 'Statistik':
+                              return Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.35,
+                                  child: ListView.builder(
+                                      // controller: _controller,
+                                      itemCount: summary.length,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          contentPadding: EdgeInsets.zero,
+                                          dense: true,
+                                          title: summary[index].x !=
+                                                  'Bahan Baku'
+                                              ? Text(summary[index].x)
+                                              : Text(
+                                                  "${summary[index].x} ($cogspercent %)  dari nett"),
+                                          trailing: Text(
+                                              CurrencyFormat.convertToIdr(
+                                                  summary[index].y, 0)),
+                                        );
+                                      }));
+                            case 'Guage':
+                              return Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  child: Guage(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
+                                    valuemax: 50,
+                                    pointer: pointer,
+                                    startpoint: 0,
+                                    notgood: 20,
+                                    comfort: 35,
+                                    goodbisnis: 50,
+                                    starpointnotgood: 0,
+                                    starpointnotcomfort: 15,
+                                    starpointgoodbisnis: 35,
+                                  ));
+
+                            case 'Item terbanyak':
+                              return SfCircularChart(
+                                  legend: Legend(
+                                      overflowMode: LegendItemOverflowMode.wrap,
+                                      isVisible: true,
+                                      borderColor: Colors.black,
+                                      borderWidth: 0),
+                                  tooltipBehavior: _tooltip,
+                                  series: [
+                                    DoughnutSeries<_ChartData, String>(
+                                        explodeAll: true,
+                                        dataLabelSettings: DataLabelSettings(
+                                            // Renders the data label
+                                            isVisible: true),
+                                        dataSource: datadonat,
+                                        xValueMapper: (_ChartData data, _) =>
+                                            data.x,
+                                        yValueMapper: (_ChartData data, _) =>
+                                            data.y,
+                                        name: 'Produk')
+                                  ]);
+                            case 'Pendapatan & Bahan baku':
+                              return SfCartesianChart(
+                                  legend: Legend(
+                                      position: LegendPosition.bottom,
+                                      isVisible: true,
+                                      borderColor: Colors.black,
+                                      borderWidth: 2),
+                                  primaryXAxis: CategoryAxis(),
+                                  series: <ChartSeries<ChartData, String>>[
+                                    ColumnSeries<ChartData, String>(
+                                        animationDuration: 1000,
+                                        dataSource: chartdatas,
+                                        xValueMapper: (ChartData data, _) =>
+                                            data.x,
+                                        yValueMapper: (ChartData data, _) =>
+                                            data.yValue1,
+                                        name: 'Penjualan'),
+                                    LineSeries<ChartData, String>(
+                                        animationDuration: 2000,
+                                        animationDelay: 1000,
+                                        dataSource: chartdatas,
+                                        xValueMapper: (ChartData data, _) =>
+                                            data.x,
+                                        yValueMapper: (ChartData data, _) =>
+                                            data.yValue2,
+                                        yAxisName: 'yAxis1',
+                                        markerSettings:
+                                            MarkerSettings(isVisible: true),
+                                        name: 'Bahan baku')
+                                  ]);
+                            default:
+                              return LineChartSample1(widget.chartdata);
+                          }
+                        }),
                       )
                     ],
                   );
@@ -679,21 +995,24 @@ class _AppsMobileState extends State<AppsMobile> {
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                0.12,
+                                                0.13,
                                           ),
                                           ButtonNoIcon(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.13,
                                             color: Colors.transparent,
-                                            textcolor: Colors.blue,
-                                            name: 'Choose Category',
+                                            textcolor: AppColors.primaryColor,
+                                            name: 'Pilih Chart',
                                             onpressed: () async {
-                                              await showDialog(
+                                              selectedchart = await showDialog(
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) {
-                                                    return DialogClass1(
-                                                      fromreopen: false,
-                                                    );
+                                                    return DialogClass1();
                                                   });
+                                              setState(() {});
                                             },
                                           )
                                         ],
@@ -706,8 +1025,175 @@ class _AppsMobileState extends State<AppsMobile> {
                                               0.42,
                                       width: MediaQuery.of(context).size.width *
                                           0.5,
-                                      child:
-                                          LineChartSample1(widget.chartdata)),
+                                      child: Builder(builder: (context) {
+                                        switch (selectedchart) {
+                                          case 'Tren Pendapatan':
+                                            return LineChartSample1(
+                                                widget.chartdata);
+                                          case 'Pendapatan Category':
+                                            return SfCartesianChart(
+                                                enableAxisAnimation: true,
+                                                isTransposed: true,
+                                                axes: <ChartAxis>[
+                                                  NumericAxis(
+                                                      numberFormat: NumberFormat
+                                                          .compact(),
+                                                      majorGridLines:
+                                                          const MajorGridLines(
+                                                              width: 0),
+                                                      opposedPosition: true,
+                                                      name: 'yAxis1',
+                                                      interval: 1000,
+                                                      minimum: 0,
+                                                      maximum: 7000)
+                                                ],
+                                                // legend: Legend(
+                                                //     position: LegendPosition.bottom,
+                                                //     isVisible: true,
+                                                //     borderColor: Colors.black,
+                                                //     borderWidth: 2),
+                                                primaryXAxis: CategoryAxis(),
+                                                series: <ChartSeries<
+                                                    ChartBarData, String>>[
+                                                  ColumnSeries<ChartBarData,
+                                                          String>(
+                                                      animationDuration: 1000,
+                                                      dataSource: chartctg,
+                                                      xValueMapper:
+                                                          (ChartBarData data,
+                                                                  _) =>
+                                                              data.x,
+                                                      yValueMapper:
+                                                          (ChartBarData data,
+                                                                  _) =>
+                                                              data.y,
+                                                      name: 'Penjualan'),
+                                                ]);
+                                          case 'Statistik':
+                                            return Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.35,
+                                                child: ListView.builder(
+                                                    // controller: _controller,
+                                                    itemCount: summary.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return ListTile(
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        dense: true,
+                                                        title: summary[index]
+                                                                    .x !=
+                                                                'Bahan Baku'
+                                                            ? Text(
+                                                                summary[index]
+                                                                    .x)
+                                                            : Text(
+                                                                "${summary[index].x} ($cogspercent %)  dari nett"),
+                                                        trailing: Text(
+                                                            CurrencyFormat
+                                                                .convertToIdr(
+                                                                    summary[index]
+                                                                        .y,
+                                                                    0)),
+                                                      );
+                                                    }));
+                                          case 'Guage':
+                                            return Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.3,
+                                                child: Guage(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.3,
+                                                  valuemax: 50,
+                                                  pointer: pointer,
+                                                  startpoint: 0,
+                                                  notgood: 20,
+                                                  comfort: 35,
+                                                  goodbisnis: 50,
+                                                  starpointnotgood: 0,
+                                                  starpointnotcomfort: 15,
+                                                  starpointgoodbisnis: 35,
+                                                ));
+
+                                          case 'Item terbanyak':
+                                            return SfCircularChart(
+                                                legend: Legend(
+                                                    overflowMode:
+                                                        LegendItemOverflowMode
+                                                            .wrap,
+                                                    isVisible: true,
+                                                    borderColor: Colors.black,
+                                                    borderWidth: 0),
+                                                tooltipBehavior: _tooltip,
+                                                series: [
+                                                  DoughnutSeries<_ChartData,
+                                                          String>(
+                                                      explodeAll: true,
+                                                      dataLabelSettings:
+                                                          DataLabelSettings(
+                                                              // Renders the data label
+                                                              isVisible: true),
+                                                      dataSource: datadonat,
+                                                      xValueMapper:
+                                                          (_ChartData data,
+                                                                  _) =>
+                                                              data.x,
+                                                      yValueMapper:
+                                                          (_ChartData data,
+                                                                  _) =>
+                                                              data.y,
+                                                      name: 'Produk')
+                                                ]);
+                                          case 'Pendapatan & Bahan baku':
+                                            return SfCartesianChart(
+                                                legend: Legend(
+                                                    position:
+                                                        LegendPosition.bottom,
+                                                    isVisible: true,
+                                                    borderColor: Colors.black,
+                                                    borderWidth: 2),
+                                                primaryXAxis: CategoryAxis(),
+                                                series: <ChartSeries<ChartData,
+                                                    String>>[
+                                                  ColumnSeries<ChartData,
+                                                          String>(
+                                                      animationDuration: 1000,
+                                                      dataSource: chartdatas,
+                                                      xValueMapper:
+                                                          (ChartData data, _) =>
+                                                              data.x,
+                                                      yValueMapper:
+                                                          (ChartData data, _) =>
+                                                              data.yValue1,
+                                                      name: 'Penjualan'),
+                                                  LineSeries<ChartData, String>(
+                                                      animationDuration: 2000,
+                                                      animationDelay: 1000,
+                                                      dataSource: chartdatas,
+                                                      xValueMapper:
+                                                          (ChartData data, _) =>
+                                                              data.x,
+                                                      yValueMapper:
+                                                          (ChartData data, _) =>
+                                                              data.yValue2,
+                                                      yAxisName: 'yAxis1',
+                                                      markerSettings:
+                                                          MarkerSettings(
+                                                              isVisible: true),
+                                                      name: 'Bahan baku')
+                                                ]);
+                                          default:
+                                            return LineChartSample1(
+                                                widget.chartdata);
+                                        }
+                                      })),
                                 ],
                               )
                             ],

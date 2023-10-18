@@ -5,8 +5,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class ChartData {
   ChartData({this.x, this.yValue1, this.yValue2});
   final String? x;
-  final double? yValue1;
-  final double? yValue2;
+  final num? yValue1;
+  final num? yValue2;
+    @override
+  String toString() {
+    return '{"x": $x,"yValue1":$yValue1,"yValue2": $yValue2}';
+  }
 }
 
 class ChartesianSeries extends StatefulWidget {

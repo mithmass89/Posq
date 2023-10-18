@@ -96,6 +96,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
   int multiprice = 0;
   int? selectedindex;
   int? length = 0;
+  TemplatePrinter? template;
 
   @override
   void initState() {
@@ -108,7 +109,13 @@ class _DetailTransTabsState extends State<DetailTransTabs>
     checkPrinter();
     getSumm();
     getDetails = getDetailTrnos();
+       getTemplatePrinter();
   }
+
+   getTemplatePrinter() async {
+   template=  await ClassApi.getTemplatePrinter();
+  }
+
 
   Future<List<IafjrndtClass>> getDetailTrnos() async {
     widget.listdata = await ClassApi.getTrnoDetail(widget.trno, dbname, '');
@@ -999,7 +1006,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                       summary,
                                                       widget
                                                           .outletinfo.outletname!,
-                                                      widget.outletinfo);
+                                                      widget.outletinfo,template!);
                                                 } else {
                                                   await Navigator.push(
                                                       context,

@@ -1,7 +1,10 @@
+// ignore_for_file: unused_import
+
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:http/http.dart' as http;
+import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
 import 'package:posq/setting/printer/printerenum.dart';
@@ -10,7 +13,7 @@ import 'package:intl/intl.dart';
 class PrintSmall {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   prints(List<IafjrndtClass> detail, List<IafjrndtClass> summary,
-      String outletname, Outlet outletinfo) async {
+      String outletname, Outlet outletinfo, TemplatePrinter template) async {
     print('detail from printer : $detail');
     // ignore: unused_local_variable
     var formatter = NumberFormat('#,##,000');
@@ -29,16 +32,17 @@ class PrintSmall {
     //     .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
 
     ///image from Network
-    var logo = 'http://digims.online:3000/Logo%20Rev%201-01.png';
-    var response = await http.get(Uri.parse(logo));
+    var logo = template.logourl;
+    var response = await http.get(Uri.parse(logo!));
     Uint8List bytesNetwork = response.bodyBytes;
     Uint8List imageBytesFromNetwork = bytesNetwork.buffer
         .asUint8List(bytesNetwork.offsetInBytes, bytesNetwork.lengthInBytes);
-
     bluetooth.isConnected.then((isConnected) {
       if (isConnected == true) {
         bluetooth.printNewLine();
-        bluetooth.printImageBytes(imageBytesFromNetwork);
+        logo.isNotEmpty
+            ? bluetooth.printImageBytes(imageBytesFromNetwork)
+            : null;
         bluetooth.printNewLine();
         bluetooth.printCustom(
             outletname, Size.boldMedium.val, Align.center.val);
@@ -97,7 +101,7 @@ class PrintSmall {
         bluetooth.printCustom(
             '-------------------------------', Size.bold.val, Align.left.val);
         bluetooth.printNewLine();
-        bluetooth.printCustom('AOVI POS', Size.medium.val, Align.center.val);
+        bluetooth.printCustom('AOVIPOS', Size.medium.val, Align.center.val);
         bluetooth.printNewLine();
         bluetooth
             .paperCut(); //some printer not supported (sometime making image not centered)

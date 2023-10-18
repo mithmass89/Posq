@@ -39,10 +39,10 @@ class _SummarytodayState extends State<Summarytoday> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-                width: MediaQuery.of(context).size.width * 1,
-              ),
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height * 0.01,
+              //   width: MediaQuery.of(context).size.width * 1,
+              // ),
               ListTile(
                 title: Container(
                   height: MediaQuery.of(context).size.height * 0.025,

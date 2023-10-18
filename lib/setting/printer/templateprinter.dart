@@ -129,7 +129,7 @@ class _TemplatePrinterState extends State<TemplatePrinter>
                       title: Text('Setelan Text'),
                     ),
                     Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.04,

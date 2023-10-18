@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,9 @@ import 'package:posq/mainapps.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:posq/systeminfo.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 bool shouldUseFirebaseEmulator = false;
 
@@ -20,6 +22,14 @@ late final FirebaseApp app;
 late final FirebaseAuth auth;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  versions = packageInfo.version;
+  builds = packageInfo.buildNumber;
+  await Supabase.initialize(
+    url: 'https://nombrqzyjbsjrqpdauac.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vbWJycXp5amJzanJxcGRhdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTY0OTcyNTAsImV4cCI6MTk3MjA3MzI1MH0.HaMhfDPzjSTLtYYa05gO1C4CcpHKeBaGQChRgq0w3NM',
+  );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -36,23 +46,22 @@ class MyApp extends StatelessWidget {
     required Route Function(RouteSettings settings) onGenerateRoute,
     /*required this.newinstall*/
   }) : super(key: key);
-
+  final supabase = Supabase.instance.client;
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      title: 'POS Demo',
+      title: 'Aovipos',
       builder: EasyLoading.init(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          color:  AppColors.primaryColor,
+          color: AppColors.primaryColor,
           // <-- SEE HERE
           iconTheme: IconThemeData(color: Colors.white),
         ),
         useMaterial3: true,
-          primaryColor: AppColors.primaryColor,
+        primaryColor: AppColors.primaryColor,
         textTheme: GoogleFonts.questrialTextTheme(textTheme).copyWith(),
         primarySwatch: Colors.orange,
       ),
@@ -67,8 +76,8 @@ class MyApp extends StatelessWidget {
               qty: 0,
             ),
         '/Dashboard': (context) => Mainapps(
-               fromretailmain: true,
-        ),
+              fromretailmain: true,
+            ),
       },
     );
 

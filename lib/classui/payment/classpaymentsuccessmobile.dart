@@ -22,6 +22,7 @@ import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/printer/classprinterbillpayment.dart';
 import 'package:posq/userinfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -108,6 +109,7 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
   var wsUrlWa;
   WebSocketChannel? channel;
   WebSocketChannel? channelwa;
+  final supabase = Supabase.instance.client;
 
   Future<void> initPlatformState() async {
     bool? isConnected = await bluetooth.isConnected;
@@ -288,13 +290,12 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
     checkPrinter();
     wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
     channel = WebSocketChannel.connect(wsUrl);
-    channel!.stream.listen((message) {
-      print(message[0]['status pesan']);
-      var x = json.decode(message);
-      print('ini : X $x');
-
-      // channel.sink.close(status.goingAway);
-    });
+    // channel!.stream.listen((message) {
+    //   print(message[0]['status pesan']);
+    //   var x = json.decode(message);
+    //   print('ini : X $x');
+    //   // channel.sink.close(status.goingAway);
+    // });
     wsUrlWa = Uri.parse('ws://digims.online:8085?id=${widget.trno}');
     channelwa = WebSocketChannel.connect(wsUrlWa);
     channelwa!.stream.listen((message) {
@@ -659,40 +660,41 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                   if (rules.isNotEmpty) {
                                     minconv = rules.first['convamount'];
                                     point = rules.first['point'];
-                                           if (Pembelian(
-                                              summarybill!.first.totalaftdisc!,
-                                              minconv,
-                                              point)
-                                          .hitungPoin()
-                                          .toInt() !=
-                                      0) {
-                                    final savecostmrs =
-                                        await SharedPreferences.getInstance();
-                                    if (savecostmrs.getString('savecostmrs') !=
-                                        null) {
-                                      Map<String, dynamic> guest = json.decode(
-                                          savecostmrs
-                                              .getString('savecostmrs')!);
-                                      await ClassApi.insertPointguest(
-                                          Pembelian(
-                                                  summarybill!
-                                                      .first.totalaftdisc!,
-                                                  minconv,
-                                                  point)
-                                              .hitungPoin()
-                                              .toInt(),
-                                          guest['guestname'],
-                                          widget.trdt!,
-                                          widget.trno,
-                                          summarybill!.first.totalaftdisc!);
+                                    if (Pembelian(
+                                                summarybill!
+                                                    .first.totalaftdisc!,
+                                                minconv,
+                                                point)
+                                            .hitungPoin()
+                                            .toInt() !=
+                                        0) {
+                                      final savecostmrs =
+                                          await SharedPreferences.getInstance();
+                                      if (savecostmrs
+                                              .getString('savecostmrs') !=
+                                          null) {
+                                        Map<String, dynamic> guest =
+                                            json.decode(savecostmrs
+                                                .getString('savecostmrs')!);
+                                        await ClassApi.insertPointguest(
+                                            Pembelian(
+                                                    summarybill!
+                                                        .first.totalaftdisc!,
+                                                    minconv,
+                                                    point)
+                                                .hitungPoin()
+                                                .toInt(),
+                                            guest['guestname'],
+                                            widget.trdt!,
+                                            widget.trno,
+                                            summarybill!.first.totalaftdisc!);
 
-                                      await savecostmrs.remove("savecostmrs");
-                                      var x = await savecostmrs
-                                          .getString('savecostmrs');
+                                        await savecostmrs.remove("savecostmrs");
+                                        var x = await savecostmrs
+                                            .getString('savecostmrs');
+                                      }
                                     }
                                   }
-                                  }
-                           
                                 });
 
                                 channel!.sink
@@ -706,6 +708,14 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                     SharedPreferences prefs =
                                         await SharedPreferences.getInstance();
                                     prefs.remove("savecostmrs");
+                                    await supabase.from('finish_order').insert({
+                                      'transno': widget.trno,
+                                      'guest': 'oke',
+                                      'table': 'oke',
+                                      'totalitem': 0,
+                                      'status': 'sukses',
+                                      'prfcd': dbname
+                                    });
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -726,6 +736,16 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                       prefs.remove("savecostmrs");
                                       await ClassApi.cleartable(
                                           dbname, widget.trno);
+                                      await supabase
+                                          .from('finish_order')
+                                          .insert({
+                                        'transno': widget.trno,
+                                        'guest': 'oke',
+                                        'table': 'oke',
+                                        'totalitem': 0,
+                                        'status': 'sukses',
+                                        'prfcd': dbname
+                                      });
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -745,7 +765,6 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                               dbname, widget.trno, x.itemseq!);
                                         }
                                       }
-
                                       await ClassApi.getOutstandingBillTransno(
                                               widget.trno, dbname, '')
                                           .then((valued) async {
@@ -754,6 +773,16 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                           await updateTrno();
                                           await ClassApi.cleartable(
                                               dbname, widget.trno);
+                                          await supabase
+                                              .from('finish_order')
+                                              .insert({
+                                            'transno': widget.trno,
+                                            'guest': 'oke',
+                                            'table': 'oke',
+                                            'totalitem': 0,
+                                            'status': 'sukses',
+                                            'prfcd': dbname
+                                          });
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(
                                                   MaterialPageRoute(
@@ -797,7 +826,16 @@ class _ClassPaymetSucsessMobileState extends State<ClassPaymetSucsessMobile> {
                                       SharedPreferences prefs =
                                           await SharedPreferences.getInstance();
                                       prefs.remove("savecostmrs");
-
+                                      await supabase
+                                          .from('finish_order')
+                                          .insert({
+                                        'transno': widget.trno,
+                                        'guest': 'oke',
+                                        'table': 'oke',
+                                        'totalitem': 0,
+                                        'status': 'sukses',
+                                        'prfcd': dbname
+                                      });
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>

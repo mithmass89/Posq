@@ -65,6 +65,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
   List<IafjrndtClass> summary = [];
   bool connected = false;
   PrintSmall printing = PrintSmall();
+  TemplatePrinter? template;
 
   @override
   void initState() {
@@ -73,6 +74,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
     formattedDate = formatter.format(now);
     print('listdata : summary ${widget.listdata}');
     getSumm();
+    getTemplatePrinter();
   }
 
   checkPrinter() async {
@@ -93,6 +95,10 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
         amounttotal = 0;
       }
     });
+  }
+
+  getTemplatePrinter() async {
+    template = await ClassApi.getTemplatePrinter();
   }
 
   @override
@@ -411,7 +417,8 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                             widget.listdata,
                                             summary,
                                             widget.outletinfo.outletname!,
-                                            widget.outletinfo);
+                                            widget.outletinfo,
+                                            template!);
                                       } else {
                                         await Navigator.push(
                                             context,
@@ -516,8 +523,10 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                             await ClassApi.checkPointCustomer(
                                     widget.guestname, dbname)
                                 .then((value) async {
-                              if (value.isNotEmpty) {
-                                if (value[0]['points'] != 0) {
+                              print(value);
+                              if (value.isNotEmpty ||
+                                  value[0]['guestname'] != null) {
+                                if (value[0]['points'] != null) {
                                 } else {
                                   final result = await showDialog(
                                       barrierDismissible: false,

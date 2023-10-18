@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
-import 'package:posq/login.dart';
 import 'package:posq/setting/promo/tablet/classpromotab.dart';
 import 'package:posq/userinfo.dart';
 
@@ -58,7 +57,6 @@ class DrawerWidgetMainTab extends StatelessWidget {
               icon: Icons.lock_clock,
               text: 'Tutup kasir',
               onTap: () => print('Tap Recent menu')),
-      
           Divider(height: 25, thickness: 1),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
@@ -72,7 +70,6 @@ class DrawerWidgetMainTab extends StatelessWidget {
               icon: Icons.logout,
               text: 'Log Out',
               onTap: () {
-                LogOut.signOut(context: context);
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               }),

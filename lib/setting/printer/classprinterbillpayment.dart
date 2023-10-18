@@ -10,16 +10,16 @@ import 'package:intl/intl.dart';
 class PrintSmallPayment {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   prints(
-      List<IafjrndtClass> detail,
-      List<IafjrndtClass> summary,
-      List<IafjrnhdClass> listpayment,
-      String outletname,
-      String guestname,
-      String header,
-      String footer,
-      String urllogo,
-      Outlet outletinfo,
-      ) async {
+    List<IafjrndtClass> detail,
+    List<IafjrndtClass> summary,
+    List<IafjrnhdClass> listpayment,
+    String outletname,
+    String guestname,
+    String header,
+    String footer,
+    String urllogo,
+    Outlet outletinfo,
+  ) async {
     // ignore: unused_local_variable
     var formatter = NumberFormat('#,##,000');
     //image max 300px X 300px
@@ -38,17 +38,17 @@ class PrintSmallPayment {
     //yg dipakai network//
     ///image from Network
     print("urllogo: $urllogo");
-    var logo = 'http://digims.online:3000/Logo%20Rev%201-01.png';
-    var response = await http.get(Uri.parse(
-        logo /*"https://raw.githubusercontent.com/kakzaki/blue_thermal_printer/master/example/assets/images/yourlogo.png"*/));
-    print(response.bodyBytes);
-    Uint8List bytesNetwork = response.bodyBytes;
+    var logo = urllogo;
+
+    var response = urllogo.isNotEmpty ? await http.get(Uri.parse(logo)) : null;
+    Uint8List bytesNetwork = response!.bodyBytes;
     Uint8List imageBytesFromNetwork = bytesNetwork.buffer
         .asUint8List(bytesNetwork.offsetInBytes, bytesNetwork.lengthInBytes);
-
     bluetooth.isConnected.then((isConnected) {
       if (isConnected == true) {
-        bluetooth.printImageBytes(imageBytesFromNetwork);
+        urllogo.isNotEmpty
+            ? bluetooth.printImageBytes(imageBytesFromNetwork)
+            : null;
         bluetooth.printNewLine();
         bluetooth.printCustom(outletname, Size.bold.val, Align.center.val);
         bluetooth.printCustom(header, Size.medium.val, Align.center.val);

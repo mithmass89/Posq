@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:posq/appsmobile.dart';
 import 'package:posq/classfungsi/dialogattendance.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/kitchen/kitchenordermain.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/setting/condiment/maincondiment.dart';
 import 'package:posq/setting/customer/classcustomersmobile.dart';
@@ -22,6 +23,7 @@ import 'package:posq/setting/pegawai/pegawaimainmobile.dart';
 import 'package:posq/setting/product_master/mainmenuproduct.dart';
 import 'package:posq/setting/product_master/productmain.dart';
 import 'package:posq/setting/profilemain.dart';
+import 'package:posq/subscibtion/pembayaran.dart';
 import 'package:posq/userinfo.dart';
 import 'package:uuid/uuid.dart';
 import 'package:posq/classui/api.dart';
@@ -503,26 +505,37 @@ class _MenuMainState extends State<MenuMain> {
               ),
               ButtonClassAction(
                 splash: selected,
-                iconasset: 'assets/support.png',
+                iconasset: 'assets/choices.png',
                 height: MediaQuery.of(context).size.height * 0.04,
                 widht: MediaQuery.of(context).size.width * 0.19,
                 onpressed: () async {
                   selected = !selected;
-                  setState(() {});
-                  Fluttertoast.showToast(
-                      msg: "Cooming soon",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => KitchenDisplayMain()),
+                  );
                 },
-                name: 'Help',
+                name: 'Kitchen',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
                 width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                splash: selected,
+                iconasset: 'assets/cashless-payment.png',
+                height: MediaQuery.of(context).size.height * 0.04,
+                widht: MediaQuery.of(context).size.width * 0.19,
+                onpressed: () async {
+                  selected = !selected;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PembayaranAovi()),
+                  );
+                  setState(() {});
+                },
+                name: 'Bayar',
               ),
             ],
           ),
@@ -600,6 +613,42 @@ class _MenuMainState extends State<MenuMain> {
                   print(result);
                 },
                 name: 'Outlet',
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              ButtonClassAction(
+                splash: selected,
+                iconasset: 'assets/bar-chart.png',
+                height: MediaQuery.of(context).size.height * 0.02,
+                widht: MediaQuery.of(context).size.width * 0.08,
+                onpressed: accesslistuser.contains('selectoutlet') == true
+                    ? () async {
+                        setState(() {
+                          selected = !selected;
+                        });
+                        final Outlet? result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AnalisaMainMobile()),
+                        );
+                        // callbackTitle(result);
+                        await checkTrno();
+                        AppsMobile.of(context)!.string = result;
+                        print('ini result : $result');
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                            msg: "Tidak punya akses analisa",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color.fromARGB(255, 11, 12, 14),
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
+                name: 'Analisa',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -736,20 +785,17 @@ class _MenuMainState extends State<MenuMain> {
                 width: MediaQuery.of(context).size.width * 0.05,
               ),
               ButtonClassAction(
-                iconasset: 'assets/support.png',
+                iconasset: 'assets/choices.png',
                 height: MediaQuery.of(context).size.height * 0.02,
                 widht: MediaQuery.of(context).size.width * 0.08,
                 onpressed: () async {
-                  Fluttertoast.showToast(
-                      msg: "Cooming soon",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(255, 11, 12, 14),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => KitchenDisplayMain()),
+                  );
                 },
-                name: 'Help',
+                name: 'Kitchen',
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
