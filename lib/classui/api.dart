@@ -3,17 +3,18 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:posq/integrasipayment/midtrans.dart';
 import 'package:posq/model.dart';
+import 'package:posq/systeminfo.dart';
 import 'package:posq/userinfo.dart';
 
 // var api = 'http://192.168.88.14:3000';
-var ip = '153.92.5.25';
-var api = 'http://$ip:3000';
+var ip = mainserver;
+var api = 'http://$ip:3031';
 var apiimage = 'http://$ip:5000';
 var apiemail = 'http://$ip:4000';
-var hostchatbot = '153.92.5.25';
+var hostchatbot = 'emerald-system.id';
 var apichatbot = 'http://$hostchatbot:1055';
 // var api = 'http://147.139.163.18:3000';
-var apiuploadPDF = 'http://153.92.5.25:5005';
+var apiuploadPDF = 'http://emerald-system.id:5005';
 var serverkey = '';
 String username = 'mitro';
 String password = '@Mitro100689';
@@ -1028,6 +1029,34 @@ class ClassApi {
     }
   }
 
+  static Future<dynamic> insertPrinter(
+      String printertype, String category, String ipaddress, int copy) async {
+    // print(json.encode(pembayaran));
+    var body = {
+      "dbname": dbname,
+      "printertype": printertype,
+      "category": category,
+      "ipaddress": ipaddress,
+      "copy": copy,
+    };
+    print(body);
+    final url = Uri.parse('$api/insertPrinter');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> insertProduct(Item data, String dbname) async {
     var body = {
       "dbname": dbname,
@@ -1492,6 +1521,29 @@ class ClassApi {
     }
   }
 
+
+    static Future<dynamic> getCategoryItem() async {
+    var body = {
+      "dbname": dbname,
+    };
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/getCategoryItem');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      List user = json.decode(response.body);
+
+      return user;
+    } else {
+      throw Exception();
+    }
+  }
+
   static Future<dynamic> checkPhoneNumber(String phone) async {
     var body = {
       "dbname": dbname,
@@ -1817,6 +1869,31 @@ class ClassApi {
 
     // print(json.encode(pembayaran));
     final url = Uri.parse('$api/updateStrictUser');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      var status = json.decode(response.body);
+
+      return status;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<dynamic> updateUseKitchen(
+      String dbname, String usekitchen) async {
+    var body = {
+      "dbname": dbname,
+      "usekitchen": usekitchen,
+    };
+
+    // print(json.encode(pembayaran));
+    final url = Uri.parse('$api/updateUseKitchen');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -2999,6 +3076,28 @@ class ClassApi {
     // print(json.encode(pembayaran));
     var data = {"jobcd": jobcode};
     final url = Uri.parse('$api/getRoleAccessTemplate');
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          // 'authorization': basicAuth
+        },
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      List bodyJson = json.decode(response.body);
+      // print(bodyJson);
+      return bodyJson;
+      // List<Item> data = bodyJson.map((json) => Item.fromJson(json)).toList();
+      // return data;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<dynamic>> getPrinterList() async {
+    // print(json.encode(pembayaran));
+    var data = {"dbname": dbname};
+    final url = Uri.parse('$api/getPrinterList');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

@@ -109,13 +109,12 @@ class _DetailTransTabsState extends State<DetailTransTabs>
     checkPrinter();
     getSumm();
     getDetails = getDetailTrnos();
-       getTemplatePrinter();
+    getTemplatePrinter();
   }
 
-   getTemplatePrinter() async {
-   template=  await ClassApi.getTemplatePrinter();
+  getTemplatePrinter() async {
+    template = await ClassApi.getTemplatePrinter();
   }
-
 
   Future<List<IafjrndtClass>> getDetailTrnos() async {
     widget.listdata = await ClassApi.getTrnoDetail(widget.trno, dbname, '');
@@ -240,7 +239,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                               .toList();
                                           var result = IafjrndtClass(
                                               salestype: widget
-                                                  .datatransaksi[index].transdesc,
+                                                  .datatransaksi[index]
+                                                  .transdesc,
                                               condimenttype:
                                                   element.condimenttype,
                                               svchgpct: element.svchgpct,
@@ -257,9 +257,10 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                               qty: element.qty,
                                               description: element.description,
                                               createdt: element.createdt,
-                                              rateamtitem: amountprice.isNotEmpty
-                                                  ? amountprice.first.amount
-                                                  : element.rateamtitem,
+                                              rateamtitem:
+                                                  amountprice.isNotEmpty
+                                                      ? amountprice.first.amount
+                                                      : element.rateamtitem,
                                               discamt: element.discamt,
                                               discpct: element.discpct,
                                               taxpct: element.taxpct,
@@ -282,21 +283,21 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                           amountprice
                                                               .first.amount) +
                                                       ((element.qty! *
-                                                              amountprice
-                                                                  .first.amount) *
+                                                              amountprice.first
+                                                                  .amount) *
                                                           element.taxpct! /
                                                           100) +
                                                       ((element.qty! *
-                                                              amountprice
-                                                                  .first.amount) *
+                                                              amountprice.first.amount) *
                                                           element.svchgpct! /
                                                           100)
                                                   : element.totalaftdisc,
                                               id: element.id,
                                               totalcost: element.totalcost,
                                               ratecostamt: element.ratecostamt);
-      
-                                          ClassApi.updatePosDetail(result, pscd);
+
+                                          ClassApi.updatePosDetail(
+                                              result, pscd);
                                         }
                                         await getDetailTrnos().then((value) {
                                           setState(() {});
@@ -304,7 +305,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                         await getSumm();
                                         widget.updatedata!();
                                         widget.refreshdata;
-      
+
                                         ClassRetailMainMobile.of(context)!
                                                 .string =
                                             IafjrndtClass(
@@ -312,10 +313,11 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                 pscd: widget.trnoinfo!.pscd,
                                                 description: '',
                                                 totalaftdisc: 0,
-                                                transno: widget.listdata.length ==
-                                                        0
-                                                    ? null
-                                                    : widget.trnoinfo!.transno,
+                                                transno:
+                                                    widget.listdata.length == 0
+                                                        ? null
+                                                        : widget
+                                                            .trnoinfo!.transno,
                                                 totalcost: 0,
                                                 ratecostamt: 0);
                                         setState(() {});
@@ -360,8 +362,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                     final result =
                                                         await showDialog(
                                                             context: context,
-                                                            builder: (BuildContext
-                                                                context) {
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
                                                               return DialogEditTab(
                                                                 note: note,
                                                                 updatedata: //                       updatedata:
@@ -374,14 +377,16 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                     editamount,
                                                                 editdesc:
                                                                     editdesc,
-                                                                editqty: editqty,
+                                                                editqty:
+                                                                    editqty,
                                                               );
                                                             });
-      
+
                                                     ClassRetailMainMobile.of(context)!
                                                             .string =
                                                         IafjrndtClass(
-                                                            trdt: widget.trnoinfo!
+                                                            trdt: widget
+                                                                .trnoinfo!
                                                                 .transno,
                                                             pscd: widget
                                                                 .trnoinfo!.pscd,
@@ -406,7 +411,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                   .trnoinfo!
                                                                   .transno,
                                                               pscd: widget
-                                                                  .trnoinfo!.pscd,
+                                                                  .trnoinfo!
+                                                                  .pscd,
                                                               description: '',
                                                               totalaftdisc: 0,
                                                               transno: widget
@@ -421,7 +427,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                       await getDetailTrnos()
                                                           .then((value) {
                                                         setState(() {
-                                                          widget.listdata = value;
+                                                          widget.listdata =
+                                                              value;
                                                         });
                                                       });
                                                     }
@@ -434,71 +441,42 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                         ? await Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    ClassInputCondimentTab(
-                                                                      guestname:
-                                                                          widget
-                                                                              .guestname,
-                                                                      datatransaksi:
-                                                                          widget.listdata[
-                                                                              index],
-                                                                      iditem: widget
-                                                                          .listdata[
-                                                                              index]
-                                                                          .id,
-                                                                      fromedit:
-                                                                          true,
-                                                                      dataedit: widget
-                                                                          .listdata,
-                                                                      data: Item(
-                                                                          packageflag:
-                                                                              0,
-                                                                          multiprice:
-                                                                              multiprice,
-                                                                          itemcode: widget
-                                                                              .listdata[
-                                                                                  index]
-                                                                              .itemcode,
-                                                                          itemdesc: widget
-                                                                              .listdata[
-                                                                                  index]
-                                                                              .itemdesc,
-                                                                          outletcode: widget
-                                                                              .listdata[
-                                                                                  index]
-                                                                              .pscd,
-                                                                          slsamt: widget.listdata[index].revenueamt! /
-                                                                              widget
-                                                                                  .listdata[
-                                                                                      index]
-                                                                                  .qty!,
-                                                                          costamt:
-                                                                              0,
-                                                                          slsnett: widget
-                                                                              .listdata[
-                                                                                  index]
-                                                                              .totalaftdisc,
-                                                                          taxpct: widget
-                                                                              .listdata[
-                                                                                  index]
-                                                                              .taxpct,
-                                                                          svchgpct: widget
-                                                                              .listdata[
-                                                                                  index]
-                                                                              .svchgpct,
-                                                                          slsfl:
-                                                                              1),
-                                                                      itemseq: widget
-                                                                          .listdata[
-                                                                              index]
-                                                                          .itemseq!,
-                                                                      outletcd: widget
-                                                                          .trnoinfo!
-                                                                          .pscd!,
-                                                                      transno:
-                                                                          widget
-                                                                              .trno,
-                                                                    ))).then(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ClassInputCondimentTab(
+                                                                          guestname:
+                                                                              widget.guestname,
+                                                                          datatransaksi:
+                                                                              widget.listdata[index],
+                                                                          iditem: widget
+                                                                              .listdata[index]
+                                                                              .id,
+                                                                          fromedit:
+                                                                              true,
+                                                                          dataedit:
+                                                                              widget.listdata,
+                                                                          data: Item(
+                                                                              moderetail: 0,
+                                                                              packageflag: 0,
+                                                                              multiprice: multiprice,
+                                                                              itemcode: widget.listdata[index].itemcode,
+                                                                              itemdesc: widget.listdata[index].itemdesc,
+                                                                              outletcode: widget.listdata[index].pscd,
+                                                                              slsamt: widget.listdata[index].revenueamt! / widget.listdata[index].qty!,
+                                                                              costamt: 0,
+                                                                              slsnett: widget.listdata[index].totalaftdisc,
+                                                                              taxpct: widget.listdata[index].taxpct,
+                                                                              svchgpct: widget.listdata[index].svchgpct,
+                                                                              slsfl: 1),
+                                                                          itemseq: widget
+                                                                              .listdata[index]
+                                                                              .itemseq!,
+                                                                          outletcd: widget
+                                                                              .trnoinfo!
+                                                                              .pscd!,
+                                                                          transno:
+                                                                              widget.trno,
+                                                                        ))).then(
                                                             (_) async {
                                                             await widget
                                                                 .refreshdata;
@@ -509,7 +487,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                     ClassRetailMainMobile.of(context)!
                                                             .string =
                                                         IafjrndtClass(
-                                                            trdt: widget.trnoinfo!
+                                                            trdt: widget
+                                                                .trnoinfo!
                                                                 .transno,
                                                             pscd: widget
                                                                 .trnoinfo!.pscd,
@@ -534,7 +513,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                   .trnoinfo!
                                                                   .transno,
                                                               pscd: widget
-                                                                  .trnoinfo!.pscd,
+                                                                  .trnoinfo!
+                                                                  .pscd,
                                                               description: '',
                                                               totalaftdisc: 0,
                                                               transno: widget
@@ -553,11 +533,11 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                   child: Column(
                                                     children: [
                                                       Container(
-                                                        height:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height *
-                                                                0.05,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.05,
                                                         child: Row(
                                                           children: [
                                                             Container(
@@ -607,8 +587,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                     alignment:
                                                                         Alignment
                                                                             .centerRight,
-                                                                    width: MediaQuery.of(
-                                                                                context)
+                                                                    width: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
                                                                         0.1,
@@ -624,22 +603,18 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                     alignment:
                                                                         Alignment
                                                                             .centerRight,
-                                                                    width: MediaQuery.of(
-                                                                                context)
+                                                                    width: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
                                                                         0.02,
-                                                                    child: widget
-                                                                                .listdata[index]
-                                                                                .typ !=
+                                                                    child: widget.listdata[index].typ !=
                                                                             'condiment'
                                                                         ? IconButton(
                                                                             iconSize:
                                                                                 17,
                                                                             onPressed:
                                                                                 () async {
-                                                                              if (strictuser ==
-                                                                                  '1') {
+                                                                              if (strictuser == '1') {
                                                                                 showDialog(
                                                                                   context: context,
                                                                                   builder: (BuildContext context) {
@@ -664,7 +639,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                                 await getSumm();
                                                                                                 widget.updatedata!();
                                                                                                 widget.refreshdata;
-      
+
                                                                                                 ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno, totalcost: 0, ratecostamt: 0);
                                                                                               });
                                                                                               await getDetails!.then((value) {
@@ -696,7 +671,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                       itemdesc: widget.listdata[index].itemdesc!,
                                                                                       onPasswordEntered: (String password) async {
                                                                                         print('Entered password: $password');
-      
+
                                                                                         if (widget.listdata[index].typ != 'condiment') {
                                                                                           await ClassApi.deactivePoscondimentByALL(widget.listdata[index].transno!, widget.listdata[index].itemseq.toString(), dbname);
                                                                                           await ClassApi.deactivePosdetail(widget.listdata[index].id!.toInt(), dbname).whenComplete(() async {
@@ -706,7 +681,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                             await getSumm();
                                                                                             widget.updatedata!();
                                                                                             widget.refreshdata;
-      
+
                                                                                             ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: snapshot.data!.length == 0 ? null : widget.trnoinfo!.transno, totalcost: 0, ratecostamt: 0);
                                                                                           });
                                                                                           await getDetails!.then((value) {
@@ -723,7 +698,7 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                                           await getSumm();
                                                                                           ClassRetailMainMobile.of(context)!.string = IafjrndtClass(trdt: widget.trnoinfo!.trdt, pscd: widget.trnoinfo!.pscd, description: '', totalaftdisc: 0, transno: widget.listdata.length == 0 ? null : widget.trnoinfo!.transno, totalcost: 0, ratecostamt: 0);
                                                                                         }
-      
+
                                                                                         // Lakukan sesuatu dengan password yang dimasukkan di sini
                                                                                       },
                                                                                     );
@@ -754,7 +729,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                           Text(
                                                               '${CurrencyFormat.convertToIdr(widget.listdata[index].rateamtitem, 0)},',
                                                               style: TextStyle(
-                                                                  fontSize: 10)),
+                                                                  fontSize:
+                                                                      10)),
                                                           SizedBox(
                                                             width: MediaQuery.of(
                                                                         context)
@@ -764,11 +740,13 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                           ),
                                                           Text('x',
                                                               style: TextStyle(
-                                                                  fontSize: 10)),
+                                                                  fontSize:
+                                                                      10)),
                                                           Text(
                                                               '${widget.listdata[index].qty}',
                                                               style: TextStyle(
-                                                                  fontSize: 10)),
+                                                                  fontSize:
+                                                                      10)),
                                                           SizedBox(
                                                             width: MediaQuery.of(
                                                                         context)
@@ -780,8 +758,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                       .discamt !=
                                                                   0
                                                               ? Container(
-                                                                  alignment: Alignment
-                                                                      .centerRight,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerRight,
                                                                   width: MediaQuery.of(
                                                                               context)
                                                                           .size
@@ -795,17 +774,13 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                                       Text(
                                                                           'Discount',
                                                                           style: TextStyle(
-                                                                              fontSize:
-                                                                                  10,
-                                                                              color:
-                                                                                  Colors.red)),
+                                                                              fontSize: 10,
+                                                                              color: Colors.red)),
                                                                       Text(
                                                                           '-${CurrencyFormat.convertToIdr(widget.listdata[index].discamt, 0)}',
                                                                           style: TextStyle(
-                                                                              fontSize:
-                                                                                  10,
-                                                                              color:
-                                                                                  Colors.red)),
+                                                                              fontSize: 10,
+                                                                              color: Colors.red)),
                                                                     ],
                                                                   ),
                                                                 )
@@ -908,8 +883,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                     Spacer(),
                                     Container(
                                         alignment: Alignment.centerRight,
-                                        width: MediaQuery.of(context).size.width *
-                                            0.15,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.15,
                                         child: TextButton(
                                             style: TextButton.styleFrom(
                                                 padding: EdgeInsets.zero,
@@ -917,7 +893,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                 tapTargetSize:
                                                     MaterialTapTargetSize
                                                         .shrinkWrap,
-                                                alignment: Alignment.centerRight),
+                                                alignment:
+                                                    Alignment.centerRight),
                                             onPressed: () async {},
                                             child: Text(
                                               '>',
@@ -951,15 +928,17 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                       width: MediaQuery.of(context).size.width *
                                           0.22,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  5), // <-- Radius
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      5), // <-- Radius
                                             ),
                                             padding: EdgeInsets.zero,
                                             backgroundColor: Colors
@@ -981,22 +960,24 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                       ),
                                     ),
                                     Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.1,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  5), // <-- Radius
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      5), // <-- Radius
                                             ),
                                             padding: EdgeInsets.zero,
                                             backgroundColor: Colors
                                                 .grey[200] // Background color
                                             ),
-                                        onPressed: accesslistuser
-                                                    .contains('settingprinter') ==
+                                        onPressed: accesslistuser.contains(
+                                                    'settingprinter') ==
                                                 true
                                             ? () async {
                                                 await getSumm();
@@ -1004,9 +985,10 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                   await printing.prints(
                                                       widget.listdata,
                                                       summary,
-                                                      widget
-                                                          .outletinfo.outletname!,
-                                                      widget.outletinfo,template!);
+                                                      widget.outletinfo
+                                                          .outletname!,
+                                                      widget.outletinfo,
+                                                      template!);
                                                 } else {
                                                   await Navigator.push(
                                                       context,
@@ -1021,7 +1003,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                         "Tidak Punya Akses Printer",
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
-                                                    gravity: ToastGravity.CENTER,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
                                                     timeInSecForIosWeb: 1,
                                                     backgroundColor:
                                                         Color.fromARGB(
@@ -1054,10 +1037,11 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.1,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
@@ -1065,8 +1049,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                 5), // <-- Radius
                                           ),
                                           padding: EdgeInsets.zero,
-                                          backgroundColor: Color.fromARGB(255, 0,
-                                              160, 147), // Background color
+                                          backgroundColor: Color.fromARGB(255,
+                                              0, 160, 147), // Background color
                                         ),
                                         onPressed: () {},
                                         child: Row(
@@ -1086,8 +1070,9 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.22,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
@@ -1095,8 +1080,8 @@ class _DetailTransTabsState extends State<DetailTransTabs>
                                                 5), // <-- Radius
                                           ),
                                           padding: EdgeInsets.zero,
-                                          backgroundColor: Color.fromARGB(255, 0,
-                                              160, 147), // Background color
+                                          backgroundColor: Color.fromARGB(255,
+                                              0, 160, 147), // Background color
                                         ),
                                         onPressed: () {
                                           print('tagihkan');

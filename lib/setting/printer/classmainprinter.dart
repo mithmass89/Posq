@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posq/setting/printer/classprinterBluetooth.dart';
-import 'package:posq/setting/printer/printer_network/mainprinter_net.dart';
+import 'package:posq/setting/printer/printer_wifi/printernetwork.dart';
 import 'package:posq/setting/printer/templateprinter.dart';
 
 class ClassMainPrinter extends StatefulWidget {
@@ -11,7 +11,7 @@ class ClassMainPrinter extends StatefulWidget {
 }
 
 class _ClassMainPrinterState extends State<ClassMainPrinter> {
-  List<String> printer = ['Bluetooth', 'Wi-fi', 'Setelan'];
+  List<String> printer = ['Bluetooth', 'Network Printer', 'Setelan'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,10 +35,10 @@ class _ClassMainPrinterState extends State<ClassMainPrinter> {
                           MaterialPageRoute(builder: (BuildContext context) {
                         return TemplatePrinter();
                       }));
-                    } else if (printer[index] == 'Wi-fi') {
+                    } else if (printer[index] == 'Network Printer') {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return PrinterMain();
+                        return PrinterNetwork();
                       }));
                     }
                   },

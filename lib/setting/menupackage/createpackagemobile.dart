@@ -47,7 +47,10 @@ class _BuatPaketMobileState extends State<BuatPaketMobile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Buat Paket',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Buat Paket',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Stack(
         children: [
@@ -211,7 +214,8 @@ class _BuatPaketMobileState extends State<BuatPaketMobile> {
                   await ClassApi.createPackageMenu(dbname, package);
                   await ClassApi.insertProduct(
                       Item(
-                        outletcode: pscd,
+                          moderetail: 0,
+                          outletcode: pscd,
                           sku: '',
                           trackstock: 0,
                           costamt: 0,

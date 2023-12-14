@@ -27,6 +27,7 @@ class ClassTabCreateProducts extends StatefulWidget {
   late TextEditingController description;
   late TextEditingController barcode;
   late TextEditingController sku;
+  late TextEditingController printer;
   late String? selectedctg;
   final Function? callbackctg;
   final Function? multipriceSet;
@@ -56,6 +57,7 @@ class ClassTabCreateProducts extends StatefulWidget {
     this.pricelist,
     required this.barcode,
     required this.sku,
+    required this.printer,
     required this.imagepath,
     this.controllerMulti,
     required this.fromedit,
@@ -83,6 +85,7 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
   bool multiharga = false;
   List<TransactionTipe> transtp = [];
   FToast? fToast;
+  String selectedprinter = '';
 
   ScrollController _controllerscroll = ScrollController();
 
@@ -121,8 +124,8 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
       if (widget.fromedit == false) {
         widget.pricelist!.add(PriceList(
             transtype: x.transtype!, transdesc: x.transdesc!, amount: 0));
-      }else{
-         widget.pricelist!.add(PriceList(
+      } else {
+        widget.pricelist!.add(PriceList(
             transtype: x.transtype!, transdesc: x.transdesc!, amount: 0));
       }
     }
@@ -275,7 +278,7 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
                       widget.multiprice = 0;
                       widget.multipriceSet!(widget.multiprice);
                     }
-                        print(widget.pricelist);
+                    print(widget.pricelist);
                   }
                 })),
         multiharga == true
@@ -450,7 +453,25 @@ class _ClassTabCreateProductsrState extends State<ClassTabCreateProducts> {
                         ),
                       ],
                     ),
-
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: TextFieldMobileButton(
+                          hint: 'Pilih Printer',
+                          controller: widget.printer,
+                          typekeyboard: TextInputType.text,
+                          onChanged: (value) {},
+                          ontap: () async {
+                            selectedprinter = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogPrinter();
+                                });
+                            setState(() {
+                              widget.printer.text = selectedprinter;
+                            });
+                          }),
+                    ),
                     TextFieldMobile2(
                       label: 'SKU',
                       controller: widget.sku,

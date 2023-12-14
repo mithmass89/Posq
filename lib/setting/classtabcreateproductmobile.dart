@@ -27,6 +27,7 @@ class ClassTabCreateProducr extends StatefulWidget {
   late TextEditingController description;
   late TextEditingController barcode;
   late TextEditingController sku;
+  late TextEditingController printer;
   late String? selectedctg;
   final Function? callbackctg;
   final Function? multipriceSet;
@@ -36,10 +37,10 @@ class ClassTabCreateProducr extends StatefulWidget {
   final bool fromedit;
   final bool multiflag;
 
-
   ClassTabCreateProducr({
     Key? key,
     required this.productcd,
+    required this.printer,
     required this.multiprice,
     required this.productname,
     required this.amountcost,
@@ -58,7 +59,7 @@ class ClassTabCreateProducr extends StatefulWidget {
     this.controllerMulti,
     required this.fromedit,
     required this.multipriceSet,
-    required this.multiflag, 
+    required this.multiflag,
   }) : super(key: key);
 
   @override
@@ -77,7 +78,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
   bool multiharga = false;
   List<TransactionTipe> transtp = [];
   FToast? fToast;
-
+  String selectedprinter = '';
   ScrollController _controllerscroll = ScrollController();
 
   @override
@@ -198,7 +199,7 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
             onChanged: (value) {},
           ),
         ),
- 
+        
         ListTile(
             title: Text(
               'Multiple Harga',
@@ -364,22 +365,25 @@ class _ClassTabCreateProducrState extends State<ClassTabCreateProducr> {
                           widget.callbackctg!(result.ctgcd);
                           print(widget.selectedctg);
                         }),
-                    Container(
-                      child: TextFieldMobile2(
-                        minLines: null,
-                        maxline: null,
-                        expands: true,
-                        hint:
-                            'Masakan Jawa Dengan Bumbu Rempah yg sangat kuat yg di sukai emak emak',
-                        label: 'Description',
-                        controller: widget.description,
+
+                    TextFieldMobileButton(
+                        hint: 'Pilih Printer',
+                        controller: widget.printer,
                         typekeyboard: TextInputType.text,
-                        onChanged: (value) {
-                          // print(value);
-                          // itemdesc = value;
-                        },
-                      ),
-                    ),
+                        onChanged: (value) {},
+                        ontap: () async {
+                          selectedprinter = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DialogPrinter();
+                              });
+                          setState(() {
+                            widget.printer.text = selectedprinter;
+                          });
+                          // widget.callbackprinter!(selectedprinter);
+                          // print(  widget.printer.text);
+                        }),
+            
                     TextFieldMobile2(
                       label: 'Harga Modal',
                       controller: widget.amountcost,

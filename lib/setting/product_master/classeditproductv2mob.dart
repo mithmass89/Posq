@@ -51,6 +51,7 @@ class _EditproductState extends State<Editproduct>
   final catatan = TextEditingController();
   final barcode = TextEditingController();
   final sku = TextEditingController();
+  final printer = TextEditingController();
 
   bool forresto = false;
   bool forretail = false;
@@ -104,7 +105,8 @@ class _EditproductState extends State<Editproduct>
     barcode.text = widget.productcode!.barcode.toString();
     sku.text = widget.productcode!.sku.toString();
     pricelist = widget.productcode!.pricelist!;
-    adjusmentstock.text= widget.productcode!.stock.toString();
+    adjusmentstock.text = widget.productcode!.stock.toString();
+    printer.text = widget.productcode!.printer.toString();
     if (widget.productcode!.multiprice == 1) {
       multiflag = true;
     } else {
@@ -172,6 +174,7 @@ class _EditproductState extends State<Editproduct>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      printer: printer,
                       multiflag: multiflag,
                       multipriceSet: changeValueMultiPrice,
                       multiprice: multiprice,
@@ -228,6 +231,7 @@ class _EditproductState extends State<Editproduct>
 
                   await ClassApi.updateProduct(
                       Item(
+                        moderetail: 0,
                         packageflag: 0,
                         multiprice: multiprice,
                         trackstock: trackstock,

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:dropdown_button2/src/dropdown_button2.dart';
+import 'package:epson_epos/epson_epos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
@@ -453,6 +454,61 @@ class _DialogTabClassState extends State<DialogTabClass>
               ],
             )),
       );
+    });
+  }
+}
+
+class DialogPrinter extends StatefulWidget {
+  const DialogPrinter({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<DialogPrinter> createState() => _DialogPrinterState();
+}
+
+class _DialogPrinterState extends State<DialogPrinter>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          content: Container(
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: FutureBuilder(
+                future: ClassApi.getPrinterList(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    var x = snapshot.data;
+                    return ListView.builder(
+                        itemCount: x!.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.of(context).pop(x[index]['ipaddress']);
+                              },
+                              title: Text(x[index]['ipaddress']),
+                              subtitle: Text(x[index]['printertype']),
+                            ),
+                          );
+                        });
+                  }
+                },
+              )));
     });
   }
 }
@@ -4491,5 +4547,119 @@ class _DialogBayarAoviEwalletState extends State<DialogBayarAovi> {
         ],
       );
     });
+  }
+}
+
+class DialogSaveNetPrinter extends StatefulWidget {
+  final EpsonPrinterModel? profile;
+
+  const DialogSaveNetPrinter({Key? key, this.profile}) : super(key: key);
+  @override
+  _DialogSaveNetPrinterState createState() => _DialogSaveNetPrinterState();
+}
+
+class _DialogSaveNetPrinterState extends State<DialogSaveNetPrinter> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _controller = TextEditingController(text: '1');
+  String selectedcategory = 'Food';
+  String selectedtypeprinter = 'Bill'; // Initial selected value
+  List<String> categorylist = ['Food', 'Beverage', 'Pastry', 'Others'];
+  List<String> typeprinter = ['Bill', 'Printer Production', 'Captain order'];
+
+  _submitForm() async {
+    await ClassApi.insertPrinter(selectedtypeprinter, selectedcategory,widget.profile!.ipAddress!,int.parse(_controller.text));
+    Navigator.of(context).pop(true); // Tutup dialog setelah selesai
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      scrollable: true,
+      title: Text("Simpan printer"),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Text('Pilih tipe'),
+                Spacer(),
+                DropdownButton<String>(
+                  value: selectedtypeprinter,
+                  items: typeprinter.map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedtypeprinter = newValue!;
+                    });
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text('Pilih ctg'),
+                Spacer(),
+                DropdownButton<String>(
+                  value: selectedcategory,
+                  items: categorylist.map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedcategory = newValue!;
+                    });
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text('Copy'),
+                Spacer(),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  width: MediaQuery.of(context).size.width * 0.1,
+                ),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    child: TextFormField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        labelText: 'Copy',
+                        border:
+                            OutlineInputBorder(), // This creates a border around the input field
+                      ),
+                    ))
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Batal'),
+        ),
+        ElevatedButton(
+          onPressed: _submitForm,
+          child: Text('Simpan'),
+        ),
+      ],
+    );
   }
 }

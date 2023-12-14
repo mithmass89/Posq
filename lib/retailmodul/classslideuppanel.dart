@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
+import 'package:posq/classui/classfontsize.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/classui/membershiptransmobile.dart';
@@ -207,7 +208,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
               onTap: () {},
               child: Icon(
                 Icons.menu_sharp,
-                size: 25,
+                size: IconSize.mediumIconSize(context),
               )),
           Container(
             decoration: BoxDecoration(
@@ -226,7 +227,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 17),
+                          fontSize: CustomFontSize.smallFontSize(context)),
                     )),
                 Expanded(
                     flex: 1,
@@ -234,7 +235,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       icon: Icon(
                         connected == true ? Icons.print : Icons.print_disabled,
                       ),
-                      iconSize: 25,
+                      iconSize: IconSize.mediumIconSize(context),
                       color: connected == true ? Colors.green : Colors.red,
                       splashColor: Colors.purple,
                       onPressed:
@@ -274,7 +275,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                             icon: Icon(
                               Icons.card_membership,
                             ),
-                            iconSize: 25,
+                           iconSize: IconSize.mediumIconSize(context),
                             // color: connected == true ? Colors.green : Colors.red,
                             splashColor: Colors.purple,
                             onPressed: () async {
@@ -310,7 +311,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                       icon: Icon(
                         Icons.people_alt,
                       ),
-                      iconSize: 25,
+                   iconSize: IconSize.mediumIconSize(context),
                       color: Colors.blueGrey,
                       splashColor: Colors.blueGrey,
                       onPressed: () async {
@@ -461,7 +462,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                 setState(() {});
                               },
                               child:
-                                  Text(widget.datatransaksi[index].transdesc!)),
+                                  Text(widget.datatransaksi[index].transdesc!,style: TextStyle(fontSize: CustomFontSize.smallFontSize(context)),)),
                         );
                       }),
                 )
@@ -586,6 +587,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                                 dataedit:
                                                                     datadetail,
                                                                 data: Item(
+                                                                        moderetail: 0,
                                                                     packageflag:
                                                                         0,
                                                                     multiprice:
@@ -678,18 +680,18 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                               style: datadetail[index].typ !=
                                                       'condiment'
                                                   ? TextStyle(
-                                                      fontSize: 12,
+                                                    fontSize: CustomFontSize.smallFontSize(context),
                                                       fontWeight:
                                                           FontWeight.bold)
                                                   : TextStyle(
-                                                      fontSize: 12,
+                                                     fontSize: CustomFontSize.smallFontSize(context)
                                                     )),
                                           subtitle: Row(
                                             children: [
                                               Text(
                                                   '${CurrencyFormat.convertToIdr(datadetail[index].rateamtitem, 0)},',
                                                   style:
-                                                      TextStyle(fontSize: 12)),
+                                                      TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                                               SizedBox(
                                                 width: MediaQuery.of(context)
                                                         .size
@@ -698,10 +700,10 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                               ),
                                               Text('x',
                                                   style:
-                                                      TextStyle(fontSize: 12)),
+                                                      TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                                               Text('${datadetail[index].qty}',
                                                   style:
-                                                      TextStyle(fontSize: 12)),
+                                                      TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                                               SizedBox(
                                                 width: MediaQuery.of(context)
                                                         .size
@@ -713,11 +715,11 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                       children: [
                                                         Text('Discount',
                                                             style: TextStyle(
-                                                                fontSize: 12)),
+                                                              fontSize: CustomFontSize.smallFontSize(context))),
                                                         Text(
                                                             '-${CurrencyFormat.convertToIdr(datadetail[index].discamt, 0)}',
                                                             style: TextStyle(
-                                                                fontSize: 12)),
+                                                                fontSize: CustomFontSize.smallFontSize(context))),
                                                       ],
                                                     )
                                                   : Container(),
@@ -738,7 +740,7 @@ class _SlideUpPanelState extends State<SlideUpPanel> {
                                                 child: Text(
                                                     '${CurrencyFormat.convertToIdr(datadetail[index].revenueamt!, 0)}',
                                                     style: TextStyle(
-                                                        fontSize: 12,
+                                                       fontSize: CustomFontSize.smallFontSize(context),
                                                         color: Colors.black54)),
                                               ),
                                               Container(

@@ -51,7 +51,7 @@ class _EditproductV3State extends State<EditproductV3>
   final catatan = TextEditingController();
   final barcode = TextEditingController();
   final sku = TextEditingController();
-
+  final printer = TextEditingController();
   bool forresto = false;
   bool forretail = false;
   String? selectedctg = 'Pilih Kategori';
@@ -70,7 +70,7 @@ class _EditproductV3State extends State<EditproductV3>
   late int trackstock;
   set string(String value) => setState(() => pathimage = value);
   int multiprice = 0;
-    bool multiflag = false;
+  bool multiflag = false;
   @override
   void initState() {
     super.initState();
@@ -152,7 +152,8 @@ class _EditproductV3State extends State<EditproductV3>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
-                     multiflag: multiflag,
+                      printer: printer,
+                      multiflag: multiflag,
                       multipriceSet: changeValueMultiPrice,
                       multiprice: multiprice,
                       fromedit: true,
@@ -205,7 +206,8 @@ class _EditproductV3State extends State<EditproductV3>
 
                   await ClassApi.updateProduct(
                       Item(
-                            packageflag: 0,
+                          moderetail: 0,
+                          packageflag: 0,
                           multiprice: multiprice,
                           trackstock: widget.productcode!.trackstock,
                           outletcode: widget.productcode!.outletcode,

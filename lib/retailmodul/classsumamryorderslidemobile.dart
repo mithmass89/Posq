@@ -1,12 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, must_be_immutable, unused_local_variable
 
+import 'dart:developer';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:epson_epos/epson_epos.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/classdialogvoidtab.dart';
+import 'package:posq/classui/classfontsize.dart';
 import 'package:posq/classui/dialogclass.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:posq/retailmodul/productclass/classdialogsplitbilltab.dart';
+import 'package:posq/setting/printer/printer_wifi/classprintwifi.dart';
 import 'package:posq/setting/promo/classcreatepromomobile.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/selectdiscountmobile.dart';
@@ -48,10 +54,30 @@ class SummaryOrderSlidemobile extends StatefulWidget {
 class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
   late DatabaseHandler handler;
   Promo? result;
+  ClassPrinterNetwork printer = ClassPrinterNetwork();
+  List<EpsonPrinterModel> printers = [];
+  List printerCaptain = [];
 
   @override
   void initState() {
     super.initState();
+    onDiscoveryTCP();
+  }
+
+  Future<dynamic> onDiscoveryTCP() async {
+    try {
+      List<EpsonPrinterModel>? data =
+          await EpsonEPOS.onDiscovery(type: EpsonEPOSPortType.TCP);
+      if (data != null && data.isNotEmpty) {
+        for (var element in data) {
+          print(element.toJson());
+        }
+        printers = data;
+      }
+    } catch (e) {
+      log("Error: $e");
+    }
+    return printers;
   }
 
   @override
@@ -72,9 +98,12 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                   ListTile(
                     visualDensity: VisualDensity(vertical: -4), // to compact
                     dense: true,
-                    title: Text('Total'),
+                    title: Text('Total',style: TextStyle(fontSize: CustomFontSize.smallFontSize(context)),),
                     trailing: Text(
-                        CurrencyFormat.convertToIdr(x.first.revenueamt, 0)),
+                      CurrencyFormat.convertToIdr(x.first.revenueamt, 0),
+                      style: TextStyle(
+                          fontSize: CustomFontSize.smallFontSize(context)),
+                    ),
                   ),
                   ListTile(
                       onTap: x.first.discamt == 0
@@ -108,7 +137,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                           : null,
                       visualDensity: VisualDensity(vertical: -4), // to compact
                       dense: true,
-                      title: Text('Discount'),
+                      title: Text('Discount',style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                       trailing: x.first.discamt == 0
                           ? Container(
                               width: MediaQuery.of(context).size.width * 0.06,
@@ -145,7 +174,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                       return values;
                                     });
                                   },
-                                  child: Text('>')))
+                                  child: Text('>',style: TextStyle(fontSize: CustomFontSize.smallFontSize(context)))))
                           : Container(
                               alignment: Alignment.centerRight,
                               width: MediaQuery.of(context).size.width * 0.30,
@@ -154,7 +183,7 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(CurrencyFormat.convertToIdr(
-                                      x.first.discamt, 0)),
+                                      x.first.discamt, 0),style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                                   Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.065,
@@ -185,29 +214,29 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                                   value.first.discamt!;
                                             });
                                           },
-                                          child: Text('X')))
+                                          child: Text('X',style: TextStyle(fontSize: CustomFontSize.smallFontSize(context)))))
                                 ],
                               ))),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -4), // to compact
                     dense: true,
-                    title: Text('Pajak'),
+                    title: Text('Pajak',style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                     trailing:
-                        Text(CurrencyFormat.convertToIdr(x.first.taxamt, 0)),
+                        Text(CurrencyFormat.convertToIdr(x.first.taxamt, 0),style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                   ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -4), // to compact
                     dense: true,
-                    title: Text('Service'),
+                    title: Text('Service',style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                     trailing: Text(
-                        CurrencyFormat.convertToIdr(x.first.serviceamt, 0)),
+                        CurrencyFormat.convertToIdr(x.first.serviceamt, 0),style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                   ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -4), // to compact
                     dense: true,
-                    title: Text('Grand total'),
+                    title: Text('Grand total',style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                     trailing: Text(
-                        CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0)),
+                        CurrencyFormat.convertToIdr(x.first.totalaftdisc, 0),style: TextStyle(fontSize: CustomFontSize.smallFontSize(context))),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -262,6 +291,83 @@ class _SummaryOrderSlidemobileState extends State<SummaryOrderSlidemobile> {
                                       fontSize: 16.0);
                                 },
                           child: Text('Batalkan transaksi')),
+                      usekitchen == true
+                          ? TextButton(
+                              onPressed: () async {
+                                if (printers.isNotEmpty) {
+                                  //function printer kitchen dan CO //
+                                  // print(widget.datatransaksi);
+                                  DateTime currentTime = DateTime.now();
+
+                                  // Format the time in "hh:mm a" (12-hour format)
+                                  String formattedTime =
+                                      DateFormat('hh:mm a').format(currentTime);
+                                  String formatedDate =
+                                      DateFormat('d MMM y').format(currentTime);
+                                  Map<String, List<IafjrndtClass>> groupedData =
+                                      {};
+                                  // grouping list item dimana printer sesuai dengan settigan
+                                  for (var item in widget.datatransaksi) {
+                                    String printerPath = item.printerpath!;
+                                    if (groupedData.containsKey(printerPath)) {
+                                      groupedData[printerPath]!.add(item);
+                                    } else {
+                                      groupedData[printerPath] = [item];
+                                    }
+                                  }
+
+                                  // print('ini grouperd data : $groupedData');
+                                  for (var x in groupedData.keys) {
+                                    //extracted data untuk prepare data yang akan di kirim printer //
+                                    // print(groupedData.entries
+                                    //     .where((element) => element.value
+                                    //         .map((e) => e.printerpath == x)
+                                    //         .first)
+                                    //     .map((e) => e.value)
+                                    //     .first);
+                                    List data = groupedData.entries
+                                        .where((element) => element.value
+                                            .map((e) => e.printerpath == x)
+                                            .first)
+                                        .map((e) => e.value)
+                                        .first;
+                                    EpsonPrinterModel selectedprinter =
+                                        await printers
+                                            .where((element) =>
+                                                element.ipAddress!.contains(x))
+                                            .first;
+                                    await printer
+                                        .preparedataKitchen(data)
+                                        .then((value) async {
+                                      await printer.onPrintKitchen(
+                                          selectedprinter,
+                                          value,
+                                          widget.trno,
+                                          '',
+                                          '',
+                                          '',
+                                          formattedTime,
+                                          formatedDate);
+                                    });
+                                  }
+                                } else {
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.info,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Printer Not found',
+                                    desc: 'Problem di wifi / printer ',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {},
+                                  )..show();
+                                }
+                              },
+                              child: Text(
+                                'Kitchen',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 192, 0, 0)),
+                              ))
+                          : Container(),
                       TextButton(
                           onPressed: () async {
                             await showDialog(

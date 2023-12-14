@@ -98,8 +98,8 @@ class _SubCondimentV2State extends State<SubCondimentV2> {
                 title: Text(widget.condiment.optiondesc!),
                 trailing: Container(
                     width: qty != 0
-                        ? MediaQuery.of(context).size.width * 0.41
-                        : MediaQuery.of(context).size.width * 0.20,
+                        ? MediaQuery.of(context).size.width * 0.5
+                        : MediaQuery.of(context).size.width * 0.23,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -165,7 +165,7 @@ class _SubCondimentV2State extends State<SubCondimentV2> {
                               )
                             : Container(
                                 alignment: Alignment.center,
-                                width: MediaQuery.of(context).size.width * 0.2,
+                                width: MediaQuery.of(context).size.width * 0.21,
                                 child: ElevatedButton(
                                     onPressed: () {
                                       qty++;

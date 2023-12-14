@@ -65,7 +65,7 @@ class _ButtonClassActionState extends State<ButtonClassAction> {
                 alignment: Alignment.center,
                 child: Text(
                   widget.name.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 12),
+                  style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width*0.03),
                 ),
                 height: widget.height,
                 width: widget.widht,

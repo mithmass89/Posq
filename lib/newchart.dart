@@ -39,7 +39,9 @@ class LineChartSample1State extends State<LineChartSample1> {
         child: AspectRatio(
       aspectRatio: 1.5,
       child:
-          SfCartesianChart(primaryXAxis: DateTimeAxis(), series: <ChartSeries>[
+          SfCartesianChart(
+            // backgroundColor: Colors.transparent,
+            primaryXAxis: DateTimeAxis(), series: <ChartSeries>[
         // Renders line chart
         LineSeries<SalesData, DateTime>(
             width: 3,

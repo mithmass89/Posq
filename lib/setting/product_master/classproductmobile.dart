@@ -37,6 +37,8 @@ class _ClassproductmobileState extends State<Classproductmobile> {
   bool isloading = true;
   Timer? timer;
   List<Item>? data;
+
+  
   @override
   void initState() {
     super.initState();
@@ -108,8 +110,8 @@ class _ClassproductmobileState extends State<Classproductmobile> {
           },
         ),
         title: Text(
-          'Product List',
-          style: TextStyle(color: Colors.black),
+          'List Produk',
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Column(

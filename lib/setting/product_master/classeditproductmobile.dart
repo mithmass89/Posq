@@ -69,6 +69,7 @@ int multiprice  = 0;
 
   Future<int> addItem() async {
     Item ctg = Item(
+            moderetail: 0,
           packageflag: 0,
         multiprice: multiprice,
       outletcode: 'OUTLET',
@@ -300,6 +301,7 @@ int multiprice  = 0;
                     handler = DatabaseHandler();
                     handler.initializeDB(databasename).whenComplete(() async {
                       await handler.updateItems(Item(
+                              moderetail: 0,
                             packageflag: 0,
                           multiprice: multiprice,
                         trackstock: 0,

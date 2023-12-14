@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/classui/classfontsize.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/clasretailmainmobile.dart';
@@ -42,12 +42,14 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
   var formatter = DateFormat('yyyy-MM-dd');
   bool caninput = true;
 
+
   @override
   void initState() {
     super.initState();
     ToastContext().init(context);
     print('ini dari product ${widget.trno}');
     caninput = true;
+
   }
 
   Future<List<Item>> getitemOutlet(query) async {
@@ -58,6 +60,8 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
 
     return data;
   }
+
+
 
   Future<IafjrndtClass?> insertIafjrndt() async {
     now = DateTime.now();
@@ -293,13 +297,14 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
       mainAxisSize: MainAxisSize.max,
       children: [
         Container(
-            // height: MediaQuery.of(context).size.height * 0.1,
+          // height: MediaQuery.of(context).size.height * 0.1,
           child: ListTile(
             // dense: true,
             onTap: caninput == true
                 ? () async {
                     if (widget.item.modifiers == 0) {
-                      if (widget.item.stock! > 0 && widget.item.trackstock == 1) {
+                      if (widget.item.stock! > 0 &&
+                          widget.item.trackstock == 1) {
                         // always check stock  //
                         await getitemOutlet(widget.item.itemcode)
                             .then((value) async {
@@ -310,7 +315,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
                             } else {
                               await insertIafjrndtRefundMode();
                             }
-        
+
                             ClassRetailMainMobile.of(context)!.string = result!;
                           } else {
                             Toast.show("Kamu Kehabisan Stock",
@@ -318,7 +323,7 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
                                 gravity: Toast.center);
                           }
                         });
-        
+
                         //update to main // callback
                       } else if (widget.item.trackstock == 0) {
                         if (refundmode == false) {
@@ -391,48 +396,61 @@ class _ClassitemRetailMobileState extends State<ClassitemRetailMobile> {
               ),
             ),
             // contentPadding: EdgeInsets.all(8.0),
-            title: Text(widget.item.itemdesc!),
+            title: Text(
+              widget.item.itemdesc!,
+              style: TextStyle(fontSize: CustomFontSize.smallFontSize(context)),
+            ),
             subtitle: widget.item.modifiers != 0
                 ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-        
-                        mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                           // height: MediaQuery.of(context).size.height * 0.036,
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: Text(
-                              'Bisa Custome : ${widget.item.modifiers.toString()}')),
+                            'Bisa Custome : ${widget.item.modifiers.toString()}',
+                            style: TextStyle(
+                                fontSize:
+                                    CustomFontSize.smallFontSize(context)),
+                          )),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.5,
-                        child: widget.item.trackstock=='1'? Row(
-                                 mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                           Text(
-                              'Stock : ',
-                            ),
-                            Text(
-                              widget.item.stock.toString(),
-                            ),
-                          ],
-                        ):Container(),
+                        child: widget.item.trackstock == '1'
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Stock : ',
+                                  ),
+                                  Text(widget.item.stock.toString(),
+                                      style: TextStyle(
+                                          fontSize:
+                                              CustomFontSize.smallFontSize(
+                                                  context))),
+                                ],
+                              )
+                            : Container(),
                       )
                     ],
                   )
                 : Container(),
             trailing: widget.item.trackstock == 1
                 ? Container(
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  child: Text(
-                    '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}', style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                )
-                : Container(
                     width: MediaQuery.of(context).size.width * 0.2,
                     child: Text(
                       '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
                       style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  )
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    child: Text(
+                      '${CurrencyFormat.convertToIdr(widget.item.slsnett, 0)}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: CustomFontSize.smallFontSize(context)),
                     ),
                   ),
           ),

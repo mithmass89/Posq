@@ -107,14 +107,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     });
   }
 
-  var wsUrl;
-  WebSocketChannel? channel;
-
   List<TransactionTipe> data = [];
 
   set string(IafjrndtClass value) {
     print(' ini value settring $value');
-    setState(() {
+    setState(() async {
       trno = value.transno ?? widget.trno;
       if (value.transno == null) {
         setState(() {
@@ -124,6 +121,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
         });
       } else {
         itemseq++;
+        await saveItemSeq(itemseq);
         getDetailData();
         getDataSlide();
       }
@@ -175,11 +173,35 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     print('');
   }
 
+  Future<void> saveItemSeq(int value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'ItemSeq';
+
+    await prefs.setInt(key, value);
+  }
+
   getTransaksiTipe() async {
     var datas = await ClassApi.getTransactionTipe(pscd, dbname, '');
     data = datas;
     setState(() {});
     print(data);
+  }
+
+  List category = [];
+  getCategory() async {
+    category = await ClassApi.getCategoryItem();
+    category.insert(0, {"ctgcd": "Recent", "ctgdesc": "Recent"});
+    setState(() {});
+    print("ini category : $category");
+  }
+
+  Future<int> getItemSeq() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'ItemSeq';
+    final value =
+        prefs.getInt(key) ?? 0; // Replace 0 with a default value if needed
+    itemseq = value;
+    return value;
   }
 
 //terakir sampai sini / pengen refresh
@@ -206,6 +228,19 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
   updateTrno() async {
     await ClassApi.updateTrno(dbname);
     await checkTrno();
+  }
+
+  Future<bool> getKitchenValue() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'useKitchen';
+    final value = prefs.getBool(key) ??
+        false; // Replace false with a default value if needed
+
+    usekitchen = value;
+    setState(() {});
+    print("ini use kitchen $usekitchen");
+
+    return value;
   }
 
   getDetailData() async {
@@ -260,6 +295,7 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     controller = TabController(vsync: this, length: 2);
     //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
+    getItemSeq();
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _scrollisanimated = false;
     ToastContext().init(context);
@@ -267,17 +303,11 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
     formattedDate = formatter.format(now);
     checkPending();
     checkTrno();
+    getKitchenValue();
     _pc.isAttached;
     controller!.animateTo(1);
     tabindex = 1;
     getTransaksiTipe();
-    // wsUrl = Uri.parse('ws://digims.online:8080?property=$dbname');
-    // channel = WebSocketChannel.connect(wsUrl);
-    // channel!.stream.listen((message) async {
-    //   print(message);
-    //   await checkPending();
-    //   setState(() {});
-    // });
     AwesomeNotifications().initialize(
         // set the icon to null if you want to use the default app icon
         // 'resource://drawable/res_app_icon',
@@ -569,6 +599,14 @@ class _ClassRetailMainMobileState extends State<ClassRetailMainMobile>
                                       width: MediaQuery.of(context).size.width *
                                           0.60,
                                       child: TextFieldMobile2(
+                                        suffixIcon: search.text.isNotEmpty
+                                            ? IconButton(
+                                                onPressed: () {
+                                                  search.text='';
+                                                  setState(() {});
+                                                },
+                                                icon: Icon(Icons.close))
+                                            : null,
                                         hint: 'Searching',
                                         controller: search,
                                         onChanged: (value) {

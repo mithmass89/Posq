@@ -10,6 +10,7 @@ import 'package:posq/setting/kelolastock/kelolaproductmains.dart';
 
 import 'package:posq/setting/menupackage/menupackagemainmobile.dart';
 import 'package:posq/setting/product_master/productmain.dart';
+import 'package:posq/setting/product_master/productmaster_retail/productmastermobretail.dart';
 import 'package:posq/setting/product_master/tabletclass/PaymentMasterTab.dart';
 import 'package:posq/setting/tipetransaksi/maintipetransaksi.dart';
 import 'package:posq/userinfo.dart';
@@ -91,13 +92,24 @@ class _MainMenuProductState extends State<MainMenuProduct> {
                     onTap: () {
                       print(accesslist);
                       if (menulist[index] == 'Tambah produk') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Productmain(
-                                    pscd: pscd,
-                                  )),
-                        );
+                        if (retailmodes == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductMasterMainRetailMob(
+                                      pscd: pscd,
+                                    )),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Productmain(
+                                      pscd: pscd,
+                                    )),
+                          );
+                        }
                       } else if (menulist[index] == 'Condiment /  Topping') {
                         if (accesslist.contains('createcondiment') == true) {
                           Navigator.push(

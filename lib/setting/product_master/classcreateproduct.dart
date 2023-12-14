@@ -57,6 +57,7 @@ class _CreateproductState extends State<Createproduct>
   final TextEditingController catatan = TextEditingController();
   final TextEditingController barcode = TextEditingController();
   final TextEditingController sku = TextEditingController();
+    final TextEditingController printer = TextEditingController(text:'Pilih printer');
   List<TextEditingController> controllerMulti = [];
   List<PriceList> pricelist = [];
   late int trackstock;
@@ -139,6 +140,7 @@ class _CreateproductState extends State<Createproduct>
 
     await ClassApi.insertProduct(
         Item(
+          moderetail: 0,
           packageflag: 0,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
@@ -162,6 +164,7 @@ class _CreateproductState extends State<Createproduct>
           sku: sku.text,
           pricelist: pricelist,
           multiprice: multiprice,
+          printer: printer.text
         ),
         dbname);
     await ClassApi.insertAdujsmentStock(dbname, databo);
@@ -173,7 +176,7 @@ class _CreateproductState extends State<Createproduct>
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Buat Produk baru',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       ),
       body: Stack(
         children: [
@@ -193,12 +196,13 @@ class _CreateproductState extends State<Createproduct>
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.95,
-                height: MediaQuery.of(context).size.height * 0.60,
+                height: MediaQuery.of(context).size.height * 0.6,
                 child: TabBarView(
                   physics: NeverScrollableScrollPhysics(),
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      printer:printer,
                       imagepath: pathimage,
                       multiflag: multiflag,
                       multipriceSet: changeValueMultiPrice,
@@ -290,6 +294,7 @@ class _CreateproductState extends State<Createproduct>
                                 usercreate: usercd));
                             await _createProduct(
                                 Item(
+                                        moderetail: 0,
                                   packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,
@@ -400,6 +405,7 @@ class _CreateproductState extends State<Createproduct>
                                 usercreate: usercd));
                             await _createProduct(
                                 Item(
+                                        moderetail: 0,
                                   packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,

@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
-
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +14,36 @@ import 'package:posq/retailmodul/clasretailmainmobile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:posq/systeminfo.dart';
+import 'package:posq/userinfo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 bool shouldUseFirebaseEmulator = false;
+final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+  Future<bool> getRetailMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'retailmode';
+    final value = prefs.getBool(key) ??
+        false; // Replace false with a default value if needed
+    retailmodes = value;
 
+    print(value);
+    return value;
+  }
+Future<void> _initConfig() async {
+  await _remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(
+        seconds: 1), // a fetch will wait up to 10 seconds before timing out
+    minimumFetchInterval: const Duration(
+        seconds: 10), // fetch parameters will be cached for a maximum of 1 hour
+  ));
+
+  await _remoteConfig.fetchAndActivate();
+  _remoteConfig.getString('mainserver').isNotEmpty;
+
+  mainserver = _remoteConfig.getString('mainserver');
+  print("value remote config : ${_remoteConfig.getString('mainserver')}");
+}
 late final FirebaseApp app;
 late final FirebaseAuth auth;
 Future<void> main() async {
@@ -33,6 +59,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+// dev mode //
+//  await _initConfig();
+
+ await getRetailMode();
+
 
   runApp(MyApp(
     onGenerateRoute: RouteGenerator.generateRoute,

@@ -7,6 +7,7 @@ import 'package:posq/analisa/classchart/chartguage.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/classui/classfontsize.dart';
 import 'package:posq/classui/classformat.dart';
 import 'package:posq/classui/drawermainmenumobile.dart';
 import 'package:posq/classui/drawermaintab.dart';
@@ -17,6 +18,7 @@ import 'package:posq/classsummarytodaymobile.dart';
 import 'package:posq/model.dart';
 import 'package:posq/newchart.dart';
 import 'package:posq/summarytab.dart';
+import 'package:posq/systeminfo.dart';
 import 'package:posq/userinfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -159,6 +161,16 @@ class _AppsMobileState extends State<AppsMobile> {
     });
   }
 
+  _loadSavedPrinter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      printerkitchen = prefs.getString('kitchen') ?? "";
+      printerbar = prefs.getString('bar') ?? "";
+      printerco = prefs.getString('co') ?? "";
+      printercashier = prefs.getString('cashier') ?? "";
+    });
+  }
+
   getDataGuage() async {
     await ClassApi.getReportRingkasan(fromdate!, todate!, dbname, '')
         .then((value) {
@@ -242,12 +254,14 @@ class _AppsMobileState extends State<AppsMobile> {
     todate = formatdate;
     today = formatdate;
     _tooltip = TooltipBehavior(enable: true);
+    getBooleanValue();
     getPreferences();
     getDataCategory();
     getDataGuage();
     getDataDoughnuts();
     getChartPenjualan();
     getSummaryPenjualan();
+    _loadSavedPrinter();
     supabase
         .from('finish_order')
         .stream(primaryKey: ['id'])
@@ -366,6 +380,17 @@ class _AppsMobileState extends State<AppsMobile> {
     setState(() {});
   }
 
+  Future<bool> getBooleanValue() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'usekitchens';
+    final value = prefs.getBool(key) ??
+        false; // Replace false with a default value if needed
+    if (value != null || value != '') {
+      usekitchen = value;
+    }
+    return value;
+  }
+
   totalexpense() async {
     await ClassApi.totalpengeluaranCashier(formatdate!, usercd, dbname)
         .then((value) {
@@ -454,21 +479,21 @@ class _AppsMobileState extends State<AppsMobile> {
                                     width: MediaQuery.of(context).size.width *
                                         0.03,
                                   ),
-                                  imageurl == ''
-                                      ? CircleAvatar(
-                                          radius: 30,
-                                          child: Text(
-                                            usercd.substring(0, 1),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      : CircleAvatar(
-                                          radius: 30,
-                                          backgroundImage:
-                                              NetworkImage(imageurl),
-                                        ),
+                                  // imageurl == ''
+                                  //     ? CircleAvatar(
+                                  //         radius: 30,
+                                  //         child: Text(
+                                  //           usercd.substring(0, 1),
+                                  //           style: TextStyle(
+                                  //               color: Colors.black,
+                                  //               fontWeight: FontWeight.bold),
+                                  //         ),
+                                  //       )
+                                  //     : CircleAvatar(
+                                  //         radius: 30,
+                                  //         backgroundImage:
+                                  //             NetworkImage(imageurl),
+                                  //       ),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.05,
@@ -477,7 +502,7 @@ class _AppsMobileState extends State<AppsMobile> {
                                   ),
                                   Container(
                                       width: MediaQuery.of(context).size.width *
-                                          0.60,
+                                          0.75,
                                       alignment: Alignment.centerLeft,
                                       child: Column(
                                         children: [
@@ -489,7 +514,11 @@ class _AppsMobileState extends State<AppsMobile> {
                                             child: Text(
                                                 outlet!.outletname.toString(),
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.06,
                                                     color: Colors.white,
                                                     fontWeight:
                                                         FontWeight.bold)),
@@ -508,11 +537,14 @@ class _AppsMobileState extends State<AppsMobile> {
                                             child:
                                                 Text(usercd + ' ' + statusabsen,
                                                     style: TextStyle(
-                                                      fontSize: 14,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.04,
                                                       color: Colors.white,
                                                     )),
                                           ),
-                                
                                         ],
                                       )),
                                   // SizedBox(
@@ -556,7 +588,6 @@ class _AppsMobileState extends State<AppsMobile> {
                                     pscd = val.outletcd;
                                   }),
                               outletinfo: widget.profileusaha)),
-               
                       Container(
                           height: MediaQuery.of(context).size.height * 0.30,
                           width: MediaQuery.of(context).size.width * 1,
@@ -565,7 +596,6 @@ class _AppsMobileState extends State<AppsMobile> {
                             monthlysales: widget.monthlysales,
                             todaysale: widget.todaysale,
                           )),
-
                       Container(
                         alignment: Alignment.centerLeft,
                         height: MediaQuery.of(context).size.height * 0.06,
@@ -589,8 +619,10 @@ class _AppsMobileState extends State<AppsMobile> {
                                             return Text(
                                               'Analisa Categori',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: CustomFontSize
+                                                    .mediumFontSize(context),
+                                              ),
                                             );
                                           case 'Pendapatan':
                                             return SizedBox(
@@ -601,7 +633,9 @@ class _AppsMobileState extends State<AppsMobile> {
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize: 20),
+                                                        fontSize: CustomFontSize
+                                                            .smallFontSize(
+                                                                context)),
                                                   ),
                                                   Text('Angka di jutaan')
                                                 ],
@@ -612,7 +646,8 @@ class _AppsMobileState extends State<AppsMobile> {
                                               "Transaksi : $pointer",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
+                                                  fontSize: CustomFontSize
+                                                      .mediumFontSize(context)),
                                             );
 
                                           case 'Item terbanyak':
@@ -620,14 +655,16 @@ class _AppsMobileState extends State<AppsMobile> {
                                               "Index menggunakan Persentase",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
+                                                  fontSize: CustomFontSize
+                                                      .smallFontSize(context)),
                                             );
                                           case 'Pendapatan & Bahan baku':
                                             return Text(
                                               "Perbandingan Pendapatan & COGS ",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
+                                                  fontSize: CustomFontSize
+                                                      .mediumFontSize(context)),
                                             );
                                           default:
                                             print('It\'s something else.');
@@ -636,7 +673,9 @@ class _AppsMobileState extends State<AppsMobile> {
                                           'Hari ini ${CurrencyFormat.convertToIdr(widget.todaysale.first['totalaftdisc'], 0)}',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                              fontSize:
+                                                  CustomFontSize.mediumFontSize(
+                                                      context)),
                                         );
                                       }),
                                     )
@@ -836,24 +875,24 @@ class _AppsMobileState extends State<AppsMobile> {
                                       width: MediaQuery.of(context).size.width *
                                           0.03,
                                     ),
-                                    imageurl == ''
-                                        ? CircleAvatar(
-                                            radius: 20,
-                                            // backgroundImage: AssetImage(
-                                            //   'assets/sheryl.png',
-                                            // ),
-                                            child: Text(
-                                              usercd.substring(0, 1),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          )
-                                        : CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage:
-                                                NetworkImage(imageurl),
-                                          ),
+                                    // imageurl == ''
+                                    //     ? CircleAvatar(
+                                    //         radius: 20,
+                                    //         // backgroundImage: AssetImage(
+                                    //         //   'assets/sheryl.png',
+                                    //         // ),
+                                    //         child: Text(
+                                    //           usercd.substring(0, 1),
+                                    //           style: TextStyle(
+                                    //               color: Colors.black,
+                                    //               fontWeight: FontWeight.bold),
+                                    //         ),
+                                    //       )
+                                    //     : CircleAvatar(
+                                    //         radius: 20,
+                                    //         backgroundImage:
+                                    //             NetworkImage(imageurl),
+                                    //       ),
                                     SizedBox(
                                       height:
                                           MediaQuery.of(context).size.height *

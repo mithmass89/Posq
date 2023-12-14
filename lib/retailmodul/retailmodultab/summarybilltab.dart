@@ -524,32 +524,32 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                     widget.guestname, dbname)
                                 .then((value) async {
                               print(value);
-                              if (value.isNotEmpty ||
-                                  value[0]['guestname'] != null) {
-                                if (value[0]['points'] != null) {
-                                } else {
-                                  final result = await showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          DialogPaymentTab(
-                                            guestname: widget.guestname,
-                                            fromsplit: false,
-                                            fromsaved: widget.fromsaved!,
-                                            datatrans: widget.listdata,
-                                            outletinfo: widget.outletinfo,
-                                            balance: widget
-                                                .summary.first.totalaftdisc!,
-                                            pscd: widget.outletinfo.outletcd,
-                                            trdt: formattedDate,
-                                            trno: widget.trno.toString(),
-                                            outletname:
-                                                widget.outletinfo.outletname,
-                                          )).then((_) {
-                                    setState(() {});
-                                  });
-                                }
-                              } else {
+                              // if (value.isNotEmpty ||
+                              //     value[0]['guestname'] != null) {
+                              //   if (value[0]['points'] != null) {
+                              //   } else {
+                              //     final result = await showDialog(
+                              //         barrierDismissible: false,
+                              //         context: context,
+                              //         builder: (BuildContext context) =>
+                              //             DialogPaymentTab(
+                              //               guestname: widget.guestname,
+                              //               fromsplit: false,
+                              //               fromsaved: widget.fromsaved!,
+                              //               datatrans: widget.listdata,
+                              //               outletinfo: widget.outletinfo,
+                              //               balance: widget
+                              //                   .summary.first.totalaftdisc!,
+                              //               pscd: widget.outletinfo.outletcd,
+                              //               trdt: formattedDate,
+                              //               trno: widget.trno.toString(),
+                              //               outletname:
+                              //                   widget.outletinfo.outletname,
+                              //             )).then((_) {
+                              //       setState(() {});
+                              //     });
+                              //   }
+                              // } else {
                                 final result = await showDialog(
                                     barrierDismissible: false,
                                     context: context,
@@ -570,7 +570,7 @@ class _SummaryOrderSlideTabsState extends State<SummaryOrderSlideTabs> {
                                         )).then((_) {
                                   setState(() {});
                                 });
-                              }
+                              // }
                             });
 
                             // final result = await Navigator.push(

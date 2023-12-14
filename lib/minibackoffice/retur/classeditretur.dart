@@ -71,7 +71,8 @@ class _ClassEditReturnState extends State<ClassEditReturn> {
     if (widget.data != null) {
       print(widget.data);
       items = Item(
-            packageflag: 0,
+          moderetail: 0,
+          packageflag: 0,
           multiprice: 0,
           itemcode: widget.data['prodcd'],
           itemdesc: widget.data['proddesc']);
@@ -96,7 +97,10 @@ class _ClassEditReturnState extends State<ClassEditReturn> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Form Retur ',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Form Retur ',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -123,7 +123,7 @@ class _ClassSavedTransactionMobileState
                                   children: [
                                     ClassListSavedMobile(
                                       trnoopen: widget.trno,
-                                      datatransaksi: snapshot.data![index],
+                                      datatransaksi: x[index],
                                       trno: x[index].transno,
                                       outletinfo: widget.outletinfo,
                                       pscd: widget.pscd.toString(),

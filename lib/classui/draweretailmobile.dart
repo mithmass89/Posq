@@ -49,51 +49,28 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        height: MediaQuery.of(context).size.height * 0.04,
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        child: Text(
-                          widget.outletname.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+              child: ListTile(
+       
+                  // leading: CircleAvatar(
+                  //   radius: 100, // Adjust the size of the circle avatar
+                  //   backgroundImage: NetworkImage(
+                  //       'http://digims.online:3000/getlogo/20231016_012618_0000.png'), // Replace with your image URL
+                  // ),
+                  title: Text(
+                    widget.outletname.toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width * 0.06,
+                        fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: Text(
-                            usercd,
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        )
-                      ],
+                  subtitle: Text(
+                    usercd,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize:
+                          MediaQuery.of(context).size.width * 0.06,
                     ),
-                  )
-                ],
-              ),
+                  )),
             ),
             ListTile(
               leading: Icon(
@@ -272,7 +249,7 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             ListTile(
               leading: Icon(
                 Icons.shopify_sharp,
-                 size: 30,
+                size: 30,
               ),
               title: const Text('Toko Online'),
               onTap: accesslist.contains('tokoonline') == true
@@ -295,9 +272,8 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
             ),
             ListTile(
               leading: Icon(
-                
                 Icons.help_center,
-                 size: 30,
+                size: 30,
               ),
               title: const Text('Bantuan'),
               onTap: () {
@@ -305,11 +281,12 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
               },
             ),
             ListTile(
-                leading: Icon(Icons.logout, size: 30,),
-                
+                leading: Icon(
+                  Icons.logout,
+                  size: 30,
+                ),
                 title: Text('Logout'),
                 onTap: () {
-       
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/', (Route<dynamic> route) => false);
                 }),
@@ -323,7 +300,10 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                           height: MediaQuery.of(context).size.height * 0.03,
                         ),
                         ListTile(
-                          leading: Icon(Icons.settings, size: 30,),
+                          leading: Icon(
+                            Icons.settings,
+                            size: 30,
+                          ),
                           title: Text('Integrasi '),
                           onTap: accesslistuser.contains('integrasi') == true
                               ? () {
@@ -354,9 +334,13 @@ class _DrawerRetailMainState extends State<DrawerRetailMain> {
                                 },
                         ),
                         ListTile(
-                          leading: Icon(Icons.print, size: 30,),
+                          leading: Icon(
+                            Icons.print,
+                            size: 30,
+                          ),
                           title: Text('Printer'),
-                          onTap: accesslistuser.contains('settingprinter') == true
+                          onTap: accesslistuser.contains('settingprinter') ==
+                                  true
                               ? () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext context) {

@@ -54,6 +54,7 @@ class _Createproductv3State extends State<Createproductv3>
   final TextEditingController catatan = TextEditingController();
   final TextEditingController barcode = TextEditingController();
   final TextEditingController sku = TextEditingController();
+  final TextEditingController printer = TextEditingController();
 
   late int trackstock;
   Gntrantp? gntrantp;
@@ -113,7 +114,8 @@ class _Createproductv3State extends State<Createproductv3>
     print(data);
     await ClassApi.insertProduct(
         Item(
-              packageflag: 0,
+          moderetail: 0,
+          packageflag: 0,
           multiprice: multiprice,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
@@ -171,6 +173,7 @@ class _Createproductv3State extends State<Createproductv3>
                   controller: controller,
                   children: [
                     ClassTabCreateProducr(
+                      printer: printer,
                       imagepath: pathimage,
                       multiprice: multiprice,
                       fromedit: false,
@@ -237,7 +240,8 @@ class _Createproductv3State extends State<Createproductv3>
                             var random = uuid.v4();
                             await _createProduct(
                                 Item(
-                                      packageflag: 0,
+                                  moderetail: 0,
+                                  packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,
                                   itemcode: random,

@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
+import 'package:posq/classui/classfontsize.dart';
 import 'package:posq/loading/shimmer.dart';
 import 'package:posq/retailmodul/productclass/classitemretailmobil.dart';
 import 'package:posq/databasehandler.dart';
@@ -44,6 +46,8 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   Future? getOutletItem;
   Map<String, List<Map<String, dynamic>>> groupdata = {};
   List<String> keys = [];
+  List category = [];
+  int indexbutton = 0;
 
   @override
   void initState() {
@@ -51,6 +55,15 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
     formattedDate = formatter.format(now);
     getOutletItem = getItems(widget.controller.text);
     print(widget.trno);
+    getCategory();
+  }
+
+  getCategory() async {
+    category = await ClassApi.getCategoryItem();
+    category.insert(0, {"ctgcd": "All", "ctgdesc": "All"});
+    category.insert(1, {"ctgcd": "Recent", "ctgdesc": "Recent"});
+    setState(() {});
+    print("ini category : $category");
   }
 
   getItems(query) async {
@@ -69,7 +82,7 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.blue,
-      height: MediaQuery.of(context).size.height * 0.60,
+      height: MediaQuery.of(context).size.height * 0.9,
       width: MediaQuery.of(context).size.width * 1,
       child: FutureBuilder(
           future: ClassApi.getItemList(pscd, dbname, widget.controller.text),
@@ -81,9 +94,58 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
             if (x.isEmpty) {
               return Container(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Container(
+                        height: MediaQuery.of(context).size.height * 0.09,
+                        child: ListView.builder(
+                            padding: EdgeInsets.all(10),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: category.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsets.all(
+                                  MediaQuery.of(context).size.width * 0.01,
+                                ),
+                                width:
+                                    MediaQuery.of(context).size.height * 0.15,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: indexbutton == index
+                                        ? AppColors.secondaryColor
+                                        : Colors.white, // Background color
+                                  ),
+                                  onPressed: () {
+                                    indexbutton = index;
+                                    print(category[index]['ctgdesc']);
+                                    if (category[index]['ctgdesc'] != 'All') {
+                                      widget.controller.text =
+                                          category[index]['ctgdesc'];
+                                      setState(() {});
+                                    } else {
+                                      widget.controller.text = '';
+                                      setState(() {});
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: Text(
+                                    category[index]['ctgdesc'],
+                                    style: TextStyle(
+                                        fontSize: CustomFontSize.smallFontSize(
+                                            context),
+                                        color: indexbutton == index
+                                            ? Colors.white
+                                            : AppColors.primaryColor),
+                                  ),
+                                ),
+                              );
+                            })),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                    ),
                     Text('tidak ada produk tersedia'),
                     TextButton(
                         onPressed: () {
@@ -100,22 +162,74 @@ class _ClassRetailProductMobileState extends State<ClassRetailProductMobile> {
                 ),
               );
             } else {
-              return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    var _image = File(x[index].pathimage.toString());
-                    return ShimmerLoading(
-                      isLoading: isLoading,
-                      child: ClassitemRetailMobile(
-                        guestname: widget.guestname,
-                        itemseq: widget.itemseq,
-                        trno: widget.trno,
-                        trdt: formattedDate,
-                        item: snapshot.data![index],
-                        image: _image,
-                      ),
-                    );
-                  });
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.09,
+                      child: ListView.builder(
+                          padding: EdgeInsets.all(10),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: category.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width * 0.01,
+                              ),
+                              width: MediaQuery.of(context).size.height * 0.15,
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: indexbutton == index
+                                      ? AppColors.secondaryColor
+                                      : Colors.white, // Background color
+                                ),
+                                onPressed: () {
+                                  indexbutton = index;
+                                  print(category[index]['ctgdesc']);
+                                  if (category[index]['ctgdesc'] != 'All') {
+                                    widget.controller.text =
+                                        category[index]['ctgdesc'];
+                                    setState(() {});
+                                  } else {
+                                    widget.controller.text = '';
+                                    setState(() {});
+                                  }
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  category[index]['ctgdesc'],
+                                  style: TextStyle(
+                                      fontSize:
+                                          CustomFontSize.smallFontSize(context),
+                                      color: indexbutton == index
+                                          ? Colors.white
+                                          : AppColors.primaryColor),
+                                ),
+                              ),
+                            );
+                          })),
+                  Expanded(
+                    flex: 7,
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          var _image = File(x[index].pathimage.toString());
+                          return ShimmerLoading(
+                            isLoading: isLoading,
+                            child: ClassitemRetailMobile(
+                              guestname: widget.guestname,
+                              itemseq: widget.itemseq,
+                              trno: widget.trno,
+                              trdt: formattedDate,
+                              item: snapshot.data![index],
+                              image: _image,
+                            ),
+                          );
+                        }),
+                  ),
+                ],
+              );
             }
           }),
     );

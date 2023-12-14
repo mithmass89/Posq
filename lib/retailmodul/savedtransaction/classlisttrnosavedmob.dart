@@ -34,6 +34,7 @@ class _ClassListSavedMobileState extends State<ClassListSavedMobile> {
   @override
   void initState() {
     super.initState();
+    print('ini data widget transaksi ${widget.datatransaksi!.createdt!}');
     timestamp = DateTime.parse(widget.datatransaksi!.createdt!);
     times = timeAgo(
         timestamp!); // 'just now' (or a different value depending on the actual time difference)

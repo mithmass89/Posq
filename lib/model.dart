@@ -462,12 +462,16 @@ class Item {
   final int multiprice;
   final int packageflag;
   final int? onlineflag;
+  final String? printer;
+  final int? moderetail;
 
   Item({
+    this.printer,
     required this.multiprice,
     required this.packageflag,
     this.id,
     this.outletcode,
+    required this.moderetail,
     this.itemcode,
     this.subitemcode,
     this.itemdesc,
@@ -498,6 +502,7 @@ class Item {
   Item.fromJson(
     Map<String, dynamic> res,
   )   : id = res["id"],
+        printer = res["printer"],
         outletcode = res["outletcode"],
         itemcode = res["itemcode"],
         subitemcode = res["subitemcode"],
@@ -525,12 +530,13 @@ class Item {
         multiprice = res["multiprice"],
         onlineflag = res["onlineflag"],
         packageflag = res["packageflag"],
+        moderetail = res["moderetail"],
         pricelist = List<PriceList>.from(
             jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)));
 
   @override
   String toString() {
-    return '{"id": $id,"onlineflag": $onlineflag, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers,"pricelist":$pricelist,"multiprice":$multiprice,packageflag:$packageflag}';
+    return '{"id": $id,"moderetail":$moderetail,"printer":$printer,"onlineflag": $onlineflag, "outletcode": $outletcode,"itemcode": $itemcode,"subitemcode":$subitemcode,"itemdesc": $itemdesc,"slsamt": $slsamt,"costamt": $costamt,"slsnett": $slsnett,"taxpct": $taxpct,"svchgpct": $svchgpct,"revenuecoa": $revenuecoa,"taxcoa": $taxcoa,"svchgcoa": $svchgcoa,"slsfl": $slsfl,"costcoa": $costcoa,"ctg": $ctg,"stock": $stock,"pathimage": $pathimage,"description": $description,"trackstock": $trackstock,"barcode": $barcode,"sku": $sku,"slsnett2": $slsnett2,"slsamt2": $slsamt2,"modifiers": $modifiers,"pricelist":$pricelist,"multiprice":$multiprice,packageflag:$packageflag}';
   }
 
   Map<String, Object?> toJson() {
@@ -538,6 +544,7 @@ class Item {
       'id': id,
       'outletcode': outletcode,
       'itemcode': itemcode,
+      'printer': printer,
       'subitemcode': subitemcode,
       'itemdesc': itemdesc,
       'slsamt': slsamt,
@@ -563,6 +570,7 @@ class Item {
       'pricelist': List<dynamic>.from(pricelist!.map((x) => x.toJson())),
       'multiprice': multiprice,
       'packageflag': packageflag,
+      'moderetail': moderetail,
       'onlineflag': onlineflag
     };
   }
@@ -1113,6 +1121,7 @@ class IafjrndtClass {
   final String? tablesid;
   final String? note;
   final String? reason;
+  final String? printerpath;
 
   IafjrndtClass(
       {this.salestype = '',
@@ -1171,6 +1180,7 @@ class IafjrndtClass {
       this.pricelist,
       this.multiprice,
       this.tablesid = '',
+      this.printerpath = '',
       this.note});
 
   IafjrndtClass.fromJson(
@@ -1231,6 +1241,7 @@ class IafjrndtClass {
         tablesid = res["tablesid"],
         note = res["note"],
         reason = res["reason"],
+        printerpath = res["printerpath"],
         pricelist = res['pricelist'] != null
             ? List<PriceList>.from(
                 jsonDecode(res['pricelist']).map((x) => PriceList.fromJson(x)))
@@ -1294,13 +1305,14 @@ class IafjrndtClass {
       'tablesid': tablesid,
       'note': note,
       'reason': reason,
-      'totalcost': totalcost
+      'totalcost': totalcost,
+      'printerpath': printerpath
     };
   }
 
   @override
   String toString() {
-    return '{"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,note:$note,revenueamt:$revenueamt,"itemseq":$itemseq,  "totalcost":$totalcost,"ratecostamt":$ratecostamt}';
+    return '{"printerpath":$printerpath,"id": "$id","trdt": "$trdt", "transno": "$transno", "split": "$split","itemdesc": "$itemdesc", "description": "$description","qty": "$qty","rateamtitem": "$rateamtitem","totalaftdisc": "$totalaftdisc","guestname": "$guestname",condimentlist:$condimentlist,createdt:$createdt,typ:$typ,optioncode:$optioncode,havecond:$havecond,condimenttype:$condimenttype,svchgpct:$svchgpct,taxpct:$taxpct,multiprice:$multiprice,pricelist:$pricelist,salestype:$salestype,tablesid:$tablesid,guestname:$guestname,note:$note,revenueamt:$revenueamt,"itemseq":$itemseq,  "totalcost":$totalcost,"ratecostamt":$ratecostamt}';
   }
 }
 

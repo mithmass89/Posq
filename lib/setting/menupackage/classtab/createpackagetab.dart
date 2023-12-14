@@ -45,7 +45,10 @@ class _BuatPaketTabState extends State<BuatPaketTab> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Buat Paket',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Buat Paket',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 0, 173, 150),
@@ -57,6 +60,7 @@ class _BuatPaketTabState extends State<BuatPaketTab> {
           await ClassApi.createPackageMenu(dbname, package);
           await ClassApi.insertProduct(
               Item(
+                  moderetail: 0,
                   outletcode: pscd,
                   sku: '',
                   trackstock: 0,
@@ -93,16 +97,14 @@ class _BuatPaketTabState extends State<BuatPaketTab> {
                 children: [
                   Text(
                     'Nama Paket',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.3,
                   ),
                   Text(
                     'harga',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -192,8 +194,7 @@ class _BuatPaketTabState extends State<BuatPaketTab> {
                 children: [
                   Text(
                     'Detail Paket',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -223,8 +224,7 @@ class _BuatPaketTabState extends State<BuatPaketTab> {
                                 },
                                 icon: Icon(Icons.remove)),
                             Container(
-                              width:
-                                  MediaQuery.of(context).size.height * 0.1,
+                              width: MediaQuery.of(context).size.height * 0.1,
                               child: TextFieldMobile2(
                                 hint: 'Nama package',
                                 controller: qtycontroller[index],

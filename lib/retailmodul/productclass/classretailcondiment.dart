@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/classui/buttonclass.dart';
+import 'package:posq/classui/classfontsize.dart';
 import 'package:posq/classui/classtextfield.dart';
 import 'package:posq/model.dart';
 import 'package:posq/retailmodul/productclass/subcondimentv2.dart';
@@ -188,7 +189,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                       return ListTile(
                         title: Text(
                           '* ${keys[i]} *',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: CustomFontSize.smallFontSize(context)),
                         ),
                         subtitle: Container(
                           height: MediaQuery.of(context).size.height *
@@ -280,7 +281,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                           icon: Icon(
                             Icons.remove,
                           ),
-                          iconSize: 20,
+                          iconSize: IconSize.mediumIconSize(context),
                         ),
                         SizedBox(
                           width: 65,
@@ -334,13 +335,13 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                             }
                           },
                           icon: Icon(Icons.add),
-                          iconSize: 20,
+                          iconSize: IconSize.mediumIconSize(context),
                         )
                       ],
                     )),
                 title: Text(
                   widget.data.itemdesc!,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: CustomFontSize.smallFontSize(context)),
                 )),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.04,
@@ -645,7 +646,7 @@ class _ClassInputCondimentState extends State<ClassInputCondiment> {
                                     backgroundColor:
                                         Color.fromARGB(255, 11, 12, 14),
                                     textColor: Colors.white,
-                                    fontSize: 16.0);
+                                    fontSize: CustomFontSize.smallFontSize(context));
                               }
                             });
                           }

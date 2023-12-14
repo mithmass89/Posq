@@ -54,6 +54,7 @@ class _EditproductTabState extends State<EditproductTab>
   final catatan = TextEditingController();
   final barcode = TextEditingController();
   final sku = TextEditingController();
+    final printer = TextEditingController(text:'Pilih Kategori');
 
   bool forresto = false;
   bool forretail = false;
@@ -106,6 +107,7 @@ print('ganti $pathimage');
     barcode.text = widget.productcode!.barcode.toString();
     sku.text = widget.productcode!.sku.toString();
     pricelist = widget.productcode!.pricelist!;
+    printer.text =  widget.productcode!.printer!;
     if (widget.productcode!.multiprice == 1) {
       multiflag = true;
     } else {
@@ -179,6 +181,7 @@ print('ganti $pathimage');
                   controller: controller,
                   children: [
                     ClassTabCreateProducts(
+                      printer: printer,
                       imageurl: pathimage!,
                       multiflag: multiflag,
                       multipriceSet: changeValueMultiPrice,
@@ -238,6 +241,7 @@ print('ganti $pathimage');
 
                   await ClassApi.updateProduct(
                       Item(
+                              moderetail: 0,
                             packageflag: 0,
                         multiprice: multiprice,
                         trackstock: widget.productcode!.trackstock,
@@ -266,6 +270,7 @@ print('ganti $pathimage');
                         barcode: barcode.text,
                         sku: sku.text,
                         pricelist:pricelist,
+                        printer: printer.text
                       ),
                       pscd);
                   Navigator.of(context).pop(context);

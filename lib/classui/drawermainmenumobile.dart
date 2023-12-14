@@ -4,6 +4,7 @@ import 'package:posq/classfungsi/classcolorapps.dart';
 import 'package:posq/classui/api.dart';
 import 'package:posq/model.dart';
 import 'package:posq/reporting/classsummaryreport.dart';
+import 'package:posq/setting/printer/classmainprinter.dart';
 import 'package:posq/setting/promo/classpromomobile.dart';
 import 'package:posq/systeminfo.dart';
 import 'package:posq/userinfo.dart';
@@ -78,6 +79,16 @@ class DrawerWidgetMain extends StatelessWidget {
                         usercd: usercd),
                     dbname);
               }),
+          _drawerItem(
+              icon: Icons.print,
+              text: 'Printer',
+              onTap: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ClassMainPrinter()),
+                );
+              }),
           Divider(height: 25, thickness: 1),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
@@ -91,7 +102,6 @@ class DrawerWidgetMain extends StatelessWidget {
               icon: Icons.logout,
               text: 'Log Out',
               onTap: () {
-         
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               }),
@@ -108,18 +118,24 @@ class DrawerWidgetMain extends StatelessWidget {
 Widget _drawerHeader() {
   return UserAccountsDrawerHeader(
     decoration: BoxDecoration(color: AppColors.primaryColor),
-    // currentAccountPicture: ClipOval(
-    //   child: Image(
-    //       image: AssetImage('assets/images/orang2.jpeg'),
-    //       errorBuilder: (context, error, stackTrace) {
-    //         return Center(
-    //             child: Text(
-    //           'No Image',
-    //           style: TextStyle(color: Colors.white),
-    //         ));
-    //       },
-    //       fit: BoxFit.cover),
-    // ),
+    currentAccountPicture: ClipOval(
+      // child: Image.network(
+      //   'https://quarantine.doh.gov.ph/wp-content/uploads/2016/12/no-image-icon-md.png', // Replace with your image URL
+      //   loadingBuilder: (BuildContext context, Widget child,
+      //       ImageChunkEvent? loadingProgress) {
+      //     if (loadingProgress == null) {
+      //       return child;
+      //     } else {
+      //       return CircularProgressIndicator(
+      //         value: loadingProgress.expectedTotalBytes != null
+      //             ? loadingProgress.cumulativeBytesLoaded /
+      //                 loadingProgress.expectedTotalBytes!
+      //             : null,
+      //       );
+      //     }
+      //   },
+      // ),
+    ),
     accountName: Text(usercd),
     accountEmail: Text(emaillogin),
   );
@@ -138,8 +154,8 @@ Widget _drawerItem({IconData? icon, String? text, GestureTapCallback? onTap}) {
           child: Text(
             text!,
             style: TextStyle(
-              // fontWeight: FontWeight.bold,
-            ),
+                // fontWeight: FontWeight.bold,
+                ),
           ),
         ),
       ],

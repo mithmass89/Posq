@@ -59,6 +59,7 @@ class _CreateproducttabState extends State<Createproducttab>
   final TextEditingController catatan = TextEditingController();
   final TextEditingController barcode = TextEditingController();
   final TextEditingController sku = TextEditingController();
+  final TextEditingController printer = TextEditingController();
   List<TextEditingController> controllerMulti = [];
   List<PriceList> pricelist = [];
   late int trackstock;
@@ -142,6 +143,7 @@ class _CreateproducttabState extends State<Createproducttab>
     print(data);
     await ClassApi.insertProduct(
         Item(
+          moderetail: 0,
           packageflag: 0,
           outletcode: data.outletcode,
           itemcode: data.itemcode.toString(),
@@ -202,6 +204,7 @@ class _CreateproducttabState extends State<Createproducttab>
                   controller: controller,
                   children: [
                     ClassTabCreateProducts(
+                      printer: printer,
                       imageurl: widget.productcode!.pathimage!,
                       amounsales: SalesAmt,
                       productName: productName,
@@ -296,6 +299,7 @@ class _CreateproducttabState extends State<Createproducttab>
                                 usercreate: usercd));
                             await _createProduct(
                                 Item(
+                                  moderetail: 0,
                                   packageflag: 0,
                                   multiprice: multiprice,
                                   outletcode: widget.pscd!,
@@ -328,7 +332,7 @@ class _CreateproducttabState extends State<Createproducttab>
                                   // stock: num.parse(adjusmentstock.text.isEmpty
                                   //     ? '0'
                                   //     : adjusmentstock.text),
-                                     stock: 0,
+                                  stock: 0,
                                   pathimage: pathimage ?? 'Empty',
                                   description: description.text.isEmpty
                                       ? 'Empty'
@@ -406,6 +410,7 @@ class _CreateproducttabState extends State<Createproducttab>
                                   usercreate: usercd));
                               await _createProduct(
                                   Item(
+                                    moderetail: 0,
                                     packageflag: 0,
                                     multiprice: multiprice,
                                     outletcode: widget.pscd!,
